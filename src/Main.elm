@@ -68,7 +68,7 @@ view _ =
                     [ mobileNavbar ]
                 ]
             , heroBody []
-                [ columns [ class "is-3 is-variable is-fullwidth is-flex-tablet is-vcentered" ]
+                [ columns [ class "is-3 is-variable is-fullwidth is-flex-tablet is-vcentered container mx-auto" ]
                     [ columns [ class "column is-multiline" ]
                         [ col [ class "is-full" ] [ img [ src "../assets/mytinerary_logo.svg" ] [] ]
                         , col [ class "is-full" ]
