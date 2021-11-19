@@ -4,7 +4,35 @@ import Browser
 import Browser.Navigation as Nav
 import Html exposing (..)
 import Html.Attributes exposing (attribute, class, src, style)
-import Url
+import Pages.Cities exposing (view)
+import Url exposing (Url)
+import Url.Parser as Parser exposing (Parser)
+
+
+type Route
+    = Landing
+
+
+type Page
+    = LandingPage
+    | PageNotFound
+
+
+urlParser : Parser (Route -> a) a
+urlParser =
+    Parser.oneOf
+        [ Parser.map Landing Parser.top
+        ]
+
+
+updateUrl : Url -> Model -> ( Model, Cmd Msg )
+updateUrl url model =
+    case Parser.parse urlParser url of
+        Just Landing ->
+            ( { model | page = LandingPage }, Cmd.none )
+
+        Nothing ->
+            ( { model | page = PageNotFound }, Cmd.none )
 
 
 main : Program () Model Msg
@@ -14,31 +42,31 @@ main =
         , view = view
         , update = update
         , subscriptions = subscriptions
-        , onUrlRequest = UrlRequested
+        , onUrlRequest = ClickedLink
         , onUrlChange = UrlChanged
         }
 
 
 type alias Model =
     { key : Nav.Key
-    , url : Url.Url
+    , page : Page
     }
 
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ url key =
-    ( Model key url, Cmd.none )
+    updateUrl url { page = PageNotFound, key = key }
 
 
 type Msg
-    = UrlRequested Browser.UrlRequest
+    = ClickedLink Browser.UrlRequest
     | UrlChanged Url.Url
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        UrlRequested urlRequest ->
+        ClickedLink urlRequest ->
             case urlRequest of
                 Browser.Internal url ->
                     ( model, Nav.pushUrl model.key (Url.toString url) )
@@ -47,9 +75,7 @@ update msg model =
                     ( model, Nav.load href )
 
         UrlChanged url ->
-            ( { model | url = url }
-            , Cmd.none
-            )
+            updateUrl url model
 
 
 subscriptions : Model -> Sub Msg
