@@ -3,7 +3,7 @@ module Main exposing (main)
 import Browser
 import Browser.Navigation as Nav
 import Html exposing (..)
-import Html.Attributes exposing (attribute, class, src)
+import Html.Attributes exposing (attribute, class, src, style)
 import Url
 
 
@@ -62,66 +62,77 @@ view _ =
     { title = "Application Title"
     , body =
         [ img [ src "../assets/heroBgr.jpg", class "landing-bg" ] []
-        , navbar
-
-        --  div []
-        -- [ text "New Application" ]
+        , hero [ class "is-fullheight" ]
+            [ heroHead []
+                [ navbar [ class "is-white" ]
+                    [ mobileNavbar ]
+                ]
+            , heroBody []
+                [ columns [ class "is-3 is-variable" ]
+                    [ col [] [ img [ src "../assets/mytinerary_logo.svg" ] [] ]
+                    , col []
+                        [ p [ class "has-text-white is-size-4", style "line-height" "1.4" ]
+                            [ text "Find your perfect trip, designed by insiders who know and love their\n          cities."
+                            ]
+                        ]
+                    , col [ class "has-text-centered" ]
+                        [ img [ style "max-height" "180px", src "../assets/arrowRight.svg" ] []
+                        ]
+                    ]
+                ]
+            ]
         ]
     }
 
 
-navbar : Html msg
-navbar =
-    nav [ attribute "aria-label" "main navigation", class "navbar", attribute "role" "navigation" ]
-        [ div [ class "navbar-brand" ]
-            [ a
-                [ class "navbar-item" ]
-                [ img [ attribute "height" "28", src "https://bulma.io/images/bulma-logo.png", attribute "width" "112" ]
-                    []
-                ]
-            , a [ attribute "aria-expanded" "false", attribute "aria-label" "menu", class "navbar-burger", attribute "data-target" "navbarBasicExample", attribute "role" "button" ]
-                [ span [ attribute "aria-hidden" "true" ]
-                    []
-                , span [ attribute "aria-hidden" "true" ]
-                    []
-                , span [ attribute "aria-hidden" "true" ]
-                    []
-                ]
+mobileNavbar : Html msg
+mobileNavbar =
+    div [ class "navbar-brand" ]
+        [ a [ class "navbar-item" ]
+            [ p [ style "color" "red", class "has-text-weight-semibold" ] [ text "Mytinerary" ]
             ]
-        , div [ class "navbar-menu" ]
-            [ div [ class "navbar-start" ]
-                [ a [ class "navbar-item" ]
-                    [ text "Home      " ]
-                , a [ class "navbar-item" ]
-                    [ text "Documentation      " ]
-                , div [ class "navbar-item has-dropdown is-hoverable" ]
-                    [ a [ class "navbar-link" ]
-                        [ text "More        " ]
-                    , div [ class "navbar-dropdown" ]
-                        [ a [ class "navbar-item" ]
-                            [ text "About          " ]
-                        , a [ class "navbar-item" ]
-                            [ text "Jobs          " ]
-                        , a [ class "navbar-item" ]
-                            [ text "Contact          " ]
-                        , hr [ class "navbar-divider" ]
-                            []
-                        , a [ class "navbar-item" ]
-                            [ text "Report an issue          " ]
-                        ]
-                    ]
-                ]
-            , div [ class "navbar-end" ]
-                [ div [ class "navbar-item" ]
-                    [ div [ class "buttons" ]
-                        [ a [ class "button is-primary" ]
-                            [ strong []
-                                [ text "Sign up" ]
-                            ]
-                        , a [ class "button is-light" ]
-                            [ text "Log in          " ]
-                        ]
-                    ]
-                ]
+        , div [ class "navbar-burger" ]
+            [ span [ attribute "aria-hidden" "true" ]
+                []
+            , span [ attribute "aria-hidden" "true" ]
+                []
+            , span [ attribute "aria-hidden" "true" ]
+                []
             ]
         ]
+
+
+
+{-
+   Bulma helpers
+-}
+
+
+col : List (Attribute msg) -> List (Html msg) -> Html msg
+col attr html =
+    div (List.append attr [ class "column" ]) html
+
+
+columns : List (Attribute msg) -> List (Html msg) -> Html msg
+columns attr html =
+    div (List.append attr [ class "columns" ]) html
+
+
+hero : List (Attribute msg) -> List (Html msg) -> Html msg
+hero attr html =
+    section (List.append attr [ class "hero" ]) html
+
+
+heroBody : List (Attribute msg) -> List (Html msg) -> Html msg
+heroBody attr html =
+    div (List.append attr [ class "hero-body" ]) html
+
+
+heroHead : List (Attribute msg) -> List (Html msg) -> Html msg
+heroHead attr html =
+    div (List.append attr [ class "hero-head" ]) html
+
+
+navbar : List (Attribute msg) -> List (Html msg) -> Html msg
+navbar attr html =
+    div (List.append attr [ class "navbar" ]) html
