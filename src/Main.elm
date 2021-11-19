@@ -62,15 +62,19 @@ view _ =
     { title = "Application Title"
     , body =
         [ img [ src "../assets/heroBgr.jpg", class "landing-bg" ] []
-        , navbar [ class "has-background-white" ]
-            [ mobileNavbar ]
-        , hero [ class "is-large" ]
-            [ heroBody []
-                [ columns [ class "is-3 is-variable" ]
-                    [ col [] [ img [ src "../assets/mytinerary_logo.svg" ] [] ]
-                    , col []
-                        [ p [ class "has-text-white is-size-4", style "line-height" "1.4" ]
-                            [ text "Find your perfect trip, designed by insiders who know and love their\n          cities."
+        , hero [ class "is-fullheight" ]
+            [ heroHead []
+                [ navbar [ class "has-background-white" ]
+                    [ mobileNavbar ]
+                ]
+            , heroBody []
+                [ columns [ class "is-3 is-variable is-fullwidth is-flex-tablet is-vcentered" ]
+                    [ columns [ class "column is-multiline" ]
+                        [ col [ class "is-full" ] [ img [ src "../assets/mytinerary_logo.svg" ] [] ]
+                        , col [ class "is-full" ]
+                            [ p [ class "has-text-white is-size-3-tablet is-size-4-mobile", style "line-height" "1.4" ]
+                                [ text "Find your perfect trip, designed by insiders who know and love their\n          cities."
+                                ]
                             ]
                         ]
                     , col [ class "has-text-centered" ]
