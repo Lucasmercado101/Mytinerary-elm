@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "elm-live": "^4.0.2"
+  },
+  "scripts": {
+    "start": "elm-live src/Main.elm -- --output=elm.js --debug",
+    "make": "elm make src/Main.elm --output=elm.js --debug"
+  }
+}
