@@ -62,12 +62,10 @@ view _ =
     { title = "Application Title"
     , body =
         [ img [ src "../assets/heroBgr.jpg", class "landing-bg" ] []
-        , hero [ class "is-fullheight" ]
-            [ heroHead []
-                [ navbar [ class "is-white" ]
-                    [ mobileNavbar ]
-                ]
-            , heroBody []
+        , navbar [ class "has-background-white" ]
+            [ mobileNavbar ]
+        , hero [ class "is-large" ]
+            [ heroBody []
                 [ columns [ class "is-3 is-variable" ]
                     [ col [] [ img [ src "../assets/mytinerary_logo.svg" ] [] ]
                     , col []
