@@ -2,3 +2,4 @@ node_modules
 elm.js
 pnpm-lock.yaml
 elm-stuff
+app.js
