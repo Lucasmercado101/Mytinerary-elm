@@ -2,19 +2,21 @@ module Main exposing (main)
 
 import Browser
 import Browser.Navigation as Nav
-import Html exposing (..)
-import Html.Attributes exposing (attribute, class, src, style)
-import Pages.Cities exposing (view)
+import Html exposing (Attribute, Html, a, div, img, p, section, span, text)
+import Html.Attributes exposing (attribute, class, href, src, style)
+import Pages.Cities as Cities exposing (Model, init, view)
 import Url exposing (Url)
-import Url.Parser as Parser exposing (Parser)
+import Url.Parser as Parser exposing (Parser, s)
 
 
 type Route
     = Landing
+    | Cities
 
 
 type Page
     = LandingPage
+    | CitiesPage
     | PageNotFound
 
 
@@ -22,6 +24,7 @@ urlParser : Parser (Route -> a) a
 urlParser =
     Parser.oneOf
         [ Parser.map Landing Parser.top
+        , Parser.map Cities (s "cities")
         ]
 
 
@@ -30,6 +33,10 @@ updateUrl url model =
     case Parser.parse urlParser url of
         Just Landing ->
             ( { model | page = LandingPage }, Cmd.none )
+
+        Just Cities ->
+            -- TODO
+            ( { model | page = CitiesPage }, Cmd.none )
 
         Nothing ->
             ( { model | page = PageNotFound }, Cmd.none )
@@ -84,33 +91,43 @@ subscriptions _ =
 
 
 view : Model -> Browser.Document Msg
-view _ =
-    { title = "Application Title"
-    , body =
-        [ img [ src "../assets/heroBgr.jpg", class "landing-bg" ] []
-        , hero [ class "is-fullheight" ]
-            [ heroHead []
-                [ navbar [ class "has-background-white" ]
-                    [ mobileNavbar ]
-                ]
-            , heroBody []
-                [ columns [ class "is-3 is-variable is-fullwidth is-flex-tablet is-vcentered container mx-auto" ]
-                    [ columns [ class "column is-multiline" ]
-                        [ col [ class "is-full" ] [ img [ src "../assets/mytinerary_logo.svg" ] [] ]
-                        , col [ class "is-full" ]
-                            [ p [ class "has-text-white is-size-3-tablet is-size-4-mobile", style "line-height" "1.4" ]
-                                [ text "Find your perfect trip, designed by insiders who know and love their\n          cities."
+view model =
+    case model.page of
+        LandingPage ->
+            { title = "Mytinerary"
+            , body =
+                [ img [ src "../assets/heroBgr.jpg", class "landing-bg" ] []
+                , hero [ class "is-fullheight" ]
+                    [ heroHead []
+                        [ navbar [ class "has-background-white" ]
+                            [ mobileNavbar ]
+                        ]
+                    , heroBody []
+                        [ columns [ class "is-3 is-variable is-fullwidth is-flex-tablet is-vcentered container mx-auto" ]
+                            [ columns [ class "column is-multiline" ]
+                                [ col [ class "is-full" ] [ img [ src "../assets/mytinerary_logo.svg" ] [] ]
+                                , col [ class "is-full" ]
+                                    [ p [ class "has-text-white is-size-3-tablet is-size-4-mobile", style "line-height" "1.4" ]
+                                        [ text "Find your perfect trip, designed by insiders who know and love their\n          cities."
+                                        ]
+                                    ]
+                                ]
+                            , col [ class "has-text-centered" ]
+                                [ a [ href "/cities" ] [ img [ style "max-height" "180px", src "../assets/arrowRight.svg" ] [] ]
                                 ]
                             ]
                         ]
-                    , col [ class "has-text-centered" ]
-                        [ img [ style "max-height" "180px", src "../assets/arrowRight.svg" ] []
-                        ]
                     ]
                 ]
-            ]
-        ]
-    }
+            }
+
+        CitiesPage ->
+            { title = "Cities"
+            , body = [ div [] [] ]
+            }
+
+        PageNotFound ->
+            { title = "Page not found", body = [ div [] [ text "Page not found" ] ] }
 
 
 mobileNavbar : Html msg
