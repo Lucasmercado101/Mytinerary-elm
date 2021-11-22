@@ -123,7 +123,7 @@ view model =
 
         CitiesPage ->
             { title = "Cities"
-            , body = [ div [] [] ]
+            , body = Cities.view
             }
 
         PageNotFound ->
