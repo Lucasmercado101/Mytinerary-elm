@@ -44,7 +44,8 @@ update msg model =
                     ( CitiesLoaded cities, Cmd.none )
 
                 Err err ->
-                    ( model, Cmd.none )
+                    -- TODO
+                    Debug.todo "handle error"
 
 
 getCities : Cmd Msg
