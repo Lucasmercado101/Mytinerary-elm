@@ -13,6 +13,6 @@ init =
     ( NoModel, Cmd.none )
 
 
-view : List (Html.Html msg)
+view : Html.Html msg
 view =
-    [ div [] [ text "cities" ] ]
+    div [] [ text "cities" ]

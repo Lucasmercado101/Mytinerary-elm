@@ -123,7 +123,9 @@ view model =
 
         CitiesPage ->
             { title = "Cities"
-            , body = Cities.view
+            , body =
+                [ Cities.view
+                ]
             }
 
         PageNotFound ->
