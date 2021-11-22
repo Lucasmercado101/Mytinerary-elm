@@ -124,9 +124,9 @@ view model =
         CitiesPage ->
             { title = "Cities"
             , body =
-                [ navbar [ class "has-background-white" ]
+                [ navbar [ class "has-background-white has-shadow" ]
                     [ mobileNavbar ]
-                , Cities.view
+                , div [ class "mt-2" ] [ Cities.view ]
                 ]
             }
 

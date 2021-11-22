@@ -1,6 +1,7 @@
 module Pages.Cities exposing (Model, init, view)
 
-import Html exposing (div, text)
+import Html exposing (div, h1, text)
+import Html.Attributes exposing (class)
 import Platform.Cmd exposing (Cmd)
 
 
@@ -15,4 +16,6 @@ init =
 
 view : Html.Html msg
 view =
-    div [] [ text "cities" ]
+    div []
+        [ h1 [ class "has-text-centered title" ] [ text "Cities" ]
+        ]
