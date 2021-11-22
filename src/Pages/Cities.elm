@@ -1,7 +1,7 @@
 module Pages.Cities exposing (Model, Msg, init, update, view)
 
-import Html exposing (Html, div, h1, img, li, p, text, ul)
-import Html.Attributes exposing (class, src, style)
+import Html exposing (Html, a, div, h1, img, li, p, text, ul)
+import Html.Attributes exposing (class, href, src, style)
 import Http exposing (get)
 import Json.Decode as Decode exposing (Decoder, field, int, list, string)
 import Platform.Cmd exposing (Cmd)
@@ -76,8 +76,10 @@ view model =
 
 city : City -> Html msg
 city cityData =
-    div
-        [ class "is-relative has-text-centered my-2 py-4" ]
+    a
+        [ href ("/cities/" ++ String.fromInt cityData.id)
+        , class "is-relative has-text-centered my-2 py-4 is-block"
+        ]
         [ img [ class "city-bgr", src ("https://source.unsplash.com/featured/?" ++ cityData.name) ] []
         , p [ class "title has-text-white" ] [ text cityData.name ]
         , p [ class "subtitle has-text-white" ] [ text cityData.country ]
