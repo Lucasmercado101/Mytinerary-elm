@@ -4,7 +4,7 @@ import Browser
 import Browser.Navigation as Nav
 import Html exposing (Attribute, Html, a, div, img, p, section, span, text)
 import Html.Attributes exposing (attribute, class, href, src, style)
-import Pages.Cities as Cities exposing (Model, init, view)
+import Pages.Cities as Cities exposing (Model, Msg, init, view)
 import Url exposing (Url)
 import Url.Parser as Parser exposing (Parser, s)
 
@@ -16,7 +16,7 @@ type Route
 
 type Page
     = LandingPage
-    | CitiesPage
+    | CitiesPage Cities.Model
     | PageNotFound
 
 
@@ -28,6 +28,13 @@ urlParser =
         ]
 
 
+toCities : Model -> ( Cities.Model, Cmd Cities.Msg ) -> ( Model, Cmd Msg )
+toCities model ( cities, cmd ) =
+    ( { model | page = CitiesPage cities }
+    , Cmd.map GotCitiesMsg cmd
+    )
+
+
 updateUrl : Url -> Model -> ( Model, Cmd Msg )
 updateUrl url model =
     case Parser.parse urlParser url of
@@ -35,8 +42,7 @@ updateUrl url model =
             ( { model | page = LandingPage }, Cmd.none )
 
         Just Cities ->
-            -- TODO
-            ( { model | page = CitiesPage }, Cmd.none )
+            toCities model Cities.init
 
         Nothing ->
             ( { model | page = PageNotFound }, Cmd.none )
@@ -68,6 +74,7 @@ init _ url key =
 type Msg
     = ClickedLink Browser.UrlRequest
     | UrlChanged Url.Url
+    | GotCitiesMsg Cities.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -83,6 +90,14 @@ update msg model =
 
         UrlChanged url ->
             updateUrl url model
+
+        GotCitiesMsg citiesMsg ->
+            case model.page of
+                CitiesPage citiesModel ->
+                    toCities model (Cities.update citiesMsg citiesModel)
+
+                _ ->
+                    ( model, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
@@ -121,12 +136,12 @@ view model =
                 ]
             }
 
-        CitiesPage ->
+        CitiesPage citiesModel ->
             { title = "Cities"
             , body =
                 [ navbar [ class "has-background-white has-shadow" ]
                     [ mobileNavbar ]
-                , div [ class "mt-2" ] [ Cities.view ]
+                , div [ class "mt-2" ] [ Cities.view citiesModel ]
                 ]
             }
 
