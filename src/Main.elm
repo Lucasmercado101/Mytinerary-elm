@@ -6,6 +6,7 @@ import Html exposing (Attribute, Html, a, div, img, p, section, span, text)
 import Html.Attributes exposing (attribute, class, href, src, style)
 import Pages.Cities as Cities exposing (Model, Msg, init, view)
 import Pages.City as City exposing (Model, Msg, init, update, view)
+import Pages.Landing as Landing exposing (view)
 import Url exposing (Url)
 import Url.Parser as Parser exposing ((</>), Parser, int, s)
 
@@ -132,32 +133,7 @@ view : Model -> Browser.Document Msg
 view model =
     case model.page of
         LandingPage ->
-            { title = "Mytinerary"
-            , body =
-                [ img [ src "../assets/heroBgr.jpg", class "landing-bg" ] []
-                , hero [ class "is-fullheight" ]
-                    [ heroHead []
-                        [ navbar [ class "has-background-white" ]
-                            [ mobileNavbar ]
-                        ]
-                    , heroBody []
-                        [ columns [ class "is-3 is-variable is-fullwidth is-flex-tablet is-vcentered container mx-auto" ]
-                            [ columns [ class "column is-multiline" ]
-                                [ col [ class "is-full" ] [ img [ src "../assets/mytinerary_logo.svg" ] [] ]
-                                , col [ class "is-full" ]
-                                    [ p [ class "has-text-white is-size-3-tablet is-size-4-mobile", style "line-height" "1.4" ]
-                                        [ text "Find your perfect trip, designed by insiders who know and love their\n          cities."
-                                        ]
-                                    ]
-                                ]
-                            , col [ class "has-text-centered" ]
-                                [ a [ href "/cities" ] [ img [ style "max-height" "180px", src "../assets/arrowRight.svg" ] [] ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            }
+            Landing.view
 
         CitiesPage citiesModel ->
             { title = "Cities"
