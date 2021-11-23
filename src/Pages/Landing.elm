@@ -1,7 +1,8 @@
 module Pages.Landing exposing (Model, Msg, init, update, view)
 
 import Html exposing (Html, a, button, div, img, li, section, text, ul)
-import Html.Attributes exposing (class, href, src, style)
+import Html.Attributes exposing (class, classList, href, src, style)
+import Html.Events exposing (onClick)
 import Svg exposing (svg)
 import Svg.Attributes exposing (d, fill, stroke, strokeLinecap, strokeLinejoin, strokeWidth, viewBox)
 
@@ -30,12 +31,11 @@ init =
     ( IsMenuExpanded False, Cmd.none )
 
 
-view : Model -> Html msg
-view menuIsExpanded =
-    section [ class "h-screen w-screen relative" ]
-        [ img [ src "../assets/heroBgr.jpg", class "absolute inset-0 h-full object-cover object-center filter brightness-50", style "z-index" "-1" ] []
-        , mobileNavbar
-        , mobileMenuContent menuIsExpanded
+view : Model -> Html Msg
+view model =
+    section [ class "h-screen w-screen relative flex flex-col" ]
+        [ img [ src "../assets/heroBgr.jpg", class "absolute inset-0 h-full w-full object-cover object-center filter brightness-50", style "z-index" "-1" ] []
+        , mobileNavbar model
         , content [ text "a" ]
         ]
 
@@ -64,15 +64,27 @@ view menuIsExpanded =
 --     ]
 
 
-mobileNavbar : Html msg
-mobileNavbar =
-    div [ class "bg-white fixed h-12 w-screen flex justify-between" ]
+mobileNavbar : Model -> Html Msg
+mobileNavbar model =
+    div [ class "bg-white fixed h-12 w-screen flex justify-between relative" ]
         [ a
             [ href "/"
-            , class "inline-block text-xl p-2 h-full font-semibold text-red-600 focus:text-red-600"
+            , class "inline-block text-xl px-2 self-center font-semibold pb-1 text-red-600 focus:text-red-600 active:text-red-600"
             ]
             [ text "Mytinerary" ]
-        , button [ class "px-2" ] [ burgerSvg ]
+        , button
+            [ class "px-2"
+            , onClick
+                (case model of
+                    IsMenuExpanded True ->
+                        CloseMenu
+
+                    IsMenuExpanded False ->
+                        OpenMenu
+                )
+            ]
+            [ burgerSvg ]
+        , mobileMenuContent model
         ]
 
 
@@ -87,10 +99,14 @@ mobileMenuContent model =
                 IsMenuExpanded False ->
                     True
     in
-    div [ class "w-screen" ]
+    div
+        [ class
+            "w-screen h-auto z-20 bg-white absolute top-full text-lg text-center py-2"
+        , classList [ ( "hidden", isMenuHidden ) ]
+        ]
         [ ul []
-            [ li [] [ a [ href "/cities" ] [ text "Cities" ] ]
-            , li [] [ a [ href "/" ] [ text "Home" ] ]
+            [ li [] [ a [ class "block", href "/cities" ] [ text "Cities" ] ]
+            , li [] [ a [ class "block", href "/" ] [ text "Home" ] ]
             ]
         ]
 
