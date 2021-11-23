@@ -105,4 +105,28 @@ update msg model =
 
 view : Model -> Html msg
 view model =
-    div [] [ text "City", text (Debug.toString model) ]
+    div []
+        ([ text "City" ]
+            ++ (case model of
+                    Model cityId Loading ->
+                        [ text "Loading" ]
+
+                    Model cityId (Loaded cityData) ->
+                        List.map itinerary cityData
+
+                    Model cityId (Error err) ->
+                        [ text "Error" ]
+               )
+        )
+
+
+itinerary : CityData -> Html msg
+itinerary data =
+    div []
+        [ text data.title
+        , text (String.fromInt data.time)
+        , text (String.fromInt data.price)
+        , text (String.join "" data.activities)
+        , text (String.join "" data.hashtags)
+        , text (Debug.toString data.comments)
+        ]
