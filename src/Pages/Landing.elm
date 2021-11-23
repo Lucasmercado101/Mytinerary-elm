@@ -69,9 +69,9 @@ mobileNavbar model =
     div [ class "bg-white fixed h-12 w-screen flex justify-between relative" ]
         [ a
             [ href "/"
-            , class "inline-block text-xl px-2 self-center font-semibold pb-1 text-red-600 focus:text-red-600 active:text-red-600"
+            , class "inline-block flex text-xl px-2 h-full font-semibold pb-1 text-red-600 focus:text-red-600 active:text-red-600"
             ]
-            [ text "Mytinerary" ]
+            [ div [ class "self-center" ] [ text "Mytinerary" ] ]
         , button
             [ class "px-2"
             , onClick
