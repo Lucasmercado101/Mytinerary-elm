@@ -1,7 +1,7 @@
 module Pages.City exposing (Model, Msg, init, update, view)
 
 import Html exposing (Html, div, h1, h2, h3, img, p, text)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, src)
 import Http
 import Json.Decode as Decode exposing (Decoder, field, int, list, string)
 
@@ -131,8 +131,16 @@ view model =
                 [ text "Loading" ]
 
             Model _ (Loaded cityData) ->
-                [ h1 [ class "title" ] [ text cityData.name ]
-                , h2 [ class "subtitle" ] [ text cityData.country ]
+                [ div
+                    [ class "is-relative has-text-centered py-4 is-block"
+                    ]
+                    [ img [ class "city-bgr", src ("https://source.unsplash.com/featured/?" ++ cityData.name) ] []
+                    , h1 [ class "title has-text-white" ] [ text cityData.name ]
+                    , p [ class "subtitle has-text-white" ] [ text cityData.country ]
+                    ]
+                , h2
+                    [ class "text-center text-2xl" ]
+                    [ text "Itineraries" ]
                 , div [ class "container mx-auto px-4" ] (List.map itinerary cityData.itineraries)
                 ]
 
