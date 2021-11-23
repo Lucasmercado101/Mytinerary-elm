@@ -47,7 +47,7 @@ mobileNavbar =
     div [ class "bg-white fixed h-12 w-screen flex justify-between" ]
         [ a
             [ href "/"
-            , class "inline-block text-xl p-2 h-full bold text-red-600 focus:text-red-600"
+            , class "inline-block text-xl p-2 h-full font-semibold text-red-600 focus:text-red-600"
             ]
             [ text "Mytinerary" ]
         , button [ class "px-2" ] [ burgerSvg ]
