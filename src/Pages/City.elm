@@ -184,6 +184,8 @@ itinerary data =
                 (\l -> div [ class "rounded-full py-1 px-2 bg-red-200" ] [ text ("#" ++ l) ])
                 data.hashtags
             )
+
+        -- TODO comments
         ]
 
 
