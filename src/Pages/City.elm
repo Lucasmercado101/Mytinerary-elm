@@ -1,6 +1,6 @@
 module Pages.City exposing (Model, Msg, init, update, view)
 
-import Html exposing (Html, div, h1, h2, text)
+import Html exposing (Html, div, h1, h2, h3, img, p, text)
 import Html.Attributes exposing (class)
 import Http
 import Json.Decode as Decode exposing (Decoder, field, int, list, string)
@@ -127,27 +127,38 @@ view : Model -> Html msg
 view model =
     div []
         (case model of
-            Model cityId Loading ->
+            Model _ Loading ->
                 [ text "Loading" ]
 
-            Model cityId (Loaded cityData) ->
+            Model _ (Loaded cityData) ->
                 [ h1 [ class "title" ] [ text cityData.name ]
                 , h2 [ class "subtitle" ] [ text cityData.country ]
+                , div [ class "container mx-auto px-4" ] (List.map itinerary cityData.itineraries)
                 ]
-                    ++ List.map itinerary cityData.itineraries
 
-            Model cityId (Error err) ->
+            Model _ _ ->
                 [ text "Error" ]
         )
 
 
 itinerary : ItineraryData -> Html msg
 itinerary data =
-    div []
-        [ text data.title
-        , text (String.fromInt data.time)
-        , text (String.fromInt data.price)
-        , text (String.join "" data.activities)
-        , text (String.join "" data.hashtags)
-        , text (Debug.toString data.comments)
+    div [ class "mt-3 flex flex-col rounded shadow-sm bg-gray-50" ]
+        [ div [ class "flex flex-row" ]
+            [ if data.creator.profilePic == Nothing then
+                div [ class "pointer-events-none w-12 h-12 bg-red-500 text-white capitalize rounded-full flex " ]
+                    [ p [ class "m-auto text-xl" ] [ text (String.left 1 data.creator.username) ]
+                    ]
+
+              else
+                img [] []
+            , h3 [] [ text data.title ]
+            ]
+        , p [] [ text ("$" ++ String.fromInt data.price) ]
+        , p [] [ text (String.fromInt data.time) ]
+        , div [ class "flex justify-evenly capitalize" ]
+            (List.map
+                (\l -> div [] [ text ("#" ++ l) ])
+                data.hashtags
+            )
         ]
