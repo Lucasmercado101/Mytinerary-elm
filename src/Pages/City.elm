@@ -1,6 +1,6 @@
 module Pages.City exposing (Model, Msg, init, update, view)
 
-import Html exposing (Html, div, h1, h2, h3, img, p, text)
+import Html exposing (Html, div, h1, h2, h3, img, li, p, text, ul)
 import Html.Attributes exposing (class, src)
 import Http
 import Json.Decode as Decode exposing (Decoder, field, int, list, string)
@@ -164,14 +164,22 @@ itinerary data =
                 img [ class "pointer-events-none w-12 h-12 rounded-full" ] []
             , h3 [ class "ml-3 self-center text-lg" ] [ text data.title ]
             ]
-        , div [ class "flex justify-evenly text-lg" ]
-            [ p [] [ text ("$" ++ String.fromInt data.price) ]
-            , div [ class "flex items-center" ]
-                [ clockSvg
-                , p [] [ text (String.fromInt data.time) ]
+        , div [ class "flex" ]
+            [ div [ class "flex-grow" ]
+                [ text "Activities:"
+                , ul [ class "list-disc list-inside" ]
+                    (List.map (\l -> li [] [ text l ]) data.activities)
+                ]
+            , div [ class "w-px h-auto bg-gray-300" ] []
+            , div [ class "w-16 flex flex-col pl-2" ]
+                [ p [ class "flex items-center" ] [ p [ class "text-xl" ] [ text "$" ], text (String.fromInt data.price) ]
+                , div [ class "flex items-center" ]
+                    [ clockSvg
+                    , p [] [ text (String.fromInt data.time) ]
+                    ]
                 ]
             ]
-        , div [ class "flex justify-evenly capitalize mt-3" ]
+        , div [ class "flex capitalize mt-3 gap-x-2 flex-wrap" ]
             (List.map
                 (\l -> div [ class "rounded-full py-1 px-2 bg-red-200" ] [ text ("#" ++ l) ])
                 data.hashtags
