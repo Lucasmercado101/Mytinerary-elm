@@ -185,7 +185,7 @@ view model =
 mobileNavbar : Html msg
 mobileNavbar =
     div [ class "navbar-brand" ]
-        [ a [ class "navbar-item" ]
+        [ a [ class "navbar-item", href "/" ]
             [ p [ style "color" "red", class "has-text-weight-semibold" ] [ text "Mytinerary" ]
             ]
         , div [ class "navbar-burger" ]
