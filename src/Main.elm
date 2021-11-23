@@ -164,7 +164,8 @@ view model =
             , body =
                 [ navbar [ class "has-background-white has-shadow" ]
                     [ mobileNavbar ]
-                , div [ class "mt-2" ] [ Cities.view citiesModel ]
+                , div [ class "mt-2" ]
+                    [ Cities.view citiesModel |> Html.map GotCitiesMsg ]
                 ]
             }
 
