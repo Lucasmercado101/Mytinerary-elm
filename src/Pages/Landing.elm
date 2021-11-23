@@ -1,6 +1,6 @@
 module Pages.Landing exposing (Model, Msg, init, update, view)
 
-import Html exposing (Html, a, button, div, img, li, section, text, ul)
+import Html exposing (Html, a, button, div, h1, img, li, section, text, ul)
 import Html.Attributes exposing (class, classList, href, src, style)
 import Html.Events exposing (onClick)
 import Svg exposing (svg)
@@ -34,9 +34,13 @@ init =
 view : Model -> Html Msg
 view model =
     section [ class "h-screen w-screen relative flex flex-col" ]
-        [ img [ src "../assets/heroBgr.jpg", class "absolute inset-0 h-full w-full object-cover object-center filter brightness-50", style "z-index" "-1" ] []
+        [ img [ src "/assets/heroBgr.jpg", class "absolute inset-0 h-full w-full object-cover object-center filter brightness-50", style "z-index" "-1" ] []
         , mobileNavbar model
-        , content [ text "a" ]
+        , div [ class "h-screen px-5 flex flex-col justify-evenly" ]
+            [ img [ src "/assets/mytinerary_logo.svg" ] []
+            , h1 [ class "text-2xl text-white" ] [ text "Find your perfect trip, designed by insiders who know and love their\n          cities." ]
+            , a [ href "/cities" ] [ img [ class "max-h-40 mx-auto", src "/assets/arrowRight.svg" ] [] ]
+            ]
         ]
 
 
@@ -52,12 +56,12 @@ view model =
 --                 [ col [ class "is-full" ] [  ] [] ]
 --                 , col [ class "is-full" ]
 --                     [ p [ class "has-text-white is-size-3-tablet is-size-4-mobile", style "line-height" "1.4" ]
---                         [ text "Find your perfect trip, designed by insiders who know and love their\n          cities."
+--                         [ text
 --                         ]
 --                     ]
 --                 ]
 --             , col [ class "has-text-centered" ]
---                 [ a [ href "/cities" ] [ img [ style "max-height" "180px", src "../assets/arrowRight.svg" ] [] ]
+--                 [ ]
 --                 ]
 --             ]
 --         ]
@@ -109,12 +113,6 @@ mobileMenuContent model =
             , li [] [ a [ class "block", href "/" ] [ text "Home" ] ]
             ]
         ]
-
-
-content : List (Html msg) -> Html msg
-content html =
-    div [ class "pt-14 h-screen" ]
-        html
 
 
 burgerSvg : Html msg
