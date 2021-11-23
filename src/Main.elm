@@ -175,7 +175,7 @@ view model =
             , body =
                 [ navbar [ class "has-background-white has-shadow" ]
                     [ mobileNavbar ]
-                , div [ class "mt-2" ] [ City.view cityModel ]
+                , City.view cityModel
                 ]
             }
 
