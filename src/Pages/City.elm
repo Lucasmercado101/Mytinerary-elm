@@ -143,7 +143,7 @@ view model =
                 , h2
                     [ class "mt-2 text-center text-2xl" ]
                     [ text "Itineraries" ]
-                , div [ class "container mx-auto px-4" ] (List.map itinerary cityData.itineraries)
+                , div [ class "container mx-auto px-4 pb-4" ] (List.map itinerary cityData.itineraries)
                 ]
 
             Model _ _ ->
