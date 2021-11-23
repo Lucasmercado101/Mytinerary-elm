@@ -1,7 +1,8 @@
 module Pages.Cities exposing (Model, Msg, init, update, view)
 
-import Html exposing (Html, a, div, h1, img, li, p, text, ul)
+import Html exposing (Html, a, button, div, h1, img, li, p, text, ul)
 import Html.Attributes exposing (class, href, src, style)
+import Html.Events exposing (onClick)
 import Http exposing (get)
 import Json.Decode as Decode exposing (Decoder, field, int, list, string)
 import Platform.Cmd exposing (Cmd)
@@ -29,10 +30,12 @@ cityDecoder =
 type Model
     = Loading
     | CitiesLoaded (List City)
+    | Failed Http.Error
 
 
 type Msg
     = GotCities (Result Http.Error (List City))
+    | RetryFetchCities
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -44,8 +47,10 @@ update msg model =
                     ( CitiesLoaded cities, Cmd.none )
 
                 Err err ->
-                    -- TODO
-                    Debug.todo "handle error"
+                    ( Failed err, Cmd.none )
+
+        RetryFetchCities ->
+            ( Loading, getCities )
 
 
 getCities : Cmd Msg
@@ -61,16 +66,24 @@ init =
     ( Loading, getCities )
 
 
-view : Model -> Html msg
+view : Model -> Html Msg
 view model =
     div []
         [ h1 [ class "has-text-centered title" ] [ text "Cities" ]
         , case model of
             Loading ->
-                div [] [ text "Loading..." ]
+                div [ class "has-text-centered subtitle mt-3" ] [ text "Loading..." ]
 
             CitiesLoaded cities ->
                 ul [] (List.map (\c -> li [ class "my-2-desktop" ] [ city c ]) cities)
+
+            Failed _ ->
+                div [ class "has-text-centered subtitle mt-3 columns is-multiline" ]
+                    [ p [ class "column is-12" ] [ text "Something went wrong, please try again." ]
+                    , div [ class "column is-12" ]
+                        [ button [ class "button is-primary", onClick RetryFetchCities ] [ text "Retry" ]
+                        ]
+                    ]
         ]
 
 
