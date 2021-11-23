@@ -4,6 +4,8 @@ import Html exposing (Html, div, h1, h2, h3, img, p, text)
 import Html.Attributes exposing (class, src)
 import Http
 import Json.Decode as Decode exposing (Decoder, field, int, list, string)
+import Svg exposing (svg)
+import Svg.Attributes exposing (d, fill, stroke, strokeLinecap, strokeLinejoin, strokeWidth, viewBox)
 
 
 type alias CityData =
@@ -125,21 +127,21 @@ update msg model =
 
 view : Model -> Html msg
 view model =
-    div []
+    div [ class "bg-gray-200 flex-grow" ]
         (case model of
             Model _ Loading ->
                 [ text "Loading" ]
 
             Model _ (Loaded cityData) ->
                 [ div
-                    [ class "is-relative has-text-centered py-4 is-block"
+                    [ class "is-relative has-text-centered py-4 pb-5 is-block z-10 bg-black"
                     ]
                     [ img [ class "city-bgr", src ("https://source.unsplash.com/featured/?" ++ cityData.name) ] []
                     , h1 [ class "title has-text-white" ] [ text cityData.name ]
                     , p [ class "subtitle has-text-white" ] [ text cityData.country ]
                     ]
                 , h2
-                    [ class "text-center text-2xl" ]
+                    [ class "mt-2 text-center text-2xl" ]
                     [ text "Itineraries" ]
                 , div [ class "container mx-auto px-4" ] (List.map itinerary cityData.itineraries)
                 ]
@@ -151,22 +153,44 @@ view model =
 
 itinerary : ItineraryData -> Html msg
 itinerary data =
-    div [ class "mt-3 flex flex-col rounded shadow-sm bg-gray-50" ]
-        [ div [ class "flex flex-row" ]
+    div [ class "mt-3 flex flex-col rounded shadow-sm p-3 bg-white" ]
+        [ div [ class "flex flex-row mb-2" ]
             [ if data.creator.profilePic == Nothing then
-                div [ class "pointer-events-none w-12 h-12 bg-red-500 text-white capitalize rounded-full flex " ]
+                div [ class "pointer-events-none w-12 h-12 bg-red-500 text-white capitalize rounded-full flex" ]
                     [ p [ class "m-auto text-xl" ] [ text (String.left 1 data.creator.username) ]
                     ]
 
               else
-                img [] []
-            , h3 [] [ text data.title ]
+                img [ class "pointer-events-none w-12 h-12 rounded-full" ] []
+            , h3 [ class "ml-3 self-center text-lg" ] [ text data.title ]
             ]
-        , p [] [ text ("$" ++ String.fromInt data.price) ]
-        , p [] [ text (String.fromInt data.time) ]
-        , div [ class "flex justify-evenly capitalize" ]
+        , div [ class "flex justify-evenly text-lg" ]
+            [ p [] [ text ("$" ++ String.fromInt data.price) ]
+            , div [ class "flex items-center" ]
+                [ clockSvg
+                , p [] [ text (String.fromInt data.time) ]
+                ]
+            ]
+        , div [ class "flex justify-evenly capitalize mt-3" ]
             (List.map
-                (\l -> div [] [ text ("#" ++ l) ])
+                (\l -> div [ class "rounded-full py-1 px-2 bg-red-200" ] [ text ("#" ++ l) ])
                 data.hashtags
             )
+        ]
+
+
+clockSvg =
+    svg
+        [ Svg.Attributes.class "h-5 w-5"
+        , fill "none"
+        , viewBox "0 0 24 24"
+        , stroke "currentColor"
+        ]
+        [ Svg.path
+            [ strokeLinecap "round"
+            , strokeLinejoin "round"
+            , strokeWidth "2"
+            , d "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+            ]
+            []
         ]

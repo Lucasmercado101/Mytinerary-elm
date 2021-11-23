@@ -173,9 +173,11 @@ view model =
             { -- TODO show city title here, move this to city.elm
               title = "City"
             , body =
-                [ navbar [ class "has-background-white has-shadow" ]
-                    [ mobileNavbar ]
-                , City.view cityModel
+                [ div [ class "h-screen flex flex-col" ]
+                    [ navbar [ class "has-background-white has-shadow" ]
+                        [ mobileNavbar ]
+                    , City.view cityModel
+                    ]
                 ]
             }
 
