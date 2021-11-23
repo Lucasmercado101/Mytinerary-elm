@@ -1,8 +1,8 @@
 module Pages.Landing exposing (view)
 
 import Browser
-import Html exposing (Html, div, img, section, text)
-import Html.Attributes exposing (class, src, style)
+import Html exposing (Html, a, div, img, section, text)
+import Html.Attributes exposing (class, href, src, style)
 
 
 view : Browser.Document msg
@@ -23,7 +23,7 @@ view =
         --     , heroBody []
         --         [ columns [ class "is-3 is-variable is-fullwidth is-flex-tablet is-vcentered container mx-auto" ]
         --             [ columns [ class "column is-multiline" ]
-        --                 [ col [ class "is-full" ] [ img [ src "../assets/mytinerary_logo.svg" ] [] ]
+        --                 [ col [ class "is-full" ] [  ] [] ]
         --                 , col [ class "is-full" ]
         --                     [ p [ class "has-text-white is-size-3-tablet is-size-4-mobile", style "line-height" "1.4" ]
         --                         [ text "Find your perfect trip, designed by insiders who know and love their\n          cities."
@@ -42,8 +42,8 @@ view =
 
 navbar : Html msg
 navbar =
-    div [ class "bg-white fixed h-14 w-screen" ]
-        []
+    div [ class "bg-white fixed h-12 w-screen " ]
+        [ a [ href "/", class "inline-block text-xl p-2 h-full bold text-red-600 focus:text-red-600" ] [ text "Mytinerary" ] ]
 
 
 content : List (Html msg) -> Html msg
