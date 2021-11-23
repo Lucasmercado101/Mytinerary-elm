@@ -1,11 +1,20 @@
 module Pages.City exposing (Model, Msg, init, update, view)
 
-import Html exposing (Html, div, text)
+import Html exposing (Html, div, h1, h2, text)
+import Html.Attributes exposing (class)
 import Http
 import Json.Decode as Decode exposing (Decoder, field, int, list, string)
 
 
 type alias CityData =
+    { id : Int
+    , name : String
+    , country : String
+    , itineraries : List ItineraryData
+    }
+
+
+type alias ItineraryData =
     { id : Int
     , title : String
     , time : Int
@@ -32,7 +41,16 @@ type alias Author =
 
 cityDataDecoder : Decoder CityData
 cityDataDecoder =
-    Decode.map7 CityData
+    Decode.map4 CityData
+        (field "id" int)
+        (field "name" string)
+        (field "country" string)
+        (field "itineraries" (list itineraryDataDecoder))
+
+
+itineraryDataDecoder : Decoder ItineraryData
+itineraryDataDecoder =
+    Decode.map7 ItineraryData
         (field "id" int)
         (field "title" string)
         (field "time" int)
@@ -60,7 +78,7 @@ authorDecoder =
 
 type CityDataRequest
     = Loading
-    | Loaded (List CityData)
+    | Loaded CityData
     | Error Http.Error
 
 
@@ -69,14 +87,14 @@ type Model
 
 
 type Msg
-    = GotCity (Result Http.Error (List CityData))
+    = GotCity (Result Http.Error CityData)
 
 
 getCity : Int -> Cmd Msg
 getCity cityId =
     Http.get
         { url = baseUrl ++ "/cities/" ++ String.fromInt cityId
-        , expect = Http.expectJson GotCity (list cityDataDecoder)
+        , expect = Http.expectJson GotCity cityDataDecoder
         }
 
 
@@ -106,21 +124,22 @@ update msg model =
 view : Model -> Html msg
 view model =
     div []
-        ([ text "City" ]
-            ++ (case model of
-                    Model cityId Loading ->
-                        [ text "Loading" ]
+        (case model of
+            Model cityId Loading ->
+                [ text "Loading" ]
 
-                    Model cityId (Loaded cityData) ->
-                        List.map itinerary cityData
+            Model cityId (Loaded cityData) ->
+                [ h1 [ class "title" ] [ text cityData.name ]
+                , h2 [ class "subtitle" ] [ text cityData.country ]
+                ]
+                    ++ List.map itinerary cityData.itineraries
 
-                    Model cityId (Error err) ->
-                        [ text "Error" ]
-               )
+            Model cityId (Error err) ->
+                [ text "Error" ]
         )
 
 
-itinerary : CityData -> Html msg
+itinerary : ItineraryData -> Html msg
 itinerary data =
     div []
         [ text data.title
