@@ -5,18 +5,21 @@ import Browser.Navigation as Nav
 import Html exposing (Attribute, Html, a, div, img, p, section, span, text)
 import Html.Attributes exposing (attribute, class, href, src, style)
 import Pages.Cities as Cities exposing (Model, Msg, init, view)
+import Pages.City as City exposing (Model, Msg, init, update, view)
 import Url exposing (Url)
-import Url.Parser as Parser exposing (Parser, s)
+import Url.Parser as Parser exposing ((</>), Parser, int, s)
 
 
 type Route
     = Landing
     | Cities
+    | City Int
 
 
 type Page
     = LandingPage
     | CitiesPage Cities.Model
+    | CityPage City.Model
     | PageNotFound
 
 
@@ -25,6 +28,7 @@ urlParser =
     Parser.oneOf
         [ Parser.map Landing Parser.top
         , Parser.map Cities (s "cities")
+        , Parser.map City (s "cities" </> int)
         ]
 
 
@@ -32,6 +36,13 @@ toCities : Model -> ( Cities.Model, Cmd Cities.Msg ) -> ( Model, Cmd Msg )
 toCities model ( cities, cmd ) =
     ( { model | page = CitiesPage cities }
     , Cmd.map GotCitiesMsg cmd
+    )
+
+
+toCity : Model -> ( City.Model, Cmd City.Msg ) -> ( Model, Cmd Msg )
+toCity model ( cities, cmd ) =
+    ( { model | page = CityPage cities }
+    , Cmd.map GotCityMsg cmd
     )
 
 
@@ -43,6 +54,9 @@ updateUrl url model =
 
         Just Cities ->
             toCities model Cities.init
+
+        Just (City cityId) ->
+            toCity model (City.init cityId)
 
         Nothing ->
             ( { model | page = PageNotFound }, Cmd.none )
@@ -75,6 +89,7 @@ type Msg
     = ClickedLink Browser.UrlRequest
     | UrlChanged Url.Url
     | GotCitiesMsg Cities.Msg
+    | GotCityMsg City.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -95,6 +110,14 @@ update msg model =
             case model.page of
                 CitiesPage citiesModel ->
                     toCities model (Cities.update citiesMsg citiesModel)
+
+                _ ->
+                    ( model, Cmd.none )
+
+        GotCityMsg cityMsg ->
+            case model.page of
+                CityPage cityModel ->
+                    toCity model (City.update cityMsg cityModel)
 
                 _ ->
                     ( model, Cmd.none )
@@ -142,6 +165,16 @@ view model =
                 [ navbar [ class "has-background-white has-shadow" ]
                     [ mobileNavbar ]
                 , div [ class "mt-2" ] [ Cities.view citiesModel ]
+                ]
+            }
+
+        CityPage cityModel ->
+            { -- TODO show city title here, move this to city.elm
+              title = "City"
+            , body =
+                [ navbar [ class "has-background-white has-shadow" ]
+                    [ mobileNavbar ]
+                , div [ class "mt-2" ] [ City.view cityModel ]
                 ]
             }
 
