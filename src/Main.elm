@@ -6,7 +6,7 @@ import Html exposing (Attribute, Html, a, div, img, p, section, span, text)
 import Html.Attributes exposing (attribute, class, href, src, style)
 import Pages.Cities as Cities exposing (Model, Msg, init, view)
 import Pages.City as City exposing (Model, Msg, init, update, view)
-import Pages.Landing as Landing exposing (view)
+import Pages.Landing as Landing exposing (Model, Msg, init, update, view)
 import Url exposing (Url)
 import Url.Parser as Parser exposing ((</>), Parser, int, s)
 
@@ -18,7 +18,7 @@ type Route
 
 
 type Page
-    = LandingPage
+    = LandingPage Landing.Model
     | CitiesPage Cities.Model
     | CityPage City.Model
     | PageNotFound
@@ -47,11 +47,18 @@ toCity model ( cities, cmd ) =
     )
 
 
+toLanding : Model -> ( Landing.Model, Cmd Landing.Msg ) -> ( Model, Cmd Msg )
+toLanding model ( cities, cmd ) =
+    ( { model | page = LandingPage cities }
+    , Cmd.map GotLandingMsg cmd
+    )
+
+
 updateUrl : Url -> Model -> ( Model, Cmd Msg )
 updateUrl url model =
     case Parser.parse urlParser url of
         Just Landing ->
-            ( { model | page = LandingPage }, Cmd.none )
+            toLanding model Landing.init
 
         Just Cities ->
             toCities model Cities.init
@@ -91,6 +98,7 @@ type Msg
     | UrlChanged Url.Url
     | GotCitiesMsg Cities.Msg
     | GotCityMsg City.Msg
+    | GotLandingMsg Landing.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -106,6 +114,14 @@ update msg model =
 
         UrlChanged url ->
             updateUrl url model
+
+        GotLandingMsg landingMsg ->
+            case model.page of
+                LandingPage landingModel ->
+                    toLanding model (Landing.update landingMsg landingModel)
+
+                _ ->
+                    ( model, Cmd.none )
 
         GotCitiesMsg citiesMsg ->
             case model.page of
@@ -132,8 +148,11 @@ subscriptions _ =
 view : Model -> Browser.Document Msg
 view model =
     case model.page of
-        LandingPage ->
-            Landing.view
+        LandingPage landingModel ->
+            { title = "Mytinerary"
+            , body =
+                [ Landing.view landingModel |> Html.map GotLandingMsg ]
+            }
 
         CitiesPage citiesModel ->
             { title = "Cities"

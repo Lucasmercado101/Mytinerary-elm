@@ -1,45 +1,67 @@
-module Pages.Landing exposing (view)
+module Pages.Landing exposing (Model, Msg, init, update, view)
 
-import Browser
-import Html exposing (Html, a, button, div, img, section, text)
+import Html exposing (Html, a, button, div, img, li, section, text, ul)
 import Html.Attributes exposing (class, href, src, style)
 import Svg exposing (svg)
 import Svg.Attributes exposing (d, fill, stroke, strokeLinecap, strokeLinejoin, strokeWidth, viewBox)
 
 
-view : Browser.Document msg
-view =
-    { title = "Mytinerary"
-    , body =
-        [ section [ class "h-screen w-screen relative" ]
-            [ img [ src "../assets/heroBgr.jpg", class "absolute inset-0 h-full object-cover object-center filter brightness-50", style "z-index" "-1" ] []
-            , mobileNavbar
-            , content [ text "a" ]
-            ]
+type Model
+    = IsMenuExpanded Bool
 
-        -- , hero [ class "is-fullheight" ]
-        --     [ heroHead []
-        --         [ navbar [ class "has-background-white" ]
-        --             [ mobileNavbar ]
-        --         ]
-        --     , heroBody []
-        --         [ columns [ class "is-3 is-variable is-fullwidth is-flex-tablet is-vcentered container mx-auto" ]
-        --             [ columns [ class "column is-multiline" ]
-        --                 [ col [ class "is-full" ] [  ] [] ]
-        --                 , col [ class "is-full" ]
-        --                     [ p [ class "has-text-white is-size-3-tablet is-size-4-mobile", style "line-height" "1.4" ]
-        --                         [ text "Find your perfect trip, designed by insiders who know and love their\n          cities."
-        --                         ]
-        --                     ]
-        --                 ]
-        --             , col [ class "has-text-centered" ]
-        --                 [ a [ href "/cities" ] [ img [ style "max-height" "180px", src "../assets/arrowRight.svg" ] [] ]
-        --                 ]
-        --             ]
-        --         ]
-        --     ]
+
+type Msg
+    = OpenMenu
+    | CloseMenu
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    case msg of
+        OpenMenu ->
+            ( IsMenuExpanded True, Cmd.none )
+
+        CloseMenu ->
+            ( IsMenuExpanded False, Cmd.none )
+
+
+init : ( Model, Cmd Msg )
+init =
+    ( IsMenuExpanded False, Cmd.none )
+
+
+view : Model -> Html msg
+view menuIsExpanded =
+    section [ class "h-screen w-screen relative" ]
+        [ img [ src "../assets/heroBgr.jpg", class "absolute inset-0 h-full object-cover object-center filter brightness-50", style "z-index" "-1" ] []
+        , mobileNavbar
+        , mobileMenuContent menuIsExpanded
+        , content [ text "a" ]
         ]
-    }
+
+
+
+-- , hero [ class "is-fullheight" ]
+--     [ heroHead []
+--         [ navbar [ class "has-background-white" ]
+--             [ mobileNavbar ]
+--         ]
+--     , heroBody []
+--         [ columns [ class "is-3 is-variable is-fullwidth is-flex-tablet is-vcentered container mx-auto" ]
+--             [ columns [ class "column is-multiline" ]
+--                 [ col [ class "is-full" ] [  ] [] ]
+--                 , col [ class "is-full" ]
+--                     [ p [ class "has-text-white is-size-3-tablet is-size-4-mobile", style "line-height" "1.4" ]
+--                         [ text "Find your perfect trip, designed by insiders who know and love their\n          cities."
+--                         ]
+--                     ]
+--                 ]
+--             , col [ class "has-text-centered" ]
+--                 [ a [ href "/cities" ] [ img [ style "max-height" "180px", src "../assets/arrowRight.svg" ] [] ]
+--                 ]
+--             ]
+--         ]
+--     ]
 
 
 mobileNavbar : Html msg
@@ -51,6 +73,25 @@ mobileNavbar =
             ]
             [ text "Mytinerary" ]
         , button [ class "px-2" ] [ burgerSvg ]
+        ]
+
+
+mobileMenuContent : Model -> Html msg
+mobileMenuContent model =
+    let
+        isMenuHidden =
+            case model of
+                IsMenuExpanded True ->
+                    False
+
+                IsMenuExpanded False ->
+                    True
+    in
+    div [ class "w-screen" ]
+        [ ul []
+            [ li [] [ a [ href "/cities" ] [ text "Cities" ] ]
+            , li [] [ a [ href "/" ] [ text "Home" ] ]
+            ]
         ]
 
 
