@@ -22,6 +22,7 @@ type alias ItineraryData =
     , activities : List String
     , hashtags : List String
     , comments : List Comment
+    , creator : Author
     }
 
 
@@ -50,7 +51,7 @@ cityDataDecoder =
 
 itineraryDataDecoder : Decoder ItineraryData
 itineraryDataDecoder =
-    Decode.map7 ItineraryData
+    Decode.map8 ItineraryData
         (field "id" int)
         (field "title" string)
         (field "time" int)
@@ -58,6 +59,7 @@ itineraryDataDecoder =
         (field "activities" (list string))
         (field "hashtags" (list string))
         (field "comments" (list commentDecoder))
+        (field "creator" authorDecoder)
 
 
 commentDecoder : Decoder Comment
