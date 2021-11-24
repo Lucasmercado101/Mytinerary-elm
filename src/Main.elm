@@ -233,6 +233,24 @@ burgerSvg =
         ]
 
 
+avatarSvg : Html msg
+avatarSvg =
+    svg
+        [ Svg.Attributes.class "h-6 w-6"
+        , Svg.Attributes.fill "none"
+        , Svg.Attributes.viewBox "0 0 24 24"
+        , Svg.Attributes.stroke "currentColor"
+        ]
+        [ Svg.path
+            [ Svg.Attributes.strokeLinecap "round"
+            , Svg.Attributes.strokeLinejoin "round"
+            , Svg.Attributes.strokeWidth "2"
+            , Svg.Attributes.d "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            ]
+            []
+        ]
+
+
 documentMap : (msg -> Msg) -> Browser.Document msg -> Browser.Document Msg
 documentMap msg { title, body } =
     { title = title
