@@ -127,10 +127,20 @@ update msg ({ page } as model) =
             updateUrl url model
 
         ToggleMenu ->
-            ( { model | isMenuExpanded = not model.isMenuExpanded }, Cmd.none )
+            ( { model
+                | isMenuExpanded = not model.isMenuExpanded
+                , isUserMenuExpanded = False
+              }
+            , Cmd.none
+            )
 
         ToggleUserMenu ->
-            ( { model | isUserMenuExpanded = not model.isUserMenuExpanded }, Cmd.none )
+            ( { model
+                | isUserMenuExpanded = not model.isUserMenuExpanded
+                , isMenuExpanded = False
+              }
+            , Cmd.none
+            )
 
         -- PAGES
         GotCitiesMsg citiesMsg ->
@@ -151,12 +161,12 @@ update msg ({ page } as model) =
 
 
 view : Model -> Browser.Document Msg
-view { page, isMenuExpanded } =
+view { page, isMenuExpanded, isUserMenuExpanded } =
     case page of
         LandingPage ->
             { title = "Mytinerary"
             , body =
-                [ mobileNavbar isMenuExpanded
+                [ mobileNavbar isMenuExpanded isUserMenuExpanded
                 , div [ class "h-screen pt-12" ] [ Landing.view ]
                 ]
             }
@@ -165,13 +175,13 @@ view { page, isMenuExpanded } =
             Cities.view citiesModel
                 |> documentMap GotCitiesMsg
                 |> addContentWrapper
-                |> addNavbar isMenuExpanded
+                |> addNavbar isMenuExpanded isUserMenuExpanded
 
         CityPage cityModel ->
             City.view cityModel
                 |> documentMap GotCityMsg
                 |> addContentWrapper
-                |> addNavbar isMenuExpanded
+                |> addNavbar isMenuExpanded isUserMenuExpanded
 
         PageNotFound ->
             { title = "Page not found"
@@ -188,15 +198,15 @@ addContentWrapper { title, body } =
     }
 
 
-addNavbar : Bool -> Browser.Document Msg -> Browser.Document Msg
-addNavbar isMenuExpanded { title, body } =
+addNavbar : Bool -> Bool -> Browser.Document Msg -> Browser.Document Msg
+addNavbar isMenuExpanded isUserMenuExpanded { title, body } =
     { title = title
-    , body = mobileNavbar isMenuExpanded :: body
+    , body = mobileNavbar isMenuExpanded isUserMenuExpanded :: body
     }
 
 
-mobileNavbar : Bool -> Html Msg
-mobileNavbar isMenuExpanded =
+mobileNavbar : Bool -> Bool -> Html Msg
+mobileNavbar isMenuExpanded isUserMenuExpanded =
     div [ class "bg-white fixed h-12 w-screen flex justify-between z-20" ]
         [ a
             [ href "/"
@@ -216,6 +226,7 @@ mobileNavbar isMenuExpanded =
                 [ avatarSvg ]
             ]
         , mobileMenuContent isMenuExpanded
+        , userMobileMenuContent isUserMenuExpanded
         ]
 
 
@@ -229,6 +240,20 @@ mobileMenuContent isMenuExpanded =
         [ ul []
             [ li [] [ a [ class "block", href "/cities" ] [ text "Cities" ] ]
             , li [] [ a [ class "block", href "/" ] [ text "Home" ] ]
+            ]
+        ]
+
+
+userMobileMenuContent : Bool -> Html msg
+userMobileMenuContent isUserMenuExpanded =
+    div
+        [ class
+            "w-screen h-auto z-20 bg-white absolute top-full text-lg text-center py-2"
+        , classList [ ( "hidden", not isUserMenuExpanded ) ]
+        ]
+        [ ul []
+            [ li [] [ a [ class "block", href "/register" ] [ text "Register" ] ]
+            , li [] [ a [ class "block", href "/login" ] [ text "Log In" ] ]
             ]
         ]
 
