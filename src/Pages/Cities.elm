@@ -8,6 +8,7 @@ import Json.Decode as Decode exposing (Decoder, field, int, list, string)
 import Platform.Cmd exposing (Cmd)
 
 
+baseUrl : String
 baseUrl =
     "http://localhost:8001"
 
