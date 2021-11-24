@@ -2,8 +2,8 @@ module Main exposing (main)
 
 import Browser
 import Browser.Navigation as Nav
-import Html exposing (Attribute, Html, a, button, div, img, li, p, section, span, text, ul)
-import Html.Attributes exposing (attribute, class, classList, href, src, style)
+import Html exposing (Html, a, button, div, li, text, ul)
+import Html.Attributes exposing (class, classList, href)
 import Html.Events exposing (onClick)
 import Pages.Cities as Cities exposing (Model, Msg, init, view)
 import Pages.City as City exposing (Model, Msg, init, update, view)
