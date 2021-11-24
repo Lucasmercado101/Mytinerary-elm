@@ -6,7 +6,7 @@ import Html.Attributes exposing (class, href, src, style)
 
 view : Html msg
 view =
-    section [ class "h-screen w-screen relative flex flex-col" ]
+    section [ class "h-full w-screen relative flex flex-col" ]
         [ img [ src "/assets/heroBgr.jpg", class "absolute inset-0 h-full w-full object-cover object-center", style "z-index" "-1", style "filter" "brightness(0.35)" ] []
         , div [ class "h-screen  flex flex-col justify-evenly lg:flex-row lg:items-center px-5 xl:px-28" ]
             [ div [ class "hidden lg:flex flex-col gap-y-14" ]
