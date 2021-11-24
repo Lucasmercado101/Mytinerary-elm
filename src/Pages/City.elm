@@ -156,6 +156,9 @@ view (Model _ res) =
                             , h1 [ class "text-3xl font-semibold mb-2" ] [ text cityData.name ]
                             , p [ class "text-2xl" ] [ text cityData.country ]
                             ]
+                        , h2
+                            [ class "mt-2 text-center text-2xl" ]
+                            [ text "Itineraries" ]
 
                         --      div
                         --     [ class "is-relative has-text-centered py-4 pb-5 is-block z-10 bg-black"
@@ -164,9 +167,6 @@ view (Model _ res) =
                         --     , h1 [ class "title has-text-white" ] [ text cityData.name ]
                         --     , p [ class "subtitle has-text-white" ] [ text cityData.country ]
                         --     ]
-                        -- , h2
-                        --     [ class "mt-2 text-center text-2xl" ]
-                        --     [ text "Itineraries" ]
                         -- , div [ class "container mx-auto px-4 pb-4" ] (List.map itinerary cityData.itineraries)
                         ]
 
