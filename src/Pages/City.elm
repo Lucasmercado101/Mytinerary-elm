@@ -187,12 +187,14 @@ itinerary data =
                 img [ class "pointer-events-none w-12 h-12 rounded-full" ] []
             , h3 [ class "ml-3 self-center text-lg" ] [ text data.title ]
             ]
-        , div [ class "flex" ]
+        , div [ class "flex flex-grow" ]
             [ div [ class "flex-grow" ]
                 [ p [ class "font-semibold" ] [ text "Activities:" ]
                 , ul [ class "list-disc list-inside" ]
                     (List.map (\l -> li [] [ text l ]) data.activities)
                 ]
+
+            -- vertical line
             , div [ class "w-px h-auto bg-gray-300" ] []
             , div [ class "w-16 flex flex-col pl-2" ]
                 [ p [ class "flex items-center" ] [ p [ class "text-xl" ] [ text "$" ], text (String.fromInt data.price) ]
