@@ -139,17 +139,18 @@ update msg ({ page } as model) =
 
 
 view : Model -> Browser.Document Msg
-view ({ page } as model) =
+view ({ page, isMenuExpanded } as model) =
     case page of
         LandingPage ->
             { title = "Mytinerary"
             , body =
-                [ mobileNavbar model, Landing.view ]
+                [ mobileNavbar isMenuExpanded, Landing.view ]
             }
 
         CitiesPage citiesModel ->
             Cities.view citiesModel
                 |> documentMap GotCitiesMsg
+                |> addNavbar isMenuExpanded
 
         CityPage cityModel ->
             City.view cityModel
@@ -161,8 +162,15 @@ view ({ page } as model) =
             }
 
 
-mobileNavbar : Model -> Html Msg
-mobileNavbar { isMenuExpanded } =
+addNavbar : Bool -> Browser.Document Msg -> Browser.Document Msg
+addNavbar isMenuExpanded { title, body } =
+    { title = title
+    , body = [ mobileNavbar isMenuExpanded, div [ class "pt-12" ] body ]
+    }
+
+
+mobileNavbar : Bool -> Html Msg
+mobileNavbar isMenuExpanded =
     div [ class "bg-white fixed h-12 w-screen flex justify-between" ]
         [ a
             [ href "/"
