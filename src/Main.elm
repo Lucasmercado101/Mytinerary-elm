@@ -3,7 +3,7 @@ module Main exposing (main)
 import Browser
 import Browser.Navigation as Nav
 import Html exposing (Html, a, button, div, li, text, ul)
-import Html.Attributes exposing (class, classList, href)
+import Html.Attributes exposing (class, classList, href, style)
 import Html.Events exposing (onClick)
 import Pages.Cities as Cities exposing (Model, Msg, init, view)
 import Pages.City as City exposing (Model, Msg, init, update, view)
@@ -144,7 +144,9 @@ view { page, isMenuExpanded } =
         LandingPage ->
             { title = "Mytinerary"
             , body =
-                [ mobileNavbar isMenuExpanded, Landing.view ]
+                [ mobileNavbar isMenuExpanded
+                , div [ class "h-screen pt-12" ] [ Landing.view ]
+                ]
             }
 
         CitiesPage citiesModel ->
