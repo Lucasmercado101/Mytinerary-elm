@@ -159,15 +159,12 @@ view (Model _ res) =
                         , h2
                             [ class "mt-2 text-center text-2xl" ]
                             [ text "Itineraries" ]
+                        , if List.length cityData.itineraries == 0 then
+                            p [ class "text-xl text-center mt-5" ] [ text "There are no itineraries" ]
 
-                        --      div
-                        --     [ class "is-relative has-text-centered py-4 pb-5 is-block z-10 bg-black"
-                        --     ]
-                        --     [ img [ class "city-bgr", src ("https://source.unsplash.com/featured/?" ++ cityData.name) ] []
-                        --     , h1 [ class "title has-text-white" ] [ text cityData.name ]
-                        --     , p [ class "subtitle has-text-white" ] [ text cityData.country ]
-                        --     ]
-                        -- , div [ class "container mx-auto px-4 pb-4" ] (List.map itinerary cityData.itineraries)
+                          else
+                            div [ class "container mx-auto px-4 pb-4" ]
+                                (List.map itinerary cityData.itineraries)
                         ]
 
                     Error _ ->
