@@ -102,7 +102,7 @@ type Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
+update msg ({ page } as model) =
     case msg of
         ClickedLink urlRequest ->
             case urlRequest of
@@ -116,7 +116,7 @@ update msg model =
             updateUrl url model
 
         GotLandingMsg landingMsg ->
-            case model.page of
+            case page of
                 LandingPage landingModel ->
                     toLanding model (Landing.update landingMsg landingModel)
 
@@ -124,7 +124,7 @@ update msg model =
                     ( model, Cmd.none )
 
         GotCitiesMsg citiesMsg ->
-            case model.page of
+            case page of
                 CitiesPage citiesModel ->
                     toCities model (Cities.update citiesMsg citiesModel)
 
@@ -132,7 +132,7 @@ update msg model =
                     ( model, Cmd.none )
 
         GotCityMsg cityMsg ->
-            case model.page of
+            case page of
                 CityPage cityModel ->
                     toCity model (City.update cityMsg cityModel)
 
