@@ -48,30 +48,6 @@ view model =
         ]
 
 
-
--- , hero [ class "is-fullheight" ]
---     [ heroHead []
---         [ navbar [ class "has-background-white" ]
---             [ mobileNavbar ]
---         ]
---     , heroBody []
---         [ columns [ class "is-3 is-variable is-fullwidth is-flex-tablet is-vcentered container mx-auto" ]
---             [ columns [ class "column is-multiline" ]
---                 [ col [ class "is-full" ] [  ] [] ]
---                 , col [ class "is-full" ]
---                     [ p [ class "has-text-white is-size-3-tablet is-size-4-mobile", style "line-height" "1.4" ]
---                         [ text
---                         ]
---                     ]
---                 ]
---             , col [ class "has-text-centered" ]
---                 [ ]
---                 ]
---             ]
---         ]
---     ]
-
-
 mobileNavbar : Model -> Html Msg
 mobileNavbar model =
     div [ class "bg-white fixed h-12 w-screen flex justify-between relative" ]
