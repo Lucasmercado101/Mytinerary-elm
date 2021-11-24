@@ -78,10 +78,16 @@ main =
         }
 
 
+type User
+    = LoggedOut
+
+
 type alias Model =
     { key : Nav.Key
     , page : Page
     , isMenuExpanded : Bool
+    , isUserMenuExpanded : Bool
+    , user : User
     }
 
 
@@ -91,6 +97,8 @@ init _ url key =
         { page = PageNotFound
         , key = key
         , isMenuExpanded = False
+        , isUserMenuExpanded = False
+        , user = LoggedOut
         }
 
 
@@ -101,6 +109,7 @@ type Msg
     | GotCityMsg City.Msg
       -- Navbar
     | ToggleMenu
+    | ToggleUserMenu
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -119,6 +128,9 @@ update msg ({ page } as model) =
 
         ToggleMenu ->
             ( { model | isMenuExpanded = not model.isMenuExpanded }, Cmd.none )
+
+        ToggleUserMenu ->
+            ( { model | isUserMenuExpanded = not model.isUserMenuExpanded }, Cmd.none )
 
         -- PAGES
         GotCitiesMsg citiesMsg ->
@@ -199,6 +211,7 @@ mobileNavbar isMenuExpanded =
                 [ burgerSvg ]
             , button
                 [ class "px-4 h-full"
+                , onClick ToggleUserMenu
                 ]
                 [ avatarSvg ]
             ]
