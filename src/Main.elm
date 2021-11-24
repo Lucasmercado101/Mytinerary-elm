@@ -191,11 +191,17 @@ mobileNavbar isMenuExpanded =
             , class "inline-block flex text-xl px-2 h-full font-semibold pb-1 text-red-600 focus:text-red-600 active:text-red-600"
             ]
             [ div [ class "self-center" ] [ text "Mytinerary" ] ]
-        , button
-            [ class "px-2"
-            , onClick ToggleMenu
+        , div [ class "h-full" ]
+            [ button
+                [ class "px-4 h-full"
+                , onClick ToggleMenu
+                ]
+                [ burgerSvg ]
+            , button
+                [ class "px-4 h-full"
+                ]
+                [ avatarSvg ]
             ]
-            [ burgerSvg ]
         , mobileMenuContent isMenuExpanded
         ]
 
