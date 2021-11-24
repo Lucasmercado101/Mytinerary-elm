@@ -127,16 +127,28 @@ update msg model =
 
 
 view : Model -> Browser.Document Msg
-view model =
-    { title = "City"
+view (Model _ res) =
+    let
+        cityName =
+            case res of
+                Loading ->
+                    "Loading city..."
+
+                Loaded { name } ->
+                    name
+
+                Error _ ->
+                    "Failed to load city"
+    in
+    { title = cityName
     , body =
         [ div [ class "h-screen flex flex-col" ]
             [ div [ class "bg-gray-200 flex-grow" ]
-                (case model of
-                    Model _ Loading ->
+                (case res of
+                    Loading ->
                         [ text "Loading" ]
 
-                    Model _ (Loaded cityData) ->
+                    Loaded cityData ->
                         [--      div
                          --     [ class "is-relative has-text-centered py-4 pb-5 is-block z-10 bg-black"
                          --     ]
@@ -150,7 +162,7 @@ view model =
                          -- , div [ class "container mx-auto px-4 pb-4" ] (List.map itinerary cityData.itineraries)
                         ]
 
-                    Model _ _ ->
+                    Error _ ->
                         [ text "Error" ]
                 )
             ]
