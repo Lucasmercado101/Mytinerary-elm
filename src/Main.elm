@@ -139,7 +139,7 @@ update msg ({ page } as model) =
 
 
 view : Model -> Browser.Document Msg
-view ({ page, isMenuExpanded } as model) =
+view { page, isMenuExpanded } =
     case page of
         LandingPage ->
             { title = "Mytinerary"
@@ -155,6 +155,7 @@ view ({ page, isMenuExpanded } as model) =
         CityPage cityModel ->
             City.view cityModel
                 |> documentMap GotCityMsg
+                |> addNavbar isMenuExpanded
 
         PageNotFound ->
             { title = "Page not found"
