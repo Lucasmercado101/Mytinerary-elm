@@ -2,11 +2,14 @@ module Main exposing (main)
 
 import Browser
 import Browser.Navigation as Nav
-import Html exposing (Attribute, Html, a, div, img, p, section, span, text)
-import Html.Attributes exposing (attribute, class, href, src, style)
+import Html exposing (Attribute, Html, a, button, div, img, li, p, section, span, text, ul)
+import Html.Attributes exposing (attribute, class, classList, href, src, style)
+import Html.Events exposing (onClick)
 import Pages.Cities as Cities exposing (Model, Msg, init, view)
 import Pages.City as City exposing (Model, Msg, init, update, view)
-import Pages.Landing as Landing exposing (Model, Msg, init, update, view)
+import Pages.Landing as Landing exposing (view)
+import Svg exposing (svg)
+import Svg.Attributes
 import Url exposing (Url)
 import Url.Parser as Parser exposing ((</>), Parser, int, s)
 
@@ -18,7 +21,7 @@ type Route
 
 
 type Page
-    = LandingPage Landing.Model
+    = LandingPage
     | CitiesPage Cities.Model
     | CityPage City.Model
     | PageNotFound
@@ -47,18 +50,11 @@ toCity model ( cities, cmd ) =
     )
 
 
-toLanding : Model -> ( Landing.Model, Cmd Landing.Msg ) -> ( Model, Cmd Msg )
-toLanding model ( cities, cmd ) =
-    ( { model | page = LandingPage cities }
-    , Cmd.map GotLandingMsg cmd
-    )
-
-
 updateUrl : Url -> Model -> ( Model, Cmd Msg )
 updateUrl url model =
     case Parser.parse urlParser url of
         Just Landing ->
-            toLanding model Landing.init
+            ( { model | page = LandingPage }, Cmd.none )
 
         Just Cities ->
             toCities model Cities.init
@@ -85,12 +81,17 @@ main =
 type alias Model =
     { key : Nav.Key
     , page : Page
+    , isMenuExpanded : Bool
     }
 
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ url key =
-    updateUrl url { page = PageNotFound, key = key }
+    updateUrl url
+        { page = PageNotFound
+        , key = key
+        , isMenuExpanded = False
+        }
 
 
 type Msg
@@ -98,7 +99,8 @@ type Msg
     | UrlChanged Url.Url
     | GotCitiesMsg Cities.Msg
     | GotCityMsg City.Msg
-    | GotLandingMsg Landing.Msg
+      -- Navbar
+    | ToggleMenu
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -115,14 +117,10 @@ update msg ({ page } as model) =
         UrlChanged url ->
             updateUrl url model
 
-        GotLandingMsg landingMsg ->
-            case page of
-                LandingPage landingModel ->
-                    toLanding model (Landing.update landingMsg landingModel)
+        ToggleMenu ->
+            ( { model | isMenuExpanded = not model.isMenuExpanded }, Cmd.none )
 
-                _ ->
-                    ( model, Cmd.none )
-
+        -- PAGES
         GotCitiesMsg citiesMsg ->
             case page of
                 CitiesPage citiesModel ->
@@ -141,11 +139,13 @@ update msg ({ page } as model) =
 
 
 view : Model -> Browser.Document Msg
-view { page } =
+view ({ page } as model) =
     case page of
-        LandingPage landingModel ->
-            Landing.view landingModel
-                |> documentMap GotLandingMsg
+        LandingPage ->
+            { title = "Mytinerary"
+            , body =
+                [ mobileNavbar model, Landing.view ]
+            }
 
         CitiesPage citiesModel ->
             Cities.view citiesModel
@@ -159,6 +159,56 @@ view { page } =
             { title = "Page not found"
             , body = [ div [] [ text "Page not found" ] ]
             }
+
+
+mobileNavbar : Model -> Html Msg
+mobileNavbar { isMenuExpanded } =
+    div [ class "bg-white fixed h-12 w-screen flex justify-between" ]
+        [ a
+            [ href "/"
+            , class "inline-block flex text-xl px-2 h-full font-semibold pb-1 text-red-600 focus:text-red-600 active:text-red-600"
+            ]
+            [ div [ class "self-center" ] [ text "Mytinerary" ] ]
+        , button
+            [ class "px-2"
+            , onClick ToggleMenu
+            ]
+            [ burgerSvg ]
+        , mobileMenuContent isMenuExpanded
+        ]
+
+
+mobileMenuContent : Bool -> Html msg
+mobileMenuContent isMenuExpanded =
+    div
+        [ class
+            "w-screen h-auto z-20 bg-white absolute top-full text-lg text-center py-2"
+        , classList [ ( "hidden", not isMenuExpanded ) ]
+        ]
+        [ ul []
+            [ li [] [ a [ class "block", href "/cities" ] [ text "Cities" ] ]
+            , li [] [ a [ class "block", href "/" ] [ text "Home" ] ]
+            ]
+        ]
+
+
+burgerSvg : Html msg
+burgerSvg =
+    svg
+        [ Svg.Attributes.class "h-6 w-6"
+        , Svg.Attributes.fill "none"
+        , Svg.Attributes.viewBox "0 0 24 24"
+        , Svg.Attributes.stroke "currentColor"
+        ]
+        [ Svg.path
+            [ Svg.Attributes.strokeLinecap
+                "round"
+            , Svg.Attributes.strokeLinejoin "round"
+            , Svg.Attributes.strokeWidth "2"
+            , Svg.Attributes.d "M4 6h16M4 12h16M4 18h16"
+            ]
+            []
+        ]
 
 
 documentMap : (msg -> Msg) -> Browser.Document msg -> Browser.Document Msg
