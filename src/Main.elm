@@ -76,7 +76,7 @@ main =
         { init = init
         , view = view
         , update = update
-        , subscriptions = subscriptions
+        , subscriptions = \_ -> Sub.none
         , onUrlRequest = ClickedLink
         , onUrlChange = UrlChanged
         }
@@ -138,11 +138,6 @@ update msg ({ page } as model) =
 
                 _ ->
                     ( model, Cmd.none )
-
-
-subscriptions : Model -> Sub Msg
-subscriptions _ =
-    Sub.none
 
 
 view : Model -> Browser.Document Msg
