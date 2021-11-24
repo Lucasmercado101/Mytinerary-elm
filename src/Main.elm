@@ -172,7 +172,7 @@ addNavbar isMenuExpanded { title, body } =
 
 mobileNavbar : Bool -> Html Msg
 mobileNavbar isMenuExpanded =
-    div [ class "bg-white fixed h-12 w-screen flex justify-between" ]
+    div [ class "bg-white fixed h-12 w-screen flex justify-between z-10" ]
         [ a
             [ href "/"
             , class "inline-block flex text-xl px-2 h-full font-semibold pb-1 text-red-600 focus:text-red-600 active:text-red-600"
