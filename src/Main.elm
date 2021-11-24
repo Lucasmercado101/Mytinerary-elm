@@ -149,10 +149,8 @@ view : Model -> Browser.Document Msg
 view { page } =
     case page of
         LandingPage landingModel ->
-            { title = "Mytinerary"
-            , body =
-                [ Landing.view landingModel |> Html.map GotLandingMsg ]
-            }
+            Landing.view landingModel
+                |> documentMap GotLandingMsg
 
         CitiesPage citiesModel ->
             { title = "Cities"
