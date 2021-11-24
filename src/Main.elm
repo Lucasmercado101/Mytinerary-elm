@@ -155,9 +155,7 @@ view { page } =
         CitiesPage citiesModel ->
             { title = "Cities"
             , body =
-                [ navbar [ class "has-background-white has-shadow" ]
-                    [ mobileNavbar ]
-                , div [ class "mt-2" ]
+                [ div [ class "mt-2" ]
                     [ Cities.view citiesModel |> Html.map GotCitiesMsg ]
                 ]
             }
@@ -170,61 +168,8 @@ view { page } =
             { title = "Page not found", body = [ div [] [ text "Page not found" ] ] }
 
 
-mobileNavbar : Html msg
-mobileNavbar =
-    div [ class "navbar-brand" ]
-        [ a [ class "navbar-item", href "/" ]
-            [ p [ style "color" "red", class "has-text-weight-semibold" ] [ text "Mytinerary" ]
-            ]
-        , div [ class "navbar-burger" ]
-            [ span [ attribute "aria-hidden" "true" ]
-                []
-            , span [ attribute "aria-hidden" "true" ]
-                []
-            , span [ attribute "aria-hidden" "true" ]
-                []
-            ]
-        ]
-
-
 documentMap : (msg -> Msg) -> Browser.Document msg -> Browser.Document Msg
 documentMap msg { title, body } =
     { title = title
     , body = List.map (Html.map msg) body
     }
-
-
-
-{-
-   Bulma helpers
--}
-
-
-col : List (Attribute msg) -> List (Html msg) -> Html msg
-col attr html =
-    div (List.append attr [ class "column" ]) html
-
-
-columns : List (Attribute msg) -> List (Html msg) -> Html msg
-columns attr html =
-    div (List.append attr [ class "columns" ]) html
-
-
-hero : List (Attribute msg) -> List (Html msg) -> Html msg
-hero attr html =
-    section (List.append attr [ class "hero" ]) html
-
-
-heroBody : List (Attribute msg) -> List (Html msg) -> Html msg
-heroBody attr html =
-    div (List.append attr [ class "hero-body" ]) html
-
-
-heroHead : List (Attribute msg) -> List (Html msg) -> Html msg
-heroHead attr html =
-    div (List.append attr [ class "hero-head" ]) html
-
-
-navbar : List (Attribute msg) -> List (Html msg) -> Html msg
-navbar attr html =
-    div (List.append attr [ class "navbar" ]) html
