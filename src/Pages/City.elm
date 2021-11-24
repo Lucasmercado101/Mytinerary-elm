@@ -164,8 +164,8 @@ view (Model _ res) =
                                 p [ class "text-xl text-center mt-5" ] [ text "There are no itineraries" ]
 
                               else
-                                div [ class "container mx-auto px-4 pb-4" ]
-                                    (List.map itinerary cityData.itineraries)
+                                ul [ class "container mx-auto px-4 pb-4 flex flex-col md:flex-row items-stretch" ]
+                                    (List.map (\l -> li [ class "md:w-1/2 xl:w-1/3 w-full p-2" ] [ itinerary l ]) cityData.itineraries)
                             ]
                         ]
 
@@ -179,7 +179,7 @@ view (Model _ res) =
 
 itinerary : ItineraryData -> Html msg
 itinerary data =
-    div [ class "mt-3 flex flex-col rounded shadow-sm p-3 bg-white" ]
+    div [ class "mt-3 flex flex-col rounded shadow-sm p-3 bg-white md:h-full md:justify-between" ]
         [ div [ class "flex flex-row mb-2" ]
             [ if data.creator.profilePic == Nothing then
                 div [ class "pointer-events-none w-12 h-12 bg-red-500 text-white capitalize rounded-full flex" ]
