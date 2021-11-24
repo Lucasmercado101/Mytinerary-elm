@@ -156,15 +156,17 @@ view (Model _ res) =
                             , h1 [ class "text-3xl font-semibold mb-2" ] [ text cityData.name ]
                             , p [ class "text-2xl" ] [ text cityData.country ]
                             ]
-                        , h2
-                            [ class "mt-2 text-center text-2xl" ]
-                            [ text "Itineraries" ]
-                        , if List.length cityData.itineraries == 0 then
-                            p [ class "text-xl text-center mt-5" ] [ text "There are no itineraries" ]
+                        , div [ class "bg-gray-200" ]
+                            [ h2
+                                [ class "mt-2 text-center text-2xl" ]
+                                [ text "Itineraries" ]
+                            , if List.length cityData.itineraries == 0 then
+                                p [ class "text-xl text-center mt-5" ] [ text "There are no itineraries" ]
 
-                          else
-                            div [ class "container mx-auto px-4 pb-4" ]
-                                (List.map itinerary cityData.itineraries)
+                              else
+                                div [ class "container mx-auto px-4 pb-4" ]
+                                    (List.map itinerary cityData.itineraries)
+                            ]
                         ]
 
                     Error _ ->
@@ -190,7 +192,7 @@ itinerary data =
             ]
         , div [ class "flex" ]
             [ div [ class "flex-grow" ]
-                [ text "Activities:"
+                [ p [ class "font-semibold" ] [ text "Activities:" ]
                 , ul [ class "list-disc list-inside" ]
                     (List.map (\l -> li [] [ text l ]) data.activities)
                 ]
