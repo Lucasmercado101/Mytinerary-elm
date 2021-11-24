@@ -78,10 +78,10 @@ view model =
                 div [ class "text-xl text-center" ] [ text "Loading..." ]
 
             CitiesLoaded cities ->
-                ul [ class "flex flex-col gap-y-2" ]
+                ul [ class "flex flex-wrap flex-col md:flex-row" ]
                     (List.map
                         (\c ->
-                            li []
+                            li [ class "md:w-1/2 xl:w-1/3 p-2 md:h-40" ]
                                 [ city c ]
                         )
                         cities
@@ -106,7 +106,7 @@ city : City -> Html msg
 city cityData =
     a
         [ href ("/cities/" ++ String.fromInt cityData.id)
-        , class "block relative text-white text-center py-4 flex flex-col gap-y-2"
+        , class "block relative text-white text-center py-4 flex flex-col gap-y-2 md:gap-y-0 justify-evenly h-full"
         ]
         [ img [ class "city-bgr bg-black", src ("https://source.unsplash.com/featured/?" ++ cityData.name) ] []
         , p [ class "text-2xl font-semibold" ] [ text cityData.name ]
