@@ -146,8 +146,8 @@ subscriptions _ =
 
 
 view : Model -> Browser.Document Msg
-view model =
-    case model.page of
+view { page } =
+    case page of
         LandingPage landingModel ->
             { title = "Mytinerary"
             , body =
@@ -166,11 +166,7 @@ view model =
 
         CityPage cityModel ->
             City.view cityModel
-                |> (\l ->
-                        { title = l.title
-                        , body = l.body |> List.map (Html.map GotCityMsg)
-                        }
-                   )
+                |> documentMap GotCityMsg
 
         PageNotFound ->
             { title = "Page not found", body = [ div [] [ text "Page not found" ] ] }
@@ -191,6 +187,13 @@ mobileNavbar =
                 []
             ]
         ]
+
+
+documentMap : (msg -> Msg) -> Browser.Document msg -> Browser.Document Msg
+documentMap msg { title, body } =
+    { title = title
+    , body = List.map (Html.map msg) body
+    }
 
 
 
