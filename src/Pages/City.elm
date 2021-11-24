@@ -142,36 +142,34 @@ view (Model _ res) =
     in
     { title = cityName
     , body =
-        [ div [ class "flex flex-col" ]
-            [ case res of
-                Loading ->
-                    text "Loading"
+        [ case res of
+            Loading ->
+                text "Loading"
 
-                Loaded cityData ->
-                    div []
-                        [ div
-                            [ class "block relative py-8 text-white text-center"
-                            ]
-                            [ img [ class "city-bgr bg-black", src ("https://source.unsplash.com/featured/?" ++ cityData.name) ] []
-                            , h1 [ class "text-3xl font-semibold mb-2" ] [ text cityData.name ]
-                            , p [ class "text-2xl" ] [ text cityData.country ]
-                            ]
-                        , div [ class "bg-gray-200" ]
-                            [ h2
-                                [ class "pt-2 text-center text-2xl" ]
-                                [ text "Itineraries" ]
-                            , if List.length cityData.itineraries == 0 then
-                                p [ class "text-xl text-center mt-5" ] [ text "There are no itineraries" ]
-
-                              else
-                                ul [ class "container mx-auto px-4 pb-4 flex flex-col md:flex-row items-stretch" ]
-                                    (List.map (\l -> li [ class "md:w-1/2 xl:w-1/3 w-full p-2" ] [ itinerary l ]) cityData.itineraries)
-                            ]
+            Loaded cityData ->
+                div []
+                    [ div
+                        [ class "block relative py-8 text-white text-center"
                         ]
+                        [ img [ class "city-bgr bg-black", src ("https://source.unsplash.com/featured/?" ++ cityData.name) ] []
+                        , h1 [ class "text-3xl font-semibold mb-2" ] [ text cityData.name ]
+                        , p [ class "text-2xl" ] [ text cityData.country ]
+                        ]
+                    , div [ class "bg-gray-200" ]
+                        [ h2
+                            [ class "pt-2 text-center text-2xl" ]
+                            [ text "Itineraries" ]
+                        , if List.length cityData.itineraries == 0 then
+                            p [ class "text-xl text-center mt-5" ] [ text "There are no itineraries" ]
 
-                Error _ ->
-                    text "Error"
-            ]
+                          else
+                            ul [ class "container mx-auto px-4 pb-4 flex flex-col md:flex-row items-stretch" ]
+                                (List.map (\l -> li [ class "md:w-1/2 xl:w-1/3 w-full p-2" ] [ itinerary l ]) cityData.itineraries)
+                        ]
+                    ]
+
+            Error _ ->
+                text "Error"
         ]
     }
 
