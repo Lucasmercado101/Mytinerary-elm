@@ -41,7 +41,7 @@ type Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
+update msg _ =
     case msg of
         GotCities res ->
             case res of
@@ -72,19 +72,30 @@ view : Model -> Browser.Document Msg
 view model =
     { title = "Cities"
     , body =
-        [ h1 [ class "has-text-centered title" ] [ text "Cities" ]
+        [ h1 [ class "text-center font-semibold text-3xl my-4" ] [ text "Cities" ]
         , case model of
             Loading ->
-                div [ class "has-text-centered subtitle mt-3" ] [ text "Loading..." ]
+                div [ class "text-xl text-center" ] [ text "Loading..." ]
 
             CitiesLoaded cities ->
-                ul [] (List.map (\c -> li [ class "my-2-desktop" ] [ city c ]) cities)
+                ul [ class "flex flex-col gap-y-2" ]
+                    (List.map
+                        (\c ->
+                            li []
+                                [ city c ]
+                        )
+                        cities
+                    )
 
             Failed _ ->
-                div [ class "has-text-centered subtitle mt-3 columns is-multiline" ]
-                    [ p [ class "column is-12" ] [ text "Something went wrong, please try again." ]
-                    , div [ class "column is-12" ]
-                        [ button [ class "button is-primary", onClick RetryFetchCities ] [ text "Retry" ]
+                div [ class "text-center px-4" ]
+                    [ p [ class "text-xl mb-4" ] [ text "Something went wrong, please try again." ]
+                    , div []
+                        [ button
+                            [ onClick RetryFetchCities
+                            , class "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            ]
+                            [ text "Retry" ]
                         ]
                     ]
         ]
@@ -95,9 +106,9 @@ city : City -> Html msg
 city cityData =
     a
         [ href ("/cities/" ++ String.fromInt cityData.id)
-        , class "is-relative has-text-centered my-2 py-4 is-block"
+        , class "block relative text-white text-center py-4 flex flex-col gap-y-2"
         ]
-        [ img [ class "city-bgr", src ("https://source.unsplash.com/featured/?" ++ cityData.name) ] []
-        , p [ class "title has-text-white" ] [ text cityData.name ]
-        , p [ class "subtitle has-text-white" ] [ text cityData.country ]
+        [ img [ class "city-bgr bg-black", src ("https://source.unsplash.com/featured/?" ++ cityData.name) ] []
+        , p [ class "text-2xl font-semibold" ] [ text cityData.name ]
+        , p [ class "text-xl" ] [ text cityData.country ]
         ]
