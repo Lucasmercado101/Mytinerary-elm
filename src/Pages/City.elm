@@ -1,5 +1,6 @@
 module Pages.City exposing (Model, Msg, init, update, view)
 
+import Browser
 import Html exposing (Html, div, h1, h2, h3, img, li, p, text, ul)
 import Html.Attributes exposing (class, src)
 import Http
@@ -125,30 +126,36 @@ update msg model =
                             ( Model cityId (Error err), Cmd.none )
 
 
-view : Model -> Html msg
+view : Model -> Browser.Document Msg
 view model =
-    div [ class "bg-gray-200 flex-grow" ]
-        (case model of
-            Model _ Loading ->
-                [ text "Loading" ]
+    { title = "City"
+    , body =
+        [ div [ class "h-screen flex flex-col" ]
+            [ div [ class "bg-gray-200 flex-grow" ]
+                (case model of
+                    Model _ Loading ->
+                        [ text "Loading" ]
 
-            Model _ (Loaded cityData) ->
-                [ div
-                    [ class "is-relative has-text-centered py-4 pb-5 is-block z-10 bg-black"
-                    ]
-                    [ img [ class "city-bgr", src ("https://source.unsplash.com/featured/?" ++ cityData.name) ] []
-                    , h1 [ class "title has-text-white" ] [ text cityData.name ]
-                    , p [ class "subtitle has-text-white" ] [ text cityData.country ]
-                    ]
-                , h2
-                    [ class "mt-2 text-center text-2xl" ]
-                    [ text "Itineraries" ]
-                , div [ class "container mx-auto px-4 pb-4" ] (List.map itinerary cityData.itineraries)
-                ]
+                    Model _ (Loaded cityData) ->
+                        [--      div
+                         --     [ class "is-relative has-text-centered py-4 pb-5 is-block z-10 bg-black"
+                         --     ]
+                         --     [ img [ class "city-bgr", src ("https://source.unsplash.com/featured/?" ++ cityData.name) ] []
+                         --     , h1 [ class "title has-text-white" ] [ text cityData.name ]
+                         --     , p [ class "subtitle has-text-white" ] [ text cityData.country ]
+                         --     ]
+                         -- , h2
+                         --     [ class "mt-2 text-center text-2xl" ]
+                         --     [ text "Itineraries" ]
+                         -- , div [ class "container mx-auto px-4 pb-4" ] (List.map itinerary cityData.itineraries)
+                        ]
 
-            Model _ _ ->
-                [ text "Error" ]
-        )
+                    Model _ _ ->
+                        [ text "Error" ]
+                )
+            ]
+        ]
+    }
 
 
 itinerary : ItineraryData -> Html msg

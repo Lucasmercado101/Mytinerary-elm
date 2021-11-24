@@ -165,16 +165,12 @@ view model =
             }
 
         CityPage cityModel ->
-            { -- TODO show city title here, move this to city.elm
-              title = "City"
-            , body =
-                [ div [ class "h-screen flex flex-col" ]
-                    [ navbar [ class "has-background-white has-shadow" ]
-                        [ mobileNavbar ]
-                    , City.view cityModel
-                    ]
-                ]
-            }
+            City.view cityModel
+                |> (\l ->
+                        { title = l.title
+                        , body = l.body |> List.map (Html.map GotCityMsg)
+                        }
+                   )
 
         PageNotFound ->
             { title = "Page not found", body = [ div [] [ text "Page not found" ] ] }
