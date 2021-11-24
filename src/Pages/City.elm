@@ -147,7 +147,7 @@ view (Model _ res) =
                 text "Loading"
 
             Loaded cityData ->
-                div []
+                div [ class "h-full flex flex-col" ]
                     [ div
                         [ class "block relative py-8 text-white text-center"
                         ]
@@ -155,7 +155,7 @@ view (Model _ res) =
                         , h1 [ class "text-3xl font-semibold mb-2" ] [ text cityData.name ]
                         , p [ class "text-2xl" ] [ text cityData.country ]
                         ]
-                    , div []
+                    , div [ class "bg-gray-200 flex-grow" ]
                         [ h2
                             [ class "pt-2 text-center text-2xl" ]
                             [ text "Itineraries" ]
@@ -176,7 +176,7 @@ view (Model _ res) =
 
 itinerary : ItineraryData -> Html msg
 itinerary data =
-    div [ class "mt-3 flex flex-col rounded shadow-md p-3 bg-white md:h-full md:justify-between" ]
+    div [ class "mt-3 flex flex-col rounded shadow-sm p-3 bg-white md:h-full md:justify-between" ]
         [ div [ class "flex flex-row mb-2" ]
             [ if data.creator.profilePic == Nothing then
                 div [ class "pointer-events-none w-12 h-12 bg-red-500 text-white capitalize rounded-full flex" ]

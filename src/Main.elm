@@ -152,11 +152,13 @@ view { page, isMenuExpanded } =
         CitiesPage citiesModel ->
             Cities.view citiesModel
                 |> documentMap GotCitiesMsg
+                |> addContentWrapper
                 |> addNavbar isMenuExpanded
 
         CityPage cityModel ->
             City.view cityModel
                 |> documentMap GotCityMsg
+                |> addContentWrapper
                 |> addNavbar isMenuExpanded
 
         PageNotFound ->
@@ -165,10 +167,19 @@ view { page, isMenuExpanded } =
             }
 
 
+addContentWrapper : Browser.Document msg -> Browser.Document msg
+addContentWrapper { title, body } =
+    { title = title
+    , body =
+        [ div [ class "h-screen pt-12" ] body
+        ]
+    }
+
+
 addNavbar : Bool -> Browser.Document Msg -> Browser.Document Msg
 addNavbar isMenuExpanded { title, body } =
     { title = title
-    , body = [ mobileNavbar isMenuExpanded, div [ class "pt-12" ] body ]
+    , body = mobileNavbar isMenuExpanded :: body
     }
 
 
