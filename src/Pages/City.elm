@@ -143,12 +143,12 @@ view (Model _ res) =
     { title = cityName
     , body =
         [ div [ class "flex flex-col" ]
-            [ div []
-                (case res of
-                    Loading ->
-                        [ text "Loading" ]
+            [ case res of
+                Loading ->
+                    text "Loading"
 
-                    Loaded cityData ->
+                Loaded cityData ->
+                    div []
                         [ div
                             [ class "block relative py-8 text-white text-center"
                             ]
@@ -169,9 +169,8 @@ view (Model _ res) =
                             ]
                         ]
 
-                    Error _ ->
-                        [ text "Error" ]
-                )
+                Error _ ->
+                    text "Error"
             ]
         ]
     }
