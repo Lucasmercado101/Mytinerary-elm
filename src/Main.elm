@@ -153,19 +153,17 @@ view { page } =
                 |> documentMap GotLandingMsg
 
         CitiesPage citiesModel ->
-            { title = "Cities"
-            , body =
-                [ div [ class "mt-2" ]
-                    [ Cities.view citiesModel |> Html.map GotCitiesMsg ]
-                ]
-            }
+            Cities.view citiesModel
+                |> documentMap GotCitiesMsg
 
         CityPage cityModel ->
             City.view cityModel
                 |> documentMap GotCityMsg
 
         PageNotFound ->
-            { title = "Page not found", body = [ div [] [ text "Page not found" ] ] }
+            { title = "Page not found"
+            , body = [ div [] [ text "Page not found" ] ]
+            }
 
 
 documentMap : (msg -> Msg) -> Browser.Document msg -> Browser.Document Msg

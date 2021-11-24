@@ -1,5 +1,6 @@
 module Pages.Cities exposing (Model, Msg, init, update, view)
 
+import Browser
 import Html exposing (Html, a, button, div, h1, img, li, p, text, ul)
 import Html.Attributes exposing (class, href, src, style)
 import Html.Events exposing (onClick)
@@ -67,9 +68,10 @@ init =
     ( Loading, getCities )
 
 
-view : Model -> Html Msg
+view : Model -> Browser.Document Msg
 view model =
-    div []
+    { title = "Cities"
+    , body =
         [ h1 [ class "has-text-centered title" ] [ text "Cities" ]
         , case model of
             Loading ->
@@ -86,6 +88,7 @@ view model =
                         ]
                     ]
         ]
+    }
 
 
 city : City -> Html msg
