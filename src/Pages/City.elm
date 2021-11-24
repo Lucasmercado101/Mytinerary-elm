@@ -158,7 +158,7 @@ view (Model _ res) =
                             ]
                         , div [ class "bg-gray-200" ]
                             [ h2
-                                [ class "mt-2 text-center text-2xl" ]
+                                [ class "pt-2 text-center text-2xl" ]
                                 [ text "Itineraries" ]
                             , if List.length cityData.itineraries == 0 then
                                 p [ class "text-xl text-center mt-5" ] [ text "There are no itineraries" ]
