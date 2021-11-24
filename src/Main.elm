@@ -125,6 +125,14 @@ update msg ({ page } as model) =
 
         UrlChanged url ->
             updateUrl url model
+                |> (\( newModel, cmd ) ->
+                        ( { newModel
+                            | isMenuExpanded = False
+                            , isUserMenuExpanded = False
+                          }
+                        , cmd
+                        )
+                   )
 
         ToggleMenu ->
             ( { model
