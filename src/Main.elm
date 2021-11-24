@@ -8,6 +8,7 @@ import Html.Events exposing (onClick)
 import Pages.Cities as Cities exposing (Model, Msg, init, view)
 import Pages.City as City exposing (Model, Msg, init, update, view)
 import Pages.Landing as Landing exposing (view)
+import Pages.Register as Register exposing (Model, Msg, init, update, view)
 import Svg exposing (svg)
 import Svg.Attributes
 import Url exposing (Url)
@@ -18,10 +19,12 @@ type Route
     = Landing
     | Cities
     | City Int
+    | Register
 
 
 type Page
     = LandingPage
+    | RegisterPage Register.Model
     | CitiesPage Cities.Model
     | CityPage City.Model
     | PageNotFound
@@ -32,6 +35,7 @@ urlParser =
     Parser.oneOf
         [ Parser.map Landing Parser.top
         , Parser.map Cities (s "cities")
+        , Parser.map Register (s "register")
         , Parser.map City (s "cities" </> int)
         ]
 
@@ -50,6 +54,13 @@ toCity model ( cities, cmd ) =
     )
 
 
+toRegister : Model -> ( Register.Model, Cmd Register.Msg ) -> ( Model, Cmd Msg )
+toRegister model ( register, cmd ) =
+    ( { model | page = RegisterPage register }
+    , Cmd.map GotRegisterMsg cmd
+    )
+
+
 updateUrl : Url -> Model -> ( Model, Cmd Msg )
 updateUrl url model =
     case Parser.parse urlParser url of
@@ -61,6 +72,9 @@ updateUrl url model =
 
         Just (City cityId) ->
             toCity model (City.init cityId)
+
+        Just Register ->
+            toRegister model Register.init
 
         Nothing ->
             ( { model | page = PageNotFound }, Cmd.none )
@@ -107,6 +121,7 @@ type Msg
     | UrlChanged Url.Url
     | GotCitiesMsg Cities.Msg
     | GotCityMsg City.Msg
+    | GotRegisterMsg Register.Msg
       -- Navbar
     | ToggleMenu
     | ToggleUserMenu
@@ -167,6 +182,14 @@ update msg ({ page } as model) =
                 _ ->
                     ( model, Cmd.none )
 
+        GotRegisterMsg registerMsg ->
+            case page of
+                RegisterPage registerModel ->
+                    toRegister model (Register.update registerMsg registerModel)
+
+                _ ->
+                    ( model, Cmd.none )
+
 
 view : Model -> Browser.Document Msg
 view { page, isMenuExpanded, isUserMenuExpanded } =
@@ -188,6 +211,12 @@ view { page, isMenuExpanded, isUserMenuExpanded } =
         CityPage cityModel ->
             City.view cityModel
                 |> documentMap GotCityMsg
+                |> addContentWrapper
+                |> addNavbar isMenuExpanded isUserMenuExpanded
+
+        RegisterPage registerModel ->
+            Register.view registerModel
+                |> documentMap GotRegisterMsg
                 |> addContentWrapper
                 |> addNavbar isMenuExpanded isUserMenuExpanded
 
