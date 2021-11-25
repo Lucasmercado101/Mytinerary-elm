@@ -88,7 +88,7 @@ update msg model =
         GotUserData res ->
             case res of
                 Result.Ok _ ->
-                    ( { model | username = "" }, Nav.pushUrl model.key "/login" )
+                    ( model, Nav.pushUrl model.key "/login" )
 
                 Result.Err err ->
                     ( { model | registeringState = Error err }, Cmd.none )
