@@ -1,32 +1,12 @@
 module Pages.Cities exposing (Model, Msg, init, update, view)
 
+import Api.Cities exposing (City)
 import Browser
 import Html exposing (Html, a, button, div, h1, img, li, p, text, ul)
-import Html.Attributes exposing (class, href, src, style)
+import Html.Attributes exposing (class, href, src)
 import Html.Events exposing (onClick)
-import Http exposing (get)
-import Json.Decode as Decode exposing (Decoder, field, int, list, string)
+import Http
 import Platform.Cmd exposing (Cmd)
-
-
-baseUrl : String
-baseUrl =
-    "http://localhost:8001"
-
-
-type alias City =
-    { id : Int
-    , name : String
-    , country : String
-    }
-
-
-cityDecoder : Decoder City
-cityDecoder =
-    Decode.map3 City
-        (field "id" int)
-        (field "name" string)
-        (field "country" string)
 
 
 type Model
@@ -52,20 +32,12 @@ update msg _ =
                     ( Failed err, Cmd.none )
 
         RetryFetchCities ->
-            ( Loading, getCities )
-
-
-getCities : Cmd Msg
-getCities =
-    Http.get
-        { url = baseUrl ++ "/cities"
-        , expect = Http.expectJson GotCities (list cityDecoder)
-        }
+            ( Loading, Api.Cities.getCities GotCities )
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( Loading, getCities )
+    ( Loading, Api.Cities.getCities GotCities )
 
 
 view : Model -> Browser.Document Msg

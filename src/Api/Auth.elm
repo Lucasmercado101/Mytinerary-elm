@@ -1,5 +1,6 @@
 module Api.Auth exposing (logOut)
 
+import Api.Common exposing (baseUrl)
 import Http exposing (get)
 
 
@@ -9,8 +10,3 @@ logOut a =
         { url = baseUrl ++ "/auth/logout"
         , expect = Http.expectWhatever (\_ -> a)
         }
-
-
-baseUrl : String
-baseUrl =
-    "http://localhost:8001"
