@@ -1,13 +1,13 @@
 module Api.Auth exposing (logOut)
 
-import Http exposing (Expect, get)
+import Http exposing (get)
 
 
-logOut : Expect msg -> Cmd msg
-logOut msg =
+logOut : a -> Cmd a
+logOut a =
     get
         { url = baseUrl ++ "/auth/logout"
-        , expect = msg
+        , expect = Http.expectWhatever (\_ -> a)
         }
 
 

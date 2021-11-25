@@ -1,10 +1,12 @@
 port module Main exposing (main)
 
+import Api.Auth
 import Browser
 import Browser.Navigation as Nav
 import Html exposing (Html, a, button, div, img, li, p, text, ul)
 import Html.Attributes exposing (class, classList, href, src)
 import Html.Events exposing (onClick)
+import Http
 import Json.Decode exposing (Decoder, Value, decodeValue, field, int, map2, map3, maybe, string)
 import Pages.Cities as Cities exposing (Model, Msg, init, view)
 import Pages.City as City exposing (Model, Msg, init, update, view)
@@ -18,6 +20,9 @@ import Url.Parser as Parser exposing ((</>), Parser, s)
 
 
 port receiveLocalStorageUser : (Value -> msg) -> Sub msg
+
+
+port clearUserLocalStorageSender : () -> Cmd msg
 
 
 userDecoder : Decoder PortUserData
@@ -179,6 +184,8 @@ type Msg
     | GotCityMsg City.Msg
     | GotRegisterMsg Register.Msg
     | GotLoginMsg Login.Msg
+    | LogOut
+    | NoOp
       -- Navbar
     | ToggleMenu
     | ToggleUserMenu
@@ -187,6 +194,9 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg ({ page } as model) =
     case msg of
+        NoOp ->
+            ( model, Cmd.none )
+
         ClickedLink urlRequest ->
             case urlRequest of
                 Browser.Internal url ->
@@ -233,6 +243,13 @@ update msg ({ page } as model) =
                             LoggedIn data
               }
             , Cmd.none
+            )
+
+        LogOut ->
+            ( { model
+                | user = LoggedOut
+              }
+            , Cmd.batch [ Api.Auth.logOut NoOp, clearUserLocalStorageSender () ]
             )
 
         -- PAGES
@@ -352,7 +369,7 @@ mobileNavbar ({ isMenuExpanded } as model) =
                 [ burgerSvg ]
             , button
                 [ class "h-full"
-                , classList [ ( "pr-2", isLoggedIn model ) ]
+                , classList [ ( "px-1", isLoggedIn model ), ( "px-2", not (isLoggedIn model) ) ]
                 , onClick ToggleUserMenu
                 ]
                 [ case model.user of
@@ -389,7 +406,7 @@ mobileMenuContent isMenuExpanded =
         ]
 
 
-userMobileMenuContent : Model -> Html msg
+userMobileMenuContent : Model -> Html Msg
 userMobileMenuContent model =
     div
         [ class
@@ -398,7 +415,7 @@ userMobileMenuContent model =
         ]
         [ ul []
             (if isLoggedIn model then
-                [ li [] [ a [ class "block" ] [ text "Log Out" ] ] ]
+                [ li [] [ button [ class "block text-center w-full", onClick LogOut ] [ p [] [ text "Log Out" ] ] ] ]
 
              else
                 [ li [] [ a [ class "block", href "/register" ] [ text "Register" ] ]
