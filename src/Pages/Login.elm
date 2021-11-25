@@ -1,4 +1,4 @@
-module Pages.Login exposing (Model, Msg, init, update, view)
+port module Pages.Login exposing (Model, Msg, init, update, view)
 
 import Browser
 import Browser.Navigation as Nav
@@ -8,6 +8,9 @@ import Html.Events exposing (onInput, onSubmit)
 import Http
 import Json.Decode exposing (Decoder, field, int, map2, string)
 import Json.Encode as Encode exposing (object)
+
+
+port saveUserToLocalStorage : UserData -> Cmd msg
 
 
 type alias Model =
@@ -87,8 +90,8 @@ update msg model =
 
         GotUserData res ->
             case res of
-                Result.Ok _ ->
-                    ( model, Nav.pushUrl model.key "/" )
+                Result.Ok data ->
+                    ( model, Cmd.batch [ saveUserToLocalStorage data, Nav.pushUrl model.key "/" ] )
 
                 Result.Err err ->
                     ( { model | logInState = Error err }, Cmd.none )

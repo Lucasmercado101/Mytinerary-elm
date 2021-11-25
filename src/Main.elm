@@ -1,4 +1,4 @@
-module Main exposing (main)
+port module Main exposing (main)
 
 import Browser
 import Browser.Navigation as Nav
@@ -14,6 +14,14 @@ import Svg exposing (svg)
 import Svg.Attributes
 import Url exposing (Url)
 import Url.Parser as Parser exposing ((</>), Parser, int, s)
+
+
+port receiveLocalStorageUser : (Maybe UserData -> msg) -> Sub msg
+
+
+subscriptions : Model -> Sub Msg
+subscriptions _ =
+    receiveLocalStorageUser ReceivedUser
 
 
 type Route
@@ -100,14 +108,21 @@ main =
         { init = init
         , view = view
         , update = update
-        , subscriptions = \_ -> Sub.none
+        , subscriptions = subscriptions
         , onUrlRequest = ClickedLink
         , onUrlChange = UrlChanged
         }
 
 
+type alias UserData =
+    { id : Int
+    , name : String
+    }
+
+
 type User
     = LoggedOut
+    | LoggedIn UserData
 
 
 type alias Model =
@@ -133,6 +148,7 @@ init _ url key =
 type Msg
     = ClickedLink Browser.UrlRequest
     | UrlChanged Url.Url
+    | ReceivedUser (Maybe UserData)
     | GotCitiesMsg Cities.Msg
     | GotCityMsg City.Msg
     | GotRegisterMsg Register.Msg
@@ -180,6 +196,19 @@ update msg ({ page } as model) =
             , Cmd.none
             )
 
+        ReceivedUser userData ->
+            ( { model
+                | user =
+                    case userData of
+                        Nothing ->
+                            LoggedOut
+
+                        Just data ->
+                            LoggedIn data
+              }
+            , Cmd.none
+            )
+
         -- PAGES
         GotCitiesMsg citiesMsg ->
             case page of
@@ -215,39 +244,39 @@ update msg ({ page } as model) =
 
 
 view : Model -> Browser.Document Msg
-view { page, isMenuExpanded, isUserMenuExpanded } =
+view ({ page } as model) =
     case page of
         LandingPage ->
             { title = "Mytinerary"
             , body =
-                [ mobileNavbar isMenuExpanded isUserMenuExpanded
-                , div [ class "h-screen pt-12" ] [ Landing.view ]
-                ]
+                [ Landing.view ]
             }
+                |> addContentWrapper
+                |> addNavbar model
 
         CitiesPage citiesModel ->
             Cities.view citiesModel
                 |> documentMap GotCitiesMsg
                 |> addContentWrapper
-                |> addNavbar isMenuExpanded isUserMenuExpanded
+                |> addNavbar model
 
         CityPage cityModel ->
             City.view cityModel
                 |> documentMap GotCityMsg
                 |> addContentWrapper
-                |> addNavbar isMenuExpanded isUserMenuExpanded
+                |> addNavbar model
 
         RegisterPage registerModel ->
             Register.view registerModel
                 |> documentMap GotRegisterMsg
                 |> addContentWrapper
-                |> addNavbar isMenuExpanded isUserMenuExpanded
+                |> addNavbar model
 
         LoginPage loginModel ->
             Login.view loginModel
                 |> documentMap GotLoginMsg
                 |> addContentWrapper
-                |> addNavbar isMenuExpanded isUserMenuExpanded
+                |> addNavbar model
 
         PageNotFound ->
             { title = "Page not found"
@@ -264,15 +293,15 @@ addContentWrapper { title, body } =
     }
 
 
-addNavbar : Bool -> Bool -> Browser.Document Msg -> Browser.Document Msg
-addNavbar isMenuExpanded isUserMenuExpanded { title, body } =
+addNavbar : Model -> Browser.Document Msg -> Browser.Document Msg
+addNavbar model { title, body } =
     { title = title
-    , body = mobileNavbar isMenuExpanded isUserMenuExpanded :: body
+    , body = mobileNavbar model :: body
     }
 
 
-mobileNavbar : Bool -> Bool -> Html Msg
-mobileNavbar isMenuExpanded isUserMenuExpanded =
+mobileNavbar : Model -> Html Msg
+mobileNavbar ({ isMenuExpanded } as model) =
     div [ class "bg-white fixed h-12 w-screen flex justify-between z-20 shadow-sm" ]
         [ a
             [ href "/"
@@ -292,7 +321,7 @@ mobileNavbar isMenuExpanded isUserMenuExpanded =
                 [ avatarSvg ]
             ]
         , mobileMenuContent isMenuExpanded
-        , userMobileMenuContent isUserMenuExpanded
+        , userMobileMenuContent model
         ]
 
 
@@ -310,17 +339,31 @@ mobileMenuContent isMenuExpanded =
         ]
 
 
-userMobileMenuContent : Bool -> Html msg
-userMobileMenuContent isUserMenuExpanded =
+userMobileMenuContent : Model -> Html msg
+userMobileMenuContent model =
+    let
+        isLoggedIn =
+            case model.user of
+                LoggedIn _ ->
+                    True
+
+                _ ->
+                    False
+    in
     div
         [ class
             "w-screen h-auto z-20 bg-white absolute top-full text-lg text-center py-2"
-        , classList [ ( "hidden", not isUserMenuExpanded ) ]
+        , classList [ ( "hidden", not model.isUserMenuExpanded ) ]
         ]
         [ ul []
-            [ li [] [ a [ class "block", href "/register" ] [ text "Register" ] ]
-            , li [] [ a [ class "block", href "/login" ] [ text "Log In" ] ]
-            ]
+            (if isLoggedIn then
+                [ li [] [ a [ class "block", href "/register" ] [ text "Register" ] ]
+                , li [] [ a [ class "block", href "/login" ] [ text "Log In" ] ]
+                ]
+
+             else
+                [ li [] [ a [ class "block" ] [ text "Log Out" ] ] ]
+            )
         ]
 
 

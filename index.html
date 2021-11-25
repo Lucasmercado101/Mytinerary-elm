@@ -19,5 +19,10 @@
     const app = Elm.Main.init({
       node: document.querySelector(".root")
     });
+
+    app.ports.saveUserToLocalStorage.subscribe((user) => {
+      console.log("a");
+      localStorage.setItem("user", JSON.stringify(user));
+    });
   </script>
 </html>
