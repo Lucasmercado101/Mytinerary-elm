@@ -3,7 +3,10 @@ module Pages.Register exposing (Model, Msg, init, update, view)
 import Browser
 import Html exposing (button, div, form, input, label, text)
 import Html.Attributes exposing (class, classList, disabled, for, id, placeholder, required, type_, value)
-import Html.Events exposing (onInput)
+import Html.Events exposing (onInput, onSubmit)
+import Http exposing (expectJson, post)
+import Json.Decode exposing (Decoder, field, int, map2, string)
+import Json.Encode as Encode exposing (object)
 
 
 type alias Model =
@@ -15,6 +18,8 @@ type alias Model =
 type Msg
     = ChangeUsername String
     | ChangePassword String
+    | SubmitForm
+    | GotUserData (Result Http.Error UserData)
 
 
 init : ( Model, Cmd msg )
@@ -22,7 +27,38 @@ init =
     ( { username = "", password = "" }, Cmd.none )
 
 
-update : Msg -> Model -> ( Model, Cmd msg )
+type alias UserData =
+    { id : Int
+    , username : String
+    }
+
+
+userDecoder : Decoder UserData
+userDecoder =
+    map2 UserData
+        (field "id" int)
+        (field "username" string)
+
+
+baseUrl =
+    "http://localhost:8001"
+
+
+registerPost : Model -> Cmd Msg
+registerPost model =
+    Http.post
+        { url = baseUrl ++ "/auth/register"
+        , body =
+            Http.jsonBody <|
+                object
+                    [ ( "username", Encode.string model.username )
+                    , ( "password", Encode.string model.password )
+                    ]
+        , expect = Http.expectJson GotUserData userDecoder
+        }
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         ChangeUsername username ->
@@ -30,6 +66,17 @@ update msg model =
 
         ChangePassword password ->
             ( { model | password = password }, Cmd.none )
+
+        SubmitForm ->
+            ( model, registerPost model )
+
+        GotUserData res ->
+            case res of
+                Result.Ok userData ->
+                    ( { model | username = "" }, Cmd.none )
+
+                Result.Err err ->
+                    ( model, Cmd.none )
 
 
 view : Model -> Browser.Document Msg
@@ -40,7 +87,11 @@ view { password, username } =
             registerDisabled =
                 password == "" || username == ""
         in
-        [ form [ class "flex flex-col container mx-auto px-4 gap-y-4" ]
+        [ form
+            [ onSubmit SubmitForm
+            , class
+                "flex flex-col container mx-auto px-4 gap-y-4"
+            ]
             [ div []
                 [ label [ class "block text-gray-700 text-sm font-bold mb-2", for "username" ]
                     [ text "Username" ]
