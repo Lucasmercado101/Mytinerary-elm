@@ -6,6 +6,8 @@ import Html exposing (button, div, form, input, label, text)
 import Html.Attributes exposing (class, classList, disabled, for, id, placeholder, required, type_, value)
 import Html.Events exposing (onInput, onSubmit)
 import Http
+import Json.Decode exposing (Decoder, field, int, map2, string)
+import Json.Encode as Encode exposing (object)
 
 
 type alias Model =
@@ -26,6 +28,24 @@ type Msg
     = ChangeUsername String
     | ChangePassword String
     | SubmitForm
+    | GotUserData (Result Http.Error UserData)
+
+
+type alias UserData =
+    { id : Int
+    , username : String
+    }
+
+
+baseUrl =
+    "http://localhost:8001"
+
+
+userDecoder : Decoder UserData
+userDecoder =
+    map2 UserData
+        (field "id" int)
+        (field "username" string)
 
 
 init : Nav.Key -> ( Model, Cmd msg )
@@ -39,6 +59,20 @@ init key =
     )
 
 
+logIn : Model -> Cmd Msg
+logIn model =
+    Http.post
+        { url = baseUrl ++ "/auth/login"
+        , body =
+            Http.jsonBody <|
+                object
+                    [ ( "username", Encode.string model.username )
+                    , ( "password", Encode.string model.password )
+                    ]
+        , expect = Http.expectJson GotUserData userDecoder
+        }
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -49,16 +83,15 @@ update msg model =
             ( { model | password = password }, Cmd.none )
 
         SubmitForm ->
-            ( { model | logInState = Registering }, Cmd.none )
+            ( { model | logInState = Registering }, logIn model )
 
+        GotUserData res ->
+            case res of
+                Result.Ok _ ->
+                    ( model, Nav.pushUrl model.key "/" )
 
-
--- GotUserData res ->
---     case res of
---         Result.Ok _ ->
---             ( { model | username = "" }, Nav.pushUrl model.key "/login" )
---         Result.Err err ->
---             ( { model | registeringState = Error err }, Cmd.none )
+                Result.Err err ->
+                    ( { model | logInState = Error err }, Cmd.none )
 
 
 view : Model -> Browser.Document Msg
