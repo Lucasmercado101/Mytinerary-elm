@@ -2,9 +2,10 @@ port module Main exposing (main)
 
 import Browser
 import Browser.Navigation as Nav
-import Html exposing (Html, a, button, div, li, text, ul)
-import Html.Attributes exposing (class, classList, href)
+import Html exposing (Html, a, button, div, img, li, p, text, ul)
+import Html.Attributes exposing (class, classList, href, src)
 import Html.Events exposing (onClick)
+import Json.Decode exposing (Decoder, Value, decodeValue, field, int, map2, map3, maybe, string)
 import Pages.Cities as Cities exposing (Model, Msg, init, view)
 import Pages.City as City exposing (Model, Msg, init, update, view)
 import Pages.Landing as Landing exposing (view)
@@ -13,15 +14,40 @@ import Pages.Register as Register exposing (Model, Msg, init, update, view)
 import Svg exposing (svg)
 import Svg.Attributes
 import Url exposing (Url)
-import Url.Parser as Parser exposing ((</>), Parser, int, s)
+import Url.Parser as Parser exposing ((</>), Parser, s)
 
 
-port receiveLocalStorageUser : (Maybe UserData -> msg) -> Sub msg
+port receiveLocalStorageUser : (Value -> msg) -> Sub msg
+
+
+userDecoder : Decoder PortUserData
+userDecoder =
+    map3 PortUserData
+        (field "id" int)
+        (field "username" string)
+        (field "profile_pic" (maybe string))
+
+
+type alias PortUserData =
+    { id : Int
+    , username : String
+    , profile_pic : Maybe String
+    }
 
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-    receiveLocalStorageUser ReceivedUser
+    Sub.map ReceivedUser
+        (receiveLocalStorageUser
+            (\v ->
+                case decodeValue userDecoder v of
+                    Ok u ->
+                        Just u
+
+                    Err _ ->
+                        Nothing
+            )
+        )
 
 
 type Route
@@ -47,7 +73,7 @@ urlParser =
         [ Parser.map Landing Parser.top
         , Parser.map Cities (s "cities")
         , Parser.map Register (s "register")
-        , Parser.map City (s "cities" </> int)
+        , Parser.map City (s "cities" </> Parser.int)
         , Parser.map Login (s "login")
         ]
 
@@ -102,7 +128,7 @@ updateUrl url model =
             ( { model | page = PageNotFound }, Cmd.none )
 
 
-main : Program () Model Msg
+main : Program (Maybe PortUserData) Model Msg
 main =
     Browser.application
         { init = init
@@ -114,15 +140,9 @@ main =
         }
 
 
-type alias UserData =
-    { id : Int
-    , name : String
-    }
-
-
 type User
     = LoggedOut
-    | LoggedIn UserData
+    | LoggedIn PortUserData
 
 
 type alias Model =
@@ -134,21 +154,27 @@ type alias Model =
     }
 
 
-init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
-init _ url key =
+init : Maybe PortUserData -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
+init portUserData url key =
     updateUrl url
         { page = PageNotFound
         , key = key
         , isMenuExpanded = False
         , isUserMenuExpanded = False
-        , user = LoggedOut
+        , user =
+            case portUserData of
+                Just userData ->
+                    LoggedIn userData
+
+                Nothing ->
+                    LoggedOut
         }
 
 
 type Msg
     = ClickedLink Browser.UrlRequest
     | UrlChanged Url.Url
-    | ReceivedUser (Maybe UserData)
+    | ReceivedUser (Maybe PortUserData)
     | GotCitiesMsg Cities.Msg
     | GotCityMsg City.Msg
     | GotRegisterMsg Register.Msg
@@ -300,6 +326,16 @@ addNavbar model { title, body } =
     }
 
 
+isLoggedIn : Model -> Bool
+isLoggedIn model =
+    case model.user of
+        LoggedIn _ ->
+            True
+
+        _ ->
+            False
+
+
 mobileNavbar : Model -> Html Msg
 mobileNavbar ({ isMenuExpanded } as model) =
     div [ class "bg-white fixed h-12 w-screen flex justify-between z-20 shadow-sm" ]
@@ -308,17 +344,31 @@ mobileNavbar ({ isMenuExpanded } as model) =
             , class "inline-block flex text-xl px-2 h-full font-semibold pb-1 text-red-600 focus:text-red-600 active:text-red-600"
             ]
             [ div [ class "self-center" ] [ text "Mytinerary" ] ]
-        , div [ class "h-full" ]
+        , div [ class "h-full flex" ]
             [ button
                 [ class "px-4 h-full"
                 , onClick ToggleMenu
                 ]
                 [ burgerSvg ]
             , button
-                [ class "px-4 h-full"
+                [ class "h-full"
+                , classList [ ( "pr-2", isLoggedIn model ) ]
                 , onClick ToggleUserMenu
                 ]
-                [ avatarSvg ]
+                [ case model.user of
+                    LoggedIn data ->
+                        case data.profile_pic of
+                            Just pfp ->
+                                img [ class "h-10 w-10 rounded-full", src pfp ] []
+
+                            Nothing ->
+                                div [ class "h-10 w-10 rounded-full bg-red-300 flex justify-center items-center text-black" ]
+                                    [ p [ class "text-xl capitalize" ] [ text (String.left 1 data.username) ]
+                                    ]
+
+                    _ ->
+                        avatarSvg
+                ]
             ]
         , mobileMenuContent isMenuExpanded
         , userMobileMenuContent model
@@ -341,28 +391,19 @@ mobileMenuContent isMenuExpanded =
 
 userMobileMenuContent : Model -> Html msg
 userMobileMenuContent model =
-    let
-        isLoggedIn =
-            case model.user of
-                LoggedIn _ ->
-                    True
-
-                _ ->
-                    False
-    in
     div
         [ class
             "w-screen h-auto z-20 bg-white absolute top-full text-lg text-center py-2"
         , classList [ ( "hidden", not model.isUserMenuExpanded ) ]
         ]
         [ ul []
-            (if isLoggedIn then
+            (if isLoggedIn model then
+                [ li [] [ a [ class "block" ] [ text "Log Out" ] ] ]
+
+             else
                 [ li [] [ a [ class "block", href "/register" ] [ text "Register" ] ]
                 , li [] [ a [ class "block", href "/login" ] [ text "Log In" ] ]
                 ]
-
-             else
-                [ li [] [ a [ class "block" ] [ text "Log Out" ] ] ]
             )
         ]
 

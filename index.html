@@ -16,13 +16,16 @@
     <div class="root"></div>
   </body>
   <script>
+    const userData = JSON.parse(localStorage.getItem("user"));
+
     const app = Elm.Main.init({
+      flags: userData,
       node: document.querySelector(".root")
     });
 
     app.ports.saveUserToLocalStorage.subscribe((user) => {
-      console.log("a");
       localStorage.setItem("user", JSON.stringify(user));
+      app.ports.receiveLocalStorageUser.send(user);
     });
   </script>
 </html>

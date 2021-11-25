@@ -6,7 +6,7 @@ import Html exposing (button, div, form, input, label, text)
 import Html.Attributes exposing (class, classList, disabled, for, id, placeholder, required, type_, value)
 import Html.Events exposing (onInput, onSubmit)
 import Http
-import Json.Decode exposing (Decoder, field, int, map2, string)
+import Json.Decode exposing (Decoder, field, int, map3, maybe, string)
 import Json.Encode as Encode exposing (object)
 
 
@@ -37,6 +37,7 @@ type Msg
 type alias UserData =
     { id : Int
     , username : String
+    , profile_pic : Maybe String
     }
 
 
@@ -46,9 +47,10 @@ baseUrl =
 
 userDecoder : Decoder UserData
 userDecoder =
-    map2 UserData
+    map3 UserData
         (field "id" int)
         (field "username" string)
+        (field "profile_pic" (maybe string))
 
 
 init : Nav.Key -> ( Model, Cmd msg )
