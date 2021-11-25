@@ -3,11 +3,12 @@ module Main exposing (main)
 import Browser
 import Browser.Navigation as Nav
 import Html exposing (Html, a, button, div, li, text, ul)
-import Html.Attributes exposing (class, classList, href, style)
+import Html.Attributes exposing (class, classList, href)
 import Html.Events exposing (onClick)
 import Pages.Cities as Cities exposing (Model, Msg, init, view)
 import Pages.City as City exposing (Model, Msg, init, update, view)
 import Pages.Landing as Landing exposing (view)
+import Pages.Login as Login exposing (Model, Msg, init, update, view)
 import Pages.Register as Register exposing (Model, Msg, init, update, view)
 import Svg exposing (svg)
 import Svg.Attributes
@@ -20,6 +21,7 @@ type Route
     | Cities
     | City Int
     | Register
+    | Login
 
 
 type Page
@@ -27,6 +29,7 @@ type Page
     | RegisterPage Register.Model
     | CitiesPage Cities.Model
     | CityPage City.Model
+    | LoginPage Login.Model
     | PageNotFound
 
 
@@ -37,6 +40,7 @@ urlParser =
         , Parser.map Cities (s "cities")
         , Parser.map Register (s "register")
         , Parser.map City (s "cities" </> int)
+        , Parser.map Login (s "login")
         ]
 
 
@@ -61,6 +65,13 @@ toRegister model ( register, cmd ) =
     )
 
 
+toLogin : Model -> ( Login.Model, Cmd Login.Msg ) -> ( Model, Cmd Msg )
+toLogin model ( login, cmd ) =
+    ( { model | page = LoginPage login }
+    , Cmd.map GotLoginMsg cmd
+    )
+
+
 updateUrl : Url -> Model -> ( Model, Cmd Msg )
 updateUrl url model =
     case Parser.parse urlParser url of
@@ -75,6 +86,9 @@ updateUrl url model =
 
         Just Register ->
             toRegister model (Register.init model.key)
+
+        Just Login ->
+            toLogin model (Login.init model.key)
 
         Nothing ->
             ( { model | page = PageNotFound }, Cmd.none )
@@ -122,6 +136,7 @@ type Msg
     | GotCitiesMsg Cities.Msg
     | GotCityMsg City.Msg
     | GotRegisterMsg Register.Msg
+    | GotLoginMsg Login.Msg
       -- Navbar
     | ToggleMenu
     | ToggleUserMenu
@@ -190,6 +205,14 @@ update msg ({ page } as model) =
                 _ ->
                     ( model, Cmd.none )
 
+        GotLoginMsg loginMsg ->
+            case page of
+                LoginPage loginModel ->
+                    toLogin model (Login.update loginMsg loginModel)
+
+                _ ->
+                    ( model, Cmd.none )
+
 
 view : Model -> Browser.Document Msg
 view { page, isMenuExpanded, isUserMenuExpanded } =
@@ -217,6 +240,12 @@ view { page, isMenuExpanded, isUserMenuExpanded } =
         RegisterPage registerModel ->
             Register.view registerModel
                 |> documentMap GotRegisterMsg
+                |> addContentWrapper
+                |> addNavbar isMenuExpanded isUserMenuExpanded
+
+        LoginPage loginModel ->
+            Login.view loginModel
+                |> documentMap GotLoginMsg
                 |> addContentWrapper
                 |> addNavbar isMenuExpanded isUserMenuExpanded
 
