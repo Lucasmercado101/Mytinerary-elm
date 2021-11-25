@@ -1,6 +1,7 @@
 module Pages.Register exposing (Model, Msg, init, update, view)
 
 import Browser
+import Browser.Navigation as Nav
 import Html exposing (button, div, form, input, label, text)
 import Html.Attributes exposing (class, classList, disabled, for, id, placeholder, required, type_, value)
 import Html.Events exposing (onInput, onSubmit)
@@ -12,7 +13,15 @@ import Json.Encode as Encode exposing (object)
 type alias Model =
     { username : String
     , password : String
+    , registeringState : RegisteringState
+    , key : Nav.Key
     }
+
+
+type RegisteringState
+    = Idle
+    | Registering
+    | Error Http.Error
 
 
 type Msg
@@ -22,9 +31,15 @@ type Msg
     | GotUserData (Result Http.Error UserData)
 
 
-init : ( Model, Cmd msg )
-init =
-    ( { username = "", password = "" }, Cmd.none )
+init : Nav.Key -> ( Model, Cmd msg )
+init key =
+    ( { username = ""
+      , password = ""
+      , registeringState = Idle
+      , key = key
+      }
+    , Cmd.none
+    )
 
 
 type alias UserData =
@@ -68,15 +83,15 @@ update msg model =
             ( { model | password = password }, Cmd.none )
 
         SubmitForm ->
-            ( model, registerPost model )
+            ( { model | registeringState = Registering }, registerPost model )
 
         GotUserData res ->
             case res of
-                Result.Ok userData ->
-                    ( { model | username = "" }, Cmd.none )
+                Result.Ok _ ->
+                    ( { model | username = "" }, Nav.pushUrl model.key "/login" )
 
                 Result.Err err ->
-                    ( model, Cmd.none )
+                    ( { model | registeringState = Error err }, Cmd.none )
 
 
 view : Model -> Browser.Document Msg

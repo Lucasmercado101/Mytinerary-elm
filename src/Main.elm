@@ -74,7 +74,7 @@ updateUrl url model =
             toCity model (City.init cityId)
 
         Just Register ->
-            toRegister model Register.init
+            toRegister model (Register.init model.key)
 
         Nothing ->
             ( { model | page = PageNotFound }, Cmd.none )
