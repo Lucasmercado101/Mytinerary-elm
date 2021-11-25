@@ -59,8 +59,8 @@ baseUrl =
     "http://localhost:8001"
 
 
-registerPost : Model -> Cmd Msg
-registerPost model =
+registerUser : Model -> Cmd Msg
+registerUser model =
     Http.post
         { url = baseUrl ++ "/auth/register"
         , body =
@@ -83,7 +83,7 @@ update msg model =
             ( { model | password = password }, Cmd.none )
 
         SubmitForm ->
-            ( { model | registeringState = Registering }, registerPost model )
+            ( { model | registeringState = Registering }, registerUser model )
 
         GotUserData res ->
             case res of
