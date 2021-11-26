@@ -4,10 +4,10 @@ import Api.Cities exposing (City)
 import Browser
 import Html exposing (Html, a, button, div, form, h1, h2, h3, img, input, label, li, p, span, text, ul)
 import Html.Attributes exposing (class, classList, disabled, for, href, id, placeholder, required, src, type_, value)
-import Html.Events exposing (onClick, onInput)
+import Html.Events exposing (onClick, onInput, onSubmit)
 import Http
 import Platform.Cmd exposing (Cmd)
-import Session
+import Session exposing (UserSession(..))
 
 
 type alias Model =
@@ -18,6 +18,9 @@ type alias Model =
     , isNewCityModalOpen : Bool
     , newCityName : String
     , newCityCountry : String
+
+    -- TODO: error handling, show message, etc.
+    , isCreatingNewCity : Bool
     }
 
 
@@ -31,10 +34,12 @@ type Msg
     = GotCities (Result Http.Error (List City))
     | RetryFetchCities
     | GotUserData (Maybe Session.UserData)
+    | GotNewCity (Result Http.Error City)
       -- Modal
     | ToggleModal
     | ChangeCityName String
     | ChangeCountryName String
+    | SubmitForm
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -43,7 +48,9 @@ update msg model =
         GotCities res ->
             case res of
                 Ok cities ->
-                    ( { model | citiesData = CitiesLoaded cities }, Cmd.none )
+                    ( { model | citiesData = CitiesLoaded (List.sortBy .name cities) }
+                    , Cmd.none
+                    )
 
                 Err err ->
                     ( { model | citiesData = Failed err }, Cmd.none )
@@ -53,6 +60,32 @@ update msg model =
 
         GotUserData userData ->
             ( { model | userData = userData }, Cmd.none )
+
+        GotNewCity res ->
+            case res of
+                Ok newCity ->
+                    ( { model
+                        | citiesData =
+                            case model.citiesData of
+                                CitiesLoaded cities ->
+                                    CitiesLoaded (addCity newCity cities)
+
+                                _ ->
+                                    model.citiesData
+                        , isNewCityModalOpen = False
+                        , isCreatingNewCity = False
+                      }
+                    , Cmd.none
+                    )
+
+                Err _ ->
+                    -- TODO
+                    ( { model
+                        | isCreatingNewCity = False
+                        , isNewCityModalOpen = False
+                      }
+                    , Cmd.none
+                    )
 
         -- Modal
         ToggleModal ->
@@ -64,6 +97,22 @@ update msg model =
         ChangeCountryName newCityCountry ->
             ( { model | newCityCountry = newCityCountry }, Cmd.none )
 
+        SubmitForm ->
+            ( { model | isCreatingNewCity = True }
+            , Api.Cities.postNewCity
+                GotNewCity
+                { name = model.newCityName
+                , country = model.newCityCountry
+                }
+            )
+
+
+addCity : City -> List City -> List City
+addCity newCity cities =
+    newCity
+        :: cities
+        |> List.sortBy .name
+
 
 init : ( Model, Cmd Msg )
 init =
@@ -72,6 +121,7 @@ init =
       , isNewCityModalOpen = False
       , newCityName = ""
       , newCityCountry = ""
+      , isCreatingNewCity = False
       }
     , Cmd.batch
         [ Api.Cities.getCities GotCities
@@ -86,7 +136,7 @@ subscriptions _ =
 
 
 view : Model -> Browser.Document Msg
-view ({ citiesData, isNewCityModalOpen } as model) =
+view ({ citiesData, isNewCityModalOpen, isCreatingNewCity } as model) =
     { title = "Cities"
     , body =
         [ if isNewCityModalOpen then
@@ -95,13 +145,25 @@ view ({ citiesData, isNewCityModalOpen } as model) =
           else
             text ""
         , h1 [ class "text-center font-semibold text-3xl my-4" ] [ text "Cities" ]
-        , div [ class "px-2 mb-2" ]
-            [ button
-                [ onClick ToggleModal
-                , class "mx-auto w-full md:w-64 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                ]
-                [ text "Add City" ]
-            ]
+        , case model.userData of
+            Just _ ->
+                div [ class "px-2 mb-2" ]
+                    [ button
+                        [ onClick ToggleModal
+                        , class "mx-auto w-full md:w-64 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        ]
+                        [ text
+                            (if isCreatingNewCity then
+                                "Creating city..."
+
+                             else
+                                "Add City"
+                            )
+                        ]
+                    ]
+
+            Nothing ->
+                text ""
         , case citiesData of
             Loading ->
                 div [ class "text-xl text-center" ] [ text "Loading..." ]
@@ -144,7 +206,7 @@ city cityData =
 
 
 modal : Model -> Html Msg
-modal { newCityName, newCityCountry } =
+modal { newCityName, newCityCountry, isCreatingNewCity } =
     let
         registerDisabled =
             newCityName == "" || newCityCountry == ""
@@ -158,9 +220,8 @@ modal { newCityName, newCityCountry } =
             , div [ class "py-6 inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" ]
                 [ h2 [ class "text-2xl text-center mb-4" ] [ text "New City" ]
                 , form
-                    [ -- onSubmit SubmitForm
-                      -- ,
-                      class
+                    [ onSubmit SubmitForm
+                    , class
                         "flex flex-col container mx-auto px-4 gap-y-4"
                     ]
                     [ div []
@@ -192,7 +253,7 @@ modal { newCityName, newCityCountry } =
                             []
                         ]
                     , div [ class "flex ml-auto gap-x-4" ]
-                        [ button [ class "px-4 py-2", onClick ToggleModal ] [ text "Cancel" ]
+                        [ button [ class "px-4 py-2", type_ "button", onClick ToggleModal ] [ text "Cancel" ]
                         , button
                             [ type_ "submit"
                             , class "font-bold py-2 px-4 rounded"
@@ -200,9 +261,16 @@ modal { newCityName, newCityCountry } =
                                 [ ( "bg-blue-700 hover:bg-blue-700 text-white", not registerDisabled )
                                 , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", registerDisabled )
                                 ]
-                            , disabled registerDisabled
+                            , disabled (registerDisabled || isCreatingNewCity)
                             ]
-                            [ text "Create" ]
+                            [ text
+                                (if isCreatingNewCity then
+                                    "Creating..."
+
+                                 else
+                                    "Create"
+                                )
+                            ]
                         ]
                     ]
                 ]
