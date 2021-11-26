@@ -75,7 +75,7 @@ view { password, username, registeringState } =
         [ form
             [ onSubmit SubmitForm
             , class
-                "flex flex-col container mx-auto px-4 gap-y-4"
+                "flex flex-col container mx-auto px-4 gap-y-4 pt-5"
             ]
             [ div []
                 [ label [ class "block text-gray-700 text-sm font-bold mb-2", for "username" ]
