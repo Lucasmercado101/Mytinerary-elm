@@ -1,7 +1,7 @@
 module Api.Cities exposing (City, getCities, postNewCity)
 
 import Api.Common exposing (baseUrl)
-import Http exposing (jsonBody, post)
+import Http exposing (jsonBody, request, riskyRequest)
 import Json.Decode as JD exposing (Decoder)
 import Json.Encode as JE
 
@@ -21,15 +21,6 @@ getCities msg =
         }
 
 
-postNewCity : (Result Http.Error City -> msg) -> City -> Cmd msg
-postNewCity msg newCityData =
-    post
-        { url = baseUrl ++ "/cities"
-        , body = jsonBody <| cityEncoder newCityData
-        , expect = Http.expectJson msg cityDecoder
-        }
-
-
 cityDecoder : Decoder City
 cityDecoder =
     JD.map3 City
@@ -38,10 +29,32 @@ cityDecoder =
         (JD.field "country" JD.string)
 
 
-cityEncoder : City -> JE.Value
-cityEncoder { country, id, name } =
+
+-- NEW CITY
+
+
+type alias NewCity =
+    { name : String
+    , country : String
+    }
+
+
+newCityEncoder : NewCity -> JE.Value
+newCityEncoder { country, name } =
     JE.object
-        [ ( "id", JE.int id )
-        , ( "name", JE.string name )
+        [ ( "name", JE.string name )
         , ( "country", JE.string country )
         ]
+
+
+postNewCity : (Result Http.Error City -> msg) -> NewCity -> Cmd msg
+postNewCity msg newCityData =
+    riskyRequest
+        { method = "POST"
+        , url = baseUrl ++ "/cities"
+        , body = newCityEncoder newCityData |> jsonBody
+        , expect = Http.expectJson msg cityDecoder
+        , timeout = Nothing
+        , tracker = Nothing
+        , headers = []
+        }
