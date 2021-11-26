@@ -1,13 +1,12 @@
 port module Pages.Login exposing (Model, Msg, init, update, view)
 
+import Api.Auth
 import Browser
 import Browser.Navigation as Nav
 import Html exposing (button, div, form, input, label, text)
 import Html.Attributes exposing (class, classList, disabled, for, id, placeholder, required, type_, value)
 import Html.Events exposing (onInput, onSubmit)
 import Http
-import Json.Decode exposing (Decoder, field, int, map3, maybe, string)
-import Json.Encode as Encode exposing (object)
 
 
 port saveUserToLocalStorage : UserData -> Cmd msg
@@ -41,18 +40,6 @@ type alias UserData =
     }
 
 
-baseUrl =
-    "http://localhost:8001"
-
-
-userDecoder : Decoder UserData
-userDecoder =
-    map3 UserData
-        (field "id" int)
-        (field "username" string)
-        (field "profile_pic" (maybe string))
-
-
 init : Nav.Key -> ( Model, Cmd msg )
 init key =
     ( { username = ""
@@ -62,20 +49,6 @@ init key =
       }
     , Cmd.none
     )
-
-
-logIn : Model -> Cmd Msg
-logIn model =
-    Http.post
-        { url = baseUrl ++ "/auth/login"
-        , body =
-            Http.jsonBody <|
-                object
-                    [ ( "username", Encode.string model.username )
-                    , ( "password", Encode.string model.password )
-                    ]
-        , expect = Http.expectJson GotUserData userDecoder
-        }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -88,7 +61,7 @@ update msg model =
             ( { model | password = password }, Cmd.none )
 
         SubmitForm ->
-            ( { model | logInState = Registering }, logIn model )
+            ( { model | logInState = Registering }, Api.Auth.logIn model GotUserData )
 
         GotUserData res ->
             case res of
