@@ -1,4 +1,4 @@
-port module Session exposing (UserData, clearUserFromLocalStorageMsg, getLocalStorageUserDataSender, localStorageUserSub)
+port module Session exposing (UserData, UserSession(..), clearUserFromLocalStorageMsg, getLocalStorageUserDataSender, localStorageUserSub)
 
 import Json.Decode exposing (Decoder, Value, decodeValue, field, int, map3, maybe, string)
 
@@ -50,3 +50,8 @@ localStorageUserSub =
 clearUserFromLocalStorageMsg : Cmd msg
 clearUserFromLocalStorageMsg =
     clearUserLocalStorageSender ()
+
+
+type UserSession
+    = LoggedOut
+    | LoggedIn UserData

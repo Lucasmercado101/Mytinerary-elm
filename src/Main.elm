@@ -11,7 +11,7 @@ import Pages.City as City exposing (Model, Msg, init, update, view)
 import Pages.Landing as Landing exposing (view)
 import Pages.Login as Login exposing (Model, Msg, init, update, view)
 import Pages.Register as Register exposing (Model, Msg, init, update, view)
-import Session
+import Session exposing (UserSession(..))
 import Svg exposing (svg)
 import Svg.Attributes
 import Url exposing (Url)
@@ -118,17 +118,12 @@ main =
         }
 
 
-type User
-    = LoggedOut
-    | LoggedIn Session.UserData
-
-
 type alias Model =
     { key : Nav.Key
     , page : Page
     , isMenuExpanded : Bool
     , isUserMenuExpanded : Bool
-    , user : User
+    , user : Session.UserSession
     }
 
 
