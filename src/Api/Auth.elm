@@ -29,12 +29,14 @@ userDecoder =
         (JD.field "profile_pic" (JD.maybe JD.string))
 
 
-loginUserEncoder :
-    { extends
+type alias LogInUserInput a =
+    { a
         | username : String
         , password : String
     }
-    -> JE.Value
+
+
+loginUserEncoder : LogInUserInput a -> JE.Value
 loginUserEncoder { username, password } =
     JE.object
         [ ( "username", JE.string username )
@@ -42,12 +44,14 @@ loginUserEncoder { username, password } =
         ]
 
 
-registerUserEncoder :
-    { extends
+type alias RegisterUserInput a =
+    { a
         | username : String
         , password : String
     }
-    -> JE.Value
+
+
+registerUserEncoder : LogInUserInput a -> JE.Value
 registerUserEncoder { username, password } =
     JE.object
         [ ( "username", JE.string username )
@@ -60,10 +64,7 @@ registerUserEncoder { username, password } =
 
 
 logIn :
-    { extends
-        | username : String
-        , password : String
-    }
+    LogInUserInput a
     -> (Result Http.Error User -> msg)
     -> Cmd msg
 logIn user msg =
@@ -76,13 +77,7 @@ logIn user msg =
         (Http.expectJson msg userDecoder)
 
 
-registerUser :
-    { extends
-        | username : String
-        , password : String
-    }
-    -> (Result Http.Error User -> msg)
-    -> Cmd msg
+registerUser : RegisterUserInput a -> (Result Http.Error User -> msg) -> Cmd msg
 registerUser newUser msg =
     Http.post
         { url = endpoint [ "auth", "register" ]
