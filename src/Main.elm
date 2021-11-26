@@ -19,8 +19,13 @@ import Url.Parser as Parser exposing ((</>), Parser, s)
 
 
 subscriptions : Model -> Sub Msg
-subscriptions _ =
-    Sub.map ReceivedUser Session.localStorageUserSub
+subscriptions { page } =
+    case page of
+        CitiesPage citiesModel ->
+            Sub.map GotCitiesMsg (Cities.subscriptions citiesModel)
+
+        _ ->
+            Sub.map ReceivedUser Session.localStorageUserSub
 
 
 type Route
