@@ -214,6 +214,7 @@ itinerary data =
         ]
 
 
+clockSvg : Html msg
 clockSvg =
     svg
         [ Svg.Attributes.class "h-5 w-5"
