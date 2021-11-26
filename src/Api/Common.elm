@@ -1,4 +1,4 @@
-module Api.Common exposing (baseUrl, postWithCredentials)
+module Api.Common exposing (baseUrl, endpoint, postWithCredentials)
 
 import Http exposing (Body, Expect, Header, riskyRequest)
 
@@ -38,3 +38,8 @@ baseUrl =
 postWithCredentials : Body -> Expect msg -> Cmd msg
 postWithCredentials body expect =
     riskyRequest (requestBody body expect)
+
+
+endpoint : List String -> String
+endpoint strs =
+    baseUrl ++ "/" ++ String.join "/" strs
