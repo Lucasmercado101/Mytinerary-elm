@@ -1,4 +1,4 @@
-port module Main exposing (main)
+module Main exposing (main)
 
 import Api.Auth
 import Browser
@@ -6,53 +6,21 @@ import Browser.Navigation as Nav
 import Html exposing (Html, a, button, div, img, li, p, text, ul)
 import Html.Attributes exposing (class, classList, href, src)
 import Html.Events exposing (onClick)
-import Http
-import Json.Decode exposing (Decoder, Value, decodeValue, field, int, map2, map3, maybe, string)
 import Pages.Cities as Cities exposing (Model, Msg, init, view)
 import Pages.City as City exposing (Model, Msg, init, update, view)
 import Pages.Landing as Landing exposing (view)
 import Pages.Login as Login exposing (Model, Msg, init, update, view)
 import Pages.Register as Register exposing (Model, Msg, init, update, view)
+import Session
 import Svg exposing (svg)
 import Svg.Attributes
 import Url exposing (Url)
 import Url.Parser as Parser exposing ((</>), Parser, s)
 
 
-port receiveLocalStorageUser : (Value -> msg) -> Sub msg
-
-
-port clearUserLocalStorageSender : () -> Cmd msg
-
-
-userDecoder : Decoder PortUserData
-userDecoder =
-    map3 PortUserData
-        (field "id" int)
-        (field "username" string)
-        (field "profile_pic" (maybe string))
-
-
-type alias PortUserData =
-    { id : Int
-    , username : String
-    , profile_pic : Maybe String
-    }
-
-
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-    Sub.map ReceivedUser
-        (receiveLocalStorageUser
-            (\v ->
-                case decodeValue userDecoder v of
-                    Ok u ->
-                        Just u
-
-                    Err _ ->
-                        Nothing
-            )
-        )
+    Sub.map ReceivedUser Session.localStorageUserSub
 
 
 type Route
@@ -133,7 +101,7 @@ updateUrl url model =
             ( { model | page = PageNotFound }, Cmd.none )
 
 
-main : Program (Maybe PortUserData) Model Msg
+main : Program (Maybe Session.UserData) Model Msg
 main =
     Browser.application
         { init = init
@@ -147,7 +115,7 @@ main =
 
 type User
     = LoggedOut
-    | LoggedIn PortUserData
+    | LoggedIn Session.UserData
 
 
 type alias Model =
@@ -159,17 +127,17 @@ type alias Model =
     }
 
 
-init : Maybe PortUserData -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
-init portUserData url key =
+init : Maybe Session.UserData -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
+init userData url key =
     updateUrl url
         { page = PageNotFound
         , key = key
         , isMenuExpanded = False
         , isUserMenuExpanded = False
         , user =
-            case portUserData of
-                Just userData ->
-                    LoggedIn userData
+            case userData of
+                Just data ->
+                    LoggedIn data
 
                 Nothing ->
                     LoggedOut
@@ -179,7 +147,7 @@ init portUserData url key =
 type Msg
     = ClickedLink Browser.UrlRequest
     | UrlChanged Url.Url
-    | ReceivedUser (Maybe PortUserData)
+    | ReceivedUser (Maybe Session.UserData)
     | GotCitiesMsg Cities.Msg
     | GotCityMsg City.Msg
     | GotRegisterMsg Register.Msg
@@ -249,7 +217,7 @@ update msg ({ page } as model) =
             ( { model
                 | user = LoggedOut
               }
-            , Cmd.batch [ Api.Auth.logOut NoOp, clearUserLocalStorageSender () ]
+            , Cmd.batch [ Api.Auth.logOut NoOp, Session.clearUserFromLocalStorageMsg ]
             )
 
         -- PAGES
