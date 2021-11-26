@@ -1,9 +1,12 @@
-port module Session exposing (UserData, clearUserFromLocalStorageMsg, localStorageUserSub)
+port module Session exposing (UserData, clearUserFromLocalStorageMsg, getLocalStorageUserDataSender, localStorageUserSub)
 
 import Json.Decode exposing (Decoder, Value, decodeValue, field, int, map3, maybe, string)
 
 
 port receiveLocalStorageUser : (Value -> msg) -> Sub msg
+
+
+port getLocalStorageUserDataSender : () -> Cmd msg
 
 
 port clearUserLocalStorageSender : () -> Cmd msg
@@ -24,6 +27,16 @@ userDecoder =
         (field "profile_pic" (maybe string))
 
 
+decodeUser : Value -> Maybe UserData
+decodeUser val =
+    case decodeValue userDecoder val of
+        Ok v ->
+            Just v
+
+        Err _ ->
+            Nothing
+
+
 
 -- PUBLIC
 
@@ -31,14 +44,7 @@ userDecoder =
 localStorageUserSub : Sub (Maybe UserData)
 localStorageUserSub =
     receiveLocalStorageUser
-        (\l ->
-            case decodeValue userDecoder l of
-                Ok v ->
-                    Just v
-
-                Err _ ->
-                    Nothing
-        )
+        decodeUser
 
 
 clearUserFromLocalStorageMsg : Cmd msg

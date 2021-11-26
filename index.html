@@ -32,5 +32,17 @@
       localStorage.removeItem("user");
       app.ports.receiveLocalStorageUser.send(null);
     });
+
+    app.ports.getLocalStorageUserDataSender.subscribe(() => {
+      let userData;
+
+      try {
+        userData = JSON.parse(localStorage.getItem("user"));
+      } catch (e) {
+        userData = null;
+      }
+
+      app.ports.receiveLocalStorageUser.send(userData);
+    });
   </script>
 </html>
