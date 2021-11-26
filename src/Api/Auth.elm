@@ -1,7 +1,7 @@
 module Api.Auth exposing (logIn, logOut)
 
-import Api.Common exposing (baseUrl, postWithCredentials)
-import Http exposing (get, riskyRequest)
+import Api.Common exposing (endpoint, postWithCredentials)
+import Http exposing (get)
 import Json.Decode as JD exposing (Decoder)
 import Json.Encode as JE
 
@@ -9,7 +9,7 @@ import Json.Encode as JE
 logOut : a -> Cmd a
 logOut a =
     get
-        { url = baseUrl ++ "/auth/logout"
+        { url = endpoint [ "auth", "logout" ]
         , expect = Http.expectWhatever (\_ -> a)
         }
 

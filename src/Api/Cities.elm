@@ -1,6 +1,6 @@
 module Api.Cities exposing (City, getCities, postNewCity)
 
-import Api.Common exposing (baseUrl, postWithCredentials)
+import Api.Common exposing (endpoint, postWithCredentials)
 import Http exposing (jsonBody)
 import Json.Decode as JD exposing (Decoder)
 import Json.Encode as JE
@@ -16,7 +16,7 @@ type alias City =
 getCities : (Result Http.Error (List City) -> msg) -> Cmd msg
 getCities msg =
     Http.get
-        { url = baseUrl ++ "/cities"
+        { url = endpoint [ "cities" ]
         , expect = Http.expectJson msg (JD.list cityDecoder)
         }
 

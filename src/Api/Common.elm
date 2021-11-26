@@ -1,4 +1,4 @@
-module Api.Common exposing (baseUrl, endpoint, postWithCredentials)
+module Api.Common exposing (endpoint, postWithCredentials)
 
 import Http exposing (Body, Expect, Header, riskyRequest)
 
