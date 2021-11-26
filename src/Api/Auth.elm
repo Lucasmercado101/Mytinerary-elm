@@ -1,6 +1,6 @@
 module Api.Auth exposing (logIn, logOut)
 
-import Api.Common exposing (baseUrl)
+import Api.Common exposing (baseUrl, postWithCredentials)
 import Http exposing (get, riskyRequest)
 import Json.Decode as JD exposing (Decoder)
 import Json.Encode as JE
@@ -29,25 +29,20 @@ userDecoder =
         (JD.field "profile_pic" (JD.maybe JD.string))
 
 
+
+-- logIn : (Result Http.Error City -> msg) -> NewCity -> Cmd msg
+
+
 logIn :
-    { a
-        | username : String
-        , password : String
-    }
+    { a | username : String, password : String }
     -> (Result Http.Error UserData -> msg)
     -> Cmd msg
 logIn { username, password } msg =
-    riskyRequest
-        { method = "POST"
-        , url = baseUrl ++ "/auth/login"
-        , body =
-            Http.jsonBody <|
-                JE.object
-                    [ ( "username", JE.string username )
-                    , ( "password", JE.string password )
-                    ]
-        , expect = Http.expectJson msg userDecoder
-        , tracker = Nothing
-        , timeout = Nothing
-        , headers = []
-        }
+    postWithCredentials
+        (Http.jsonBody <|
+            JE.object
+                [ ( "username", JE.string username )
+                , ( "password", JE.string password )
+                ]
+        )
+        (Http.expectJson msg userDecoder)

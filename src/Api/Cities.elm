@@ -1,7 +1,7 @@
 module Api.Cities exposing (City, getCities, postNewCity)
 
-import Api.Common exposing (baseUrl)
-import Http exposing (jsonBody, riskyRequest)
+import Api.Common exposing (baseUrl, postWithCredentials)
+import Http exposing (jsonBody)
 import Json.Decode as JD exposing (Decoder)
 import Json.Encode as JE
 
@@ -49,12 +49,6 @@ newCityEncoder { country, name } =
 
 postNewCity : (Result Http.Error City -> msg) -> NewCity -> Cmd msg
 postNewCity msg newCityData =
-    riskyRequest
-        { method = "POST"
-        , url = baseUrl ++ "/cities"
-        , body = newCityEncoder newCityData |> jsonBody
-        , expect = Http.expectJson msg cityDecoder
-        , timeout = Nothing
-        , tracker = Nothing
-        , headers = []
-        }
+    postWithCredentials
+        (jsonBody <| newCityEncoder newCityData)
+        (Http.expectJson msg cityDecoder)
