@@ -51,5 +51,8 @@ postNewCity : (Result Http.Error City -> msg) -> NewCity -> Cmd msg
 postNewCity msg newCityData =
     postWithCredentials
         (endpoint [ "cities" ])
-        (jsonBody <| newCityEncoder newCityData)
+        (newCityData
+            |> newCityEncoder
+            |> jsonBody
+        )
         (Http.expectJson msg cityDecoder)
