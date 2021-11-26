@@ -1,7 +1,7 @@
 module Api.Cities exposing (City, getCities, postNewCity)
 
 import Api.Common exposing (baseUrl)
-import Http exposing (jsonBody, request, riskyRequest)
+import Http exposing (jsonBody, riskyRequest)
 import Json.Decode as JD exposing (Decoder)
 import Json.Encode as JE
 
