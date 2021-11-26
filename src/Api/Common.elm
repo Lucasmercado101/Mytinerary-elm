@@ -6,6 +6,7 @@ import Http exposing (Body, Expect, Header, riskyRequest)
 requestBody :
     Body
     -> Expect msg
+    -> String
     ->
         { method : String
         , headers : List Header
@@ -15,9 +16,9 @@ requestBody :
         , timeout : Maybe Float
         , tracker : Maybe String
         }
-requestBody body expect =
+requestBody body expect endpointStr =
     { method = "POST"
-    , url = baseUrl ++ "/cities"
+    , url = endpointStr
     , body = body
     , expect = expect
     , timeout = Nothing
@@ -35,9 +36,9 @@ baseUrl =
     "http://localhost:8001"
 
 
-postWithCredentials : Body -> Expect msg -> Cmd msg
-postWithCredentials body expect =
-    riskyRequest (requestBody body expect)
+postWithCredentials : String -> Body -> Expect msg -> Cmd msg
+postWithCredentials endpointStr body expect =
+    riskyRequest (requestBody body expect endpointStr)
 
 
 endpoint : List String -> String

@@ -39,6 +39,7 @@ logIn :
     -> Cmd msg
 logIn { username, password } msg =
     postWithCredentials
+        (endpoint [ "auth", "login" ])
         (Http.jsonBody <|
             JE.object
                 [ ( "username", JE.string username )

@@ -50,5 +50,6 @@ newCityEncoder { country, name } =
 postNewCity : (Result Http.Error City -> msg) -> NewCity -> Cmd msg
 postNewCity msg newCityData =
     postWithCredentials
+        (endpoint [ "cities" ])
         (jsonBody <| newCityEncoder newCityData)
         (Http.expectJson msg cityDecoder)
