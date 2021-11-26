@@ -1,89 +1,17 @@
 module Pages.City exposing (Model, Msg, init, update, view)
 
+import Api.City exposing (City, Itinerary)
 import Browser
 import Html exposing (Html, div, h1, h2, h3, img, li, p, text, ul)
 import Html.Attributes exposing (class, src, style)
 import Http
-import Json.Decode as Decode exposing (Decoder, field, int, list, string)
 import Svg exposing (svg)
 import Svg.Attributes exposing (d, fill, stroke, strokeLinecap, strokeLinejoin, strokeWidth, viewBox)
 
 
-type alias CityData =
-    { id : Int
-    , name : String
-    , country : String
-    , itineraries : List ItineraryData
-    }
-
-
-type alias ItineraryData =
-    { id : Int
-    , title : String
-    , time : Int
-    , price : Int
-    , activities : List String
-    , hashtags : List String
-    , comments : List Comment
-    , creator : Author
-    }
-
-
-type alias Comment =
-    { id : Int
-    , comment : String
-    , author : Author
-    }
-
-
-type alias Author =
-    { id : Int
-    , profilePic : Maybe String
-    , username : String
-    }
-
-
-cityDataDecoder : Decoder CityData
-cityDataDecoder =
-    Decode.map4 CityData
-        (field "id" int)
-        (field "name" string)
-        (field "country" string)
-        (field "itineraries" (list itineraryDataDecoder))
-
-
-itineraryDataDecoder : Decoder ItineraryData
-itineraryDataDecoder =
-    Decode.map8 ItineraryData
-        (field "id" int)
-        (field "title" string)
-        (field "time" int)
-        (field "price" int)
-        (field "activities" (list string))
-        (field "hashtags" (list string))
-        (field "comments" (list commentDecoder))
-        (field "creator" authorDecoder)
-
-
-commentDecoder : Decoder Comment
-commentDecoder =
-    Decode.map3 Comment
-        (field "id" int)
-        (field "comment" string)
-        (field "author" authorDecoder)
-
-
-authorDecoder : Decoder Author
-authorDecoder =
-    Decode.map3 Author
-        (field "id" int)
-        (field "profilePic" (Decode.maybe string))
-        (field "username" string)
-
-
 type CityDataRequest
     = Loading
-    | Loaded CityData
+    | Loaded City
     | Error Http.Error
 
 
@@ -92,24 +20,12 @@ type Model
 
 
 type Msg
-    = GotCity (Result Http.Error CityData)
-
-
-getCity : Int -> Cmd Msg
-getCity cityId =
-    Http.get
-        { url = baseUrl ++ "/cities/" ++ String.fromInt cityId
-        , expect = Http.expectJson GotCity cityDataDecoder
-        }
-
-
-baseUrl =
-    "http://localhost:8001"
+    = GotCity (Result Http.Error City)
 
 
 init : Int -> ( Model, Cmd Msg )
 init cityId =
-    ( Model cityId Loading, getCity cityId )
+    ( Model cityId Loading, Api.City.getCity cityId GotCity )
 
 
 update : Msg -> Model -> ( Model, Cmd msg )
@@ -174,7 +90,7 @@ view (Model _ res) =
     }
 
 
-itinerary : ItineraryData -> Html msg
+itinerary : Itinerary -> Html msg
 itinerary data =
     div [ class "mt-3 flex flex-col rounded shadow-sm p-3 bg-white md:h-full md:justify-between" ]
         [ div [ class "flex flex-row mb-2" ]
