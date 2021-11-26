@@ -1,13 +1,12 @@
 module Pages.Register exposing (Model, Msg, init, update, view)
 
+import Api.Auth exposing (User)
 import Browser
 import Browser.Navigation as Nav
 import Html exposing (button, div, form, input, label, text)
 import Html.Attributes exposing (class, classList, disabled, for, id, placeholder, required, type_, value)
 import Html.Events exposing (onInput, onSubmit)
-import Http exposing (expectJson, post)
-import Json.Decode exposing (Decoder, field, int, map2, string)
-import Json.Encode as Encode exposing (object)
+import Http
 
 
 type alias Model =
@@ -28,7 +27,7 @@ type Msg
     = ChangeUsername String
     | ChangePassword String
     | SubmitForm
-    | GotUserData (Result Http.Error UserData)
+    | GotUserData (Result Http.Error User)
 
 
 init : Nav.Key -> ( Model, Cmd msg )
@@ -42,37 +41,6 @@ init key =
     )
 
 
-type alias UserData =
-    { id : Int
-    , username : String
-    }
-
-
-userDecoder : Decoder UserData
-userDecoder =
-    map2 UserData
-        (field "id" int)
-        (field "username" string)
-
-
-baseUrl =
-    "http://localhost:8001"
-
-
-registerUser : Model -> Cmd Msg
-registerUser model =
-    Http.post
-        { url = baseUrl ++ "/auth/register"
-        , body =
-            Http.jsonBody <|
-                object
-                    [ ( "username", Encode.string model.username )
-                    , ( "password", Encode.string model.password )
-                    ]
-        , expect = Http.expectJson GotUserData userDecoder
-        }
-
-
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -83,7 +51,7 @@ update msg model =
             ( { model | password = password }, Cmd.none )
 
         SubmitForm ->
-            ( { model | registeringState = Registering }, registerUser model )
+            ( { model | registeringState = Registering }, Api.Auth.registerUser model GotUserData )
 
         GotUserData res ->
             case res of
