@@ -29,21 +29,31 @@ userDecoder =
         (JD.field "profile_pic" (JD.maybe JD.string))
 
 
+type alias LogInUserInput a =
+    { a | username : String, password : String }
 
--- logIn : (Result Http.Error City -> msg) -> NewCity -> Cmd msg
+
+loginUserEncoder : LogInUserInput () -> JE.Value
+loginUserEncoder { username, password } =
+    JE.object
+        [ ( "username", JE.string username )
+        , ( "password", JE.string password )
+        ]
+
+
+
+-- PUBLIC
 
 
 logIn :
-    { a | username : String, password : String }
+    LogInUserInput ()
     -> (Result Http.Error UserData -> msg)
     -> Cmd msg
-logIn { username, password } msg =
+logIn user msg =
     postWithCredentials
         (endpoint [ "auth", "login" ])
-        (Http.jsonBody <|
-            JE.object
-                [ ( "username", JE.string username )
-                , ( "password", JE.string password )
-                ]
+        (user
+            |> loginUserEncoder
+            |> Http.jsonBody
         )
         (Http.expectJson msg userDecoder)
