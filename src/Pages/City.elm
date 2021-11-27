@@ -30,7 +30,9 @@ type alias Model =
     -- New itinerary
     , isNewItineraryModalOpen : Bool
     , newItineraryName : String
-    , newItineraryActivities : List String
+    , newItineraryFirstActivity : String
+    , newItineraryRestActivities : List ( Int, String )
+    , newItineraryActivitiesIdx : Int
     , newItineraryTags :
         { t1 : String
         , t2 : String
@@ -48,12 +50,13 @@ type Msg
       -- New Itinerary
     | ToggleModal
     | ChangeNewItineraryName String
-      -- | ChangeNewItineraryActivities List String
     | ChangeTag1 String
     | ChangeTag2 String
     | ChangeTag3 String
     | ChangeNewItineraryTime String
     | ChangeNewItineraryPrice String
+    | ChangeFirstActivity String
+    | ChangeActivity Int String
     | SubmitForm
 
 
@@ -63,7 +66,9 @@ init cityId =
       , cityData = Loading
       , userSession = Nothing
       , newItineraryName = ""
-      , newItineraryActivities = []
+      , newItineraryFirstActivity = ""
+      , newItineraryRestActivities = [ ( 0, "" ) ]
+      , newItineraryActivitiesIdx = 0
       , newItineraryTags =
             { t1 = ""
             , t2 = ""
@@ -131,6 +136,29 @@ update msg model =
                     model.newItineraryTags
             in
             ( { model | newItineraryTags = { tags | t3 = newTag } }, Cmd.none )
+
+        ChangeFirstActivity newFirstActivity ->
+            ( { model | newItineraryFirstActivity = newFirstActivity }, Cmd.none )
+
+        ChangeActivity idx newActivity ->
+            let
+                activities =
+                    model.newItineraryRestActivities
+            in
+            ( { model
+                | newItineraryRestActivities =
+                    List.map
+                        (\( id, act ) ->
+                            if idx == id then
+                                ( id, newActivity )
+
+                            else
+                                ( id, act )
+                        )
+                        activities
+              }
+            , Cmd.none
+            )
 
 
 view : Model -> Browser.Document Msg
@@ -265,7 +293,7 @@ clockSvg =
 
 
 modal : Model -> Html Msg
-modal { newItineraryActivities, newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime, isCreatingNewItinerary } =
+modal { newItineraryRestActivities, newItineraryFirstActivity, newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime, isCreatingNewItinerary } =
     let
         registerDisabled =
             newItineraryName
@@ -274,10 +302,12 @@ modal { newItineraryActivities, newItineraryName, newItineraryPrice, newItinerar
                 == 0
                 || newItineraryTime
                 == 0
-                || List.length newItineraryActivities
-                == 0
                 || newItineraryTags.t1
                 == ""
+                || String.length newItineraryFirstActivity
+                == 0
+
+        -- TODO other tags, and rest activities
     in
     div [ class "fixed z-50 inset-0 overflow-y-auto" ]
         [ div [ class "flex items-center justify-center min-h-screen px-4 text-center sm:block sm:p-0" ]
@@ -393,7 +423,21 @@ modal { newItineraryActivities, newItineraryName, newItineraryPrice, newItinerar
                             [ text "Activities" ]
                         , div
                             [ class "flex flex-col" ]
-                            []
+                            [ label
+                                [ class "block text-gray-700 text-sm font-bold mb-2"
+                                , for "activity-0"
+                                ]
+                                [ text "Activity #1" ]
+                            , input
+                                [ required True
+                                , value newItineraryFirstActivity
+                                , onInput ChangeFirstActivity
+                                , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                , id "activity-0"
+                                , type_ "text"
+                                ]
+                                []
+                            ]
                         ]
                     , div [ class "flex ml-auto gap-x-4" ]
                         [ button [ class "px-4 py-2", type_ "button", onClick ToggleModal ] [ text "Cancel" ]
