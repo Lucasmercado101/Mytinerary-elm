@@ -130,8 +130,8 @@ init =
     )
 
 
-subscriptions : Model -> Sub Msg
-subscriptions _ =
+subscriptions : Sub Msg
+subscriptions =
     Sub.map GotUserData Session.localStorageUserSub
 
 
