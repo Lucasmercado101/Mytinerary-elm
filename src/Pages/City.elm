@@ -2,8 +2,9 @@ module Pages.City exposing (Model, Msg, init, subscriptions, update, view)
 
 import Api.City exposing (City, Itinerary)
 import Browser
-import Html exposing (Html, div, h1, h2, h3, img, li, p, text, ul)
-import Html.Attributes exposing (class, src)
+import Html exposing (Html, button, div, form, h1, h2, h3, img, input, label, li, p, span, text, ul)
+import Html.Attributes exposing (class, classList, disabled, for, id, placeholder, required, src, type_, value)
+import Html.Events exposing (onClick, onInput, onSubmit)
 import Http
 import Session exposing (UserData)
 import Svg exposing (svg)
@@ -25,12 +26,35 @@ type alias Model =
     { cityId : Int
     , cityData : CityDataRequest
     , userSession : Maybe UserData
+
+    -- New itinerary
+    , isNewItineraryModalOpen : Bool
+    , newItineraryName : String
+    , newItineraryActivities : List String
+    , newItineraryTags :
+        { t1 : String
+        , t2 : String
+        , t3 : String
+        }
+    , newItineraryTime : Int
+    , newItineraryPrice : Int
+    , isCreatingNewItinerary : Bool
     }
 
 
 type Msg
     = GotCity (Result Http.Error City)
     | GotUser (Maybe UserData)
+      -- New Itinerary
+    | ToggleModal
+    | ChangeNewItineraryName String
+      -- | ChangeNewItineraryActivities List String
+    | ChangeTag1 String
+    | ChangeTag2 String
+    | ChangeTag3 String
+    | ChangeNewItineraryTime String
+    | ChangeNewItineraryPrice String
+    | SubmitForm
 
 
 init : Int -> ( Model, Cmd Msg )
@@ -38,6 +62,17 @@ init cityId =
     ( { cityId = cityId
       , cityData = Loading
       , userSession = Nothing
+      , newItineraryName = ""
+      , newItineraryActivities = []
+      , newItineraryTags =
+            { t1 = ""
+            , t2 = ""
+            , t3 = ""
+            }
+      , newItineraryTime = 0
+      , newItineraryPrice = 0
+      , isNewItineraryModalOpen = False
+      , isCreatingNewItinerary = False
       }
     , Cmd.batch
         [ Api.City.getCity cityId GotCity
@@ -60,9 +95,46 @@ update msg model =
         GotUser userSession ->
             ( { model | userSession = userSession }, Cmd.none )
 
+        -- New Itinerary
+        SubmitForm ->
+            Debug.todo "Submit form"
+
+        ToggleModal ->
+            ( { model | isNewItineraryModalOpen = not model.isNewItineraryModalOpen }, Cmd.none )
+
+        ChangeNewItineraryName newItineraryName ->
+            ( { model | newItineraryName = newItineraryName }, Cmd.none )
+
+        ChangeNewItineraryTime newItineraryTime ->
+            ( { model | newItineraryTime = Maybe.withDefault 0 (String.toInt newItineraryTime) }, Cmd.none )
+
+        ChangeNewItineraryPrice newItineraryPrice ->
+            ( { model | newItineraryPrice = Maybe.withDefault 0 (String.toInt newItineraryPrice) }, Cmd.none )
+
+        ChangeTag1 newTag ->
+            let
+                tags =
+                    model.newItineraryTags
+            in
+            ( { model | newItineraryTags = { tags | t1 = newTag } }, Cmd.none )
+
+        ChangeTag2 newTag ->
+            let
+                tags =
+                    model.newItineraryTags
+            in
+            ( { model | newItineraryTags = { tags | t2 = newTag } }, Cmd.none )
+
+        ChangeTag3 newTag ->
+            let
+                tags =
+                    model.newItineraryTags
+            in
+            ( { model | newItineraryTags = { tags | t3 = newTag } }, Cmd.none )
+
 
 view : Model -> Browser.Document Msg
-view { cityData } =
+view ({ cityData } as model) =
     let
         cityName =
             case cityData of
@@ -94,6 +166,14 @@ view { cityData } =
                         [ h2
                             [ class "pt-2 text-center text-2xl" ]
                             [ text "Itineraries" ]
+                        , div [ class "px-2 my-2" ]
+                            [ button
+                                [ onClick ToggleModal
+                                , class "mx-auto w-full md:w-64 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                ]
+                                [ text "Create Itinerary"
+                                ]
+                            ]
                         , if List.length itineraries == 0 then
                             p [ class "text-xl text-center mt-5" ] [ text "There are no itineraries" ]
 
@@ -117,6 +197,11 @@ view { cityData } =
 
                     _ ->
                         p [ class "text-center text-xl mt-5" ] [ text "An unknown error ocurred, please refresh the page and try again." ]
+        , if model.isNewItineraryModalOpen then
+            modal model
+
+          else
+            text ""
         ]
     }
 
@@ -176,4 +261,161 @@ clockSvg =
             , d "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
             ]
             []
+        ]
+
+
+modal : Model -> Html Msg
+modal { newItineraryActivities, newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime, isCreatingNewItinerary } =
+    let
+        registerDisabled =
+            newItineraryName
+                == ""
+                || newItineraryPrice
+                == 0
+                || newItineraryTime
+                == 0
+                || List.length newItineraryActivities
+                == 0
+                || newItineraryTags.t1
+                == ""
+    in
+    div [ class "fixed z-50 inset-0 overflow-y-auto" ]
+        [ div [ class "flex items-center justify-center min-h-screen px-4 text-center sm:block sm:p-0" ]
+            [ div [ class "fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity", onClick ToggleModal ]
+                []
+            , span [ class "hidden sm:inline-block sm:align-middle sm:h-screen" ]
+                [ text "\u{200B}" ]
+            , div [ class "py-6 inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" ]
+                [ h2 [ class "text-2xl text-center mb-4" ] [ text "New City" ]
+                , form
+                    [ onSubmit SubmitForm
+                    , class
+                        "flex flex-col container mx-auto px-4 gap-y-4"
+                    ]
+                    [ div []
+                        [ label [ class "block text-gray-700 text-sm font-bold mb-2", for "itinerary-name" ]
+                            [ text "Name*" ]
+                        , input
+                            [ required True
+                            , value newItineraryName
+                            , onInput ChangeNewItineraryName
+                            , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            , placeholder "name"
+                            , id "itinerary-name"
+                            , type_ "text"
+                            ]
+                            []
+                        ]
+                    , div []
+                        [ label [ class "block text-gray-700 text-sm font-bold mb-2", for "price" ]
+                            [ text "Price*" ]
+                        , input
+                            [ required True
+                            , value (String.fromInt newItineraryPrice)
+                            , onInput ChangeNewItineraryPrice
+                            , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            , id "price"
+                            , type_ "number"
+                            , Html.Attributes.min "1"
+                            ]
+                            []
+                        ]
+                    , div []
+                        [ label [ class "block text-gray-700 text-sm font-bold mb-2", for "time" ]
+                            [ text "Time*" ]
+                        , input
+                            [ required True
+                            , value (String.fromInt newItineraryTime)
+                            , onInput ChangeNewItineraryTime
+                            , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            , id "time"
+                            , type_ "number"
+                            , Html.Attributes.min "1"
+                            ]
+                            []
+                        ]
+                    , div []
+                        [ p [ class "block text-gray-700 text-xl mb-2" ]
+                            [ text "Tags" ]
+                        , div [ class "flex flex-col gap-y-4" ]
+                            [ div []
+                                [ label
+                                    [ class "block text-gray-700 text-sm font-bold mb-2"
+                                    , for "tag-1"
+                                    ]
+                                    [ text "Tag #1" ]
+                                , input
+                                    [ required True
+                                    , value newItineraryTags.t1
+                                    , onInput ChangeTag1
+                                    , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    , id "tag-1"
+                                    , type_ "text"
+                                    ]
+                                    []
+                                ]
+                            , div []
+                                [ label
+                                    [ class "block text-gray-700 text-sm font-bold mb-2"
+                                    , for "tag-2"
+                                    ]
+                                    [ text "Tag #2" ]
+                                , input
+                                    [ required True
+                                    , value newItineraryTags.t2
+                                    , onInput ChangeTag2
+                                    , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    , id "tag-2"
+                                    , type_ "text"
+                                    ]
+                                    []
+                                ]
+                            , div []
+                                [ label
+                                    [ class "block text-gray-700 text-sm font-bold mb-2"
+                                    , for "tag-3"
+                                    ]
+                                    [ text "Tag #3" ]
+                                , input
+                                    [ required True
+                                    , value newItineraryTags.t3
+                                    , onInput ChangeTag3
+                                    , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    , id "tag-3"
+                                    , type_ "text"
+                                    ]
+                                    []
+                                ]
+                            ]
+                        ]
+                    , div [ class "flex flex-col" ]
+                        [ p [ class "block text-gray-700 text-xl mb-2" ]
+                            [ text "Activities" ]
+                        , div
+                            [ class "flex flex-col" ]
+                            []
+                        ]
+                    , div [ class "flex ml-auto gap-x-4" ]
+                        [ button [ class "px-4 py-2", type_ "button", onClick ToggleModal ] [ text "Cancel" ]
+                        , button
+                            [ type_ "submit"
+                            , class "font-bold py-2 px-4 rounded"
+                            , classList
+                                [ ( "bg-blue-700 hover:bg-blue-700 text-white", not registerDisabled )
+                                , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", registerDisabled )
+                                ]
+                            , disabled (registerDisabled || isCreatingNewItinerary)
+                            ]
+                            [ text
+                                (if isCreatingNewItinerary then
+                                    "Creating..."
+
+                                 else
+                                    "Create"
+                                )
+                            ]
+                        ]
+                    ]
+                ]
+            ]
         ]
