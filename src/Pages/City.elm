@@ -106,10 +106,14 @@ view { cityData } =
             Error err ->
                 case err of
                     Http.BadStatus int ->
-                        div [ class "flex flex-col text-center mt-12" ]
-                            [ p [ class "text-6xl font-bold" ] [ text "404" ]
-                            , p [ class "text-3xl" ] [ text "City not found" ]
-                            ]
+                        if int == 404 then
+                            div [ class "flex flex-col text-center mt-12" ]
+                                [ p [ class "text-6xl font-bold" ] [ text "404" ]
+                                , p [ class "text-3xl" ] [ text "City not found" ]
+                                ]
+
+                        else
+                            p [ class "text-center text-xl mt-5" ] [ text "An unknown error ocurred, please refresh the page and try again." ]
 
                     _ ->
                         p [ class "text-center text-xl mt-5" ] [ text "An unknown error ocurred, please refresh the page and try again." ]
