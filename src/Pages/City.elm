@@ -1,12 +1,18 @@
-module Pages.City exposing (Model, Msg, init, update, view)
+module Pages.City exposing (Model, Msg, init, subscriptions, update, view)
 
 import Api.City exposing (City, Itinerary)
 import Browser
 import Html exposing (Html, div, h1, h2, h3, img, li, p, text, ul)
 import Html.Attributes exposing (class, src)
 import Http
+import Session exposing (UserData)
 import Svg exposing (svg)
 import Svg.Attributes exposing (d, fill, stroke, strokeLinecap, strokeLinejoin, strokeWidth, viewBox)
+
+
+subscriptions : Sub Msg
+subscriptions =
+    Sub.map GotUser Session.localStorageUserSub
 
 
 type CityDataRequest
@@ -15,38 +21,51 @@ type CityDataRequest
     | Error Http.Error
 
 
-type Model
-    = Model Int CityDataRequest
+type alias Model =
+    { cityId : Int
+    , cityData : CityDataRequest
+    , userSession : Maybe UserData
+    }
 
 
 type Msg
     = GotCity (Result Http.Error City)
+    | GotUser (Maybe UserData)
 
 
 init : Int -> ( Model, Cmd Msg )
 init cityId =
-    ( Model cityId Loading, Api.City.getCity cityId GotCity )
+    ( { cityId = cityId
+      , cityData = Loading
+      , userSession = Nothing
+      }
+    , Cmd.batch
+        [ Api.City.getCity cityId GotCity
+        , Session.getLocalStorageUserDataSender ()
+        ]
+    )
 
 
 update : Msg -> Model -> ( Model, Cmd msg )
 update msg model =
     case msg of
         GotCity res ->
-            case model of
-                Model cityId _ ->
-                    case res of
-                        Ok cityData ->
-                            ( Model cityId (Loaded cityData), Cmd.none )
+            case res of
+                Ok data ->
+                    ( { model | cityData = Loaded data }, Cmd.none )
 
-                        Err err ->
-                            ( Model cityId (Error err), Cmd.none )
+                Err err ->
+                    ( { model | cityData = Error err }, Cmd.none )
+
+        GotUser userSession ->
+            ( { model | userSession = userSession }, Cmd.none )
 
 
 view : Model -> Browser.Document Msg
-view (Model _ res) =
+view ({ cityData } as model) =
     let
         cityName =
-            case res of
+            case cityData of
                 Loading ->
                     "Loading city..."
 
@@ -58,29 +77,29 @@ view (Model _ res) =
     in
     { title = cityName
     , body =
-        [ case res of
+        [ case cityData of
             Loading ->
                 text "Loading"
 
-            Loaded cityData ->
+            Loaded { country, itineraries, name } ->
                 div [ class "h-full flex flex-col" ]
                     [ div
                         [ class "block relative py-8 text-white text-center"
                         ]
-                        [ img [ class "city-bgr bg-black", src ("https://source.unsplash.com/featured/?" ++ cityData.name) ] []
-                        , h1 [ class "text-3xl font-semibold mb-2" ] [ text cityData.name ]
-                        , p [ class "text-2xl" ] [ text cityData.country ]
+                        [ img [ class "city-bgr bg-black", src ("https://source.unsplash.com/featured/?" ++ name) ] []
+                        , h1 [ class "text-3xl font-semibold mb-2" ] [ text name ]
+                        , p [ class "text-2xl" ] [ text country ]
                         ]
                     , div [ class "bg-gray-200 flex-grow" ]
                         [ h2
                             [ class "pt-2 text-center text-2xl" ]
                             [ text "Itineraries" ]
-                        , if List.length cityData.itineraries == 0 then
+                        , if List.length itineraries == 0 then
                             p [ class "text-xl text-center mt-5" ] [ text "There are no itineraries" ]
 
                           else
                             ul [ class "container mx-auto px-4 pb-4 flex flex-col md:flex-row items-stretch" ]
-                                (List.map (\l -> li [ class "md:w-1/2 xl:w-1/3 w-full p-2" ] [ itinerary l ]) cityData.itineraries)
+                                (List.map (\l -> li [ class "md:w-1/2 xl:w-1/3 w-full p-2" ] [ itinerary l ]) itineraries)
                         ]
                     ]
 

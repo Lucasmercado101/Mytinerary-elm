@@ -6,11 +6,11 @@ import Browser.Navigation as Nav
 import Html exposing (Html, a, button, div, img, li, p, text, ul)
 import Html.Attributes exposing (class, classList, href, src)
 import Html.Events exposing (onClick)
-import Pages.Cities as Cities exposing (Model, Msg, init, view)
-import Pages.City as City exposing (Model, Msg, init, update, view)
-import Pages.Landing as Landing exposing (view)
-import Pages.Login as Login exposing (Model, Msg, init, update, view)
-import Pages.Register as Register exposing (Model, Msg, init, update, view)
+import Pages.Cities as Cities
+import Pages.City as City
+import Pages.Landing as Landing
+import Pages.Login as Login
+import Pages.Register as Register
 import Session exposing (UserSession(..))
 import Svg exposing (svg)
 import Svg.Attributes
@@ -21,8 +21,11 @@ import Url.Parser as Parser exposing ((</>), Parser, s)
 subscriptions : Model -> Sub Msg
 subscriptions { page } =
     case page of
-        CitiesPage citiesModel ->
-            Sub.map GotCitiesMsg (Cities.subscriptions citiesModel)
+        CitiesPage _ ->
+            Sub.map GotCitiesMsg Cities.subscriptions
+
+        CityPage _ ->
+            Sub.map GotCityMsg City.subscriptions
 
         _ ->
             Sub.map ReceivedUser Session.localStorageUserSub
