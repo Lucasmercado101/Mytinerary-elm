@@ -62,7 +62,7 @@ update msg model =
 
 
 view : Model -> Browser.Document Msg
-view ({ cityData } as model) =
+view { cityData } =
     let
         cityName =
             case cityData of
@@ -103,8 +103,16 @@ view ({ cityData } as model) =
                         ]
                     ]
 
-            Error _ ->
-                text "Error"
+            Error err ->
+                case err of
+                    Http.BadStatus int ->
+                        div [ class "flex flex-col text-center mt-12" ]
+                            [ p [ class "text-6xl font-bold" ] [ text "404" ]
+                            , p [ class "text-3xl" ] [ text "City not found" ]
+                            ]
+
+                    _ ->
+                        p [ class "text-center text-xl mt-5" ] [ text "An unknown error ocurred, please refresh the page and try again." ]
         ]
     }
 
