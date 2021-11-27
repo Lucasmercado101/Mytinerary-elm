@@ -3,7 +3,7 @@ module Pages.City exposing (Model, Msg, init, update, view)
 import Api.City exposing (City, Itinerary)
 import Browser
 import Html exposing (Html, div, h1, h2, h3, img, li, p, text, ul)
-import Html.Attributes exposing (class, src, style)
+import Html.Attributes exposing (class, src)
 import Http
 import Svg exposing (svg)
 import Svg.Attributes exposing (d, fill, stroke, strokeLinecap, strokeLinejoin, strokeWidth, viewBox)
