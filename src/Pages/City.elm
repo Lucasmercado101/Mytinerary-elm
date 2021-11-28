@@ -56,6 +56,7 @@ type Msg
     | ChangeNewItineraryTime String
     | ChangeNewItineraryPrice String
     | ChangeFirstActivity String
+    | AddActivity
     | ChangeActivity Int String
     | SubmitForm
 
@@ -67,7 +68,7 @@ init cityId =
       , userSession = Nothing
       , newItineraryName = ""
       , newItineraryFirstActivity = ""
-      , newItineraryRestActivities = [ ( 0, "" ) ]
+      , newItineraryRestActivities = []
       , newItineraryActivitiesIdx = 0
       , newItineraryTags =
             { t1 = ""
@@ -139,6 +140,18 @@ update msg model =
 
         ChangeFirstActivity newFirstActivity ->
             ( { model | newItineraryFirstActivity = newFirstActivity }, Cmd.none )
+
+        AddActivity ->
+            let
+                newIdx =
+                    model.newItineraryActivitiesIdx + 1
+            in
+            ( { model
+                | newItineraryRestActivities = ( newIdx, "" ) :: model.newItineraryRestActivities
+                , newItineraryActivitiesIdx = newIdx
+              }
+            , Cmd.none
+            )
 
         ChangeActivity idx newActivity ->
             let
@@ -293,7 +306,7 @@ clockSvg =
 
 
 modal : Model -> Html Msg
-modal { newItineraryRestActivities, newItineraryFirstActivity, newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime, isCreatingNewItinerary } =
+modal ({ newItineraryFirstActivity, newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime, isCreatingNewItinerary } as model) =
     let
         registerDisabled =
             newItineraryName
@@ -418,27 +431,7 @@ modal { newItineraryRestActivities, newItineraryFirstActivity, newItineraryName,
                                 ]
                             ]
                         ]
-                    , div [ class "flex flex-col" ]
-                        [ p [ class "block text-gray-700 text-xl mb-2" ]
-                            [ text "Activities" ]
-                        , div
-                            [ class "flex flex-col" ]
-                            [ label
-                                [ class "block text-gray-700 text-sm font-bold mb-2"
-                                , for "activity-0"
-                                ]
-                                [ text "Activity #1" ]
-                            , input
-                                [ required True
-                                , value newItineraryFirstActivity
-                                , onInput ChangeFirstActivity
-                                , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                , id "activity-0"
-                                , type_ "text"
-                                ]
-                                []
-                            ]
-                        ]
+                    , formActivities model
                     , div [ class "flex ml-auto gap-x-4" ]
                         [ button [ class "px-4 py-2", type_ "button", onClick ToggleModal ] [ text "Cancel" ]
                         , button
@@ -462,4 +455,69 @@ modal { newItineraryRestActivities, newItineraryFirstActivity, newItineraryName,
                     ]
                 ]
             ]
+        ]
+
+
+formActivities : Model -> Html Msg
+formActivities { newItineraryFirstActivity, newItineraryRestActivities } =
+    let
+        restActivities =
+            List.indexedMap
+                (\i ( idxNumber, content ) ->
+                    let
+                        idx =
+                            String.fromInt idxNumber
+                    in
+                    div
+                        [ class "flex flex-col" ]
+                        [ label
+                            [ class "block text-gray-700 text-sm font-bold mb-2"
+                            , for ("activity-" ++ idx)
+                            ]
+                            [ text ("Activity #" ++ String.fromInt (i + 2))
+                            ]
+                        , input
+                            [ required True
+                            , value content
+                            , onInput (ChangeActivity idxNumber)
+                            , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            , id ("activity-" ++ idx)
+                            , type_ "text"
+                            ]
+                            []
+                        ]
+                )
+                newItineraryRestActivities
+    in
+    div [ class "flex flex-col" ]
+        [ p [ class "block text-gray-700 text-xl mb-2" ]
+            [ text "Activities" ]
+        , div
+            [ class "flex flex-col gap-y-4" ]
+            (div [ class "flex flex-col" ]
+                [ label
+                    [ class "block text-gray-700 text-sm font-bold mb-2"
+                    , for "activity-0"
+                    ]
+                    [ text "Activity #1" ]
+                , input
+                    [ required True
+                    , value newItineraryFirstActivity
+                    , onInput ChangeFirstActivity
+                    , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    , id "activity-0"
+                    , type_ "text"
+                    ]
+                    []
+                ]
+                :: restActivities
+                ++ [ button
+                        [ class "mx-auto w-full md:w-64 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        , type_ "button"
+                        , onClick AddActivity
+                        ]
+                        [ text "Add Activity"
+                        ]
+                   ]
+            )
         ]
