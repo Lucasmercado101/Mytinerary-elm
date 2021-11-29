@@ -1,6 +1,6 @@
-module Api.Itineraries exposing (NewItinerary, NewItineraryResponse, postItinerary)
+module Api.Itineraries exposing (NewItinerary, NewItineraryResponse, deleteItinerary, postItinerary)
 
-import Api.Common exposing (endpoint, postWithCredentials)
+import Api.Common exposing (deleteWithCredentials, endpoint, postWithCredentials)
 import Http exposing (jsonBody)
 import Json.Decode as JD exposing (Decoder)
 import Json.Encode as JE
@@ -64,3 +64,10 @@ postItinerary cityId data msg =
             |> jsonBody
         )
         (Http.expectJson msg newItinerayDecoder)
+
+
+deleteItinerary : Int -> msg -> Cmd msg
+deleteItinerary itineraryId a =
+    deleteWithCredentials
+        (endpoint [ "itinerary", String.fromInt itineraryId ])
+        (Http.expectWhatever (\_ -> a))
