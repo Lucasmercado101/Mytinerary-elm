@@ -320,6 +320,7 @@ itinerary data =
               else
                 img [ class "pointer-events-none w-12 h-12 rounded-full" ] []
             , h3 [ class "ml-3 self-center text-lg truncate" ] [ text data.title ]
+            , button [ class "w-12 h-12 ml-auto" ] [ div [ class "flex w-12 h-12" ] [ verticalDotsSvg ] ]
             ]
         , div [ class "flex flex-grow" ]
             [ div [ class "flex-grow" ]
@@ -654,7 +655,7 @@ xSvg =
 verticalDotsSvg : Html msg
 verticalDotsSvg =
     svg
-        [ Svg.Attributes.class "h-6 w-6"
+        [ Svg.Attributes.class "m-auto text-center h-6 w-6"
         , Svg.Attributes.fill "none"
         , Svg.Attributes.viewBox "0 0 24 24"
         , Svg.Attributes.stroke "currentColor"
