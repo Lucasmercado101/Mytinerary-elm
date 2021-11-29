@@ -319,7 +319,7 @@ itinerary data =
 
               else
                 img [ class "pointer-events-none w-12 h-12 rounded-full" ] []
-            , h3 [ class "ml-3 self-center text-lg" ] [ text data.title ]
+            , h3 [ class "ml-3 self-center text-lg truncate" ] [ text data.title ]
             ]
         , div [ class "flex flex-grow" ]
             [ div [ class "flex-grow" ]
