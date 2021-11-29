@@ -3,11 +3,11 @@ module Pages.City exposing (Model, Msg, init, subscriptions, update, view)
 import Api.City exposing (City, Itinerary)
 import Browser
 import Html exposing (Html, button, div, form, h1, h2, h3, img, input, label, li, p, span, text, ul)
-import Html.Attributes exposing (class, classList, disabled, for, id, placeholder, required, src, type_, value)
+import Html.Attributes exposing (attribute, class, classList, disabled, for, id, placeholder, required, src, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Http
 import Session exposing (UserData)
-import Svg exposing (svg)
+import Svg exposing (path, svg)
 import Svg.Attributes exposing (d, fill, stroke, strokeLinecap, strokeLinejoin, strokeWidth, viewBox)
 
 
@@ -328,7 +328,7 @@ modal ({ newItineraryFirstActivity, newItineraryName, newItineraryPrice, newItin
                 []
             , span [ class "hidden sm:inline-block sm:align-middle sm:h-screen" ]
                 [ text "\u{200B}" ]
-            , div [ class "py-6 inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" ]
+            , div [ class "py-6 w-11/12 inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" ]
                 [ h2 [ class "text-2xl text-center mb-4" ] [ text "New City" ]
                 , form
                     [ onSubmit SubmitForm
@@ -476,15 +476,20 @@ formActivities { newItineraryFirstActivity, newItineraryRestActivities } =
                             ]
                             [ text ("Activity #" ++ String.fromInt (i + 2))
                             ]
-                        , input
-                            [ required True
-                            , value content
-                            , onInput (ChangeActivity idxNumber)
-                            , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            , id ("activity-" ++ idx)
-                            , type_ "text"
+                        , div [ class "flex rounded w-full shadow border" ]
+                            [ input
+                                [ required True
+                                , value content
+                                , onInput (ChangeActivity idxNumber)
+                                , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                , id ("activity-" ++ idx)
+                                , type_ "text"
+                                ]
+                                []
+                            , button [ type_ "button", class "bg-red-100 px-2 flex h-auto items-center ml-auto" ]
+                                [ div [ class "text-red-500" ] [ xSvg ]
+                                ]
                             ]
-                            []
                         ]
                 )
                 newItineraryRestActivities
@@ -520,4 +525,23 @@ formActivities { newItineraryFirstActivity, newItineraryRestActivities } =
                         ]
                    ]
             )
+        ]
+
+
+xSvg : Html msg
+xSvg =
+    svg
+        [ Svg.Attributes.class "h-6 w-6"
+        , Svg.Attributes.fill "none"
+        , attribute "stroke" "currentColor"
+        , Svg.Attributes.viewBox "0 0 24 24"
+        , attribute "xmlns" "http://www.w3.org/2000/svg"
+        ]
+        [ path
+            [ Svg.Attributes.d "M6 18L18 6M6 6l12 12"
+            , attribute "stroke-linecap" "round"
+            , attribute "stroke-linejoin" "round"
+            , attribute "stroke-width" "2"
+            ]
+            []
         ]
