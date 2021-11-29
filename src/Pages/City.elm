@@ -587,8 +587,6 @@ modal ({ newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime
     let
         canCreate =
             validateFormData model && not isCreatingNewItinerary
-
-        -- TODO other tags, and rest activities
     in
     div [ class "fixed z-50 inset-0 overflow-y-auto" ]
         [ div [ class "flex items-center justify-center min-h-screen px-4 text-center sm:block sm:p-0" ]
