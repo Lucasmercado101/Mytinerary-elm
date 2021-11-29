@@ -58,7 +58,7 @@ newItinerayDecoder =
 postItinerary : Int -> NewItinerary -> (Result Http.Error NewItineraryResponse -> msg) -> Cmd msg
 postItinerary cityId data msg =
     postWithCredentials
-        (endpoint [ "itineraries", String.fromInt cityId ])
+        (endpoint [ "cities", String.fromInt cityId, "itinerary" ])
         (data
             |> newItineraryEncoder
             |> jsonBody
