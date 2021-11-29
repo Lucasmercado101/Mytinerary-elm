@@ -314,19 +314,10 @@ clockSvg =
 
 
 modal : Model -> Html Msg
-modal ({ newItineraryFirstActivity, newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime, isCreatingNewItinerary } as model) =
+modal ({ newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime, isCreatingNewItinerary } as model) =
     let
-        registerDisabled =
-            newItineraryName
-                == ""
-                || newItineraryPrice
-                == 0
-                || newItineraryTime
-                == 0
-                || newItineraryTags.t1
-                == ""
-                || String.length newItineraryFirstActivity
-                == 0
+        canCreate =
+            validateFormData model
 
         -- TODO other tags, and rest activities
     in
@@ -448,10 +439,10 @@ modal ({ newItineraryFirstActivity, newItineraryName, newItineraryPrice, newItin
                             [ type_ "submit"
                             , class "font-bold py-2 px-4 rounded"
                             , classList
-                                [ ( "bg-blue-700 hover:bg-blue-700 text-white", not registerDisabled )
-                                , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", registerDisabled )
+                                [ ( "bg-blue-700 hover:bg-blue-700 text-white", canCreate )
+                                , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", not canCreate )
                                 ]
-                            , disabled (registerDisabled || isCreatingNewItinerary)
+                            , disabled (not canCreate || isCreatingNewItinerary)
                             ]
                             [ text
                                 (if isCreatingNewItinerary then
@@ -571,3 +562,35 @@ xSvg =
             ]
             []
         ]
+
+
+validateFormData : Model -> Bool
+validateFormData { newItineraryFirstActivity, newItineraryName, newItineraryPrice, newItineraryRestActivities, newItineraryTags, newItineraryTime } =
+    newItineraryFirstActivity
+        /= ""
+        && newItineraryName
+        /= ""
+        && newItineraryPrice
+        > 0
+        && newItineraryTime
+        > 0
+        && (newItineraryTags.t1
+                /= ""
+                || newItineraryTags.t2
+                /= ""
+                || newItineraryTags.t3
+                /= ""
+           )
+        && ((List.length newItineraryRestActivities
+                > 0
+                && ((List.length
+                        (List.filter (\( _, l ) -> l /= "") newItineraryRestActivities)
+                        > 0
+                    )
+                        || List.length
+                            (List.filter (\( _, l ) -> l /= "") newItineraryRestActivities)
+                        == 0
+                   )
+            )
+                || (newItineraryRestActivities == [])
+           )
