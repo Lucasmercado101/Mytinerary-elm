@@ -45,11 +45,29 @@ type alias Model =
     }
 
 
+clearModalData : Model -> Model
+clearModalData model =
+    { model
+        | newItineraryName = ""
+        , newItineraryFirstActivity = ""
+        , newItineraryRestActivities = []
+        , newItineraryActivitiesIdx = 0
+        , newItineraryTags =
+            { t1 = ""
+            , t2 = ""
+            , t3 = ""
+            }
+        , newItineraryTime = 0
+        , newItineraryPrice = 0
+    }
+
+
 type Msg
     = GotCity (Result Http.Error City)
     | GotUser (Maybe UserData)
       -- New Itinerary
-    | ToggleModal
+    | OpenModal
+    | CloseModal
     | ChangeNewItineraryName String
     | ChangeTag1 String
     | ChangeTag2 String
@@ -125,8 +143,11 @@ update msg model =
         GotNewItinerary _ ->
             ( { model | isCreatingNewItinerary = False }, Cmd.none )
 
-        ToggleModal ->
-            ( { model | isNewItineraryModalOpen = not model.isNewItineraryModalOpen }, Cmd.none )
+        OpenModal ->
+            ( { model | isNewItineraryModalOpen = True }, Cmd.none )
+
+        CloseModal ->
+            ( { model | isNewItineraryModalOpen = False } |> clearModalData, Cmd.none )
 
         ChangeNewItineraryName newItineraryName ->
             ( { model | newItineraryName = newItineraryName }, Cmd.none )
@@ -236,7 +257,7 @@ view ({ cityData } as model) =
                             [ text "Itineraries" ]
                         , div [ class "px-2 my-2" ]
                             [ button
-                                [ onClick ToggleModal
+                                [ onClick OpenModal
                                 , class "mx-auto w-full md:w-64 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                                 ]
                                 [ text "Create Itinerary"
@@ -342,7 +363,7 @@ modal ({ newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime
     in
     div [ class "fixed z-50 inset-0 overflow-y-auto" ]
         [ div [ class "flex items-center justify-center min-h-screen px-4 text-center sm:block sm:p-0" ]
-            [ div [ class "fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity", onClick ToggleModal ]
+            [ div [ class "fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity", onClick CloseModal ]
                 []
             , span [ class "hidden sm:inline-block sm:align-middle sm:h-screen" ]
                 [ text "\u{200B}" ]
@@ -453,7 +474,7 @@ modal ({ newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime
                         ]
                     , formActivities model
                     , div [ class "flex ml-auto gap-x-4" ]
-                        [ button [ class "px-4 py-2", type_ "button", onClick ToggleModal ] [ text "Cancel" ]
+                        [ button [ class "px-4 py-2", type_ "button", onClick CloseModal ] [ text "Cancel" ]
                         , button
                             [ type_ "submit"
                             , class "font-bold py-2 px-4 rounded"
