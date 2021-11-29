@@ -1,6 +1,7 @@
 module Pages.City exposing (Model, Msg, init, subscriptions, update, view)
 
 import Api.City exposing (City, Itinerary)
+import Api.Itineraries
 import Browser
 import Html exposing (Html, button, div, form, h1, h2, h3, img, input, label, li, p, span, text, ul)
 import Html.Attributes exposing (attribute, class, classList, disabled, for, id, placeholder, required, src, type_, value)
@@ -60,6 +61,7 @@ type Msg
     | ChangeActivity Int String
     | RemoveActivity Int
     | SubmitForm
+    | GotNewItinerary (Result Http.Error Api.Itineraries.NewItineraryResponse)
 
 
 init : Int -> ( Model, Cmd Msg )
@@ -88,7 +90,7 @@ init cityId =
     )
 
 
-update : Msg -> Model -> ( Model, Cmd msg )
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GotCity res ->
@@ -104,7 +106,24 @@ update msg model =
 
         -- New Itinerary
         SubmitForm ->
-            Debug.todo "Submit form"
+            case model.userSession of
+                Just data ->
+                    ( { model | isCreatingNewItinerary = True }
+                    , Api.Itineraries.postItinerary model.cityId
+                        { title = model.newItineraryName
+                        , activities = model.newItineraryFirstActivity :: List.map Tuple.second model.newItineraryRestActivities
+                        , price = model.newItineraryPrice
+                        , tags = [ model.newItineraryTags.t1, model.newItineraryTags.t2, model.newItineraryTags.t3 ]
+                        , duration = model.newItineraryTime
+                        }
+                        GotNewItinerary
+                    )
+
+                Nothing ->
+                    ( model, Cmd.none )
+
+        GotNewItinerary _ ->
+            ( { model | isCreatingNewItinerary = False }, Cmd.none )
 
         ToggleModal ->
             ( { model | isNewItineraryModalOpen = not model.isNewItineraryModalOpen }, Cmd.none )
@@ -317,7 +336,7 @@ modal : Model -> Html Msg
 modal ({ newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime, isCreatingNewItinerary } as model) =
     let
         canCreate =
-            validateFormData model
+            validateFormData model && not isCreatingNewItinerary
 
         -- TODO other tags, and rest activities
     in
@@ -442,7 +461,7 @@ modal ({ newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime
                                 [ ( "bg-blue-700 hover:bg-blue-700 text-white", canCreate )
                                 , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", not canCreate )
                                 ]
-                            , disabled (not canCreate || isCreatingNewItinerary)
+                            , disabled (not canCreate)
                             ]
                             [ text
                                 (if isCreatingNewItinerary then
@@ -460,7 +479,7 @@ modal ({ newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime
 
 
 formActivities : Model -> Html Msg
-formActivities { newItineraryFirstActivity, newItineraryRestActivities } =
+formActivities { newItineraryFirstActivity, newItineraryRestActivities, isCreatingNewItinerary } =
     let
         restActivities =
             List.indexedMap
@@ -499,8 +518,11 @@ formActivities { newItineraryFirstActivity, newItineraryRestActivities } =
                 )
                 newItineraryRestActivities
 
-        maxAmountOfActivities =
+        maxAmountOfActivitiesReached =
             (List.length newItineraryRestActivities + 1) == 50
+
+        canCreate =
+            not maxAmountOfActivitiesReached && not isCreatingNewItinerary
     in
     div [ class "flex flex-col" ]
         [ p [ class "block text-gray-700 text-xl mb-2" ]
@@ -527,14 +549,14 @@ formActivities { newItineraryFirstActivity, newItineraryRestActivities } =
                 ++ [ button
                         [ class "font-bold py-2 px-4 rounded"
                         , classList
-                            [ ( "bg-blue-700 hover:bg-blue-700 text-white", not maxAmountOfActivities )
-                            , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", maxAmountOfActivities )
+                            [ ( "bg-blue-700 hover:bg-blue-700 text-white", canCreate )
+                            , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", not canCreate )
                             ]
                         , type_ "button"
                         , onClick AddActivity
-                        , disabled maxAmountOfActivities
+                        , disabled (not canCreate)
                         ]
-                        [ if maxAmountOfActivities then
+                        [ if maxAmountOfActivitiesReached then
                             text "Max activities reached!"
 
                           else
