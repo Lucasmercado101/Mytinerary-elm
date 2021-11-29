@@ -129,7 +129,12 @@ update msg model =
                     ( { model | isCreatingNewItinerary = True, isNewItineraryModalOpen = False }
                     , Api.Itineraries.postItinerary model.cityId
                         { title = model.newItineraryName
-                        , activities = model.newItineraryFirstActivity :: List.map Tuple.second model.newItineraryRestActivities
+                        , activities =
+                            model.newItineraryFirstActivity
+                                :: (model.newItineraryRestActivities
+                                        |> List.filter (\( _, l ) -> l /= "")
+                                        |> List.map Tuple.second
+                                   )
                         , price = model.newItineraryPrice
                         , tags = [ model.newItineraryTags.t1, model.newItineraryTags.t2, model.newItineraryTags.t3 ]
                         , duration = model.newItineraryTime
