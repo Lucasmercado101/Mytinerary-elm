@@ -505,6 +505,9 @@ formActivities { newItineraryFirstActivity, newItineraryRestActivities } =
                         ]
                 )
                 newItineraryRestActivities
+
+        maxAmountOfActivities =
+            (List.length newItineraryRestActivities + 1) == 50
     in
     div [ class "flex flex-col" ]
         [ p [ class "block text-gray-700 text-xl mb-2" ]
@@ -529,11 +532,20 @@ formActivities { newItineraryFirstActivity, newItineraryRestActivities } =
                 ]
                 :: restActivities
                 ++ [ button
-                        [ class "mx-auto w-full md:w-64 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        [ class "font-bold py-2 px-4 rounded"
+                        , classList
+                            [ ( "bg-blue-700 hover:bg-blue-700 text-white", not maxAmountOfActivities )
+                            , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", maxAmountOfActivities )
+                            ]
                         , type_ "button"
                         , onClick AddActivity
+                        , disabled maxAmountOfActivities
                         ]
-                        [ text "Add Activity"
+                        [ if maxAmountOfActivities then
+                            text "Max activities reached!"
+
+                          else
+                            text "Add Activity"
                         ]
                    ]
             )
