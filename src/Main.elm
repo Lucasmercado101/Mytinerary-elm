@@ -2,10 +2,12 @@ module Main exposing (main)
 
 import Api.Auth
 import Browser
+import Browser.Events
 import Browser.Navigation as Nav
 import Html exposing (Html, a, button, div, img, li, p, text, ul)
-import Html.Attributes exposing (class, classList, href, src)
+import Html.Attributes exposing (class, classList, href, id, src)
 import Html.Events exposing (onClick)
+import Json.Decode as Decode
 import Pages.Cities as Cities
 import Pages.City as City
 import Pages.Landing as Landing
@@ -19,16 +21,23 @@ import Url.Parser as Parser exposing ((</>), Parser, s)
 
 
 subscriptions : Model -> Sub Msg
-subscriptions { page } =
-    case page of
-        CitiesPage _ ->
-            Sub.map GotCitiesMsg Cities.subscriptions
+subscriptions { page, isUserMenuExpanded, isMenuExpanded } =
+    Sub.batch
+        [ if isUserMenuExpanded || isMenuExpanded then
+            Browser.Events.onMouseDown (outsideTarget "navbar")
 
-        CityPage citiesModel ->
-            Sub.map GotCityMsg (City.subscriptions citiesModel)
+          else
+            Sub.none
+        , case page of
+            CitiesPage _ ->
+                Sub.map GotCitiesMsg Cities.subscriptions
 
-        _ ->
-            Sub.map ReceivedUser Session.localStorageUserSub
+            CityPage citiesModel ->
+                Sub.map GotCityMsg (City.subscriptions citiesModel)
+
+            _ ->
+                Sub.map ReceivedUser Session.localStorageUserSub
+        ]
 
 
 type Route
@@ -160,6 +169,7 @@ type Msg
       -- Navbar
     | ToggleMenu
     | ToggleUserMenu
+    | CloseNavbarMenu
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -221,6 +231,14 @@ update msg ({ page } as model) =
                 | user = LoggedOut
               }
             , Cmd.batch [ Api.Auth.logOut NoOp, Session.clearUserFromLocalStorageMsg ]
+            )
+
+        CloseNavbarMenu ->
+            ( { model
+                | isMenuExpanded = False
+                , isUserMenuExpanded = False
+              }
+            , Cmd.none
             )
 
         -- PAGES
@@ -326,7 +344,10 @@ isLoggedIn model =
 
 mobileNavbar : Model -> Html Msg
 mobileNavbar ({ isMenuExpanded } as model) =
-    div [ class "bg-white fixed h-12 w-full flex justify-between z-20 shadow-sm" ]
+    div
+        [ class "bg-white fixed h-12 w-full flex justify-between z-20 shadow-sm"
+        , id "navbar"
+        ]
         [ a
             [ href "/"
             , class "inline-block flex text-xl px-2 h-full font-semibold pb-1 text-red-600 focus:text-red-600 active:text-red-600"
@@ -438,3 +459,41 @@ documentMap msg { title, body } =
     { title = title
     , body = List.map (Html.map msg) body
     }
+
+
+
+-- https://dev.to/margaretkrutikova/elm-dom-node-decoder-to-detect-click-outside-3ioh
+
+
+isOutsideDropdown : String -> Decode.Decoder Bool
+isOutsideDropdown dropdownId =
+    Decode.oneOf
+        [ Decode.field "id" Decode.string
+            |> Decode.andThen
+                (\id ->
+                    if dropdownId == id then
+                        -- found match by id
+                        Decode.succeed False
+
+                    else
+                        -- try next decoder
+                        Decode.fail "continue"
+                )
+        , Decode.lazy (\_ -> isOutsideDropdown dropdownId |> Decode.field "parentNode")
+
+        -- fallback if all previous decoders failed
+        , Decode.succeed True
+        ]
+
+
+outsideTarget : String -> Decode.Decoder Msg
+outsideTarget dropdownId =
+    Decode.field "target" (isOutsideDropdown dropdownId)
+        |> Decode.andThen
+            (\isOutside ->
+                if isOutside then
+                    Decode.succeed CloseNavbarMenu
+
+                else
+                    Decode.fail "inside dropdown"
+            )
