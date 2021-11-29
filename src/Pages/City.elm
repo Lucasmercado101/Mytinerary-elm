@@ -1,6 +1,6 @@
 module Pages.City exposing (Model, Msg, init, subscriptions, update, view)
 
-import Api.City exposing (City, Itinerary)
+import Api.City
 import Api.Itineraries
 import Browser
 import Browser.Events
@@ -28,6 +28,14 @@ subscriptions model =
         ]
 
 
+type alias City =
+    { id : Int
+    , name : String
+    , country : String
+    , itineraries : List Itinerary
+    }
+
+
 type CityDataRequest
     = Loading
     | Loaded City
@@ -38,8 +46,6 @@ type alias Model =
     { cityId : Int
     , cityData : CityDataRequest
     , userSession : Maybe UserData
-    , itinerariesBeingDeleted : List Int
-    , itinerariesErrors : Dict Int String
 
     -- New itinerary
     , isNewItineraryModalOpen : Bool
@@ -76,8 +82,17 @@ clearModalData model =
     }
 
 
+type Itinerary
+    = Itinerary Api.City.Itinerary (Maybe Action)
+
+
+type Action
+    = Deleting
+    | FailedToDelete String
+
+
 type Msg
-    = GotCity (Result Http.Error City)
+    = GotCity (Result Http.Error Api.City.City)
     | GotUser (Maybe UserData)
     | CloseItineraryMenu
     | DeleteItinerary Int
@@ -105,8 +120,6 @@ init cityId =
     ( { cityId = cityId
       , cityData = Loading
       , userSession = Nothing
-      , itinerariesBeingDeleted = []
-      , itinerariesErrors = Dict.empty
       , newItineraryName = ""
       , newItineraryFirstActivity = ""
       , newItineraryRestActivities = []
@@ -135,7 +148,17 @@ update msg model =
         GotCity res ->
             case res of
                 Ok data ->
-                    ( { model | cityData = Loaded data }, Cmd.none )
+                    ( { model
+                        | cityData =
+                            Loaded
+                                { name = data.name
+                                , country = data.country
+                                , itineraries = List.map (\l -> Itinerary l Nothing) data.itineraries
+                                , id = data.id
+                                }
+                      }
+                    , Cmd.none
+                    )
 
                 Err err ->
                     ( { model | cityData = Error err }, Cmd.none )
@@ -154,74 +177,98 @@ update msg model =
             )
 
         DeleteItinerary idx ->
-            ( { model
-                | itineraryMenuOpen = Nothing
-                , itinerariesBeingDeleted = idx :: model.itinerariesBeingDeleted
-                , itinerariesErrors = Dict.remove idx model.itinerariesErrors
-              }
-            , Api.Itineraries.deleteItinerary idx
-                (\l ->
-                    case l of
-                        Ok _ ->
-                            DeletedItinerary Nothing idx
-
-                        Err err ->
-                            DeletedItinerary (Just err) idx
-                )
-            )
-
-        DeletedItinerary err idx ->
-            case err of
-                Just val ->
+            case model.cityData of
+                Loaded data ->
                     let
-                        errorMessage =
-                            case val of
-                                Http.BadStatus code ->
-                                    case code of
-                                        400 ->
-                                            "Bad request"
+                        newCityData =
+                            { data
+                                | itineraries =
+                                    List.map
+                                        (\(Itinerary l s) ->
+                                            if l.id == idx then
+                                                Itinerary l (Just Deleting)
 
-                                        401 ->
-                                            "Unauthorized"
-
-                                        404 ->
-                                            "Not found"
-
-                                        _ ->
-                                            "An unknown error ocurred: code " ++ String.fromInt code
-
-                                _ ->
-                                    "An unknown error ocurred"
-
-                        newItineraryErrors =
-                            model.itinerariesErrors |> Dict.insert idx errorMessage
+                                            else
+                                                Itinerary l s
+                                        )
+                                        data.itineraries
+                            }
                     in
                     ( { model
-                        | itinerariesErrors = newItineraryErrors
-                        , itinerariesBeingDeleted =
-                            model.itinerariesBeingDeleted
-                                |> List.filter (\i -> i /= idx)
+                        | itineraryMenuOpen = Nothing
+                        , cityData = Loaded newCityData
                       }
-                    , Cmd.none
+                    , Api.Itineraries.deleteItinerary idx
+                        (\l ->
+                            case l of
+                                Ok _ ->
+                                    DeletedItinerary Nothing idx
+
+                                Err err ->
+                                    DeletedItinerary (Just err) idx
+                        )
                     )
 
-                Nothing ->
-                    case model.cityData of
-                        Loaded data ->
+                _ ->
+                    ( model, Cmd.none )
+
+        DeletedItinerary err idx ->
+            case model.cityData of
+                Loaded data ->
+                    case err of
+                        Just val ->
+                            let
+                                errorMessage : String
+                                errorMessage =
+                                    case val of
+                                        Http.BadStatus code ->
+                                            case code of
+                                                400 ->
+                                                    "Bad request"
+
+                                                401 ->
+                                                    "Unauthorized"
+
+                                                404 ->
+                                                    "Not found"
+
+                                                _ ->
+                                                    "An unknown error ocurred: code " ++ String.fromInt code
+
+                                        _ ->
+                                            "An unknown error ocurred"
+
+                                newCityData =
+                                    { data
+                                        | itineraries =
+                                            List.map
+                                                (\(Itinerary l s) ->
+                                                    if l.id == idx then
+                                                        Itinerary l (Just (FailedToDelete errorMessage))
+
+                                                    else
+                                                        Itinerary l s
+                                                )
+                                                data.itineraries
+                                    }
+                            in
+                            ( { model | cityData = Loaded newCityData }
+                            , Cmd.none
+                            )
+
+                        Nothing ->
                             ( { model
                                 | cityData =
                                     Loaded
-                                        { id = data.id
-                                        , name = data.name
-                                        , itineraries = List.filter (\l -> l.id /= idx) data.itineraries
-                                        , country = data.country
+                                        { data
+                                            | itineraries = List.filter (\(Itinerary l _) -> l.id /= idx) data.itineraries
                                         }
                               }
                             , Cmd.none
                             )
 
-                        _ ->
-                            ( model, Cmd.none )
+                _ ->
+                    ( model, Cmd.none )
 
         -- New Itinerary
         SubmitForm ->
@@ -410,15 +457,21 @@ view ({ cityData, isCreatingNewItinerary } as model) =
 
 
 itinerary : Itinerary -> Model -> Html Msg
-itinerary data ({ itinerariesBeingDeleted, itinerariesErrors } as model) =
+itinerary (Itinerary data status) model =
     let
         thisItineraryIsBeingDeleted : Bool
         thisItineraryIsBeingDeleted =
-            List.any (\l -> l == data.id) itinerariesBeingDeleted
+            case status of
+                Just action ->
+                    case action of
+                        Deleting ->
+                            True
 
-        error : Maybe String
-        error =
-            Dict.get data.id itinerariesErrors
+                        _ ->
+                            False
+
+                _ ->
+                    False
 
         errorHtml : String -> Html msg
         errorHtml err =
@@ -427,17 +480,17 @@ itinerary data ({ itinerariesBeingDeleted, itinerariesErrors } as model) =
                 ]
     in
     div [ class "mt-3 flex flex-col rounded shadow-sm bg-white md:h-full md:justify-between" ]
-        [ case error of
-            Just val ->
-                errorHtml val
+        [ case status of
+            Just action ->
+                case action of
+                    FailedToDelete err ->
+                        errorHtml err
+
+                    Deleting ->
+                        errorHtml "Deleting itinerary..."
 
             Nothing ->
                 text ""
-        , if thisItineraryIsBeingDeleted then
-            errorHtml "Deleting itinerary..."
-
-          else
-            text ""
         , div [ class "p-3" ]
             [ div [ class "flex flex-row mb-2" ]
                 ([ if data.creator.profilePic == Nothing then
