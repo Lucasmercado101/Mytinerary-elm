@@ -326,7 +326,7 @@ isLoggedIn model =
 
 mobileNavbar : Model -> Html Msg
 mobileNavbar ({ isMenuExpanded } as model) =
-    div [ class "bg-white fixed h-12 w-screen flex justify-between z-20 shadow-sm" ]
+    div [ class "bg-white fixed h-12 w-full flex justify-between z-20 shadow-sm" ]
         [ a
             [ href "/"
             , class "inline-block flex text-xl px-2 h-full font-semibold pb-1 text-red-600 focus:text-red-600 active:text-red-600"
