@@ -58,6 +58,7 @@ type Msg
     | ChangeFirstActivity String
     | AddActivity
     | ChangeActivity Int String
+    | RemoveActivity Int
     | SubmitForm
 
 
@@ -141,13 +142,20 @@ update msg model =
         ChangeFirstActivity newFirstActivity ->
             ( { model | newItineraryFirstActivity = newFirstActivity }, Cmd.none )
 
+        RemoveActivity idx ->
+            let
+                restActivities =
+                    List.filter (\( i, _ ) -> i /= idx) model.newItineraryRestActivities
+            in
+            ( { model | newItineraryRestActivities = restActivities }, Cmd.none )
+
         AddActivity ->
             let
                 newIdx =
                     model.newItineraryActivitiesIdx + 1
             in
             ( { model
-                | newItineraryRestActivities = ( newIdx, "" ) :: model.newItineraryRestActivities
+                | newItineraryRestActivities = model.newItineraryRestActivities ++ [ ( newIdx, "" ) ]
                 , newItineraryActivitiesIdx = newIdx
               }
             , Cmd.none
@@ -486,7 +494,11 @@ formActivities { newItineraryFirstActivity, newItineraryRestActivities } =
                                 , type_ "text"
                                 ]
                                 []
-                            , button [ type_ "button", class "bg-red-100 px-2 flex h-auto items-center ml-auto" ]
+                            , button
+                                [ type_ "button"
+                                , onClick (RemoveActivity idxNumber)
+                                , class "bg-red-100 px-2 flex h-auto items-center ml-auto"
+                                ]
                                 [ div [ class "text-red-500" ] [ xSvg ]
                                 ]
                             ]
