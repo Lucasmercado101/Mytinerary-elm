@@ -149,7 +149,7 @@ update msg model =
             )
 
         DeleteItinerary idx ->
-            ( model, Api.Itineraries.deleteItinerary idx (DeletedItinerary idx) )
+            ( { model | itineraryMenuOpen = Nothing }, Api.Itineraries.deleteItinerary idx (DeletedItinerary idx) )
 
         DeletedItinerary idx ->
             case model.cityData of
