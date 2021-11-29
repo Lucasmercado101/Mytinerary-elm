@@ -125,8 +125,8 @@ update msg model =
         -- New Itinerary
         SubmitForm ->
             case model.userSession of
-                Just data ->
-                    ( { model | isCreatingNewItinerary = True }
+                Just _ ->
+                    ( { model | isCreatingNewItinerary = True, isNewItineraryModalOpen = False }
                     , Api.Itineraries.postItinerary model.cityId
                         { title = model.newItineraryName
                         , activities = model.newItineraryFirstActivity :: List.map Tuple.second model.newItineraryRestActivities
@@ -223,7 +223,7 @@ update msg model =
 
 
 view : Model -> Browser.Document Msg
-view ({ cityData } as model) =
+view ({ cityData, isCreatingNewItinerary } as model) =
     let
         cityName =
             case cityData of
@@ -258,9 +258,17 @@ view ({ cityData } as model) =
                         , div [ class "px-2 my-2" ]
                             [ button
                                 [ onClick OpenModal
-                                , class "mx-auto w-full md:w-64 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                , class "mx-auto w-full md:w-64 block font-bold py-2 px-4 rounded"
+                                , classList
+                                    [ ( "bg-blue-700 hover:bg-blue-700 text-white", not isCreatingNewItinerary )
+                                    , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", isCreatingNewItinerary )
+                                    ]
                                 ]
-                                [ text "Create Itinerary"
+                                [ if isCreatingNewItinerary then
+                                    text "Creating itinerary..."
+
+                                  else
+                                    text "Create Itinerary"
                                 ]
                             ]
                         , if List.length itineraries == 0 then
