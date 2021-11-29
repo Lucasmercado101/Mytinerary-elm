@@ -24,8 +24,8 @@ subscriptions { page } =
         CitiesPage _ ->
             Sub.map GotCitiesMsg Cities.subscriptions
 
-        CityPage _ ->
-            Sub.map GotCityMsg City.subscriptions
+        CityPage citiesModel ->
+            Sub.map GotCityMsg (City.subscriptions citiesModel)
 
         _ ->
             Sub.map ReceivedUser Session.localStorageUserSub

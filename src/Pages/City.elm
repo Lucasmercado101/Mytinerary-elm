@@ -3,18 +3,28 @@ module Pages.City exposing (Model, Msg, init, subscriptions, update, view)
 import Api.City exposing (City, Itinerary)
 import Api.Itineraries
 import Browser
+import Browser.Events
 import Html exposing (Html, button, div, form, h1, h2, h3, img, input, label, li, p, span, text, ul)
 import Html.Attributes exposing (attribute, class, classList, disabled, for, id, placeholder, required, src, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Http
+import Json.Decode as Decode
 import Session exposing (UserData)
 import Svg exposing (path, svg)
 import Svg.Attributes exposing (d, fill, stroke, strokeLinecap, strokeLinejoin, strokeWidth, viewBox)
 
 
-subscriptions : Sub Msg
-subscriptions =
-    Sub.map GotUser Session.localStorageUserSub
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.batch
+        [ Sub.map GotUser Session.localStorageUserSub
+        , case model.itineraryMenuOpen of
+            Just idx ->
+                Browser.Events.onMouseDown (outsideTarget ("itinerary-menu-" ++ String.fromInt idx))
+
+            Nothing ->
+                Sub.none
+        ]
 
 
 type CityDataRequest
@@ -42,6 +52,7 @@ type alias Model =
     , newItineraryTime : Int
     , newItineraryPrice : Int
     , isCreatingNewItinerary : Bool
+    , itineraryMenuOpen : Maybe Int
     }
 
 
@@ -65,6 +76,7 @@ clearModalData model =
 type Msg
     = GotCity (Result Http.Error City)
     | GotUser (Maybe UserData)
+    | CloseItineraryMenu
       -- New Itinerary
     | OpenModal
     | CloseModal
@@ -80,6 +92,7 @@ type Msg
     | RemoveActivity Int
     | SubmitForm
     | GotNewItinerary (Result Http.Error Api.Itineraries.NewItineraryResponse)
+    | OpenItineraryMenu Int
 
 
 init : Int -> ( Model, Cmd Msg )
@@ -100,6 +113,7 @@ init cityId =
       , newItineraryPrice = 0
       , isNewItineraryModalOpen = False
       , isCreatingNewItinerary = False
+      , itineraryMenuOpen = Nothing
       }
     , Cmd.batch
         [ Api.City.getCity cityId GotCity
@@ -121,6 +135,16 @@ update msg model =
 
         GotUser userSession ->
             ( { model | userSession = userSession }, Cmd.none )
+
+        OpenItineraryMenu idx ->
+            ( { model | itineraryMenuOpen = Just idx }
+            , Cmd.none
+            )
+
+        CloseItineraryMenu ->
+            ( { model | itineraryMenuOpen = Nothing }
+            , Cmd.none
+            )
 
         -- New Itinerary
         SubmitForm ->
@@ -308,7 +332,7 @@ view ({ cityData, isCreatingNewItinerary } as model) =
     }
 
 
-itinerary : Itinerary -> Model -> Html msg
+itinerary : Itinerary -> Model -> Html Msg
 itinerary data model =
     div [ class "mt-3 flex flex-col rounded shadow-sm p-3 bg-white md:h-full md:justify-between" ]
         [ div [ class "flex flex-row mb-2" ]
@@ -324,8 +348,27 @@ itinerary data model =
                 ++ (case model.userSession of
                         Just userData ->
                             if userData.id == data.creator.id then
-                                [ button [ class "w-12 h-12 ml-auto" ]
-                                    [ div [ class "flex w-12 h-12" ] [ verticalDotsSvg ]
+                                [ div [ class "ml-auto relative" ]
+                                    [ button [ onClick (OpenItineraryMenu data.id), class "w-12 h-12" ]
+                                        [ div [ class "flex w-12 h-12" ] [ verticalDotsSvg ]
+                                        ]
+                                    , div
+                                        [ classList
+                                            [ ( "hidden"
+                                              , not (Maybe.withDefault -1 model.itineraryMenuOpen == data.id)
+                                              )
+                                            ]
+                                        , id ("itinerary-menu-" ++ String.fromInt data.id)
+                                        ]
+                                        [ ul [ class "flex flex-col gap-y-2 absolute top-0 right-0 bg-white shadow-md" ]
+                                            [ li []
+                                                [ button [ class "w-full px-2 py-1" ] [ text "Delete" ]
+                                                ]
+                                            , li []
+                                                [ button [ class "w-full px-2 py-1" ] [ text "Edit" ]
+                                                ]
+                                            ]
+                                        ]
                                     ]
                                 ]
 
@@ -683,3 +726,41 @@ verticalDotsSvg =
             ]
             []
         ]
+
+
+
+-- https://dev.to/margaretkrutikova/elm-dom-node-decoder-to-detect-click-outside-3ioh
+
+
+isOutsideDropdown : String -> Decode.Decoder Bool
+isOutsideDropdown dropdownId =
+    Decode.oneOf
+        [ Decode.field "id" Decode.string
+            |> Decode.andThen
+                (\id ->
+                    if dropdownId == id then
+                        -- found match by id
+                        Decode.succeed False
+
+                    else
+                        -- try next decoder
+                        Decode.fail "continue"
+                )
+        , Decode.lazy (\_ -> isOutsideDropdown dropdownId |> Decode.field "parentNode")
+
+        -- fallback if all previous decoders failed
+        , Decode.succeed True
+        ]
+
+
+outsideTarget : String -> Decode.Decoder Msg
+outsideTarget dropdownId =
+    Decode.field "target" (isOutsideDropdown dropdownId)
+        |> Decode.andThen
+            (\isOutside ->
+                if isOutside then
+                    Decode.succeed CloseItineraryMenu
+
+                else
+                    Decode.fail "inside dropdown"
+            )
