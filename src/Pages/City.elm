@@ -357,33 +357,35 @@ modal ({ newItineraryFirstActivity, newItineraryName, newItineraryPrice, newItin
                             ]
                             []
                         ]
-                    , div []
-                        [ label [ class "block text-gray-700 text-sm font-bold mb-2", for "price" ]
-                            [ text "Price*" ]
-                        , input
-                            [ required True
-                            , value (String.fromInt newItineraryPrice)
-                            , onInput ChangeNewItineraryPrice
-                            , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            , id "price"
-                            , type_ "number"
-                            , Html.Attributes.min "1"
+                    , div [ class "flex flex-col gap-y-4 md:flex-row md:gap-x-4 md:justify-between" ]
+                        [ div [ class "md:w-full" ]
+                            [ label [ class "block text-gray-700 text-sm font-bold mb-2", for "price" ]
+                                [ text "Price*" ]
+                            , input
+                                [ required True
+                                , value (String.fromInt newItineraryPrice)
+                                , onInput ChangeNewItineraryPrice
+                                , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                , id "price"
+                                , type_ "number"
+                                , Html.Attributes.min "1"
+                                ]
+                                []
                             ]
-                            []
-                        ]
-                    , div []
-                        [ label [ class "block text-gray-700 text-sm font-bold mb-2", for "time" ]
-                            [ text "Time*" ]
-                        , input
-                            [ required True
-                            , value (String.fromInt newItineraryTime)
-                            , onInput ChangeNewItineraryTime
-                            , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            , id "time"
-                            , type_ "number"
-                            , Html.Attributes.min "1"
+                        , div [ class "md:w-full" ]
+                            [ label [ class "block text-gray-700 text-sm font-bold mb-2", for "time" ]
+                                [ text "Time*" ]
+                            , input
+                                [ required True
+                                , value (String.fromInt newItineraryTime)
+                                , onInput ChangeNewItineraryTime
+                                , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                , id "time"
+                                , type_ "number"
+                                , Html.Attributes.min "1"
+                                ]
+                                []
                             ]
-                            []
                         ]
                     , div []
                         [ p [ class "block text-gray-700 text-xl mb-2" ]
