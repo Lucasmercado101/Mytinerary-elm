@@ -600,25 +600,6 @@ formActivities { newItineraryFirstActivity, newItineraryRestActivities, isCreati
         ]
 
 
-xSvg : Html msg
-xSvg =
-    svg
-        [ Svg.Attributes.class "h-6 w-6"
-        , Svg.Attributes.fill "none"
-        , attribute "stroke" "currentColor"
-        , Svg.Attributes.viewBox "0 0 24 24"
-        , attribute "xmlns" "http://www.w3.org/2000/svg"
-        ]
-        [ path
-            [ Svg.Attributes.d "M6 18L18 6M6 6l12 12"
-            , attribute "stroke-linecap" "round"
-            , attribute "stroke-linejoin" "round"
-            , attribute "stroke-width" "2"
-            ]
-            []
-        ]
-
-
 validateFormData : Model -> Bool
 validateFormData { newItineraryFirstActivity, newItineraryName, newItineraryPrice, newItineraryRestActivities, newItineraryTags, newItineraryTime } =
     newItineraryFirstActivity
@@ -649,3 +630,41 @@ validateFormData { newItineraryFirstActivity, newItineraryName, newItineraryPric
             )
                 || (newItineraryRestActivities == [])
            )
+
+
+xSvg : Html msg
+xSvg =
+    svg
+        [ Svg.Attributes.class "h-6 w-6"
+        , Svg.Attributes.fill "none"
+        , attribute "stroke" "currentColor"
+        , Svg.Attributes.viewBox "0 0 24 24"
+        , attribute "xmlns" "http://www.w3.org/2000/svg"
+        ]
+        [ path
+            [ Svg.Attributes.d "M6 18L18 6M6 6l12 12"
+            , attribute "stroke-linecap" "round"
+            , attribute "stroke-linejoin" "round"
+            , attribute "stroke-width" "2"
+            ]
+            []
+        ]
+
+
+verticalDotsSvg : Html msg
+verticalDotsSvg =
+    svg
+        [ Svg.Attributes.class "h-6 w-6"
+        , Svg.Attributes.fill "none"
+        , Svg.Attributes.viewBox "0 0 24 24"
+        , Svg.Attributes.stroke "currentColor"
+        ]
+        [ Svg.path
+            [ Svg.Attributes.strokeLinecap
+                "round"
+            , Svg.Attributes.strokeLinejoin "round"
+            , Svg.Attributes.strokeWidth "2"
+            , Svg.Attributes.d "M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+            ]
+            []
+        ]
