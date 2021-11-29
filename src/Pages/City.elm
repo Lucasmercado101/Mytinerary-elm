@@ -37,6 +37,7 @@ type alias Model =
     { cityId : Int
     , cityData : CityDataRequest
     , userSession : Maybe UserData
+    , itinerariesBeingDeleted : List Int
 
     -- New itinerary
     , isNewItineraryModalOpen : Bool
@@ -78,7 +79,7 @@ type Msg
     | GotUser (Maybe UserData)
     | CloseItineraryMenu
     | DeleteItinerary Int
-    | DeletedItinerary Int
+    | DeletedItinerary (Maybe Http.Error) Int
       -- New Itinerary
     | OpenModal
     | CloseModal
@@ -102,6 +103,7 @@ init cityId =
     ( { cityId = cityId
       , cityData = Loading
       , userSession = Nothing
+      , itinerariesBeingDeleted = []
       , newItineraryName = ""
       , newItineraryFirstActivity = ""
       , newItineraryRestActivities = []
@@ -149,9 +151,23 @@ update msg model =
             )
 
         DeleteItinerary idx ->
-            ( { model | itineraryMenuOpen = Nothing }, Api.Itineraries.deleteItinerary idx (DeletedItinerary idx) )
+            ( { model
+                | itineraryMenuOpen = Nothing
+                , itinerariesBeingDeleted = idx :: model.itinerariesBeingDeleted
+              }
+            , Api.Itineraries.deleteItinerary idx
+                (\l ->
+                    case l of
+                        Ok _ ->
+                            DeletedItinerary Nothing idx
 
-        DeletedItinerary idx ->
+                        Err err ->
+                            DeletedItinerary (Just err) idx
+                )
+            )
+
+        DeletedItinerary err idx ->
+            -- TODO: handle err
             case model.cityData of
                 Loaded data ->
                     ( { model
@@ -356,74 +372,87 @@ view ({ cityData, isCreatingNewItinerary } as model) =
 
 
 itinerary : Itinerary -> Model -> Html Msg
-itinerary data model =
-    div [ class "mt-3 flex flex-col rounded shadow-sm p-3 bg-white md:h-full md:justify-between" ]
-        [ div [ class "flex flex-row mb-2" ]
-            ([ if data.creator.profilePic == Nothing then
-                div [ class "pointer-events-none w-12 h-12 bg-red-500 text-white capitalize rounded-full flex" ]
-                    [ div [ class "flex w-12 h-12" ] [ p [ class "m-auto text-xl" ] [ text (String.left 1 data.creator.username) ] ]
-                    ]
+itinerary data ({ itinerariesBeingDeleted } as model) =
+    let
+        thisItineraryIsBeingDeleted =
+            List.any (\l -> l == data.id) itinerariesBeingDeleted
+    in
+    div [ class "mt-3 flex flex-col rounded shadow-sm bg-white md:h-full md:justify-between" ]
+        [ if thisItineraryIsBeingDeleted then
+            div [ class "bg-red-100 p-2 font-semibold" ]
+                [ p [ class "text-red-700" ] [ text "Deleting itinerary..." ]
+                ]
 
-               else
-                img [ class "pointer-events-none w-12 h-12 rounded-full" ] []
-             , h3 [ class "ml-3 self-center text-lg truncate" ] [ text data.title ]
-             ]
-                ++ (case model.userSession of
-                        Just userData ->
-                            if userData.id == data.creator.id then
-                                [ div [ class "ml-auto relative" ]
-                                    [ button [ onClick (OpenItineraryMenu data.id), class "w-12 h-12" ]
-                                        [ div [ class "flex w-12 h-12" ] [ verticalDotsSvg ]
-                                        ]
-                                    , div
-                                        [ classList
-                                            [ ( "hidden"
-                                              , not (Maybe.withDefault -1 model.itineraryMenuOpen == data.id)
-                                              )
+          else
+            text ""
+        , div [ class "p-3" ]
+            [ div [ class "flex flex-row mb-2" ]
+                ([ if data.creator.profilePic == Nothing then
+                    div [ class "pointer-events-none w-12 h-12 bg-red-500 text-white capitalize rounded-full flex" ]
+                        [ div [ class "flex w-12 h-12" ] [ p [ class "m-auto text-xl" ] [ text (String.left 1 data.creator.username) ] ]
+                        ]
+
+                   else
+                    img [ class "pointer-events-none w-12 h-12 rounded-full" ] []
+                 , h3 [ class "ml-3 self-center text-lg truncate" ] [ text data.title ]
+                 ]
+                    ++ (case model.userSession of
+                            Just userData ->
+                                if userData.id == data.creator.id then
+                                    [ div [ class "ml-auto relative" ]
+                                        [ button [ onClick (OpenItineraryMenu data.id), class "w-12 h-12" ]
+                                            [ div [ class "flex w-12 h-12", classList [ ( "text-gray-400", thisItineraryIsBeingDeleted ) ], disabled thisItineraryIsBeingDeleted ] [ verticalDotsSvg ]
                                             ]
-                                        , id ("itinerary-menu-" ++ String.fromInt data.id)
-                                        ]
-                                        [ ul [ class "flex flex-col gap-y-2 absolute top-0 right-0 bg-white shadow-md" ]
-                                            [ li []
-                                                [ button [ class "w-full px-2 py-1", onClick (DeleteItinerary data.id) ] [ text "Delete" ]
+                                        , div
+                                            [ classList
+                                                [ ( "hidden"
+                                                  , not (Maybe.withDefault -1 model.itineraryMenuOpen == data.id)
+                                                  )
                                                 ]
-                                            , li []
-                                                [ button [ class "w-full px-2 py-1" ] [ text "Edit" ]
+                                            , id ("itinerary-menu-" ++ String.fromInt data.id)
+                                            ]
+                                            [ ul [ class "flex flex-col gap-y-2 absolute top-0 right-0 bg-white shadow-md" ]
+                                                [ li []
+                                                    [ button [ class "w-full px-2 py-1", onClick (DeleteItinerary data.id) ] [ text "Delete" ]
+                                                    ]
+                                                , li []
+                                                    [ button [ class "w-full px-2 py-1" ] [ text "Edit" ]
+                                                    ]
                                                 ]
                                             ]
                                         ]
                                     ]
-                                ]
 
-                            else
+                                else
+                                    []
+
+                            Nothing ->
                                 []
+                       )
+                )
+            , div [ class "flex flex-grow" ]
+                [ div [ class "flex-grow" ]
+                    [ p [ class "font-semibold" ] [ text "Activities:" ]
+                    , ul [ class "list-disc list-inside" ]
+                        (List.map (\l -> li [] [ text l ]) data.activities)
+                    ]
 
-                        Nothing ->
-                            []
-                   )
-            )
-        , div [ class "flex flex-grow" ]
-            [ div [ class "flex-grow" ]
-                [ p [ class "font-semibold" ] [ text "Activities:" ]
-                , ul [ class "list-disc list-inside" ]
-                    (List.map (\l -> li [] [ text l ]) data.activities)
-                ]
-
-            -- vertical line
-            , div [ class "w-px h-auto bg-gray-300" ] []
-            , div [ class "w-16 flex flex-col pl-2" ]
-                [ p [ class "flex items-center" ] [ p [ class "text-xl" ] [ text "$" ], text (String.fromInt data.price) ]
-                , div [ class "flex items-center" ]
-                    [ clockSvg
-                    , p [] [ text (String.fromInt data.time) ]
+                -- vertical line
+                , div [ class "w-px h-auto bg-gray-300" ] []
+                , div [ class "w-16 flex flex-col pl-2" ]
+                    [ p [ class "flex items-center" ] [ p [ class "text-xl" ] [ text "$" ], text (String.fromInt data.price) ]
+                    , div [ class "flex items-center" ]
+                        [ clockSvg
+                        , p [] [ text (String.fromInt data.time) ]
+                        ]
                     ]
                 ]
+            , div [ class "flex capitalize mt-3 gap-x-2 flex-wrap" ]
+                (List.map
+                    (\l -> div [ class "rounded-full py-1 px-2 bg-red-200" ] [ text ("#" ++ l) ])
+                    data.hashtags
+                )
             ]
-        , div [ class "flex capitalize mt-3 gap-x-2 flex-wrap" ]
-            (List.map
-                (\l -> div [ class "rounded-full py-1 px-2 bg-red-200" ] [ text ("#" ++ l) ])
-                data.hashtags
-            )
 
         -- TODO comments
         ]
