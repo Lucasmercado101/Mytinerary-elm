@@ -66,8 +66,8 @@ postItinerary cityId data msg =
         (Http.expectJson msg newItinerayDecoder)
 
 
-deleteItinerary : Int -> msg -> Cmd msg
+deleteItinerary : Int -> (Result Http.Error () -> msg) -> Cmd msg
 deleteItinerary itineraryId a =
     deleteWithCredentials
         (endpoint [ "itinerary", String.fromInt itineraryId ])
-        (Http.expectWhatever (\_ -> a))
+        (Http.expectWhatever a)
