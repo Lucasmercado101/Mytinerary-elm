@@ -77,6 +77,8 @@ type Msg
     = GotCity (Result Http.Error City)
     | GotUser (Maybe UserData)
     | CloseItineraryMenu
+    | DeleteItinerary Int
+    | DeletedItinerary Int
       -- New Itinerary
     | OpenModal
     | CloseModal
@@ -145,6 +147,27 @@ update msg model =
             ( { model | itineraryMenuOpen = Nothing }
             , Cmd.none
             )
+
+        DeleteItinerary idx ->
+            ( model, Api.Itineraries.deleteItinerary idx (DeletedItinerary idx) )
+
+        DeletedItinerary idx ->
+            case model.cityData of
+                Loaded data ->
+                    ( { model
+                        | cityData =
+                            Loaded
+                                { id = data.id
+                                , name = data.name
+                                , itineraries = List.filter (\l -> l.id /= idx) data.itineraries
+                                , country = data.country
+                                }
+                      }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
 
         -- New Itinerary
         SubmitForm ->
@@ -362,7 +385,7 @@ itinerary data model =
                                         ]
                                         [ ul [ class "flex flex-col gap-y-2 absolute top-0 right-0 bg-white shadow-md" ]
                                             [ li []
-                                                [ button [ class "w-full px-2 py-1" ] [ text "Delete" ]
+                                                [ button [ class "w-full px-2 py-1", onClick (DeleteItinerary data.id) ] [ text "Delete" ]
                                                 ]
                                             , li []
                                                 [ button [ class "w-full px-2 py-1" ] [ text "Edit" ]
