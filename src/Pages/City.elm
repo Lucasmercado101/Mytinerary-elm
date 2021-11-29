@@ -4,6 +4,7 @@ import Api.City exposing (City, Itinerary)
 import Api.Itineraries
 import Browser
 import Browser.Events
+import Dict exposing (Dict)
 import Html exposing (Html, button, div, form, h1, h2, h3, img, input, label, li, p, span, text, ul)
 import Html.Attributes exposing (attribute, class, classList, disabled, for, id, placeholder, required, src, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
@@ -38,6 +39,7 @@ type alias Model =
     , cityData : CityDataRequest
     , userSession : Maybe UserData
     , itinerariesBeingDeleted : List Int
+    , itinerariesErrors : Dict Int String
 
     -- New itinerary
     , isNewItineraryModalOpen : Bool
@@ -104,6 +106,7 @@ init cityId =
       , cityData = Loading
       , userSession = Nothing
       , itinerariesBeingDeleted = []
+      , itinerariesErrors = Dict.empty
       , newItineraryName = ""
       , newItineraryFirstActivity = ""
       , newItineraryRestActivities = []
@@ -154,6 +157,7 @@ update msg model =
             ( { model
                 | itineraryMenuOpen = Nothing
                 , itinerariesBeingDeleted = idx :: model.itinerariesBeingDeleted
+                , itinerariesErrors = Dict.remove idx model.itinerariesErrors
               }
             , Api.Itineraries.deleteItinerary idx
                 (\l ->
@@ -167,23 +171,57 @@ update msg model =
             )
 
         DeletedItinerary err idx ->
-            -- TODO: handle err
-            case model.cityData of
-                Loaded data ->
+            case err of
+                Just val ->
+                    let
+                        errorMessage =
+                            case val of
+                                Http.BadStatus code ->
+                                    case code of
+                                        400 ->
+                                            "Bad request"
+
+                                        401 ->
+                                            "Unauthorized"
+
+                                        404 ->
+                                            "Not found"
+
+                                        _ ->
+                                            "An unknown error ocurred: code " ++ String.fromInt code
+
+                                _ ->
+                                    "An unknown error ocurred"
+
+                        newItineraryErrors =
+                            model.itinerariesErrors |> Dict.insert idx errorMessage
+                    in
                     ( { model
-                        | cityData =
-                            Loaded
-                                { id = data.id
-                                , name = data.name
-                                , itineraries = List.filter (\l -> l.id /= idx) data.itineraries
-                                , country = data.country
-                                }
+                        | itinerariesErrors = newItineraryErrors
+                        , itinerariesBeingDeleted =
+                            model.itinerariesBeingDeleted
+                                |> List.filter (\i -> i /= idx)
                       }
                     , Cmd.none
                     )
 
-                _ ->
-                    ( model, Cmd.none )
+                Nothing ->
+                    case model.cityData of
+                        Loaded data ->
+                            ( { model
+                                | cityData =
+                                    Loaded
+                                        { id = data.id
+                                        , name = data.name
+                                        , itineraries = List.filter (\l -> l.id /= idx) data.itineraries
+                                        , country = data.country
+                                        }
+                              }
+                            , Cmd.none
+                            )
+
+                        _ ->
+                            ( model, Cmd.none )
 
         -- New Itinerary
         SubmitForm ->
@@ -372,16 +410,31 @@ view ({ cityData, isCreatingNewItinerary } as model) =
 
 
 itinerary : Itinerary -> Model -> Html Msg
-itinerary data ({ itinerariesBeingDeleted } as model) =
+itinerary data ({ itinerariesBeingDeleted, itinerariesErrors } as model) =
     let
+        thisItineraryIsBeingDeleted : Bool
         thisItineraryIsBeingDeleted =
             List.any (\l -> l == data.id) itinerariesBeingDeleted
+
+        error : Maybe String
+        error =
+            Dict.get data.id itinerariesErrors
+
+        errorHtml : String -> Html msg
+        errorHtml err =
+            div [ class "bg-red-100 p-2 font-semibold" ]
+                [ p [ class "text-red-700" ] [ text err ]
+                ]
     in
     div [ class "mt-3 flex flex-col rounded shadow-sm bg-white md:h-full md:justify-between" ]
-        [ if thisItineraryIsBeingDeleted then
-            div [ class "bg-red-100 p-2 font-semibold" ]
-                [ p [ class "text-red-700" ] [ text "Deleting itinerary..." ]
-                ]
+        [ case error of
+            Just val ->
+                errorHtml val
+
+            Nothing ->
+                text ""
+        , if thisItineraryIsBeingDeleted then
+            errorHtml "Deleting itinerary..."
 
           else
             text ""
@@ -400,8 +453,8 @@ itinerary data ({ itinerariesBeingDeleted } as model) =
                             Just userData ->
                                 if userData.id == data.creator.id then
                                     [ div [ class "ml-auto relative" ]
-                                        [ button [ onClick (OpenItineraryMenu data.id), class "w-12 h-12" ]
-                                            [ div [ class "flex w-12 h-12", classList [ ( "text-gray-400", thisItineraryIsBeingDeleted ) ], disabled thisItineraryIsBeingDeleted ] [ verticalDotsSvg ]
+                                        [ button [ onClick (OpenItineraryMenu data.id), class "w-12 h-12", disabled thisItineraryIsBeingDeleted ]
+                                            [ div [ class "flex w-12 h-12", classList [ ( "text-gray-400", thisItineraryIsBeingDeleted ) ] ] [ verticalDotsSvg ]
                                             ]
                                         , div
                                             [ classList
