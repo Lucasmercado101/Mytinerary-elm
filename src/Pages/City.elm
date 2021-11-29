@@ -280,7 +280,7 @@ view ({ cityData, isCreatingNewItinerary } as model) =
                             p [ class "text-xl text-center mt-5" ] [ text "There are no itineraries" ]
 
                           else
-                            ul [ class "container mx-auto px-4 pb-4 flex flex-col md:flex-row items-stretch" ]
+                            ul [ class "container mx-auto px-4 pb-4 flex flex-col md:flex-row md:flex-wrap items-stretch" ]
                                 (List.map (\l -> li [ class "md:w-1/2 xl:w-1/3 w-full p-2" ] [ itinerary l ]) itineraries)
                         ]
                     ]
