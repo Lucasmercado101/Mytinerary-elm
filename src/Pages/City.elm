@@ -388,8 +388,8 @@ modal ({ newItineraryFirstActivity, newItineraryName, newItineraryPrice, newItin
                     , div []
                         [ p [ class "block text-gray-700 text-xl mb-2" ]
                             [ text "Tags" ]
-                        , div [ class "flex flex-col gap-y-4" ]
-                            [ div []
+                        , div [ class "flex flex-col gap-y-4 md:gap-x-4 md:flex-row" ]
+                            [ div [ class "md:w-1/3" ]
                                 [ label
                                     [ class "block text-gray-700 text-sm font-bold mb-2"
                                     , for "tag-1"
@@ -405,7 +405,7 @@ modal ({ newItineraryFirstActivity, newItineraryName, newItineraryPrice, newItin
                                     ]
                                     []
                                 ]
-                            , div []
+                            , div [ class "md:w-1/3" ]
                                 [ label
                                     [ class "block text-gray-700 text-sm font-bold mb-2"
                                     , for "tag-2"
@@ -421,7 +421,7 @@ modal ({ newItineraryFirstActivity, newItineraryName, newItineraryPrice, newItin
                                     ]
                                     []
                                 ]
-                            , div []
+                            , div [ class "md:w-1/3" ]
                                 [ label
                                     [ class "block text-gray-700 text-sm font-bold mb-2"
                                     , for "tag-3"
