@@ -481,7 +481,7 @@ formActivities { newItineraryFirstActivity, newItineraryRestActivities } =
                                 [ required True
                                 , value content
                                 , onInput (ChangeActivity idxNumber)
-                                , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                , class "appearance-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 , id ("activity-" ++ idx)
                                 , type_ "text"
                                 ]
@@ -504,7 +504,7 @@ formActivities { newItineraryFirstActivity, newItineraryRestActivities } =
                     [ class "block text-gray-700 text-sm font-bold mb-2"
                     , for "activity-0"
                     ]
-                    [ text "Activity #1" ]
+                    [ text "Activity #1*" ]
                 , input
                     [ required True
                     , value newItineraryFirstActivity
