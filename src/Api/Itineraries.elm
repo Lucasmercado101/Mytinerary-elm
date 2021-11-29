@@ -8,22 +8,20 @@ import Json.Encode as JE
 
 type alias NewItinerary =
     { title : String
-    , creator : Int
-    , time : Int
+    , duration : Int
     , price : Int
-    , hashtags : List String
+    , tags : List String
     , activities : List String
     }
 
 
 newItineraryEncoder : NewItinerary -> JE.Value
-newItineraryEncoder { title, creator, price, time, hashtags, activities } =
+newItineraryEncoder { title, price, duration, tags, activities } =
     JE.object
         [ ( "title", JE.string title )
-        , ( "creator", JE.int creator )
-        , ( "time", JE.int time )
+        , ( "duration", JE.int duration )
         , ( "price", JE.int price )
-        , ( "hashtags", JE.list JE.string hashtags )
+        , ( "tags", JE.list JE.string tags )
         , ( "activities", JE.list JE.string activities )
         ]
 
