@@ -314,7 +314,7 @@ itinerary data =
         [ div [ class "flex flex-row mb-2" ]
             [ if data.creator.profilePic == Nothing then
                 div [ class "pointer-events-none w-12 h-12 bg-red-500 text-white capitalize rounded-full flex" ]
-                    [ p [ class "m-auto text-xl" ] [ text (String.left 1 data.creator.username) ]
+                    [ div [ class "flex w-12 h-12" ] [ p [ class "m-auto text-xl" ] [ text (String.left 1 data.creator.username) ] ]
                     ]
 
               else
