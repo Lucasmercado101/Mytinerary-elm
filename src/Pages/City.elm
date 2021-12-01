@@ -1122,7 +1122,7 @@ editItineraryModal ({ name, price, tag1, tag2, tag3, time } as data) isEditingIt
                                     "Editing..."
 
                                  else
-                                    "Create"
+                                    "Edit"
                                 )
                             ]
                         ]
