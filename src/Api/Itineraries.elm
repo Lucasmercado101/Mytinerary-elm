@@ -1,5 +1,6 @@
-module Api.Itineraries exposing (NewItinerary, NewItineraryResponse, deleteItinerary, patchItinerary, postItinerary)
+module Api.Itineraries exposing (NewItinerary, NewItineraryResponse, PatchItineraryResponse, deleteItinerary, patchItinerary, postItinerary)
 
+import Api.City
 import Api.Common exposing (deleteWithCredentials, endpoint, patchWithCredentials, postWithCredentials)
 import Http exposing (jsonBody)
 import Json.Decode as JD exposing (Decoder)
@@ -71,6 +72,29 @@ type alias PatchItineraryInputData =
     }
 
 
+type alias PatchItineraryResponse =
+    { id : Int
+    , title : String
+    , time : Int
+    , price : Int
+    , hashtags : List String
+    , activities : List String
+    , comments : List Api.City.Comment
+    }
+
+
+patchItineraryDataDecoder : Decoder PatchItineraryResponse
+patchItineraryDataDecoder =
+    JD.map7 PatchItineraryResponse
+        (JD.field "id" JD.int)
+        (JD.field "title" JD.string)
+        (JD.field "time" JD.int)
+        (JD.field "price" JD.int)
+        (JD.field "hashtags" (JD.list JD.string))
+        (JD.field "activities" (JD.list JD.string))
+        (JD.field "comments" (JD.list Api.City.commentDecoder))
+
+
 
 -- Public
 
@@ -93,7 +117,7 @@ deleteItinerary itineraryId a =
         (Http.expectWhatever a)
 
 
-patchItinerary : Int -> PatchItineraryInputData -> (Result Http.Error NewItineraryResponse -> msg) -> Cmd msg
+patchItinerary : Int -> PatchItineraryInputData -> (Result Http.Error PatchItineraryResponse -> msg) -> Cmd msg
 patchItinerary itineraryId data msg =
     patchWithCredentials
         (endpoint [ "itinerary", String.fromInt itineraryId ])
@@ -101,4 +125,4 @@ patchItinerary itineraryId data msg =
             |> patchItineraryDataEncoder
             |> jsonBody
         )
-        (Http.expectJson msg newItineraryDecoder)
+        (Http.expectJson msg patchItineraryDataDecoder)
