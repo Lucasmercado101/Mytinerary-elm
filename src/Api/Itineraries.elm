@@ -51,6 +51,26 @@ newItineraryDecoder =
         (JD.field "id" JD.int)
 
 
+patchItineraryDataEncoder : PatchItineraryInputData -> JE.Value
+patchItineraryDataEncoder { title, price, time, hashtags, activities } =
+    JE.object
+        [ ( "title", JE.string title )
+        , ( "time", JE.int time )
+        , ( "price", JE.int price )
+        , ( "hashtags", JE.list JE.string hashtags )
+        , ( "activities", JE.list JE.string activities )
+        ]
+
+
+type alias PatchItineraryInputData =
+    { title : String
+    , time : Int
+    , price : Int
+    , hashtags : List String
+    , activities : List String
+    }
+
+
 
 -- Public
 
@@ -73,12 +93,12 @@ deleteItinerary itineraryId a =
         (Http.expectWhatever a)
 
 
-patchItinerary : Int -> NewItinerary -> (Result Http.Error NewItineraryResponse -> msg) -> Cmd msg
+patchItinerary : Int -> PatchItineraryInputData -> (Result Http.Error NewItineraryResponse -> msg) -> Cmd msg
 patchItinerary itineraryId data msg =
     patchWithCredentials
         (endpoint [ "itinerary", String.fromInt itineraryId ])
         (data
-            |> newItineraryEncoder
+            |> patchItineraryDataEncoder
             |> jsonBody
         )
         (Http.expectJson msg newItineraryDecoder)
