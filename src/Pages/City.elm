@@ -635,7 +635,7 @@ update msg model =
                                                     itineraries
                                         }
                               }
-                            , Api.Itineraries.patchItinerary model.cityId
+                            , Api.Itineraries.patchItinerary model.editItineraryId
                                 { title = model.newItineraryName
                                 , activities =
                                     model.newItineraryFirstActivity
