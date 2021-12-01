@@ -14,8 +14,7 @@ import Pages.Landing as Landing
 import Pages.Login as Login
 import Pages.Register as Register
 import Session exposing (UserSession(..))
-import Svg exposing (svg)
-import Svg.Attributes
+import SvgIcons exposing (avatarSvg, burgerSvg)
 import Url exposing (Url)
 import Url.Parser as Parser exposing ((</>), Parser, s)
 
@@ -414,43 +413,6 @@ userMobileMenuContent model =
                 , li [] [ a [ class "block", href "/login" ] [ text "Log In" ] ]
                 ]
             )
-        ]
-
-
-burgerSvg : Html msg
-burgerSvg =
-    svg
-        [ Svg.Attributes.class "h-6 w-6"
-        , Svg.Attributes.fill "none"
-        , Svg.Attributes.viewBox "0 0 24 24"
-        , Svg.Attributes.stroke "currentColor"
-        ]
-        [ Svg.path
-            [ Svg.Attributes.strokeLinecap
-                "round"
-            , Svg.Attributes.strokeLinejoin "round"
-            , Svg.Attributes.strokeWidth "2"
-            , Svg.Attributes.d "M4 6h16M4 12h16M4 18h16"
-            ]
-            []
-        ]
-
-
-avatarSvg : Html msg
-avatarSvg =
-    svg
-        [ Svg.Attributes.class "h-6 w-6"
-        , Svg.Attributes.fill "none"
-        , Svg.Attributes.viewBox "0 0 24 24"
-        , Svg.Attributes.stroke "currentColor"
-        ]
-        [ Svg.path
-            [ Svg.Attributes.strokeLinecap "round"
-            , Svg.Attributes.strokeLinejoin "round"
-            , Svg.Attributes.strokeWidth "2"
-            , Svg.Attributes.d "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-            ]
-            []
         ]
 
 

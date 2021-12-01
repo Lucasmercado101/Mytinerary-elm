@@ -13,6 +13,7 @@ import Json.Decode as Decode
 import Session exposing (UserData)
 import Svg exposing (path, svg)
 import Svg.Attributes exposing (d, fill, stroke, strokeLinecap, strokeLinejoin, strokeWidth, viewBox)
+import SvgIcons exposing (clockSvg, errorSvg, verticalDotsSvg, xSvg)
 import Tuple exposing (first)
 
 
@@ -1518,101 +1519,3 @@ outsideTarget dropdownId =
                 else
                     Decode.fail "inside dropdown"
             )
-
-
-
--- SVG
-
-
-clockSvg : Html msg
-clockSvg =
-    svg
-        [ Svg.Attributes.class "h-5 w-5"
-        , fill "none"
-        , viewBox "0 0 24 24"
-        , stroke "currentColor"
-        ]
-        [ Svg.path
-            [ strokeLinecap "round"
-            , strokeLinejoin "round"
-            , strokeWidth "2"
-            , d "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-            ]
-            []
-        ]
-
-
-xSvg : Html msg
-xSvg =
-    svg
-        [ Svg.Attributes.class "h-6 w-6"
-        , Svg.Attributes.fill "none"
-        , attribute "stroke" "currentColor"
-        , Svg.Attributes.viewBox "0 0 24 24"
-        , attribute "xmlns" "http://www.w3.org/2000/svg"
-        ]
-        [ path
-            [ Svg.Attributes.d "M6 18L18 6M6 6l12 12"
-            , attribute "stroke-linecap" "round"
-            , attribute "stroke-linejoin" "round"
-            , attribute "stroke-width" "2"
-            ]
-            []
-        ]
-
-
-verticalDotsSvg : Html msg
-verticalDotsSvg =
-    svg
-        [ Svg.Attributes.class "m-auto text-center h-6 w-6"
-        , Svg.Attributes.fill "none"
-        , Svg.Attributes.viewBox "0 0 24 24"
-        , Svg.Attributes.stroke "currentColor"
-        ]
-        [ Svg.path
-            [ Svg.Attributes.strokeLinecap
-                "round"
-            , Svg.Attributes.strokeLinejoin "round"
-            , Svg.Attributes.strokeWidth "2"
-            , Svg.Attributes.d "M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
-            ]
-            []
-        ]
-
-
-chevronDownSvg : Html msg
-chevronDownSvg =
-    svg
-        [ Svg.Attributes.class "h-6 w-6"
-        , Svg.Attributes.fill "none"
-        , attribute "stroke" "currentColor"
-        , Svg.Attributes.viewBox "0 0 24 24"
-        , attribute "xmlns" "http://www.w3.org/2000/svg"
-        ]
-        [ path
-            [ Svg.Attributes.d "M5 15l7-7 7 7"
-            , attribute "stroke-linecap" "round"
-            , attribute "stroke-linejoin" "round"
-            , attribute "stroke-width" "2"
-            ]
-            []
-        , text ""
-        ]
-
-
-errorSvg : Html msg
-errorSvg =
-    svg
-        [ Svg.Attributes.class "h-8 w-8 text-red-500"
-        , Svg.Attributes.fill "none"
-        , Svg.Attributes.viewBox "0 0 24 24"
-        , Svg.Attributes.stroke "currentColor"
-        ]
-        [ Svg.path
-            [ Svg.Attributes.strokeLinecap "round"
-            , Svg.Attributes.strokeLinejoin "round"
-            , Svg.Attributes.strokeWidth "2"
-            , Svg.Attributes.d "M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            ]
-            []
-        ]

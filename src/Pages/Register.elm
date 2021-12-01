@@ -7,8 +7,7 @@ import Html exposing (Html, button, div, form, input, label, p, text)
 import Html.Attributes exposing (class, classList, disabled, for, id, placeholder, required, type_, value)
 import Html.Events exposing (onInput, onSubmit)
 import Http exposing (Error(..))
-import Svg exposing (svg)
-import Svg.Attributes
+import SvgIcons exposing (errorSvg)
 
 
 type alias Model =
@@ -147,24 +146,6 @@ error content =
             [ p [ class "font-bold text-l" ] [ text "Error" ]
             , p [] content
             ]
-        ]
-
-
-errorSvg : Html msg
-errorSvg =
-    svg
-        [ Svg.Attributes.class "h-6 w-6 text-red-500"
-        , Svg.Attributes.fill "none"
-        , Svg.Attributes.viewBox "0 0 24 24"
-        , Svg.Attributes.stroke "currentColor"
-        ]
-        [ Svg.path
-            [ Svg.Attributes.strokeLinecap "round"
-            , Svg.Attributes.strokeLinejoin "round"
-            , Svg.Attributes.strokeWidth "2"
-            , Svg.Attributes.d "M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            ]
-            []
         ]
 
 
