@@ -122,7 +122,7 @@ type Msg
     | DeleteItinerary Int
     | DeletedItinerary (Maybe Http.Error) Int
     | GotNewItinerary (Result Http.Error Api.Itineraries.NewItineraryResponse)
-    | GotPatchItineraryResp (Result Http.Error Api.Itineraries.NewItineraryResponse) Int
+    | GotPatchItineraryResp (Result Http.Error Api.Itineraries.PatchItineraryResponse) Int
     | OpenItineraryMenu Int
       -- New Itinerary
     | OpenModal
