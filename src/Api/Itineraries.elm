@@ -1,6 +1,6 @@
-module Api.Itineraries exposing (NewItinerary, NewItineraryResponse, deleteItinerary, postItinerary)
+module Api.Itineraries exposing (NewItinerary, NewItineraryResponse, deleteItinerary, patchItinerary, postItinerary)
 
-import Api.Common exposing (deleteWithCredentials, endpoint, postWithCredentials)
+import Api.Common exposing (deleteWithCredentials, endpoint, patchWithCredentials, postWithCredentials)
 import Http exposing (jsonBody)
 import Json.Decode as JD exposing (Decoder)
 import Json.Encode as JE
@@ -71,3 +71,14 @@ deleteItinerary itineraryId a =
     deleteWithCredentials
         (endpoint [ "itinerary", String.fromInt itineraryId ])
         (Http.expectWhatever a)
+
+
+patchItinerary : Int -> NewItinerary -> (Result Http.Error NewItineraryResponse -> msg) -> Cmd msg
+patchItinerary itineraryId data msg =
+    patchWithCredentials
+        (endpoint [ "itinerary", String.fromInt itineraryId ])
+        (data
+            |> newItineraryEncoder
+            |> jsonBody
+        )
+        (Http.expectJson msg newItineraryDecoder)
