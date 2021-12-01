@@ -38,8 +38,8 @@ type alias NewItineraryResponse =
     }
 
 
-newItinerayDecoder : Decoder NewItineraryResponse
-newItinerayDecoder =
+newItineraryDecoder : Decoder NewItineraryResponse
+newItineraryDecoder =
     JD.map8 NewItineraryResponse
         (JD.field "activities" (JD.list JD.string))
         (JD.field "city" JD.int)
@@ -63,7 +63,7 @@ postItinerary cityId data msg =
             |> newItineraryEncoder
             |> jsonBody
         )
-        (Http.expectJson msg newItinerayDecoder)
+        (Http.expectJson msg newItineraryDecoder)
 
 
 deleteItinerary : Int -> (Result Http.Error () -> msg) -> Cmd msg
