@@ -643,8 +643,7 @@ modal ({ name, price, tag1, tag2, tag3, time } as data) isCreatingNewItinerary =
                                     ]
                                     [ text "Tag #1" ]
                                 , input
-                                    [ required True
-                                    , value tag1
+                                    [ value tag1
                                     , onInput ChangeTag1
                                     , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     , id "tag-1"
@@ -659,8 +658,7 @@ modal ({ name, price, tag1, tag2, tag3, time } as data) isCreatingNewItinerary =
                                     ]
                                     [ text "Tag #2" ]
                                 , input
-                                    [ required True
-                                    , value tag2
+                                    [ value tag2
                                     , onInput ChangeTag2
                                     , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     , id "tag-2"
@@ -675,8 +673,7 @@ modal ({ name, price, tag1, tag2, tag3, time } as data) isCreatingNewItinerary =
                                     ]
                                     [ text "Tag #3" ]
                                 , input
-                                    [ required True
-                                    , value tag3
+                                    [ value tag3
                                     , onInput ChangeTag3
                                     , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     , id "tag-3"
