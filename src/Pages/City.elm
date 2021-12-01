@@ -1496,3 +1496,23 @@ verticalDotsSvg =
             ]
             []
         ]
+
+
+chevronDownSvg : Html msg
+chevronDownSvg =
+    svg
+        [ Svg.Attributes.class "h-6 w-6"
+        , Svg.Attributes.fill "none"
+        , attribute "stroke" "currentColor"
+        , Svg.Attributes.viewBox "0 0 24 24"
+        , attribute "xmlns" "http://www.w3.org/2000/svg"
+        ]
+        [ path
+            [ Svg.Attributes.d "M5 15l7-7 7 7"
+            , attribute "stroke-linecap" "round"
+            , attribute "stroke-linejoin" "round"
+            , attribute "stroke-width" "2"
+            ]
+            []
+        , text ""
+        ]
