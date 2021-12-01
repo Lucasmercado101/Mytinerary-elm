@@ -349,9 +349,53 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
-        GotNewItinerary _ ->
-            -- TODO
-            ( { model | isCreatingNewItinerary = False }, Cmd.none )
+        GotNewItinerary res ->
+            case model.userSession of
+                Just userData ->
+                    case res of
+                        Ok newItinerary ->
+                            case model.cityData of
+                                Loaded cityData ->
+                                    let
+                                        itineraries =
+                                            cityData.itineraries
+                                    in
+                                    ( { model
+                                        | isCreatingNewItinerary = False
+                                        , cityData =
+                                            let
+                                                newIt : Api.City.Itinerary
+                                                newIt =
+                                                    { id = newItinerary.id
+                                                    , title = newItinerary.title
+                                                    , time = newItinerary.time
+                                                    , price = newItinerary.price
+                                                    , activities = newItinerary.activities
+                                                    , hashtags = newItinerary.hashtags
+                                                    , comments = []
+                                                    , creator =
+                                                        { id = userData.id
+                                                        , username = userData.username
+                                                        , profilePic = userData.profile_pic
+                                                        }
+                                                    }
+                                            in
+                                            Loaded
+                                                { cityData
+                                                    | itineraries = Itinerary newIt Nothing :: itineraries
+                                                }
+                                      }
+                                    , Cmd.none
+                                    )
+
+                                _ ->
+                                    ( model, Cmd.none )
+
+                        Err _ ->
+                            Debug.todo "handle error of new itinerary"
+
+                Nothing ->
+                    ( model, Cmd.none )
 
         GotPatchItineraryResp res idx ->
             case model.cityData of
