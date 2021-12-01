@@ -74,7 +74,6 @@ type alias Model =
     , editItineraryTag1 : String
     , editItineraryTag2 : String
     , editItineraryTag3 : String
-    , itinerariesBeingEdited : List Int
     }
 
 
@@ -185,7 +184,6 @@ init cityId =
       , editItineraryTag1 = ""
       , editItineraryTag2 = ""
       , editItineraryTag3 = ""
-      , itinerariesBeingEdited = []
       }
     , Cmd.batch
         [ Api.City.getCity cityId GotCity
@@ -356,7 +354,7 @@ update msg model =
             ( { model | isCreatingNewItinerary = False }, Cmd.none )
 
         GotPatchItineraryResp res idx ->
-            (case model.cityData of
+            case model.cityData of
                 Loaded data ->
                     case res of
                         Ok val ->
@@ -431,15 +429,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-            )
-                |> (\( m, cmd ) ->
-                        ( { m
-                            | itinerariesBeingEdited =
-                                List.filter (\l -> l /= idx) m.itinerariesBeingEdited
-                          }
-                        , cmd
-                        )
-                   )
 
         ChangeNewItineraryName newItineraryName ->
             ( { model | newItineraryName = newItineraryName }, Cmd.none )
@@ -618,31 +607,53 @@ update msg model =
             )
 
         SubmitEditItineraryForm ->
-            case model.userSession of
-                Just _ ->
+            case model.cityData of
+                Loaded cityData ->
                     let
-                        itineraryBeingEditedId =
-                            model.editItineraryId
+                        itineraries =
+                            cityData.itineraries
                     in
-                    ( { model
-                        | itinerariesBeingEdited = itineraryBeingEditedId :: model.itinerariesBeingEdited
-                      }
-                    , Api.Itineraries.patchItinerary model.cityId
-                        { title = model.newItineraryName
-                        , activities =
-                            model.newItineraryFirstActivity
-                                :: (model.newItineraryRestActivities
-                                        |> List.filter (\( _, l ) -> l /= "")
-                                        |> List.map Tuple.second
-                                   )
-                        , price = model.newItineraryPrice
-                        , tags = [ model.tag1, model.tag2, model.tag3 ]
-                        , duration = model.newItineraryTime
-                        }
-                        (\l -> GotPatchItineraryResp l model.editItineraryId)
-                    )
+                    case model.userSession of
+                        Just _ ->
+                            let
+                                itineraryBeingEditedId =
+                                    model.editItineraryId
+                            in
+                            ( { model
+                                | cityData =
+                                    Loaded
+                                        { cityData
+                                            | itineraries =
+                                                List.map
+                                                    (\(Itinerary data status) ->
+                                                        if data.id == itineraryBeingEditedId then
+                                                            Itinerary data (Just Editing)
 
-                Nothing ->
+                                                        else
+                                                            Itinerary data status
+                                                    )
+                                                    itineraries
+                                        }
+                              }
+                            , Api.Itineraries.patchItinerary model.cityId
+                                { title = model.newItineraryName
+                                , activities =
+                                    model.newItineraryFirstActivity
+                                        :: (model.newItineraryRestActivities
+                                                |> List.filter (\( _, l ) -> l /= "")
+                                                |> List.map Tuple.second
+                                           )
+                                , price = model.newItineraryPrice
+                                , tags = [ model.tag1, model.tag2, model.tag3 ]
+                                , duration = model.newItineraryTime
+                                }
+                                (\l -> GotPatchItineraryResp l model.editItineraryId)
+                            )
+
+                        Nothing ->
+                            ( model, Cmd.none )
+
+                _ ->
                     ( model, Cmd.none )
 
 
@@ -733,24 +744,40 @@ view ({ cityData, isCreatingNewItinerary } as model) =
 
           else
             text ""
-        , if model.isEditItineraryModalOpen then
-            editItineraryModal
-                { name = model.editItineraryName
-                , time = model.editItineraryTime
-                , price = model.editItineraryPrice
-                , tag1 = model.editItineraryTag1
-                , tag2 = model.editItineraryTag2
-                , tag3 = model.editItineraryTag3
-                , firstActivity = model.editItineraryFirstActivity
-                , restActivities = model.editItineraryRestActivities
-                }
-                (List.any
-                    (\l -> l == model.editItineraryId)
-                    model.itinerariesBeingEdited
-                )
+        , case cityData of
+            Loaded data ->
+                if model.isEditItineraryModalOpen then
+                    editItineraryModal
+                        { name = model.editItineraryName
+                        , time = model.editItineraryTime
+                        , price = model.editItineraryPrice
+                        , tag1 = model.editItineraryTag1
+                        , tag2 = model.editItineraryTag2
+                        , tag3 = model.editItineraryTag3
+                        , firstActivity = model.editItineraryFirstActivity
+                        , restActivities = model.editItineraryRestActivities
+                        }
+                        (data.itineraries
+                            |> List.any
+                                (\(Itinerary i status) ->
+                                    if i.id == model.editItineraryId then
+                                        case status of
+                                            Just Editing ->
+                                                True
 
-          else
-            text ""
+                                            _ ->
+                                                False
+
+                                    else
+                                        False
+                                )
+                        )
+
+                else
+                    text ""
+
+            _ ->
+                text ""
         ]
     }
 
