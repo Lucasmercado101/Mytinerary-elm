@@ -620,7 +620,8 @@ update msg model =
                                     model.editItineraryId
                             in
                             ( { model
-                                | cityData =
+                                | isEditItineraryModalOpen = False
+                                , cityData =
                                     Loaded
                                         { cityData
                                             | itineraries =
