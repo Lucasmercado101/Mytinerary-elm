@@ -1,4 +1,4 @@
-module Api.City exposing (City, Itinerary, getCity)
+module Api.City exposing (City, Comment, Itinerary, commentDecoder, getCity)
 
 import Api.Common exposing (endpoint)
 import Http
