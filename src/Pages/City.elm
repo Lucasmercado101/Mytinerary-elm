@@ -74,6 +74,7 @@ type alias Model =
     , editItineraryTag1 : String
     , editItineraryTag2 : String
     , editItineraryTag3 : String
+    , itinerariesBeingEdited : List Int
     }
 
 
@@ -183,6 +184,7 @@ init cityId =
       , editItineraryTag1 = ""
       , editItineraryTag2 = ""
       , editItineraryTag3 = ""
+      , itinerariesBeingEdited = []
       }
     , Cmd.batch
         [ Api.City.getCity cityId GotCity
@@ -618,6 +620,24 @@ view ({ cityData, isCreatingNewItinerary } as model) =
 
           else
             text ""
+        , if model.isEditItineraryModalOpen then
+            editItineraryModal
+                { name = model.editItineraryName
+                , time = model.editItineraryTime
+                , price = model.editItineraryPrice
+                , tag1 = model.editItineraryTag1
+                , tag2 = model.editItineraryTag2
+                , tag3 = model.editItineraryTag3
+                , firstActivity = model.editItineraryFirstActivity
+                , restActivities = model.editItineraryRestActivities
+                }
+                (List.any
+                    (\l -> l == model.editItineraryId)
+                    model.itinerariesBeingEdited
+                )
+
+          else
+            text ""
         ]
     }
 
@@ -755,7 +775,7 @@ modal ({ name, price, tag1, tag2, tag3, time } as data) isCreatingNewItinerary =
             , span [ class "hidden sm:inline-block sm:align-middle sm:h-screen" ]
                 [ text "\u{200B}" ]
             , div [ class "py-6 w-11/12 inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" ]
-                [ h2 [ class "text-2xl text-center mb-4" ] [ text "New City" ]
+                [ h2 [ class "text-2xl text-center mb-4" ] [ text "New Itinerary" ]
                 , form
                     [ onSubmit SubmitForm
                     , class
@@ -958,6 +978,235 @@ formActivities { firstActivity, restActivities } isCreatingNewItinerary =
                             ]
                         , type_ "button"
                         , onClick AddActivity
+                        , disabled (not canCreate)
+                        ]
+                        [ if maxAmountOfActivitiesReached then
+                            text "Max activities reached!"
+
+                          else
+                            text "Add Activity"
+                        ]
+                   ]
+            )
+        ]
+
+
+editItineraryModal : ItineraryFormData -> Bool -> Html Msg
+editItineraryModal ({ name, price, tag1, tag2, tag3, time } as data) isEditingItinerary =
+    let
+        canEdit =
+            validateFormData data && not isEditingItinerary
+    in
+    div [ class "fixed z-50 inset-0 overflow-y-auto" ]
+        [ div [ class "flex items-center justify-center min-h-screen px-4 text-center sm:block sm:p-0" ]
+            [ div [ class "fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity", onClick CloseEditItineraryModal ]
+                []
+            , span [ class "hidden sm:inline-block sm:align-middle sm:h-screen" ]
+                [ text "\u{200B}" ]
+            , div [ class "py-6 w-11/12 inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full" ]
+                [ h2 [ class "text-2xl text-center mb-4" ] [ text "Edit Itinerary" ]
+                , form
+                    [ onSubmit SubmitEditItineraryForm
+                    , class
+                        "flex flex-col container mx-auto px-4 gap-y-4"
+                    ]
+                    [ div []
+                        [ label [ class "block text-gray-700 text-sm font-bold mb-2", for "itinerary-name" ]
+                            [ text "Name*" ]
+                        , input
+                            [ required True
+                            , value name
+                            , onInput ChangeEditItineraryName
+                            , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            , placeholder "name"
+                            , id "itinerary-name"
+                            , type_ "text"
+                            ]
+                            []
+                        ]
+                    , div [ class "flex flex-col gap-y-4 md:flex-row md:gap-x-4 md:justify-between" ]
+                        [ div [ class "md:w-full" ]
+                            [ label [ class "block text-gray-700 text-sm font-bold mb-2", for "price" ]
+                                [ text "Price*" ]
+                            , input
+                                [ required True
+                                , value (String.fromInt price)
+                                , onInput ChangeEditItineraryPrice
+                                , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                , id "price"
+                                , type_ "number"
+                                , Html.Attributes.min "1"
+                                ]
+                                []
+                            ]
+                        , div [ class "md:w-full" ]
+                            [ label [ class "block text-gray-700 text-sm font-bold mb-2", for "time" ]
+                                [ text "Time*" ]
+                            , input
+                                [ required True
+                                , value (String.fromInt time)
+                                , onInput ChangeEditItineraryTime
+                                , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                , id "time"
+                                , type_ "number"
+                                , Html.Attributes.min "1"
+                                ]
+                                []
+                            ]
+                        ]
+                    , div []
+                        [ p [ class "block text-gray-700 text-xl mb-2" ]
+                            [ text "Tags" ]
+                        , div [ class "flex flex-col gap-y-4 md:gap-x-4 md:flex-row" ]
+                            [ div [ class "md:w-1/3" ]
+                                [ label
+                                    [ class "block text-gray-700 text-sm font-bold mb-2"
+                                    , for "tag-1"
+                                    ]
+                                    [ text "Tag #1" ]
+                                , input
+                                    [ value tag1
+                                    , onInput ChangeEditTag1
+                                    , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    , id "tag-1"
+                                    , type_ "text"
+                                    ]
+                                    []
+                                ]
+                            , div [ class "md:w-1/3" ]
+                                [ label
+                                    [ class "block text-gray-700 text-sm font-bold mb-2"
+                                    , for "tag-2"
+                                    ]
+                                    [ text "Tag #2" ]
+                                , input
+                                    [ value tag2
+                                    , onInput ChangeEditTag2
+                                    , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    , id "tag-2"
+                                    , type_ "text"
+                                    ]
+                                    []
+                                ]
+                            , div [ class "md:w-1/3" ]
+                                [ label
+                                    [ class "block text-gray-700 text-sm font-bold mb-2"
+                                    , for "tag-3"
+                                    ]
+                                    [ text "Tag #3" ]
+                                , input
+                                    [ value tag3
+                                    , onInput ChangeEditTag3
+                                    , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    , id "tag-3"
+                                    , type_ "text"
+                                    ]
+                                    []
+                                ]
+                            ]
+                        ]
+                    , editFormActivities data isEditingItinerary
+                    , div [ class "flex ml-auto gap-x-4" ]
+                        [ button [ class "px-4 py-2", type_ "button", onClick CloseEditItineraryModal ] [ text "Cancel" ]
+                        , button
+                            [ type_ "submit"
+                            , class "font-bold py-2 px-4 rounded"
+                            , classList
+                                [ ( "bg-blue-700 hover:bg-blue-700 text-white", canEdit )
+                                , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", not canEdit )
+                                ]
+                            , disabled (not canEdit)
+                            ]
+                            [ text
+                                (if isEditingItinerary then
+                                    "Editing..."
+
+                                 else
+                                    "Create"
+                                )
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+
+
+editFormActivities : ItineraryFormData -> Bool -> Html Msg
+editFormActivities { firstActivity, restActivities } isEditingItinerary =
+    let
+        otherActivities =
+            List.indexedMap
+                (\i ( idxNumber, content ) ->
+                    let
+                        idx =
+                            String.fromInt idxNumber
+                    in
+                    div
+                        [ class "flex flex-col" ]
+                        [ label
+                            [ class "block text-gray-700 text-sm font-bold mb-2"
+                            , for ("activity-" ++ idx)
+                            ]
+                            [ text ("Activity #" ++ String.fromInt (i + 2))
+                            ]
+                        , div [ class "flex rounded w-full shadow border" ]
+                            [ input
+                                [ value content
+                                , onInput (ChangeEditItineraryActivity idxNumber)
+                                , class "appearance-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                , id ("activity-" ++ idx)
+                                , type_ "text"
+                                ]
+                                []
+                            , button
+                                [ type_ "button"
+                                , onClick (RemoveEditItineraryActivity idxNumber)
+                                , class "bg-red-100 px-2 flex h-auto items-center ml-auto"
+                                ]
+                                [ div [ class "text-red-500" ] [ xSvg ]
+                                ]
+                            ]
+                        ]
+                )
+                restActivities
+
+        maxAmountOfActivitiesReached =
+            (List.length restActivities + 1) == 50
+
+        canCreate =
+            not maxAmountOfActivitiesReached && not isEditingItinerary
+    in
+    div [ class "flex flex-col" ]
+        [ p [ class "block text-gray-700 text-xl mb-2" ]
+            [ text "Activities" ]
+        , div
+            [ class "flex flex-col gap-y-4" ]
+            (div [ class "flex flex-col" ]
+                [ label
+                    [ class "block text-gray-700 text-sm font-bold mb-2"
+                    , for "activity-0"
+                    ]
+                    [ text "Activity #1*" ]
+                , input
+                    [ required True
+                    , value firstActivity
+                    , onInput ChangeEditItineraryFirstActivity
+                    , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    , id "activity-0"
+                    , type_ "text"
+                    ]
+                    []
+                ]
+                :: otherActivities
+                ++ [ button
+                        [ class "font-bold py-2 px-4 rounded"
+                        , classList
+                            [ ( "bg-blue-700 hover:bg-blue-700 text-white", canCreate )
+                            , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", not canCreate )
+                            ]
+                        , type_ "button"
+                        , onClick AddEditItineraryActivity
                         , disabled (not canCreate)
                         ]
                         [ if maxAmountOfActivitiesReached then
