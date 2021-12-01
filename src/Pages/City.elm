@@ -71,7 +71,9 @@ type alias Model =
     , editItineraryActivitiesIdx : Int
     , editItineraryTime : Int
     , editItineraryPrice : Int
-    , isEditingItinerary : Bool
+    , editItineraryTag1 : String
+    , editItineraryTag2 : String
+    , editItineraryTag3 : String
     }
 
 
@@ -136,7 +138,7 @@ type Msg
     | RemoveActivity Int
     | SubmitForm
       -- Edit Itinerary
-    | OpenEditItineraryModal
+    | OpenEditItineraryModal Int
     | CloseEditItineraryModal
     | ChangeEditItineraryName String
     | ChangeEditTag1 String
@@ -168,6 +170,8 @@ init cityId =
       , isNewItineraryModalOpen = False
       , isCreatingNewItinerary = False
       , itineraryMenuOpen = Nothing
+
+      -- Edit itinerary
       , isEditItineraryModalOpen = False
       , editItineraryId = -1
       , editItineraryName = ""
@@ -176,7 +180,9 @@ init cityId =
       , editItineraryActivitiesIdx = 0
       , editItineraryTime = 0
       , editItineraryPrice = 0
-      , isEditingItinerary = False
+      , editItineraryTag1 = ""
+      , editItineraryTag2 = ""
+      , editItineraryTag3 = ""
       }
     , Cmd.batch
         [ Api.City.getCity cityId GotCity
@@ -406,11 +412,60 @@ update msg model =
             )
 
         -- Edit Itinerary
-        OpenEditItineraryModal ->
-            ( { model | isEditingItinerary = True }, Cmd.none )
+        OpenEditItineraryModal id ->
+            case model.cityData of
+                Loaded cityData ->
+                    let
+                        itineraryData =
+                            List.filter (\(Itinerary l _) -> l.id == id) cityData.itineraries
+                                |> List.head
+                    in
+                    case itineraryData of
+                        Just (Itinerary l _) ->
+                            let
+                                ( firstActivity, otherActivities ) =
+                                    case l.activities of
+                                        first :: other ->
+                                            ( first, other )
+
+                                        _ ->
+                                            ( "", [] )
+
+                                restActivities =
+                                    List.indexedMap Tuple.pair otherActivities
+
+                                ( tag1, tag2, tag3 ) =
+                                    case l.hashtags of
+                                        t1 :: t2 :: t3 :: _ ->
+                                            ( t1, t2, t3 )
+
+                                        _ ->
+                                            ( "", "", "" )
+                            in
+                            ( { model
+                                | isEditItineraryModalOpen = True
+                                , editItineraryId = id
+                                , editItineraryName = l.title
+                                , editItineraryTime = l.time
+                                , editItineraryPrice = l.price
+                                , editItineraryFirstActivity = firstActivity
+                                , editItineraryRestActivities = restActivities
+                                , editItineraryActivitiesIdx = List.length restActivities
+                                , editItineraryTag1 = tag1
+                                , editItineraryTag2 = tag2
+                                , editItineraryTag3 = tag3
+                              }
+                            , Cmd.none
+                            )
+
+                        Nothing ->
+                            ( model, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
 
         CloseEditItineraryModal ->
-            ( { model | isEditingItinerary = False }, Cmd.none )
+            ( { model | isEditItineraryModalOpen = False }, Cmd.none )
 
         ChangeEditItineraryName newEditItineraryName ->
             ( { model | editItineraryName = newEditItineraryName }, Cmd.none )
@@ -422,13 +477,13 @@ update msg model =
             ( { model | editItineraryPrice = Maybe.withDefault 0 (String.toInt newEditItineraryPrice) }, Cmd.none )
 
         ChangeEditTag1 newEditTag ->
-            ( { model | tag1 = newEditTag }, Cmd.none )
+            ( { model | editItineraryTag1 = newEditTag }, Cmd.none )
 
         ChangeEditTag2 newEditTag ->
-            ( { model | tag2 = newEditTag }, Cmd.none )
+            ( { model | editItineraryTag2 = newEditTag }, Cmd.none )
 
         ChangeEditTag3 newEditTag ->
-            ( { model | tag3 = newEditTag }, Cmd.none )
+            ( { model | editItineraryTag3 = newEditTag }, Cmd.none )
 
         ChangeEditItineraryFirstActivity newEditFirstActivity ->
             ( { model | editItineraryFirstActivity = newEditFirstActivity }, Cmd.none )
@@ -645,7 +700,7 @@ itinerary (Itinerary data status) model =
                                                     [ button [ class "w-full px-2 py-1", onClick (DeleteItinerary data.id) ] [ text "Delete" ]
                                                     ]
                                                 , li []
-                                                    [ button [ class "w-full px-2 py-1" ] [ text "Edit" ]
+                                                    [ button [ class "w-full px-2 py-1", onClick (OpenEditItineraryModal data.id) ] [ text "Edit" ]
                                                     ]
                                                 ]
                                             ]
