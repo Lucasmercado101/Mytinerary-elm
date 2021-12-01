@@ -123,6 +123,7 @@ type Msg
     | DeleteItinerary Int
     | DeletedItinerary (Maybe Http.Error) Int
     | GotNewItinerary (Result Http.Error Api.Itineraries.NewItineraryResponse)
+    | GotPatchItineraryResp (Result Http.Error Api.Itineraries.NewItineraryResponse) Int
     | OpenItineraryMenu Int
       -- New Itinerary
     | OpenModal
@@ -351,7 +352,94 @@ update msg model =
                     ( model, Cmd.none )
 
         GotNewItinerary _ ->
+            -- TODO
             ( { model | isCreatingNewItinerary = False }, Cmd.none )
+
+        GotPatchItineraryResp res idx ->
+            (case model.cityData of
+                Loaded data ->
+                    case res of
+                        Ok val ->
+                            ( { model
+                                | cityData =
+                                    Loaded
+                                        { data
+                                            | itineraries =
+                                                List.map
+                                                    (\(Itinerary l a) ->
+                                                        if l.id == idx then
+                                                            Itinerary
+                                                                { id = l.id
+                                                                , title = val.title
+                                                                , activities = val.activities
+                                                                , price = val.price
+                                                                , time = val.time
+                                                                , hashtags = val.hashtags
+                                                                , comments = l.comments
+                                                                , creator = l.creator
+                                                                }
+                                                                a
+
+                                                        else
+                                                            Itinerary l a
+                                                    )
+                                                    data.itineraries
+                                        }
+                              }
+                            , Cmd.none
+                            )
+
+                        Err err ->
+                            let
+                                errorMessage : String
+                                errorMessage =
+                                    case err of
+                                        Http.BadStatus code ->
+                                            case code of
+                                                400 ->
+                                                    "Bad request"
+
+                                                401 ->
+                                                    "Unauthorized"
+
+                                                404 ->
+                                                    "Not found"
+
+                                                _ ->
+                                                    "An unknown error ocurred: code " ++ String.fromInt code
+
+                                        _ ->
+                                            "An unknown error ocurred"
+
+                                newCityData =
+                                    { data
+                                        | itineraries =
+                                            List.map
+                                                (\(Itinerary l s) ->
+                                                    if l.id == idx then
+                                                        Itinerary l (Just (FailedToEdit errorMessage))
+
+                                                    else
+                                                        Itinerary l s
+                                                )
+                                                data.itineraries
+                                    }
+                            in
+                            ( { model | cityData = Loaded newCityData }
+                            , Cmd.none
+                            )
+
+                _ ->
+                    ( model, Cmd.none )
+            )
+                |> (\( m, cmd ) ->
+                        ( { m
+                            | itinerariesBeingEdited =
+                                List.filter (\l -> l /= idx) m.itinerariesBeingEdited
+                          }
+                        , cmd
+                        )
+                   )
 
         ChangeNewItineraryName newItineraryName ->
             ( { model | newItineraryName = newItineraryName }, Cmd.none )
@@ -530,7 +618,32 @@ update msg model =
             )
 
         SubmitEditItineraryForm ->
-            Debug.todo "SubmitEditItineraryForm"
+            case model.userSession of
+                Just _ ->
+                    let
+                        itineraryBeingEditedId =
+                            model.editItineraryId
+                    in
+                    ( { model
+                        | itinerariesBeingEdited = itineraryBeingEditedId :: model.itinerariesBeingEdited
+                      }
+                    , Api.Itineraries.patchItinerary model.cityId
+                        { title = model.newItineraryName
+                        , activities =
+                            model.newItineraryFirstActivity
+                                :: (model.newItineraryRestActivities
+                                        |> List.filter (\( _, l ) -> l /= "")
+                                        |> List.map Tuple.second
+                                   )
+                        , price = model.newItineraryPrice
+                        , tags = [ model.tag1, model.tag2, model.tag3 ]
+                        , duration = model.newItineraryTime
+                        }
+                        (\l -> GotPatchItineraryResp l model.editItineraryId)
+                    )
+
+                Nothing ->
+                    ( model, Cmd.none )
 
 
 view : Model -> Browser.Document Msg
