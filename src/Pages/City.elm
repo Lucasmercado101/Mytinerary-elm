@@ -893,9 +893,10 @@ itinerary (Itinerary data status) model =
                     ]
                 ]
             , div [ class "flex capitalize mt-3 gap-x-2 flex-wrap" ]
-                (List.map
-                    (\l -> div [ class "rounded-full py-1 px-2 bg-red-200" ] [ text ("#" ++ l) ])
-                    data.hashtags
+                (data.hashtags
+                    |> List.filter ((/=) "")
+                    |> List.map
+                        (\l -> div [ class "rounded-full py-1 px-2 bg-red-200" ] [ text ("#" ++ l) ])
                 )
             ]
 
