@@ -636,16 +636,16 @@ update msg model =
                                         }
                               }
                             , Api.Itineraries.patchItinerary model.editItineraryId
-                                { title = model.newItineraryName
+                                { title = model.editItineraryName
                                 , activities =
-                                    model.newItineraryFirstActivity
-                                        :: (model.newItineraryRestActivities
+                                    model.editItineraryFirstActivity
+                                        :: (model.editItineraryRestActivities
                                                 |> List.filter (\( _, l ) -> l /= "")
                                                 |> List.map Tuple.second
                                            )
-                                , price = model.newItineraryPrice
-                                , tags = [ model.tag1, model.tag2, model.tag3 ]
-                                , duration = model.newItineraryTime
+                                , price = model.editItineraryPrice
+                                , hashtags = [ model.editItineraryTag1, model.editItineraryTag2, model.editItineraryTag3 ]
+                                , time = model.editItineraryTime
                                 }
                                 (\l -> GotPatchItineraryResp l model.editItineraryId)
                             )
