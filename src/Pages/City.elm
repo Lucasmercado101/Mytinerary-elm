@@ -61,6 +61,17 @@ type alias Model =
     , newItineraryPrice : Int
     , isCreatingNewItinerary : Bool
     , itineraryMenuOpen : Maybe Int
+
+    -- Edit Itinerary
+    , isEditItineraryModalOpen : Bool
+    , editItineraryId : Int
+    , editItineraryName : String
+    , editItineraryFirstActivity : String
+    , editItineraryRestActivities : List ( Int, String )
+    , editItineraryActivitiesIdx : Int
+    , editItineraryTime : Int
+    , editItineraryPrice : Int
+    , isEditingItinerary : Bool
     }
 
 
@@ -98,6 +109,8 @@ type Itinerary
 type Action
     = Deleting
     | FailedToDelete String
+    | Editing
+    | FailedToEdit String
 
 
 type Msg
@@ -106,6 +119,8 @@ type Msg
     | CloseItineraryMenu
     | DeleteItinerary Int
     | DeletedItinerary (Maybe Http.Error) Int
+    | GotNewItinerary (Result Http.Error Api.Itineraries.NewItineraryResponse)
+    | OpenItineraryMenu Int
       -- New Itinerary
     | OpenModal
     | CloseModal
@@ -120,8 +135,20 @@ type Msg
     | ChangeActivity Int String
     | RemoveActivity Int
     | SubmitForm
-    | GotNewItinerary (Result Http.Error Api.Itineraries.NewItineraryResponse)
-    | OpenItineraryMenu Int
+      -- Edit Itinerary
+    | OpenEditItineraryModal
+    | CloseEditItineraryModal
+    | ChangeEditItineraryName String
+    | ChangeEditTag1 String
+    | ChangeEditTag2 String
+    | ChangeEditTag3 String
+    | ChangeEditItineraryTime String
+    | ChangeEditItineraryPrice String
+    | ChangeEditItineraryFirstActivity String
+    | AddEditItineraryActivity
+    | ChangeEditItineraryActivity Int String
+    | RemoveEditItineraryActivity Int
+    | SubmitEditItineraryForm
 
 
 init : Int -> ( Model, Cmd Msg )
@@ -141,6 +168,15 @@ init cityId =
       , isNewItineraryModalOpen = False
       , isCreatingNewItinerary = False
       , itineraryMenuOpen = Nothing
+      , isEditItineraryModalOpen = False
+      , editItineraryId = -1
+      , editItineraryName = ""
+      , editItineraryFirstActivity = ""
+      , editItineraryRestActivities = []
+      , editItineraryActivitiesIdx = 0
+      , editItineraryTime = 0
+      , editItineraryPrice = 0
+      , isEditingItinerary = False
       }
     , Cmd.batch
         [ Api.City.getCity cityId GotCity
@@ -278,6 +314,12 @@ update msg model =
                     ( model, Cmd.none )
 
         -- New Itinerary
+        OpenModal ->
+            ( { model | isNewItineraryModalOpen = True }, Cmd.none )
+
+        CloseModal ->
+            ( { model | isNewItineraryModalOpen = False } |> clearModalData, Cmd.none )
+
         SubmitForm ->
             case model.userSession of
                 Just _ ->
@@ -302,12 +344,6 @@ update msg model =
 
         GotNewItinerary _ ->
             ( { model | isCreatingNewItinerary = False }, Cmd.none )
-
-        OpenModal ->
-            ( { model | isNewItineraryModalOpen = True }, Cmd.none )
-
-        CloseModal ->
-            ( { model | isNewItineraryModalOpen = False } |> clearModalData, Cmd.none )
 
         ChangeNewItineraryName newItineraryName ->
             ( { model | newItineraryName = newItineraryName }, Cmd.none )
@@ -368,6 +404,76 @@ update msg model =
               }
             , Cmd.none
             )
+
+        -- Edit Itinerary
+        OpenEditItineraryModal ->
+            ( { model | isEditingItinerary = True }, Cmd.none )
+
+        CloseEditItineraryModal ->
+            ( { model | isEditingItinerary = False }, Cmd.none )
+
+        ChangeEditItineraryName newEditItineraryName ->
+            ( { model | editItineraryName = newEditItineraryName }, Cmd.none )
+
+        ChangeEditItineraryTime newEditItineraryTime ->
+            ( { model | editItineraryTime = Maybe.withDefault 0 (String.toInt newEditItineraryTime) }, Cmd.none )
+
+        ChangeEditItineraryPrice newEditItineraryPrice ->
+            ( { model | editItineraryPrice = Maybe.withDefault 0 (String.toInt newEditItineraryPrice) }, Cmd.none )
+
+        ChangeEditTag1 newEditTag ->
+            ( { model | tag1 = newEditTag }, Cmd.none )
+
+        ChangeEditTag2 newEditTag ->
+            ( { model | tag2 = newEditTag }, Cmd.none )
+
+        ChangeEditTag3 newEditTag ->
+            ( { model | tag3 = newEditTag }, Cmd.none )
+
+        ChangeEditItineraryFirstActivity newEditFirstActivity ->
+            ( { model | editItineraryFirstActivity = newEditFirstActivity }, Cmd.none )
+
+        RemoveEditItineraryActivity idx ->
+            let
+                restActivities =
+                    List.filter (\( i, _ ) -> i /= idx) model.editItineraryRestActivities
+            in
+            ( { model | editItineraryRestActivities = restActivities }, Cmd.none )
+
+        AddEditItineraryActivity ->
+            let
+                newIdx =
+                    model.editItineraryActivitiesIdx + 1
+            in
+            ( { model
+                | editItineraryRestActivities = model.editItineraryRestActivities ++ [ ( newIdx, "" ) ]
+                , editItineraryActivitiesIdx = newIdx
+              }
+            , Cmd.none
+            )
+
+        ChangeEditItineraryActivity idx newActivity ->
+            let
+                activities =
+                    model.editItineraryRestActivities
+            in
+            ( { model
+                | editItineraryRestActivities =
+                    List.map
+                        (\( id, act ) ->
+                            if idx == id then
+                                ( id, newActivity )
+
+                            else
+                                ( id, act )
+                        )
+                        activities
+              }
+            , Cmd.none
+            )
+
+        SubmitEditItineraryForm ->
+            Debug.todo "SubmitEditItineraryForm"
 
 
 view : Model -> Browser.Document Msg
@@ -483,16 +589,28 @@ itinerary (Itinerary data status) model =
             div [ class "bg-red-100 p-2 font-semibold" ]
                 [ p [ class "text-red-700" ] [ text err ]
                 ]
+
+        infoHtml : String -> Html msg
+        infoHtml err =
+            div [ class "bg-blue-100 p-2 font-semibold" ]
+                [ p [ class "text-blue-700" ] [ text err ]
+                ]
     in
     div [ class "mt-3 flex flex-col rounded shadow-sm bg-white md:h-full md:justify-between" ]
         [ case status of
             Just action ->
                 case action of
+                    Deleting ->
+                        errorHtml "Deleting itinerary..."
+
                     FailedToDelete err ->
                         errorHtml err
 
-                    Deleting ->
-                        errorHtml "Deleting itinerary..."
+                    Editing ->
+                        infoHtml "Editing itinerary..."
+
+                    FailedToEdit err ->
+                        errorHtml err
 
             Nothing ->
                 text ""
