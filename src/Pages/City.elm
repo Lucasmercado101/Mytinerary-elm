@@ -13,6 +13,7 @@ import Json.Decode as Decode
 import Session exposing (UserData)
 import Svg exposing (path, svg)
 import Svg.Attributes exposing (d, fill, stroke, strokeLinecap, strokeLinejoin, strokeWidth, viewBox)
+import Tuple exposing (first)
 
 
 subscriptions : Model -> Sub Msg
@@ -53,15 +54,25 @@ type alias Model =
     , newItineraryFirstActivity : String
     , newItineraryRestActivities : List ( Int, String )
     , newItineraryActivitiesIdx : Int
-    , newItineraryTags :
-        { t1 : String
-        , t2 : String
-        , t3 : String
-        }
+    , tag1 : String
+    , tag2 : String
+    , tag3 : String
     , newItineraryTime : Int
     , newItineraryPrice : Int
     , isCreatingNewItinerary : Bool
     , itineraryMenuOpen : Maybe Int
+    }
+
+
+type alias ItineraryFormData =
+    { name : String
+    , firstActivity : String
+    , restActivities : List ( Int, String )
+    , tag1 : String
+    , tag2 : String
+    , tag3 : String
+    , time : Int
+    , price : Int
     }
 
 
@@ -72,11 +83,9 @@ clearModalData model =
         , newItineraryFirstActivity = ""
         , newItineraryRestActivities = []
         , newItineraryActivitiesIdx = 0
-        , newItineraryTags =
-            { t1 = ""
-            , t2 = ""
-            , t3 = ""
-            }
+        , tag1 = ""
+        , tag2 = ""
+        , tag3 = ""
         , newItineraryTime = 0
         , newItineraryPrice = 0
     }
@@ -124,11 +133,9 @@ init cityId =
       , newItineraryFirstActivity = ""
       , newItineraryRestActivities = []
       , newItineraryActivitiesIdx = 0
-      , newItineraryTags =
-            { t1 = ""
-            , t2 = ""
-            , t3 = ""
-            }
+      , tag1 = ""
+      , tag2 = ""
+      , tag3 = ""
       , newItineraryTime = 0
       , newItineraryPrice = 0
       , isNewItineraryModalOpen = False
@@ -284,7 +291,7 @@ update msg model =
                                         |> List.map Tuple.second
                                    )
                         , price = model.newItineraryPrice
-                        , tags = [ model.newItineraryTags.t1, model.newItineraryTags.t2, model.newItineraryTags.t3 ]
+                        , tags = [ model.tag1, model.tag2, model.tag3 ]
                         , duration = model.newItineraryTime
                         }
                         GotNewItinerary
@@ -312,25 +319,13 @@ update msg model =
             ( { model | newItineraryPrice = Maybe.withDefault 0 (String.toInt newItineraryPrice) }, Cmd.none )
 
         ChangeTag1 newTag ->
-            let
-                tags =
-                    model.newItineraryTags
-            in
-            ( { model | newItineraryTags = { tags | t1 = newTag } }, Cmd.none )
+            ( { model | tag1 = newTag }, Cmd.none )
 
         ChangeTag2 newTag ->
-            let
-                tags =
-                    model.newItineraryTags
-            in
-            ( { model | newItineraryTags = { tags | t2 = newTag } }, Cmd.none )
+            ( { model | tag2 = newTag }, Cmd.none )
 
         ChangeTag3 newTag ->
-            let
-                tags =
-                    model.newItineraryTags
-            in
-            ( { model | newItineraryTags = { tags | t3 = newTag } }, Cmd.none )
+            ( { model | tag3 = newTag }, Cmd.none )
 
         ChangeFirstActivity newFirstActivity ->
             ( { model | newItineraryFirstActivity = newFirstActivity }, Cmd.none )
@@ -448,7 +443,17 @@ view ({ cityData, isCreatingNewItinerary } as model) =
                     _ ->
                         p [ class "text-center text-xl mt-5" ] [ text "An unknown error ocurred, please refresh the page and try again." ]
         , if model.isNewItineraryModalOpen then
-            modal model
+            modal
+                { name = model.newItineraryName
+                , time = model.newItineraryTime
+                , price = model.newItineraryPrice
+                , tag1 = model.tag1
+                , tag2 = model.tag2
+                , tag3 = model.tag3
+                , firstActivity = model.newItineraryFirstActivity
+                , restActivities = model.newItineraryRestActivities
+                }
+                model.isCreatingNewItinerary
 
           else
             text ""
@@ -564,11 +569,11 @@ itinerary (Itinerary data status) model =
         ]
 
 
-modal : Model -> Html Msg
-modal ({ newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime, isCreatingNewItinerary } as model) =
+modal : ItineraryFormData -> Bool -> Html Msg
+modal ({ name, price, tag1, tag2, tag3, time } as data) isCreatingNewItinerary =
     let
         canCreate =
-            validateFormData model && not isCreatingNewItinerary
+            validateFormData data && not isCreatingNewItinerary
     in
     div [ class "fixed z-50 inset-0 overflow-y-auto" ]
         [ div [ class "flex items-center justify-center min-h-screen px-4 text-center sm:block sm:p-0" ]
@@ -588,7 +593,7 @@ modal ({ newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime
                             [ text "Name*" ]
                         , input
                             [ required True
-                            , value newItineraryName
+                            , value name
                             , onInput ChangeNewItineraryName
                             , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             , placeholder "name"
@@ -603,7 +608,7 @@ modal ({ newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime
                                 [ text "Price*" ]
                             , input
                                 [ required True
-                                , value (String.fromInt newItineraryPrice)
+                                , value (String.fromInt price)
                                 , onInput ChangeNewItineraryPrice
                                 , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 , id "price"
@@ -617,7 +622,7 @@ modal ({ newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime
                                 [ text "Time*" ]
                             , input
                                 [ required True
-                                , value (String.fromInt newItineraryTime)
+                                , value (String.fromInt time)
                                 , onInput ChangeNewItineraryTime
                                 , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 , id "time"
@@ -639,7 +644,7 @@ modal ({ newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime
                                     [ text "Tag #1" ]
                                 , input
                                     [ required True
-                                    , value newItineraryTags.t1
+                                    , value tag1
                                     , onInput ChangeTag1
                                     , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     , id "tag-1"
@@ -655,7 +660,7 @@ modal ({ newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime
                                     [ text "Tag #2" ]
                                 , input
                                     [ required True
-                                    , value newItineraryTags.t2
+                                    , value tag2
                                     , onInput ChangeTag2
                                     , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     , id "tag-2"
@@ -671,7 +676,7 @@ modal ({ newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime
                                     [ text "Tag #3" ]
                                 , input
                                     [ required True
-                                    , value newItineraryTags.t3
+                                    , value tag3
                                     , onInput ChangeTag3
                                     , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     , id "tag-3"
@@ -681,7 +686,7 @@ modal ({ newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime
                                 ]
                             ]
                         ]
-                    , formActivities model
+                    , formActivities data isCreatingNewItinerary
                     , div [ class "flex ml-auto gap-x-4" ]
                         [ button [ class "px-4 py-2", type_ "button", onClick CloseModal ] [ text "Cancel" ]
                         , button
@@ -708,10 +713,10 @@ modal ({ newItineraryName, newItineraryPrice, newItineraryTags, newItineraryTime
         ]
 
 
-formActivities : Model -> Html Msg
-formActivities { newItineraryFirstActivity, newItineraryRestActivities, isCreatingNewItinerary } =
+formActivities : ItineraryFormData -> Bool -> Html Msg
+formActivities { firstActivity, restActivities } isCreatingNewItinerary =
     let
-        restActivities =
+        otherActivities =
             List.indexedMap
                 (\i ( idxNumber, content ) ->
                     let
@@ -745,10 +750,10 @@ formActivities { newItineraryFirstActivity, newItineraryRestActivities, isCreati
                             ]
                         ]
                 )
-                newItineraryRestActivities
+                restActivities
 
         maxAmountOfActivitiesReached =
-            (List.length newItineraryRestActivities + 1) == 50
+            (List.length restActivities + 1) == 50
 
         canCreate =
             not maxAmountOfActivitiesReached && not isCreatingNewItinerary
@@ -766,7 +771,7 @@ formActivities { newItineraryFirstActivity, newItineraryRestActivities, isCreati
                     [ text "Activity #1*" ]
                 , input
                     [ required True
-                    , value newItineraryFirstActivity
+                    , value firstActivity
                     , onInput ChangeFirstActivity
                     , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     , id "activity-0"
@@ -774,7 +779,7 @@ formActivities { newItineraryFirstActivity, newItineraryRestActivities, isCreati
                     ]
                     []
                 ]
-                :: restActivities
+                :: otherActivities
                 ++ [ button
                         [ class "font-bold py-2 px-4 rounded"
                         , classList
@@ -796,36 +801,42 @@ formActivities { newItineraryFirstActivity, newItineraryRestActivities, isCreati
         ]
 
 
-validateFormData : Model -> Bool
-validateFormData { newItineraryFirstActivity, newItineraryName, newItineraryPrice, newItineraryRestActivities, newItineraryTags, newItineraryTime } =
-    newItineraryFirstActivity
-        /= ""
-        && newItineraryName
-        /= ""
-        && newItineraryPrice
-        > 0
-        && newItineraryTime
-        > 0
-        && (newItineraryTags.t1
-                /= ""
-                || newItineraryTags.t2
-                /= ""
-                || newItineraryTags.t3
-                /= ""
-           )
-        && ((List.length newItineraryRestActivities
-                > 0
-                && ((List.length
-                        (List.filter (\( _, l ) -> l /= "") newItineraryRestActivities)
-                        > 0
-                    )
-                        || List.length
-                            (List.filter (\( _, l ) -> l /= "") newItineraryRestActivities)
-                        == 0
-                   )
-            )
-                || (newItineraryRestActivities == [])
-           )
+validateFormData : ItineraryFormData -> Bool
+validateFormData { name, firstActivity, tag1, tag2, tag3, time, price } =
+    let
+        nameIsValid : Bool
+        nameIsValid =
+            name
+                |> String.trim
+                |> (/=) ""
+
+        firstActivityIsValid : Bool
+        firstActivityIsValid =
+            firstActivity
+                |> String.trim
+                |> (/=) ""
+
+        atLeastOneTagIsNotEmpty : Bool
+        atLeastOneTagIsNotEmpty =
+            [ tag1, tag2, tag3 ]
+                |> List.map String.trim
+                |> List.filter ((/=) "")
+                |> List.length
+                |> (<) 0
+
+        timeIsValid : Bool
+        timeIsValid =
+            time > 0
+
+        priceIsValid : Bool
+        priceIsValid =
+            price > 0
+    in
+    nameIsValid
+        && firstActivityIsValid
+        && atLeastOneTagIsNotEmpty
+        && timeIsValid
+        && priceIsValid
 
 
 
