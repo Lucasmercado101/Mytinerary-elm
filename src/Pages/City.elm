@@ -61,6 +61,7 @@ type alias Model =
     , newItineraryPrice : Int
     , isCreatingNewItinerary : Bool
     , itineraryMenuOpen : Maybe Int
+    , creatingNewItineraryError : String
 
     -- Edit Itinerary
     , isEditItineraryModalOpen : Bool
@@ -171,6 +172,7 @@ init cityId =
       , isNewItineraryModalOpen = False
       , isCreatingNewItinerary = False
       , itineraryMenuOpen = Nothing
+      , creatingNewItineraryError = ""
 
       -- Edit itinerary
       , isEditItineraryModalOpen = False
@@ -330,7 +332,7 @@ update msg model =
         SubmitForm ->
             case model.userSession of
                 Just _ ->
-                    ( { model | isCreatingNewItinerary = True, isNewItineraryModalOpen = False }
+                    ( { model | isCreatingNewItinerary = True, isNewItineraryModalOpen = False, creatingNewItineraryError = "" }
                     , Api.Itineraries.postItinerary model.cityId
                         { title = model.newItineraryName
                         , activities =
@@ -391,8 +393,34 @@ update msg model =
                                 _ ->
                                     ( model, Cmd.none )
 
-                        Err _ ->
-                            Debug.todo "handle error of new itinerary"
+                        Err err ->
+                            let
+                                errorMessage : String
+                                errorMessage =
+                                    case err of
+                                        Http.BadStatus code ->
+                                            case code of
+                                                400 ->
+                                                    "Bad request"
+
+                                                401 ->
+                                                    "Unauthorized"
+
+                                                404 ->
+                                                    "Not found"
+
+                                                _ ->
+                                                    "An unknown error ocurred: code " ++ String.fromInt code
+
+                                        _ ->
+                                            "An unknown error ocurred"
+                            in
+                            ( { model
+                                | isCreatingNewItinerary = False
+                                , creatingNewItineraryError = errorMessage
+                              }
+                            , Cmd.none
+                            )
 
                 Nothing ->
                     ( model, Cmd.none )
@@ -735,8 +763,18 @@ view ({ cityData, isCreatingNewItinerary } as model) =
                         [ h2
                             [ class "pt-2 text-center text-2xl" ]
                             [ text "Itineraries" ]
-                        , div [ class "px-2 my-2" ]
-                            [ button
+                        , div [ class "px-4 my-2 flex flex-col gap-y-4" ]
+                            [ if model.creatingNewItineraryError /= "" then
+                                div [ class "mx-auto w-full md:w-72 block font-bold rounded" ]
+                                    [ div [ class "bg-red-100 p-2 font-semibold flex gap-x-2" ]
+                                        [ errorSvg
+                                        , p [ class "text-red-700" ] [ text model.creatingNewItineraryError ]
+                                        ]
+                                    ]
+
+                              else
+                                text ""
+                            , button
                                 [ onClick OpenModal
                                 , class "mx-auto w-full md:w-64 block font-bold py-2 px-4 rounded"
                                 , classList
@@ -844,16 +882,16 @@ itinerary (Itinerary data status) model =
                 _ ->
                     False
 
-        errorHtml : String -> Html msg
-        errorHtml err =
-            div [ class "bg-red-100 p-2 font-semibold" ]
-                [ p [ class "text-red-700" ] [ text err ]
-                ]
-
         infoHtml : String -> Html msg
         infoHtml err =
             div [ class "bg-blue-100 p-2 font-semibold" ]
                 [ p [ class "text-blue-700" ] [ text err ]
+                ]
+
+        errorHtml : String -> Html msg
+        errorHtml err =
+            div [ class "bg-red-100 p-2 font-semibold" ]
+                [ p [ class "text-red-700" ] [ text err ]
                 ]
     in
     div [ class "mt-3 flex flex-col rounded shadow-sm bg-white md:h-full md:justify-between" ]
@@ -1559,4 +1597,22 @@ chevronDownSvg =
             ]
             []
         , text ""
+        ]
+
+
+errorSvg : Html msg
+errorSvg =
+    svg
+        [ Svg.Attributes.class "h-8 w-8 text-red-500"
+        , Svg.Attributes.fill "none"
+        , Svg.Attributes.viewBox "0 0 24 24"
+        , Svg.Attributes.stroke "currentColor"
+        ]
+        [ Svg.path
+            [ Svg.Attributes.strokeLinecap "round"
+            , Svg.Attributes.strokeLinejoin "round"
+            , Svg.Attributes.strokeWidth "2"
+            , Svg.Attributes.d "M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            ]
+            []
         ]
