@@ -378,7 +378,7 @@ update msg model =
                                                                 , comments = l.comments
                                                                 , creator = l.creator
                                                                 }
-                                                                a
+                                                                Nothing
 
                                                         else
                                                             Itinerary l a
