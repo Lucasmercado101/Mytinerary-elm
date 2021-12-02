@@ -1222,7 +1222,7 @@ itineraryComment ({ author, comment, action } as commentData) isMenuOpen =
                           , not isMenuOpen
                           )
                         ]
-                    , id ("itinerary-menu-" ++ String.fromInt commentData.id)
+                    , id ("comment-menu-" ++ String.fromInt commentData.id)
                     ]
                     [ ul [ class "flex flex-col gap-y-2 absolute top-0 right-0 bg-white shadow-md" ]
                         [ li []
