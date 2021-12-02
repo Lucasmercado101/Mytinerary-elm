@@ -4,6 +4,7 @@ import Api.City
 import Api.Itineraries
 import Browser
 import Browser.Events
+import Common exposing (Request)
 import Dict exposing (Dict)
 import Html exposing (Html, button, div, form, h1, h2, h3, img, input, label, li, p, span, text, ul)
 import Html.Attributes exposing (attribute, class, classList, disabled, for, id, placeholder, required, src, type_, value)
@@ -109,13 +110,21 @@ clearModalData model =
 type alias Itinerary =
     { data : Api.City.Itinerary
     , action : Maybe Action
-    , comments : ItineraryComments
+    , commentsVisibility : ItineraryComments
     }
 
 
 type ItineraryComments
     = Hidden
-    | Visible
+    | Visible CommentsStatus
+
+
+type alias CommentsStatus =
+    { newComment : Maybe String
+
+    --     deleting : List ( Int, Maybe String )
+    -- , editingComment : Maybe String
+    }
 
 
 type Action
@@ -221,7 +230,7 @@ update msg model =
                                             (\l ->
                                                 { data = l
                                                 , action = Nothing
-                                                , comments = Hidden
+                                                , commentsVisibility = Hidden
                                                 }
                                             )
                                 , id = data.id
@@ -353,12 +362,14 @@ update msg model =
                                         (\({ data } as itineraryData) ->
                                             if data.id == idx then
                                                 { itineraryData
-                                                    | comments =
-                                                        case itineraryData.comments of
+                                                    | commentsVisibility =
+                                                        case itineraryData.commentsVisibility of
                                                             Hidden ->
                                                                 Visible
+                                                                    { newComment = Nothing
+                                                                    }
 
-                                                            Visible ->
+                                                            Visible _ ->
                                                                 Hidden
                                                 }
 
@@ -437,7 +448,7 @@ update msg model =
                                             in
                                             Loaded
                                                 { cityData
-                                                    | itineraries = { data = newIt, action = Nothing, comments = Hidden } :: itineraries
+                                                    | itineraries = { data = newIt, action = Nothing, commentsVisibility = Hidden } :: itineraries
                                                 }
                                       }
                                     , Cmd.none
@@ -921,7 +932,7 @@ view ({ cityData, isCreatingNewItinerary } as model) =
 
 
 itinerary : Itinerary -> Model -> Html Msg
-itinerary { data, action, comments } model =
+itinerary { data, action, commentsVisibility } model =
     let
         thisItineraryIsBeingDeleted : Bool
         thisItineraryIsBeingDeleted =
@@ -1051,8 +1062,8 @@ itinerary { data, action, comments } model =
                 [ chevronDownSvg
                     [ Svg.Attributes.class "transform-gpu h-6 w-6"
                     , Svg.Attributes.class
-                        (case comments of
-                            Visible ->
+                        (case commentsVisibility of
+                            Visible _ ->
                                 ""
 
                             Hidden ->
@@ -1062,9 +1073,36 @@ itinerary { data, action, comments } model =
                 ]
             ]
          ]
-            ++ (case comments of
-                    Visible ->
+            ++ (case commentsVisibility of
+                    Visible commentStatus ->
                         [ div [ class "w-full h-px bg-gray-200" ] []
+                        , div [ class "p-4 flex gap-x-4 justify-between" ]
+                            (case model.userSession of
+                                Just userData ->
+                                    [ button
+                                        [ type_ "submit"
+                                        , class "font-bold py-2 px-4 rounded bg-blue-700 hover:bg-blue-700 text-white"
+                                        ]
+                                        [ text
+                                            ("My comments ("
+                                                ++ (data.comments
+                                                        |> List.filter (\c -> c.author.id == userData.id)
+                                                        |> List.length
+                                                        |> String.fromInt
+                                                   )
+                                                ++ ")"
+                                            )
+                                        ]
+                                    , button
+                                        [ type_ "submit"
+                                        , class "font-bold py-2 px-4 rounded bg-blue-700 hover:bg-blue-700 text-white"
+                                        ]
+                                        [ text "Post comment" ]
+                                    ]
+
+                                Nothing ->
+                                    []
+                            )
                         , ul [ class "flex flex-col" ]
                             (List.map itineraryComment data.comments)
                         ]
