@@ -1079,17 +1079,23 @@ itinerary { data, action, commentsVisibility } model =
                         , div [ class "p-4 flex gap-x-4 justify-between" ]
                             (case model.userSession of
                                 Just userData ->
+                                    let
+                                        myCommentsAmount =
+                                            data.comments
+                                                |> List.filter (\c -> c.author.id == userData.id)
+                                                |> List.length
+                                    in
                                     [ button
                                         [ type_ "submit"
-                                        , class "font-bold py-2 px-4 rounded bg-blue-700 hover:bg-blue-700 text-white"
+                                        , class "font-bold py-2 px-4 rounded"
+                                        , classList
+                                            [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
+                                            , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
+                                            ]
                                         ]
                                         [ text
                                             ("My comments ("
-                                                ++ (data.comments
-                                                        |> List.filter (\c -> c.author.id == userData.id)
-                                                        |> List.length
-                                                        |> String.fromInt
-                                                   )
+                                                ++ (myCommentsAmount |> String.fromInt)
                                                 ++ ")"
                                             )
                                         ]
