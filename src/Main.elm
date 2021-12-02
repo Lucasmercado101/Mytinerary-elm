@@ -140,6 +140,7 @@ type alias Model =
 
 init : Maybe Session.UserData -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init userData url key =
+    -- TODO check if user is logged in and update user accordingly
     updateUrl url
         { page = PageNotFound
         , key = key
