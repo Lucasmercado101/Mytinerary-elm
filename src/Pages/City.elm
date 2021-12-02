@@ -4,16 +4,14 @@ import Api.City
 import Api.Itineraries
 import Browser
 import Browser.Events
-import Common exposing (Request)
 import Dict exposing (Dict)
 import Html exposing (Html, button, div, form, h1, h2, h3, img, input, label, li, p, span, text, ul)
-import Html.Attributes exposing (attribute, class, classList, disabled, for, id, placeholder, required, src, type_, value)
+import Html.Attributes exposing (class, classList, disabled, for, id, placeholder, required, src, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Http
 import Json.Decode as Decode
 import Session exposing (UserData)
-import Svg exposing (path, svg)
-import Svg.Attributes exposing (d, fill, stroke, strokeLinecap, strokeLinejoin, strokeWidth, viewBox)
+import Svg.Attributes
 import SvgIcons exposing (chevronDownSvg, clockSvg, errorSvg, verticalDotsSvg, xSvg)
 import Tuple exposing (first)
 
@@ -49,6 +47,7 @@ type alias Model =
     { cityId : Int
     , cityData : CityDataRequest
     , userSession : Maybe UserData
+    , commentMenuOpen : Maybe Int
 
     -- New itinerary
     , isNewItineraryModalOpen : Bool
@@ -108,10 +107,34 @@ clearModalData model =
 
 
 type alias Itinerary =
-    { data : Api.City.Itinerary
+    { data :
+        { id : Int
+        , title : String
+        , time : Int
+        , price : Int
+        , activities : List String
+        , hashtags : List String
+        , comments : List Comment
+        , creator : Api.City.Author
+        }
     , action : Maybe Action
     , areCommentsExpanded : Bool
     }
+
+
+type alias Comment =
+    { id : Int
+    , author : Api.City.Author
+    , comment : String
+    , action : Maybe Action
+    }
+
+
+
+-- type ModifyingCommentStatus =
+--     -- comment & error
+--      NewComment (String, String)
+--     | EditingComment (String, String)
 
 
 type Action
@@ -131,8 +154,10 @@ type Msg
     | GotPatchItineraryResp (Result Http.Error Api.Itineraries.PatchItineraryResponse) Int
     | OpenItineraryMenu Int
     | ToggleItineraryComments Int
+    | DeleteComment Int
       -- New Comment
     | StartWritingComment Int
+    | OpenCommentMenu Int
       -- New Itinerary
     | OpenModal
     | CloseModal
@@ -168,6 +193,9 @@ init cityId =
     ( { cityId = cityId
       , cityData = Loading
       , userSession = Nothing
+      , commentMenuOpen = Nothing
+
+      -- New itinerary
       , newItineraryName = ""
       , newItineraryFirstActivity = ""
       , newItineraryRestActivities = []
@@ -202,28 +230,50 @@ init cityId =
     )
 
 
+toComment : Api.City.Comment -> Comment
+toComment c =
+    { author = c.author
+    , comment = c.comment
+    , id = c.id
+    , action = Nothing
+    }
+
+
+toItinerary : Api.City.Itinerary -> Itinerary
+toItinerary i =
+    { data =
+        { id = i.id
+        , title = i.title
+        , time = i.time
+        , price = i.price
+        , activities = i.activities
+        , hashtags = i.hashtags
+        , comments = List.map toComment i.comments
+        , creator = i.creator
+        }
+    , action = Nothing
+    , areCommentsExpanded = False
+    }
+
+
+toCity : Api.City.City -> City
+toCity data =
+    { name = data.name
+    , country = data.country
+    , id = data.id
+    , itineraries = List.map toItinerary data.itineraries
+    }
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GotCity res ->
             case res of
-                Ok data ->
+                Ok cityData ->
                     ( { model
                         | cityData =
-                            Loaded
-                                { name = data.name
-                                , country = data.country
-                                , itineraries =
-                                    data.itineraries
-                                        |> List.map
-                                            (\l ->
-                                                { data = l
-                                                , action = Nothing
-                                                , areCommentsExpanded = False
-                                                }
-                                            )
-                                , id = data.id
-                                }
+                            Loaded (toCity cityData)
                       }
                     , Cmd.none
                     )
@@ -434,12 +484,7 @@ update msg model =
                                             in
                                             Loaded
                                                 { cityData
-                                                    | itineraries =
-                                                        { data = newIt
-                                                        , action = Nothing
-                                                        , areCommentsExpanded = False
-                                                        }
-                                                            :: itineraries
+                                                    | itineraries = toItinerary newIt :: itineraries
                                                 }
                                       }
                                     , Cmd.none
@@ -790,11 +835,28 @@ update msg model =
         StartWritingComment idx ->
             Debug.todo "StartWritingComment"
 
+        OpenCommentMenu idx ->
+            Debug.todo "OpenCommentMenu"
+
+        DeleteComment idx ->
+            Debug.todo "DeleteComment"
 
 
--- ( { model |  }
--- , Cmd.none
--- )
+
+-- case model.cityData of
+--     Loaded cityData ->
+--         ( { model
+--             | cityData =
+--                 Loaded
+--                     { cityData
+--                         | itineraries =
+--                             List.map (\i -> {i | }) cityData.itineraries
+--                     }
+--           }
+--         , Cmd.none
+--         )
+--     _ ->
+--         ( model, Cmd.none )
 
 
 view : Model -> Browser.Document Msg
@@ -1111,7 +1173,19 @@ itinerary { data, action, areCommentsExpanded } model =
                                 []
                         )
                     , ul [ class "flex flex-col" ]
-                        (List.map itineraryComment data.comments)
+                        (List.map
+                            (\comment ->
+                                itineraryComment comment
+                                    (case model.commentMenuOpen of
+                                        Just commentId ->
+                                            commentId == comment.id
+
+                                        Nothing ->
+                                            False
+                                    )
+                            )
+                            data.comments
+                        )
                     ]
 
                 else
@@ -1120,14 +1194,48 @@ itinerary { data, action, areCommentsExpanded } model =
         )
 
 
-itineraryComment : Api.City.Comment -> Html Msg
-itineraryComment { author, comment } =
+itineraryComment : Comment -> Bool -> Html Msg
+itineraryComment ({ author, comment, action } as commentData) isMenuOpen =
+    let
+        isBeingDeleted =
+            case action of
+                Just Deleting ->
+                    True
+
+                _ ->
+                    False
+    in
     li [ class "p-4" ]
         [ div [ class "flex items-center" ]
             [ div [ class "pointer-events-none w-10 h-10 bg-red-500 text-white capitalize rounded-full flex" ]
                 [ div [ class "flex w-10 h-10" ] [ p [ class "m-auto text-xl" ] [ text (String.left 1 author.username) ] ]
                 ]
             , p [ class "ml-3 capitalize" ] [ text author.username ]
+            , div
+                [ class "ml-auto relative" ]
+                [ button [ onClick (OpenCommentMenu commentData.id), class "w-12 h-12", disabled isBeingDeleted ]
+                    [ div [ class "flex w-12 h-12", classList [ ( "text-gray-400", isBeingDeleted ) ] ] [ verticalDotsSvg ]
+                    ]
+                , div
+                    [ classList
+                        [ ( "hidden"
+                          , not isMenuOpen
+                          )
+                        ]
+                    , id ("itinerary-menu-" ++ String.fromInt commentData.id)
+                    ]
+                    [ ul [ class "flex flex-col gap-y-2 absolute top-0 right-0 bg-white shadow-md" ]
+                        [ li []
+                            [ button [ class "w-full px-2 py-1", onClick (DeleteComment commentData.id) ] [ text "Delete" ]
+                            ]
+
+                        -- TODO
+                        -- , li []
+                        --     [ button [ class "w-full px-2 py-1", onClick (OpenEditItineraryModal data.id) ] [ text "Edit" ]
+                        --     ]
+                        ]
+                    ]
+                ]
             ]
         , text comment
         ]
