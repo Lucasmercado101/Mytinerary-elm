@@ -141,13 +141,13 @@ patchItinerary itineraryId data msg =
 -- Itinerary Comment
 
 
-postComment : Int -> String -> Http.Expect msg -> Cmd msg
+postComment : Int -> String -> (Result Http.Error () -> msg) -> Cmd msg
 postComment itineraryId comment msg =
     riskyRequest
         { method = "POST"
         , url = endpoint [ "itinerary", String.fromInt itineraryId, "comment" ]
         , body = stringBody "text/plain" comment
-        , expect = msg
+        , expect = Http.expectWhatever msg
         , timeout = Nothing
         , tracker = Nothing
         , headers = []
