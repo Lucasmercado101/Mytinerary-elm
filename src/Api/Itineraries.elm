@@ -79,21 +79,8 @@ type alias PatchItineraryResponse =
     , price : Int
     , hashtags : List String
     , activities : List String
-    , comments : List PatchItineraryComment
+    , comments : List Api.City.Comment
     }
-
-
-type alias PatchItineraryComment =
-    { id : Int
-    , comment : String
-    }
-
-
-patchItineraryCommentDecoder : Decoder PatchItineraryComment
-patchItineraryCommentDecoder =
-    JD.map2 PatchItineraryComment
-        (JD.field "id" JD.int)
-        (JD.field "comment" JD.string)
 
 
 patchItineraryDataDecoder : Decoder PatchItineraryResponse
@@ -105,7 +92,7 @@ patchItineraryDataDecoder =
         (JD.field "price" JD.int)
         (JD.field "hashtags" (JD.list JD.string))
         (JD.field "activities" (JD.list JD.string))
-        (JD.field "comments" (JD.list patchItineraryCommentDecoder))
+        (JD.field "comments" (JD.list Api.City.commentDecoder))
 
 
 
