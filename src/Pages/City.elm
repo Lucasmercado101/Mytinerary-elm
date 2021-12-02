@@ -22,7 +22,13 @@ subscriptions model =
         [ Sub.map GotUser Session.localStorageUserSub
         , case model.itineraryMenuOpen of
             Just idx ->
-                Browser.Events.onMouseDown (outsideTarget ("itinerary-menu-" ++ String.fromInt idx))
+                Browser.Events.onMouseDown (outsideTarget ("itinerary-menu-" ++ String.fromInt idx) CloseItineraryMenu)
+
+            Nothing ->
+                Sub.none
+        , case model.commentMenuOpen of
+            Just idx ->
+                Browser.Events.onMouseDown (outsideTarget ("comment-menu-" ++ String.fromInt idx) CloseCommentMenu)
 
             Nothing ->
                 Sub.none
@@ -147,17 +153,20 @@ type Action
 type Msg
     = GotCity (Result Http.Error Api.City.City)
     | GotUser (Maybe UserData)
-    | CloseItineraryMenu
-    | DeleteItinerary Int
+      -- Comment --
+    | DeleteComment Int
+    | OpenCommentMenu Int
+    | CloseCommentMenu
+      -- New Comment
+    | StartWritingComment Int
+      ----------- Itinerary -----------
     | DeletedItinerary (Maybe Http.Error) Int
     | GotNewItinerary (Result Http.Error Api.Itineraries.NewItineraryResponse)
     | GotPatchItineraryResp (Result Http.Error Api.Itineraries.PatchItineraryResponse) Int
+    | CloseItineraryMenu
+    | DeleteItinerary Int
     | OpenItineraryMenu Int
     | ToggleItineraryComments Int
-    | DeleteComment Int
-      -- New Comment
-    | StartWritingComment Int
-    | OpenCommentMenu Int
       -- New Itinerary
     | OpenModal
     | CloseModal
@@ -421,6 +430,14 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
+
+        OpenCommentMenu idx ->
+            ( { model | commentMenuOpen = Just idx }
+            , Cmd.none
+            )
+
+        CloseCommentMenu ->
+            ( { model | commentMenuOpen = Nothing }, Cmd.none )
 
         -- New Itinerary
         OpenModal ->
@@ -834,9 +851,6 @@ update msg model =
         -- New Itinerary Comment
         StartWritingComment idx ->
             Debug.todo "StartWritingComment"
-
-        OpenCommentMenu idx ->
-            Debug.todo "OpenCommentMenu"
 
         DeleteComment idx ->
             Debug.todo "DeleteComment"
@@ -1762,13 +1776,13 @@ isOutsideDropdown dropdownId =
         ]
 
 
-outsideTarget : String -> Decode.Decoder Msg
-outsideTarget dropdownId =
+outsideTarget : String -> Msg -> Decode.Decoder Msg
+outsideTarget dropdownId msg =
     Decode.field "target" (isOutsideDropdown dropdownId)
         |> Decode.andThen
             (\isOutside ->
                 if isOutside then
-                    Decode.succeed CloseItineraryMenu
+                    Decode.succeed msg
 
                 else
                     Decode.fail "inside dropdown"
