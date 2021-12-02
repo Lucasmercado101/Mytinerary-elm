@@ -134,6 +134,7 @@ type Msg
     | GotNewItinerary (Result Http.Error Api.Itineraries.NewItineraryResponse)
     | GotPatchItineraryResp (Result Http.Error Api.Itineraries.PatchItineraryResponse) Int
     | OpenItineraryMenu Int
+    | ToggleItineraryComments Int
       -- New Itinerary
     | OpenModal
     | CloseModal
@@ -337,6 +338,39 @@ update msg model =
                             ( { model | cityData = Loaded newCityData }
                             , Cmd.none
                             )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        ToggleItineraryComments idx ->
+            case model.cityData of
+                Loaded cityData ->
+                    let
+                        newCityData =
+                            { cityData
+                                | itineraries =
+                                    List.map
+                                        (\({ data } as itineraryData) ->
+                                            if data.id == idx then
+                                                { itineraryData
+                                                    | comments =
+                                                        case itineraryData.comments of
+                                                            Hidden ->
+                                                                Visible
+
+                                                            Visible ->
+                                                                Hidden
+                                                }
+
+                                            else
+                                                itineraryData
+                                        )
+                                        cityData.itineraries
+                            }
+                    in
+                    ( { model | cityData = Loaded newCityData }
+                    , Cmd.none
+                    )
 
                 _ ->
                     ( model, Cmd.none )
@@ -887,7 +921,7 @@ view ({ cityData, isCreatingNewItinerary } as model) =
 
 
 itinerary : Itinerary -> Model -> Html Msg
-itinerary { data, action } model =
+itinerary { data, action, comments } model =
     let
         thisItineraryIsBeingDeleted : Bool
         thisItineraryIsBeingDeleted =
@@ -916,7 +950,7 @@ itinerary { data, action } model =
                 ]
     in
     div [ class "mt-3 flex flex-col rounded shadow-sm bg-white md:h-full md:justify-between" ]
-        [ case action of
+        ([ case action of
             Just status ->
                 case status of
                     Deleting ->
@@ -933,7 +967,7 @@ itinerary { data, action } model =
 
             Nothing ->
                 text ""
-        , div [ class "p-3" ]
+         , div [ class "p-3" ]
             [ div [ class "flex flex-row mb-2" ]
                 ([ if data.creator.profilePic == Nothing then
                     div [ class "pointer-events-none w-12 h-12 bg-red-500 text-white capitalize rounded-full flex" ]
@@ -1002,13 +1036,55 @@ itinerary { data, action } model =
                         (\l -> div [ class "rounded-full py-1 px-2 bg-red-200" ] [ text ("#" ++ l) ])
                 )
             ]
-        , button [ class "p-2 flex text-l font-semibold" ]
-            [ p [ class "flex-grow" ] [ text "Comments (15)" ]
-            , div [ class "pr-2" ] [ chevronDownSvg [ Svg.Attributes.class "transform-gpu rotate-180 origin-center h-6 w-6" ] ]
-            ]
+         , button [ onClick (ToggleItineraryComments data.id), class "p-2 flex text-l font-semibold" ]
+            [ p [ class "flex-grow" ]
+                [ text
+                    ("Comments ("
+                        ++ (data.comments
+                                |> List.length
+                                |> String.fromInt
+                           )
+                        ++ ")"
+                    )
+                ]
+            , div [ class "pr-2" ]
+                [ chevronDownSvg
+                    [ Svg.Attributes.class "transform-gpu h-6 w-6"
+                    , Svg.Attributes.class
+                        (case comments of
+                            Visible ->
+                                ""
 
-        -- , ul []
-        --     (List.map (\l -> li [] [ text l.comment ]) data.comments)
+                            Hidden ->
+                                "rotate-180 origin-center"
+                        )
+                    ]
+                ]
+            ]
+         ]
+            ++ (case comments of
+                    Visible ->
+                        [ div [ class "w-full h-px bg-gray-200" ] []
+                        , ul [ class "flex flex-col gap-y-2" ]
+                            (List.map itineraryComment data.comments)
+                        ]
+
+                    Hidden ->
+                        [ text "" ]
+               )
+        )
+
+
+itineraryComment : Api.City.Comment -> Html Msg
+itineraryComment { author, comment } =
+    li [ class "p-4" ]
+        [ div [ class "flex items-center" ]
+            [ div [ class "pointer-events-none w-10 h-10 bg-red-500 text-white capitalize rounded-full flex" ]
+                [ div [ class "flex w-10 h-10" ] [ p [ class "m-auto text-xl" ] [ text (String.left 1 author.username) ] ]
+                ]
+            , p [ class "ml-3 capitalize" ] [ text author.username ]
+            ]
+        , text comment
         ]
 
 
