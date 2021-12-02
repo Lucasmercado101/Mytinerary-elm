@@ -1,4 +1,4 @@
-module Api.Itineraries exposing (NewItinerary, NewItineraryResponse, PatchItineraryResponse, deleteItinerary, patchItinerary, postItinerary)
+module Api.Itineraries exposing (NewItinerary, NewItineraryResponse, PatchItineraryResponse, deleteComment, deleteItinerary, patchItinerary, postItinerary)
 
 import Api.City
 import Api.Common exposing (deleteWithCredentials, endpoint, patchWithCredentials, postWithCredentials)
