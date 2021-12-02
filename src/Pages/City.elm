@@ -106,8 +106,16 @@ clearModalData model =
     }
 
 
-type Itinerary
-    = Itinerary Api.City.Itinerary (Maybe Action)
+type alias Itinerary =
+    { data : Api.City.Itinerary
+    , action : Maybe Action
+    , comments : ItineraryComments
+    }
+
+
+type ItineraryComments
+    = Hidden
+    | Visible
 
 
 type Action
@@ -206,7 +214,15 @@ update msg model =
                             Loaded
                                 { name = data.name
                                 , country = data.country
-                                , itineraries = List.map (\l -> Itinerary l Nothing) data.itineraries
+                                , itineraries =
+                                    data.itineraries
+                                        |> List.map
+                                            (\l ->
+                                                { data = l
+                                                , action = Nothing
+                                                , comments = Hidden
+                                                }
+                                            )
                                 , id = data.id
                                 }
                       }
@@ -231,20 +247,20 @@ update msg model =
 
         DeleteItinerary idx ->
             case model.cityData of
-                Loaded data ->
+                Loaded cityData ->
                     let
                         newCityData =
-                            { data
+                            { cityData
                                 | itineraries =
                                     List.map
-                                        (\(Itinerary l s) ->
-                                            if l.id == idx then
-                                                Itinerary l (Just Deleting)
+                                        (\({ data } as itineraryData) ->
+                                            if data.id == idx then
+                                                { itineraryData | action = Just Deleting }
 
                                             else
-                                                Itinerary l s
+                                                itineraryData
                                         )
-                                        data.itineraries
+                                        cityData.itineraries
                             }
                     in
                     ( { model
@@ -267,8 +283,21 @@ update msg model =
 
         DeletedItinerary err idx ->
             case model.cityData of
-                Loaded data ->
+                Loaded cityData ->
                     case err of
+                        Nothing ->
+                            ( { model
+                                | cityData =
+                                    Loaded
+                                        { cityData
+                                            | itineraries =
+                                                List.filter (\{ data } -> data.id /= idx)
+                                                    cityData.itineraries
+                                        }
+                              }
+                            , Cmd.none
+                            )
+
                         Just val ->
                             let
                                 errorMessage : String
@@ -292,31 +321,20 @@ update msg model =
                                             "An unknown error ocurred"
 
                                 newCityData =
-                                    { data
+                                    { cityData
                                         | itineraries =
                                             List.map
-                                                (\(Itinerary l s) ->
-                                                    if l.id == idx then
-                                                        Itinerary l (Just (FailedToDelete errorMessage))
+                                                (\({ data } as itineraryData) ->
+                                                    if data.id == idx then
+                                                        { itineraryData | action = Just (FailedToDelete errorMessage) }
 
                                                     else
-                                                        Itinerary l s
+                                                        itineraryData
                                                 )
-                                                data.itineraries
+                                                cityData.itineraries
                                     }
                             in
                             ( { model | cityData = Loaded newCityData }
-                            , Cmd.none
-                            )
-
-                        Nothing ->
-                            ( { model
-                                | cityData =
-                                    Loaded
-                                        { data
-                                            | itineraries = List.filter (\(Itinerary l _) -> l.id /= idx) data.itineraries
-                                        }
-                              }
                             , Cmd.none
                             )
 
@@ -385,7 +403,7 @@ update msg model =
                                             in
                                             Loaded
                                                 { cityData
-                                                    | itineraries = Itinerary newIt Nothing :: itineraries
+                                                    | itineraries = { data = newIt, action = Nothing, comments = Hidden } :: itineraries
                                                 }
                                       }
                                     , Cmd.none
@@ -428,33 +446,35 @@ update msg model =
 
         GotPatchItineraryResp res idx ->
             case model.cityData of
-                Loaded data ->
+                Loaded cityData ->
                     case res of
-                        Ok val ->
+                        Ok patchedItinerary ->
                             ( { model
                                 | cityData =
                                     Loaded
-                                        { data
+                                        { cityData
                                             | itineraries =
                                                 List.map
-                                                    (\(Itinerary l a) ->
-                                                        if l.id == idx then
-                                                            Itinerary
-                                                                { id = l.id
-                                                                , title = val.title
-                                                                , activities = val.activities
-                                                                , price = val.price
-                                                                , time = val.time
-                                                                , hashtags = val.hashtags
-                                                                , comments = l.comments
-                                                                , creator = l.creator
-                                                                }
-                                                                Nothing
+                                                    (\({ data } as itineraryData) ->
+                                                        if data.id == idx then
+                                                            { itineraryData
+                                                                | data =
+                                                                    { id = data.id
+                                                                    , title = patchedItinerary.title
+                                                                    , activities = patchedItinerary.activities
+                                                                    , price = patchedItinerary.price
+                                                                    , time = patchedItinerary.time
+                                                                    , hashtags = patchedItinerary.hashtags
+                                                                    , comments = data.comments
+                                                                    , creator = data.creator
+                                                                    }
+                                                                , action = Nothing
+                                                            }
 
                                                         else
-                                                            Itinerary l a
+                                                            itineraryData
                                                     )
-                                                    data.itineraries
+                                                    cityData.itineraries
                                         }
                               }
                             , Cmd.none
@@ -483,17 +503,17 @@ update msg model =
                                             "An unknown error ocurred"
 
                                 newCityData =
-                                    { data
+                                    { cityData
                                         | itineraries =
                                             List.map
-                                                (\(Itinerary l s) ->
-                                                    if l.id == idx then
-                                                        Itinerary l (Just (FailedToEdit errorMessage))
+                                                (\({ data } as itineraryData) ->
+                                                    if data.id == idx then
+                                                        { itineraryData | action = Just (FailedToEdit errorMessage) }
 
                                                     else
-                                                        Itinerary l s
+                                                        itineraryData
                                                 )
-                                                data.itineraries
+                                                cityData.itineraries
                                     }
                             in
                             ( { model | cityData = Loaded newCityData }
@@ -569,14 +589,14 @@ update msg model =
                 Loaded cityData ->
                     let
                         itineraryData =
-                            List.filter (\(Itinerary l _) -> l.id == id) cityData.itineraries
+                            List.filter (\{ data } -> data.id == id) cityData.itineraries
                                 |> List.head
                     in
                     case itineraryData of
-                        Just (Itinerary l _) ->
+                        Just { data } ->
                             let
                                 ( firstActivity, otherActivities ) =
-                                    case l.activities of
+                                    case data.activities of
                                         first :: other ->
                                             ( first, other )
 
@@ -587,7 +607,7 @@ update msg model =
                                     List.indexedMap Tuple.pair otherActivities
 
                                 ( tag1, tag2, tag3 ) =
-                                    case l.hashtags of
+                                    case data.hashtags of
                                         t1 :: t2 :: t3 :: _ ->
                                             ( t1, t2, t3 )
 
@@ -597,9 +617,9 @@ update msg model =
                             ( { model
                                 | isEditItineraryModalOpen = True
                                 , editItineraryId = id
-                                , editItineraryName = l.title
-                                , editItineraryTime = l.time
-                                , editItineraryPrice = l.price
+                                , editItineraryName = data.title
+                                , editItineraryTime = data.time
+                                , editItineraryPrice = data.price
                                 , editItineraryFirstActivity = firstActivity
                                 , editItineraryRestActivities = restActivities
                                 , editItineraryActivitiesIdx = List.length restActivities
@@ -699,12 +719,12 @@ update msg model =
                                         { cityData
                                             | itineraries =
                                                 List.map
-                                                    (\(Itinerary data status) ->
+                                                    (\({ data } as itineraryData) ->
                                                         if data.id == itineraryBeingEditedId then
-                                                            Itinerary data (Just Editing)
+                                                            { itineraryData | action = Just Editing }
 
                                                         else
-                                                            Itinerary data status
+                                                            itineraryData
                                                     )
                                                     itineraries
                                         }
@@ -829,7 +849,7 @@ view ({ cityData, isCreatingNewItinerary } as model) =
           else
             text ""
         , case cityData of
-            Loaded data ->
+            Loaded loadedCityData ->
                 if model.isEditItineraryModalOpen then
                     editItineraryModal
                         { name = model.editItineraryName
@@ -841,11 +861,11 @@ view ({ cityData, isCreatingNewItinerary } as model) =
                         , firstActivity = model.editItineraryFirstActivity
                         , restActivities = model.editItineraryRestActivities
                         }
-                        (data.itineraries
+                        (loadedCityData.itineraries
                             |> List.any
-                                (\(Itinerary i status) ->
-                                    if i.id == model.editItineraryId then
-                                        case status of
+                                (\{ data, action } ->
+                                    if data.id == model.editItineraryId then
+                                        case action of
                                             Just Editing ->
                                                 True
 
@@ -867,13 +887,13 @@ view ({ cityData, isCreatingNewItinerary } as model) =
 
 
 itinerary : Itinerary -> Model -> Html Msg
-itinerary (Itinerary data status) model =
+itinerary { data, action } model =
     let
         thisItineraryIsBeingDeleted : Bool
         thisItineraryIsBeingDeleted =
-            case status of
-                Just action ->
-                    case action of
+            case action of
+                Just status ->
+                    case status of
                         Deleting ->
                             True
 
@@ -896,9 +916,9 @@ itinerary (Itinerary data status) model =
                 ]
     in
     div [ class "mt-3 flex flex-col rounded shadow-sm bg-white md:h-full md:justify-between" ]
-        [ case status of
-            Just action ->
-                case action of
+        [ case action of
+            Just status ->
+                case status of
                     Deleting ->
                         errorHtml "Deleting itinerary..."
 
