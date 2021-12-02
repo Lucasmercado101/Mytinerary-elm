@@ -1,6 +1,6 @@
 module SvgIcons exposing (..)
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes exposing (attribute)
 import Svg
 import Svg.Attributes
@@ -99,15 +99,16 @@ verticalDotsSvg =
         ]
 
 
-chevronDownSvg : Html msg
-chevronDownSvg =
+chevronDownSvg : List (Html.Attribute msg) -> Html msg
+chevronDownSvg attrs =
     Svg.svg
-        [ Svg.Attributes.class "h-6 w-6"
-        , Svg.Attributes.fill "none"
-        , attribute "stroke" "currentColor"
-        , Svg.Attributes.viewBox "0 0 24 24"
-        , attribute "xmlns" "http://www.w3.org/2000/svg"
-        ]
+        ([ Svg.Attributes.fill "none"
+         , attribute "stroke" "currentColor"
+         , Svg.Attributes.viewBox "0 0 24 24"
+         , attribute "xmlns" "http://www.w3.org/2000/svg"
+         ]
+            ++ attrs
+        )
         [ Svg.path
             [ Svg.Attributes.d "M5 15l7-7 7 7"
             , attribute "stroke-linecap" "round"
