@@ -1247,7 +1247,7 @@ itinerary { data, action, areCommentsExpanded, newComment } model =
         newCommentHtml =
             case newComment of
                 Just newCommentData ->
-                    div [ class "p-4" ]
+                    div [ class "p-4 pb-0" ]
                         [ div []
                             [ label
                                 [ class "block text-sm font-medium text-gray-700"
@@ -1265,7 +1265,10 @@ itinerary { data, action, areCommentsExpanded, newComment } model =
                                 ]
                                 []
                             ]
-                        , p [ class "mt-2 text-sm text-gray-500" ]
+                        , p
+                            [ class "mt-2 text-sm text-gray-500"
+                            , classList [ ( "text-red-500", String.length newCommentData.text > 300 ) ]
+                            ]
                             [ text
                                 ((newCommentData.text
                                     |> String.length
