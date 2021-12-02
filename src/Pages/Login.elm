@@ -3,10 +3,11 @@ port module Pages.Login exposing (Model, Msg, init, update, view)
 import Api.Auth
 import Browser
 import Browser.Navigation as Nav
-import Html exposing (button, div, form, input, label, text)
+import Html exposing (br, button, div, form, input, label, p, text)
 import Html.Attributes exposing (class, classList, disabled, for, id, placeholder, required, type_, value)
 import Html.Events exposing (onInput, onSubmit)
 import Http
+import SvgIcons exposing (errorSvg)
 
 
 port saveUserToLocalStorage : UserData -> Cmd msg
@@ -22,7 +23,7 @@ type alias Model =
 
 type LogInState
     = Idle
-    | Registering
+    | LoggingIn
     | Error Http.Error
 
 
@@ -61,7 +62,7 @@ update msg model =
             ( { model | password = password }, Cmd.none )
 
         SubmitForm ->
-            ( { model | logInState = Registering }, Api.Auth.logIn model GotUserData )
+            ( { model | logInState = LoggingIn }, Api.Auth.logIn model GotUserData )
 
         GotUserData res ->
             case res of
@@ -73,12 +74,22 @@ update msg model =
 
 
 view : Model -> Browser.Document Msg
-view { password, username } =
+view { password, username, logInState } =
     { title = "Log In"
     , body =
         let
             registerDisabled =
-                password == "" || username == ""
+                password
+                    == ""
+                    || username
+                    == ""
+                    || (case logInState of
+                            LoggingIn ->
+                                True
+
+                            _ ->
+                                False
+                       )
         in
         [ form
             [ onSubmit SubmitForm
@@ -122,7 +133,47 @@ view { password, username } =
                     ]
                 , disabled registerDisabled
                 ]
-                [ text "Log In" ]
+                [ case logInState of
+                    Idle ->
+                        text "Log In"
+
+                    LoggingIn ->
+                        text "Logging In.."
+
+                    Error _ ->
+                        text "Log In"
+                ]
+            , case logInState of
+                Error err ->
+                    div [ class "mx-auto w-full md:w-72 block font-bold rounded" ]
+                        [ div [ class "bg-red-100 p-2 font-semibold flex gap-x-2" ]
+                            [ errorSvg
+                            , p [ class "text-red-700" ]
+                                [ text
+                                    (case err of
+                                        Http.BadStatus code ->
+                                            case code of
+                                                400 ->
+                                                    "Bad request"
+
+                                                401 ->
+                                                    "Unauthorized"
+
+                                                404 ->
+                                                    "Not found"
+
+                                                _ ->
+                                                    "An unknown error ocurred: code " ++ String.fromInt code
+
+                                        _ ->
+                                            "An unknown error ocurred"
+                                    )
+                                ]
+                            ]
+                        ]
+
+                _ ->
+                    text ""
             ]
         ]
     }
