@@ -13,7 +13,7 @@ import Json.Decode as Decode
 import Session exposing (UserData)
 import Svg exposing (path, svg)
 import Svg.Attributes exposing (d, fill, stroke, strokeLinecap, strokeLinejoin, strokeWidth, viewBox)
-import SvgIcons exposing (clockSvg, errorSvg, verticalDotsSvg, xSvg)
+import SvgIcons exposing (chevronDownSvg, clockSvg, errorSvg, verticalDotsSvg, xSvg)
 import Tuple exposing (first)
 
 
@@ -982,8 +982,13 @@ itinerary (Itinerary data status) model =
                         (\l -> div [ class "rounded-full py-1 px-2 bg-red-200" ] [ text ("#" ++ l) ])
                 )
             ]
+        , button [ class "p-2 flex text-l font-semibold" ]
+            [ p [ class "flex-grow" ] [ text "Comments (15)" ]
+            , div [ class "pr-2" ] [ chevronDownSvg [ Svg.Attributes.class "transform-gpu rotate-180 origin-center h-6 w-6" ] ]
+            ]
 
-        -- TODO comments
+        -- , ul []
+        --     (List.map (\l -> li [] [ text l.comment ]) data.comments)
         ]
 
 
