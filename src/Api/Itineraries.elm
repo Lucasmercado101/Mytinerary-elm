@@ -142,3 +142,10 @@ postComment itineraryId comment msg =
         , tracker = Nothing
         , headers = [ header "Content-Type" "text/plain" ]
         }
+
+
+deleteComment : Int -> (Result Http.Error () -> msg) -> Cmd msg
+deleteComment commentId msg =
+    deleteWithCredentials
+        (endpoint [ "itinerary-comment", String.fromInt commentId ])
+        (Http.expectWhatever msg)
