@@ -110,20 +110,7 @@ clearModalData model =
 type alias Itinerary =
     { data : Api.City.Itinerary
     , action : Maybe Action
-    , commentsVisibility : ItineraryComments
-    }
-
-
-type ItineraryComments
-    = Hidden
-    | Visible CommentsStatus
-
-
-type alias CommentsStatus =
-    { newComment : Maybe String
-
-    --     deleting : List ( Int, Maybe String )
-    -- , editingComment : Maybe String
+    , areCommentsExpanded : Bool
     }
 
 
@@ -144,6 +131,8 @@ type Msg
     | GotPatchItineraryResp (Result Http.Error Api.Itineraries.PatchItineraryResponse) Int
     | OpenItineraryMenu Int
     | ToggleItineraryComments Int
+      -- New Comment
+    | StartWritingComment Int
       -- New Itinerary
     | OpenModal
     | CloseModal
@@ -230,7 +219,7 @@ update msg model =
                                             (\l ->
                                                 { data = l
                                                 , action = Nothing
-                                                , commentsVisibility = Hidden
+                                                , areCommentsExpanded = False
                                                 }
                                             )
                                 , id = data.id
@@ -362,15 +351,12 @@ update msg model =
                                         (\({ data } as itineraryData) ->
                                             if data.id == idx then
                                                 { itineraryData
-                                                    | commentsVisibility =
-                                                        case itineraryData.commentsVisibility of
-                                                            Hidden ->
-                                                                Visible
-                                                                    { newComment = Nothing
-                                                                    }
+                                                    | areCommentsExpanded =
+                                                        if itineraryData.areCommentsExpanded then
+                                                            False
 
-                                                            Visible _ ->
-                                                                Hidden
+                                                        else
+                                                            True
                                                 }
 
                                             else
@@ -448,7 +434,12 @@ update msg model =
                                             in
                                             Loaded
                                                 { cityData
-                                                    | itineraries = { data = newIt, action = Nothing, commentsVisibility = Hidden } :: itineraries
+                                                    | itineraries =
+                                                        { data = newIt
+                                                        , action = Nothing
+                                                        , areCommentsExpanded = False
+                                                        }
+                                                            :: itineraries
                                                 }
                                       }
                                     , Cmd.none
@@ -795,6 +786,16 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
+        -- New Itinerary Comment
+        StartWritingComment idx ->
+            Debug.todo "StartWritingComment"
+
+
+
+-- ( { model |  }
+-- , Cmd.none
+-- )
+
 
 view : Model -> Browser.Document Msg
 view ({ cityData, isCreatingNewItinerary } as model) =
@@ -932,7 +933,7 @@ view ({ cityData, isCreatingNewItinerary } as model) =
 
 
 itinerary : Itinerary -> Model -> Html Msg
-itinerary { data, action, commentsVisibility } model =
+itinerary { data, action, areCommentsExpanded } model =
     let
         thisItineraryIsBeingDeleted : Bool
         thisItineraryIsBeingDeleted =
@@ -1062,60 +1063,59 @@ itinerary { data, action, commentsVisibility } model =
                 [ chevronDownSvg
                     [ Svg.Attributes.class "transform-gpu h-6 w-6"
                     , Svg.Attributes.class
-                        (case commentsVisibility of
-                            Visible _ ->
-                                ""
+                        (if areCommentsExpanded then
+                            ""
 
-                            Hidden ->
-                                "rotate-180 origin-center"
+                         else
+                            "rotate-180 origin-center"
                         )
                     ]
                 ]
             ]
          ]
-            ++ (case commentsVisibility of
-                    Visible commentStatus ->
-                        [ div [ class "w-full h-px bg-gray-200" ] []
-                        , div [ class "p-4 flex gap-x-4 justify-between" ]
-                            (case model.userSession of
-                                Just userData ->
-                                    let
-                                        myCommentsAmount =
-                                            data.comments
-                                                |> List.filter (\c -> c.author.id == userData.id)
-                                                |> List.length
-                                    in
-                                    [ button
-                                        [ type_ "submit"
-                                        , class "font-bold py-2 px-4 rounded"
-                                        , classList
-                                            [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
-                                            , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
-                                            ]
-                                        , disabled (myCommentsAmount == 0)
+            ++ (if areCommentsExpanded then
+                    [ div [ class "w-full h-px bg-gray-200" ] []
+                    , div [ class "p-4 flex gap-x-4 justify-between" ]
+                        (case model.userSession of
+                            Just userData ->
+                                let
+                                    myCommentsAmount =
+                                        data.comments
+                                            |> List.filter (\c -> c.author.id == userData.id)
+                                            |> List.length
+                                in
+                                [ button
+                                    [ type_ "submit"
+                                    , class "font-bold py-2 px-4 rounded"
+                                    , classList
+                                        [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
+                                        , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
                                         ]
-                                        [ text
-                                            ("My comments ("
-                                                ++ (myCommentsAmount |> String.fromInt)
-                                                ++ ")"
-                                            )
-                                        ]
-                                    , button
-                                        [ type_ "submit"
-                                        , class "font-bold py-2 px-4 rounded bg-blue-700 hover:bg-blue-700 text-white"
-                                        ]
-                                        [ text "Post comment" ]
+                                    , disabled (myCommentsAmount == 0)
                                     ]
+                                    [ text
+                                        ("My comments ("
+                                            ++ (myCommentsAmount |> String.fromInt)
+                                            ++ ")"
+                                        )
+                                    ]
+                                , button
+                                    [ type_ "submit"
+                                    , onClick (StartWritingComment data.id)
+                                    , class "font-bold py-2 px-4 rounded bg-blue-700 hover:bg-blue-700 text-white"
+                                    ]
+                                    [ text "Post comment" ]
+                                ]
 
-                                Nothing ->
-                                    []
-                            )
-                        , ul [ class "flex flex-col" ]
-                            (List.map itineraryComment data.comments)
-                        ]
+                            Nothing ->
+                                []
+                        )
+                    , ul [ class "flex flex-col" ]
+                        (List.map itineraryComment data.comments)
+                    ]
 
-                    Hidden ->
-                        [ text "" ]
+                else
+                    [ text "" ]
                )
         )
 
