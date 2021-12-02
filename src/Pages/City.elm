@@ -1065,7 +1065,7 @@ itinerary { data, action, comments } model =
             ++ (case comments of
                     Visible ->
                         [ div [ class "w-full h-px bg-gray-200" ] []
-                        , ul [ class "flex flex-col gap-y-2" ]
+                        , ul [ class "flex flex-col" ]
                             (List.map itineraryComment data.comments)
                         ]
 
