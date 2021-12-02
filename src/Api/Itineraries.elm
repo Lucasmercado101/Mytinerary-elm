@@ -1,8 +1,17 @@
-module Api.Itineraries exposing (NewItinerary, NewItineraryResponse, PatchItineraryResponse, deleteComment, deleteItinerary, patchItinerary, postItinerary)
+module Api.Itineraries exposing
+    ( NewItinerary
+    , NewItineraryResponse
+    , PatchItineraryResponse
+    , deleteComment
+    , deleteItinerary
+    , patchItinerary
+    , postComment
+    , postItinerary
+    )
 
 import Api.City
 import Api.Common exposing (deleteWithCredentials, endpoint, patchWithCredentials, postWithCredentials)
-import Http exposing (header, jsonBody, riskyRequest)
+import Http exposing (header, jsonBody, riskyRequest, stringBody)
 import Json.Decode as JD exposing (Decoder)
 import Json.Encode as JE
 
@@ -132,15 +141,16 @@ patchItinerary itineraryId data msg =
 -- Itinerary Comment
 
 
+postComment : Int -> String -> Http.Expect msg -> Cmd msg
 postComment itineraryId comment msg =
     riskyRequest
         { method = "POST"
         , url = endpoint [ "itinerary", String.fromInt itineraryId, "comment" ]
-        , body = comment
+        , body = stringBody "text/plain" comment
         , expect = msg
         , timeout = Nothing
         , tracker = Nothing
-        , headers = [ header "Content-Type" "text/plain" ]
+        , headers = []
         }
 
 
