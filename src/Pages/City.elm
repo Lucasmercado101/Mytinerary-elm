@@ -1092,6 +1092,7 @@ itinerary { data, action, commentsVisibility } model =
                                             [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
                                             , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
                                             ]
+                                        , disabled (myCommentsAmount == 0)
                                         ]
                                         [ text
                                             ("My comments ("
