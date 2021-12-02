@@ -153,7 +153,8 @@ type Action
 type Msg
     = GotCity (Result Http.Error Api.City.City)
     | GotUser (Maybe UserData)
-      -- Comment --
+      ----------- Comment -----------
+    | GotDeleteCommentResp (Maybe Http.Error) Int
     | DeleteComment Int
     | OpenCommentMenu Int
     | CloseCommentMenu
@@ -438,6 +439,159 @@ update msg model =
 
         CloseCommentMenu ->
             ( { model | commentMenuOpen = Nothing }, Cmd.none )
+
+        DeleteComment id ->
+            case model.userSession of
+                Just _ ->
+                    case model.cityData of
+                        Loaded cityData ->
+                            let
+                                itineraries =
+                                    cityData.itineraries
+                            in
+                            ( { model
+                                | commentMenuOpen = Nothing
+                                , cityData =
+                                    Loaded
+                                        { cityData
+                                            | itineraries =
+                                                List.map
+                                                    (\({ data } as itineraryData) ->
+                                                        let
+                                                            iData =
+                                                                itineraryData.data
+                                                        in
+                                                        { itineraryData
+                                                            | data =
+                                                                { iData
+                                                                    | comments =
+                                                                        List.map
+                                                                            (\c ->
+                                                                                if c.id == id then
+                                                                                    { c | action = Just Deleting }
+
+                                                                                else
+                                                                                    c
+                                                                            )
+                                                                            iData.comments
+                                                                }
+                                                        }
+                                                    )
+                                                    itineraries
+                                        }
+                              }
+                            , Api.Itineraries.deleteComment id
+                                (\l ->
+                                    case l of
+                                        Ok _ ->
+                                            GotDeleteCommentResp Nothing id
+
+                                        Err v ->
+                                            GotDeleteCommentResp (Just v) id
+                                )
+                            )
+
+                        _ ->
+                            ( model, Cmd.none )
+
+                Nothing ->
+                    ( model, Cmd.none )
+
+        GotDeleteCommentResp resp idx ->
+            case model.cityData of
+                Loaded cityData ->
+                    let
+                        itineraries =
+                            cityData.itineraries
+                    in
+                    case resp of
+                        Just err ->
+                            ( { model
+                                | cityData =
+                                    Loaded
+                                        { cityData
+                                            | itineraries =
+                                                List.map
+                                                    (\({ data } as itineraryData) ->
+                                                        let
+                                                            iData =
+                                                                itineraryData.data
+                                                        in
+                                                        { itineraryData
+                                                            | data =
+                                                                { iData
+                                                                    | comments =
+                                                                        List.map
+                                                                            (\c ->
+                                                                                if c.id == idx then
+                                                                                    { c
+                                                                                        | action =
+                                                                                            Just
+                                                                                                (FailedToDelete
+                                                                                                    (case err of
+                                                                                                        Http.BadStatus code ->
+                                                                                                            case code of
+                                                                                                                400 ->
+                                                                                                                    "Bad request"
+
+                                                                                                                401 ->
+                                                                                                                    "Unauthorized"
+
+                                                                                                                404 ->
+                                                                                                                    "Not found"
+
+                                                                                                                _ ->
+                                                                                                                    "An unknown error ocurred: code " ++ String.fromInt code
+
+                                                                                                        _ ->
+                                                                                                            "An unknown error ocurred"
+                                                                                                    )
+                                                                                                )
+                                                                                    }
+
+                                                                                else
+                                                                                    c
+                                                                            )
+                                                                            iData.comments
+                                                                }
+                                                        }
+                                                    )
+                                                    itineraries
+                                        }
+                              }
+                            , Cmd.none
+                            )
+
+                        Nothing ->
+                            ( { model
+                                | cityData =
+                                    Loaded
+                                        { cityData
+                                            | itineraries =
+                                                List.map
+                                                    (\({ data } as itineraryData) ->
+                                                        let
+                                                            iData =
+                                                                itineraryData.data
+                                                        in
+                                                        { itineraryData
+                                                            | data =
+                                                                { iData
+                                                                    | comments =
+                                                                        List.filter
+                                                                            (\c -> c.id /= idx)
+                                                                            iData.comments
+                                                                }
+                                                        }
+                                                    )
+                                                    itineraries
+                                        }
+                              }
+                            , Cmd.none
+                            )
+
+                _ ->
+                    ( model, Cmd.none )
 
         -- New Itinerary
         OpenModal ->
@@ -852,9 +1006,6 @@ update msg model =
         StartWritingComment idx ->
             Debug.todo "StartWritingComment"
 
-        DeleteComment idx ->
-            Debug.todo "DeleteComment"
-
 
 
 -- case model.cityData of
@@ -1218,40 +1369,71 @@ itineraryComment ({ author, comment, action } as commentData) isMenuOpen =
 
                 _ ->
                     False
-    in
-    li [ class "p-4" ]
-        [ div [ class "flex items-center" ]
-            [ div [ class "pointer-events-none w-10 h-10 bg-red-500 text-white capitalize rounded-full flex" ]
-                [ div [ class "flex w-10 h-10" ] [ p [ class "m-auto text-xl" ] [ text (String.left 1 author.username) ] ]
-                ]
-            , p [ class "ml-3 capitalize" ] [ text author.username ]
-            , div
-                [ class "ml-auto relative" ]
-                [ button [ onClick (OpenCommentMenu commentData.id), class "w-12 h-12", disabled isBeingDeleted ]
-                    [ div [ class "flex w-12 h-12", classList [ ( "text-gray-400", isBeingDeleted ) ] ] [ verticalDotsSvg ]
-                    ]
-                , div
-                    [ classList
-                        [ ( "hidden"
-                          , not isMenuOpen
-                          )
-                        ]
-                    , id ("comment-menu-" ++ String.fromInt commentData.id)
-                    ]
-                    [ ul [ class "flex flex-col gap-y-2 absolute top-0 right-0 bg-white shadow-md" ]
-                        [ li []
-                            [ button [ class "w-full px-2 py-1", onClick (DeleteComment commentData.id) ] [ text "Delete" ]
-                            ]
 
-                        -- TODO
-                        -- , li []
-                        --     [ button [ class "w-full px-2 py-1", onClick (OpenEditItineraryModal data.id) ] [ text "Edit" ]
-                        --     ]
+        errorHtml : String -> Html msg
+        errorHtml err =
+            div [ class "bg-red-100 p-2 font-semibold" ]
+                [ p [ class "text-red-700" ] [ text err ]
+                ]
+
+        infoHtml : String -> Html msg
+        infoHtml err =
+            div [ class "bg-blue-100 p-2 font-semibold" ]
+                [ p [ class "text-blue-700" ] [ text err ]
+                ]
+    in
+    li []
+        [ case action of
+            Just status ->
+                case status of
+                    Deleting ->
+                        infoHtml "Deleting..."
+
+                    FailedToDelete errMsg ->
+                        errorHtml errMsg
+
+                    Editing ->
+                        infoHtml "Editing..."
+
+                    FailedToEdit errMsg ->
+                        errorHtml errMsg
+
+            Nothing ->
+                text ""
+        , div [ class "p-4" ]
+            [ div [ class "flex items-center" ]
+                [ div [ class "pointer-events-none w-10 h-10 bg-red-500 text-white capitalize rounded-full flex" ]
+                    [ div [ class "flex w-10 h-10" ] [ p [ class "m-auto text-xl" ] [ text (String.left 1 author.username) ] ]
+                    ]
+                , p [ class "ml-3 capitalize" ] [ text author.username ]
+                , div
+                    [ class "ml-auto relative" ]
+                    [ button [ onClick (OpenCommentMenu commentData.id), class "w-12 h-12", disabled isBeingDeleted ]
+                        [ div [ class "flex w-12 h-12", classList [ ( "text-gray-400", isBeingDeleted ) ] ] [ verticalDotsSvg ]
+                        ]
+                    , div
+                        [ classList
+                            [ ( "hidden"
+                              , not isMenuOpen
+                              )
+                            ]
+                        , id ("comment-menu-" ++ String.fromInt commentData.id)
+                        ]
+                        [ ul [ class "flex flex-col gap-y-2 absolute top-0 right-0 bg-white shadow-md" ]
+                            [ li []
+                                [ button [ class "w-full px-2 py-1", onClick (DeleteComment commentData.id) ] [ text "Delete" ]
+                                ]
+
+                            -- TODO
+                            -- , li []
+                            --     [ button [ class "w-full px-2 py-1", onClick (OpenEditItineraryModal data.id) ] [ text "Edit" ]
+                            --     ]
+                            ]
                         ]
                     ]
                 ]
+            , text comment
             ]
-        , text comment
         ]
 
 
