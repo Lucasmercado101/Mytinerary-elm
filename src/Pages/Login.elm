@@ -96,7 +96,7 @@ view { password, username, logInState } =
                                 False
                        )
         in
-        [ div [ class "flex h-full" ]
+        [ div [ class "flex", TW.apply [ h_full ] ]
             [ div [ TW.apply [ w_full ], class "flex-1" ]
                 [ img
                     [ src "/assets/loginImage.jpg"
@@ -136,16 +136,30 @@ view { password, username, logInState } =
                     , form
                         [ onSubmit SubmitForm
                         , class
-                            "flex flex-col gap-y-4 shadow-sm"
+                            "flex flex-col shadow-sm"
+                        , TW.apply [ gap_y_4 ]
                         ]
                         [ div []
-                            [ label [ class "block text-gray-700 text-sm font-bold mb-2", for "username" ]
+                            [ label
+                                [ class "block text-gray-700"
+                                , TW.apply
+                                    [ font_bold
+                                    , mb_2
+                                    , text_sm
+                                    ]
+                                , for "username"
+                                ]
                                 [ text "Username" ]
                             , input
                                 [ required True
                                 , value username
                                 , onInput ChangeUsername
-                                , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                , class "shadow appearance-none border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                , TW.apply
+                                    [ py_2
+                                    , px_3
+                                    , w_full
+                                    ]
                                 , id "username"
                                 , placeholder "Username"
                                 , type_ "text"
@@ -153,13 +167,22 @@ view { password, username, logInState } =
                                 []
                             ]
                         , div []
-                            [ label [ class "block text-gray-700 text-sm font-bold mb-2", for "password" ]
+                            [ label
+                                [ class "block text-gray-700"
+                                , TW.apply [ font_bold, text_sm, mb_2 ]
+                                , for "password"
+                                ]
                                 [ text "Password" ]
                             , input
                                 [ required True
                                 , value password
                                 , onInput ChangePassword
-                                , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                , class "shadow appearance-none border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                , TW.apply
+                                    [ py_2
+                                    , px_3
+                                    , w_full
+                                    ]
                                 , id "password"
                                 , placeholder "Password"
                                 , type_ "text"
@@ -168,7 +191,8 @@ view { password, username, logInState } =
                             ]
                         , button
                             [ type_ "submit"
-                            , class "font-bold py-2 px-4 rounded"
+                            , class "rounded"
+                            , TW.apply [ font_bold, py_2, px_4 ]
                             , classList
                                 [ ( "bg-blue-700 hover:bg-blue-700 text-white", not registerDisabled )
                                 , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", registerDisabled )
