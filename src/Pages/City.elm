@@ -1732,70 +1732,77 @@ itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments } 
                                                 |> List.filter (\c -> c.author.id == userData.id)
                                                 |> List.length
                                     in
-                                    div [ class "p-4 flex gap-x-4 justify-between" ]
-                                        (case newComment of
-                                            Just _ ->
-                                                [ if showOnlyMyComments then
-                                                    button
-                                                        [ class "font-bold py-2 px-4 rounded w-full bg-blue-700 hover:bg-blue-700 text-white"
-                                                        , onClick (ToggleMyComments data.id)
-                                                        ]
-                                                        [ text
-                                                            "Show all comments"
-                                                        ]
+                                    case newComment of
+                                        Just _ ->
+                                            if myCommentsAmount > 0 then
+                                                div [ class "p-4" ]
+                                                    [ if showOnlyMyComments then
+                                                        button
+                                                            [ class "font-bold py-2 px-4 rounded w-full bg-blue-700 hover:bg-blue-700 text-white"
+                                                            , onClick (ToggleMyComments data.id)
+                                                            ]
+                                                            [ text
+                                                                "Show all comments"
+                                                            ]
+
+                                                      else
+                                                        button
+                                                            [ class "font-bold py-2 px-4 rounded w-full"
+                                                            , classList
+                                                                [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
+                                                                , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
+                                                                ]
+                                                            , onClick (ToggleMyComments data.id)
+                                                            ]
+                                                            [ text
+                                                                ("My comments ("
+                                                                    ++ (myCommentsAmount |> String.fromInt)
+                                                                    ++ ")"
+                                                                )
+                                                            ]
+                                                    ]
+
+                                            else
+                                                div [ class "pt-2" ] []
+
+                                        Nothing ->
+                                            div [ class "p-4 flex gap-x-4 justify-between" ]
+                                                [ if myCommentsAmount > 0 then
+                                                    if showOnlyMyComments then
+                                                        button
+                                                            [ class "font-bold py-2 px-4 rounded  bg-blue-700 hover:bg-blue-700 text-white"
+                                                            , onClick (ToggleMyComments data.id)
+                                                            ]
+                                                            [ text
+                                                                "Show all comments"
+                                                            ]
+
+                                                    else
+                                                        button
+                                                            [ class "font-bold py-2 px-4 rounded"
+                                                            , classList
+                                                                [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
+                                                                , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
+                                                                ]
+                                                            , onClick (ToggleMyComments data.id)
+                                                            ]
+                                                            [ text
+                                                                ("My comments ("
+                                                                    ++ (myCommentsAmount |> String.fromInt)
+                                                                    ++ ")"
+                                                                )
+                                                            ]
 
                                                   else
-                                                    button
-                                                        [ class "font-bold py-2 px-4 rounded w-full"
-                                                        , classList
-                                                            [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
-                                                            , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
-                                                            ]
-                                                        , disabled (myCommentsAmount == 0)
-                                                        , onClick (ToggleMyComments data.id)
-                                                        ]
-                                                        [ text
-                                                            ("My comments ("
-                                                                ++ (myCommentsAmount |> String.fromInt)
-                                                                ++ ")"
-                                                            )
-                                                        ]
-                                                ]
-
-                                            Nothing ->
-                                                [ if showOnlyMyComments then
-                                                    button
-                                                        [ class "font-bold py-2 px-4 rounded  bg-blue-700 hover:bg-blue-700 text-white"
-                                                        , onClick (ToggleMyComments data.id)
-                                                        ]
-                                                        [ text
-                                                            "Show all comments"
-                                                        ]
-
-                                                  else
-                                                    button
-                                                        [ class "font-bold py-2 px-4 rounded"
-                                                        , classList
-                                                            [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
-                                                            , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
-                                                            ]
-                                                        , disabled (myCommentsAmount == 0)
-                                                        , onClick (ToggleMyComments data.id)
-                                                        ]
-                                                        [ text
-                                                            ("My comments ("
-                                                                ++ (myCommentsAmount |> String.fromInt)
-                                                                ++ ")"
-                                                            )
-                                                        ]
+                                                    text ""
                                                 , button
                                                     [ type_ "submit"
                                                     , onClick (StartWritingComment data.id)
                                                     , class "font-bold py-2 px-4 rounded bg-blue-700 hover:bg-blue-700 text-white"
+                                                    , classList [ ( "w-full", myCommentsAmount < 1 ) ]
                                                     ]
                                                     [ text "Post comment" ]
                                                 ]
-                                        )
 
                                 Nothing ->
                                     text ""
