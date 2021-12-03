@@ -3511,6 +3511,4480 @@ pl_80 =
 
 
 
+-- Margin (https://tailwindcss.com/docs/margin)
+{- "m-0" -}
+
+
+m_0 : String
+m_0 =
+    "m-0"
+
+
+
+{- "m-px" -}
+
+
+m_px : String
+m_px =
+    "m-px"
+
+
+
+{- "m-0.5" -}
+
+
+m_0_dot_5 : String
+m_0_dot_5 =
+    "m-0.5"
+
+
+
+{- "m-1" -}
+
+
+m_1 : String
+m_1 =
+    "m-1"
+
+
+
+{- "m-1.5" -}
+
+
+m_1_dot_5 : String
+m_1_dot_5 =
+    "m-1.5"
+
+
+
+{- "m-2" -}
+
+
+m_2 : String
+m_2 =
+    "m-2"
+
+
+
+{- "m-2.5" -}
+
+
+m_2_dot_5 : String
+m_2_dot_5 =
+    "m-2.5"
+
+
+
+{- "m-3" -}
+
+
+m_3 : String
+m_3 =
+    "m-3"
+
+
+
+{- "m-3.5" -}
+
+
+m_3_dot_5 : String
+m_3_dot_5 =
+    "m-3.5"
+
+
+
+{- "m-4" -}
+
+
+m_4 : String
+m_4 =
+    "m-4"
+
+
+
+{- "m-5" -}
+
+
+m_5 : String
+m_5 =
+    "m-5"
+
+
+
+{- "m-6" -}
+
+
+m_6 : String
+m_6 =
+    "m-6"
+
+
+
+{- "m-7" -}
+
+
+m_7 : String
+m_7 =
+    "m-7"
+
+
+
+{- "m-8" -}
+
+
+m_8 : String
+m_8 =
+    "m-8"
+
+
+
+{- "m-9" -}
+
+
+m_9 : String
+m_9 =
+    "m-9"
+
+
+
+{- "m-10" -}
+
+
+m_10 : String
+m_10 =
+    "m-10"
+
+
+
+{- "m-11" -}
+
+
+m_11 : String
+m_11 =
+    "m-11"
+
+
+
+{- "m-12" -}
+
+
+m_12 : String
+m_12 =
+    "m-12"
+
+
+
+{- "m-14" -}
+
+
+m_14 : String
+m_14 =
+    "m-14"
+
+
+
+{- "m-16" -}
+
+
+m_16 : String
+m_16 =
+    "m-16"
+
+
+
+{- "m-20" -}
+
+
+m_20 : String
+m_20 =
+    "m-20"
+
+
+
+{- "m-24" -}
+
+
+m_24 : String
+m_24 =
+    "m-24"
+
+
+
+{- "m-28" -}
+
+
+m_28 : String
+m_28 =
+    "m-28"
+
+
+
+{- "m-32" -}
+
+
+m_32 : String
+m_32 =
+    "m-32"
+
+
+
+{- "m-36" -}
+
+
+m_36 : String
+m_36 =
+    "m-36"
+
+
+
+{- "m-40" -}
+
+
+m_40 : String
+m_40 =
+    "m-40"
+
+
+
+{- "m-44" -}
+
+
+m_44 : String
+m_44 =
+    "m-44"
+
+
+
+{- "m-48" -}
+
+
+m_48 : String
+m_48 =
+    "m-48"
+
+
+
+{- "m-52" -}
+
+
+m_52 : String
+m_52 =
+    "m-52"
+
+
+
+{- "m-56" -}
+
+
+m_56 : String
+m_56 =
+    "m-56"
+
+
+
+{- "m-60" -}
+
+
+m_60 : String
+m_60 =
+    "m-60"
+
+
+
+{- "m-64" -}
+
+
+m_64 : String
+m_64 =
+    "m-64"
+
+
+
+{- "m-72" -}
+
+
+m_72 : String
+m_72 =
+    "m-72"
+
+
+
+{- "m-80" -}
+
+
+m_80 : String
+m_80 =
+    "m-80"
+
+
+
+{- "m-96" -}
+
+
+m_96 : String
+m_96 =
+    "m-96"
+
+
+
+{- "m-auto" -}
+
+
+m_auto : String
+m_auto =
+    "m-auto"
+
+
+
+{- "-m-0" -}
+
+
+n_m_0 : String
+n_m_0 =
+    "-m-0"
+
+
+
+{- "-m-px" -}
+
+
+n_m_px : String
+n_m_px =
+    "-m-px"
+
+
+
+{- "-m-0.5" -}
+
+
+n_m_0_dot_5 : String
+n_m_0_dot_5 =
+    "-m-0.5"
+
+
+
+{- "-m-1" -}
+
+
+n_m_1 : String
+n_m_1 =
+    "-m-1"
+
+
+
+{- "-m-1.5" -}
+
+
+n_m_1_dot_5 : String
+n_m_1_dot_5 =
+    "-m-1.5"
+
+
+
+{- "-m-2" -}
+
+
+n_m_2 : String
+n_m_2 =
+    "-m-2"
+
+
+
+{- "-m-2.5" -}
+
+
+n_m_2_dot_5 : String
+n_m_2_dot_5 =
+    "-m-2.5"
+
+
+
+{- "-m-3" -}
+
+
+n_m_3 : String
+n_m_3 =
+    "-m-3"
+
+
+
+{- "-m-3.5" -}
+
+
+n_m_3_dot_5 : String
+n_m_3_dot_5 =
+    "-m-3.5"
+
+
+
+{- "-m-4" -}
+
+
+n_m_4 : String
+n_m_4 =
+    "-m-4"
+
+
+
+{- "-m-5" -}
+
+
+n_m_5 : String
+n_m_5 =
+    "-m-5"
+
+
+
+{- "-m-6" -}
+
+
+n_m_6 : String
+n_m_6 =
+    "-m-6"
+
+
+
+{- "-m-7" -}
+
+
+n_m_7 : String
+n_m_7 =
+    "-m-7"
+
+
+
+{- "-m-8" -}
+
+
+n_m_8 : String
+n_m_8 =
+    "-m-8"
+
+
+
+{- "-m-9" -}
+
+
+n_m_9 : String
+n_m_9 =
+    "-m-9"
+
+
+
+{- "-m-10" -}
+
+
+n_m_10 : String
+n_m_10 =
+    "-m-10"
+
+
+
+{- "-m-11" -}
+
+
+n_m_11 : String
+n_m_11 =
+    "-m-11"
+
+
+
+{- "-m-12" -}
+
+
+n_m_12 : String
+n_m_12 =
+    "-m-12"
+
+
+
+{- "-m-14" -}
+
+
+n_m_14 : String
+n_m_14 =
+    "-m-14"
+
+
+
+{- "-m-16" -}
+
+
+n_m_16 : String
+n_m_16 =
+    "-m-16"
+
+
+
+{- "-m-20" -}
+
+
+n_m_20 : String
+n_m_20 =
+    "-m-20"
+
+
+
+{- "-m-24" -}
+
+
+n_m_24 : String
+n_m_24 =
+    "-m-24"
+
+
+
+{- "-m-28" -}
+
+
+n_m_28 : String
+n_m_28 =
+    "-m-28"
+
+
+
+{- "-m-32" -}
+
+
+n_m_32 : String
+n_m_32 =
+    "-m-32"
+
+
+
+{- "-m-36" -}
+
+
+n_m_36 : String
+n_m_36 =
+    "-m-36"
+
+
+
+{- "-m-40" -}
+
+
+n_m_40 : String
+n_m_40 =
+    "-m-40"
+
+
+
+{- "-m-44" -}
+
+
+n_m_44 : String
+n_m_44 =
+    "-m-44"
+
+
+
+{- "-m-48" -}
+
+
+n_m_48 : String
+n_m_48 =
+    "-m-48"
+
+
+
+{- "-m-52" -}
+
+
+n_m_52 : String
+n_m_52 =
+    "-m-52"
+
+
+
+{- "-m-56" -}
+
+
+n_m_56 : String
+n_m_56 =
+    "-m-56"
+
+
+
+{- "-m-60" -}
+
+
+n_m_60 : String
+n_m_60 =
+    "-m-60"
+
+
+
+{- "-m-64" -}
+
+
+n_m_64 : String
+n_m_64 =
+    "-m-64"
+
+
+
+{- "-m-72" -}
+
+
+n_m_72 : String
+n_m_72 =
+    "-m-72"
+
+
+
+{- "-m-80" -}
+
+
+n_m_80 : String
+n_m_80 =
+    "-m-80"
+
+
+
+{- "-m-96" -}
+
+
+n_m_96 : String
+n_m_96 =
+    "-m-96"
+
+
+
+{- "mx-0" -}
+
+
+mx_0 : String
+mx_0 =
+    "mx-0"
+
+
+
+{- "mx-px" -}
+
+
+mx_px : String
+mx_px =
+    "mx-px"
+
+
+
+{- "mx-0.5" -}
+
+
+mx_0_dot_5 : String
+mx_0_dot_5 =
+    "mx-0.5"
+
+
+
+{- "mx-1" -}
+
+
+mx_1 : String
+mx_1 =
+    "mx-1"
+
+
+
+{- "mx-1.5" -}
+
+
+mx_1_dot_5 : String
+mx_1_dot_5 =
+    "mx-1.5"
+
+
+
+{- "mx-2" -}
+
+
+mx_2 : String
+mx_2 =
+    "mx-2"
+
+
+
+{- "mx-2.5" -}
+
+
+mx_2_dot_5 : String
+mx_2_dot_5 =
+    "mx-2.5"
+
+
+
+{- "mx-3" -}
+
+
+mx_3 : String
+mx_3 =
+    "mx-3"
+
+
+
+{- "mx-3.5" -}
+
+
+mx_3_dot_5 : String
+mx_3_dot_5 =
+    "mx-3.5"
+
+
+
+{- "mx-4" -}
+
+
+mx_4 : String
+mx_4 =
+    "mx-4"
+
+
+
+{- "mx-5" -}
+
+
+mx_5 : String
+mx_5 =
+    "mx-5"
+
+
+
+{- "mx-6" -}
+
+
+mx_6 : String
+mx_6 =
+    "mx-6"
+
+
+
+{- "mx-7" -}
+
+
+mx_7 : String
+mx_7 =
+    "mx-7"
+
+
+
+{- "mx-8" -}
+
+
+mx_8 : String
+mx_8 =
+    "mx-8"
+
+
+
+{- "mx-9" -}
+
+
+mx_9 : String
+mx_9 =
+    "mx-9"
+
+
+
+{- "mx-10" -}
+
+
+mx_10 : String
+mx_10 =
+    "mx-10"
+
+
+
+{- "mx-11" -}
+
+
+mx_11 : String
+mx_11 =
+    "mx-11"
+
+
+
+{- "mx-12" -}
+
+
+mx_12 : String
+mx_12 =
+    "mx-12"
+
+
+
+{- "mx-14" -}
+
+
+mx_14 : String
+mx_14 =
+    "mx-14"
+
+
+
+{- "mx-16" -}
+
+
+mx_16 : String
+mx_16 =
+    "mx-16"
+
+
+
+{- "mx-20" -}
+
+
+mx_20 : String
+mx_20 =
+    "mx-20"
+
+
+
+{- "mx-24" -}
+
+
+mx_24 : String
+mx_24 =
+    "mx-24"
+
+
+
+{- "mx-28" -}
+
+
+mx_28 : String
+mx_28 =
+    "mx-28"
+
+
+
+{- "mx-32" -}
+
+
+mx_32 : String
+mx_32 =
+    "mx-32"
+
+
+
+{- "mx-36" -}
+
+
+mx_36 : String
+mx_36 =
+    "mx-36"
+
+
+
+{- "mx-40" -}
+
+
+mx_40 : String
+mx_40 =
+    "mx-40"
+
+
+
+{- "mx-44" -}
+
+
+mx_44 : String
+mx_44 =
+    "mx-44"
+
+
+
+{- "mx-48" -}
+
+
+mx_48 : String
+mx_48 =
+    "mx-48"
+
+
+
+{- "mx-52" -}
+
+
+mx_52 : String
+mx_52 =
+    "mx-52"
+
+
+
+{- "mx-56" -}
+
+
+mx_56 : String
+mx_56 =
+    "mx-56"
+
+
+
+{- "mx-60" -}
+
+
+mx_60 : String
+mx_60 =
+    "mx-60"
+
+
+
+{- "mx-64" -}
+
+
+mx_64 : String
+mx_64 =
+    "mx-64"
+
+
+
+{- "mx-72" -}
+
+
+mx_72 : String
+mx_72 =
+    "mx-72"
+
+
+
+{- "mx-80" -}
+
+
+mx_80 : String
+mx_80 =
+    "mx-80"
+
+
+
+{- "mx-96" -}
+
+
+mx_96 : String
+mx_96 =
+    "mx-96"
+
+
+
+{- "mx-auto" -}
+
+
+mx_auto : String
+mx_auto =
+    "mx-auto"
+
+
+
+{- "-mx-0" -}
+
+
+n_mx_0 : String
+n_mx_0 =
+    "-mx-0"
+
+
+
+{- "-mx-px" -}
+
+
+n_mx_px : String
+n_mx_px =
+    "-mx-px"
+
+
+
+{- "-mx-0.5" -}
+
+
+n_mx_0_dot_5 : String
+n_mx_0_dot_5 =
+    "-mx-0.5"
+
+
+
+{- "-mx-1" -}
+
+
+n_mx_1 : String
+n_mx_1 =
+    "-mx-1"
+
+
+
+{- "-mx-1.5" -}
+
+
+n_mx_1_dot_5 : String
+n_mx_1_dot_5 =
+    "-mx-1.5"
+
+
+
+{- "-mx-2" -}
+
+
+n_mx_2 : String
+n_mx_2 =
+    "-mx-2"
+
+
+
+{- "-mx-2.5" -}
+
+
+n_mx_2_dot_5 : String
+n_mx_2_dot_5 =
+    "-mx-2.5"
+
+
+
+{- "-mx-3" -}
+
+
+n_mx_3 : String
+n_mx_3 =
+    "-mx-3"
+
+
+
+{- "-mx-3.5" -}
+
+
+n_mx_3_dot_5 : String
+n_mx_3_dot_5 =
+    "-mx-3.5"
+
+
+
+{- "-mx-4" -}
+
+
+n_mx_4 : String
+n_mx_4 =
+    "-mx-4"
+
+
+
+{- "-mx-5" -}
+
+
+n_mx_5 : String
+n_mx_5 =
+    "-mx-5"
+
+
+
+{- "-mx-6" -}
+
+
+n_mx_6 : String
+n_mx_6 =
+    "-mx-6"
+
+
+
+{- "-mx-7" -}
+
+
+n_mx_7 : String
+n_mx_7 =
+    "-mx-7"
+
+
+
+{- "-mx-8" -}
+
+
+n_mx_8 : String
+n_mx_8 =
+    "-mx-8"
+
+
+
+{- "-mx-9" -}
+
+
+n_mx_9 : String
+n_mx_9 =
+    "-mx-9"
+
+
+
+{- "-mx-10" -}
+
+
+n_mx_10 : String
+n_mx_10 =
+    "-mx-10"
+
+
+
+{- "-mx-11" -}
+
+
+n_mx_11 : String
+n_mx_11 =
+    "-mx-11"
+
+
+
+{- "-mx-12" -}
+
+
+n_mx_12 : String
+n_mx_12 =
+    "-mx-12"
+
+
+
+{- "-mx-14" -}
+
+
+n_mx_14 : String
+n_mx_14 =
+    "-mx-14"
+
+
+
+{- "-mx-16" -}
+
+
+n_mx_16 : String
+n_mx_16 =
+    "-mx-16"
+
+
+
+{- "-mx-20" -}
+
+
+n_mx_20 : String
+n_mx_20 =
+    "-mx-20"
+
+
+
+{- "-mx-24" -}
+
+
+n_mx_24 : String
+n_mx_24 =
+    "-mx-24"
+
+
+
+{- "-mx-28" -}
+
+
+n_mx_28 : String
+n_mx_28 =
+    "-mx-28"
+
+
+
+{- "-mx-32" -}
+
+
+n_mx_32 : String
+n_mx_32 =
+    "-mx-32"
+
+
+
+{- "-mx-36" -}
+
+
+n_mx_36 : String
+n_mx_36 =
+    "-mx-36"
+
+
+
+{- "-mx-40" -}
+
+
+n_mx_40 : String
+n_mx_40 =
+    "-mx-40"
+
+
+
+{- "-mx-44" -}
+
+
+n_mx_44 : String
+n_mx_44 =
+    "-mx-44"
+
+
+
+{- "-mx-48" -}
+
+
+n_mx_48 : String
+n_mx_48 =
+    "-mx-48"
+
+
+
+{- "-mx-52" -}
+
+
+n_mx_52 : String
+n_mx_52 =
+    "-mx-52"
+
+
+
+{- "-mx-56" -}
+
+
+n_mx_56 : String
+n_mx_56 =
+    "-mx-56"
+
+
+
+{- "-mx-60" -}
+
+
+n_mx_60 : String
+n_mx_60 =
+    "-mx-60"
+
+
+
+{- "-mx-64" -}
+
+
+n_mx_64 : String
+n_mx_64 =
+    "-mx-64"
+
+
+
+{- "-mx-72" -}
+
+
+n_mx_72 : String
+n_mx_72 =
+    "-mx-72"
+
+
+
+{- "-mx-80" -}
+
+
+n_mx_80 : String
+n_mx_80 =
+    "-mx-80"
+
+
+
+{- "-mx-96" -}
+
+
+n_mx_96 : String
+n_mx_96 =
+    "-mx-96"
+
+
+
+{- "my-0" -}
+
+
+my_0 : String
+my_0 =
+    "my-0"
+
+
+
+{- "my-px" -}
+
+
+my_px : String
+my_px =
+    "my-px"
+
+
+
+{- "my-0.5" -}
+
+
+my_0_dot_5 : String
+my_0_dot_5 =
+    "my-0.5"
+
+
+
+{- "my-1" -}
+
+
+my_1 : String
+my_1 =
+    "my-1"
+
+
+
+{- "my-1.5" -}
+
+
+my_1_dot_5 : String
+my_1_dot_5 =
+    "my-1.5"
+
+
+
+{- "my-2" -}
+
+
+my_2 : String
+my_2 =
+    "my-2"
+
+
+
+{- "my-2.5" -}
+
+
+my_2_dot_5 : String
+my_2_dot_5 =
+    "my-2.5"
+
+
+
+{- "my-3" -}
+
+
+my_3 : String
+my_3 =
+    "my-3"
+
+
+
+{- "my-3.5" -}
+
+
+my_3_dot_5 : String
+my_3_dot_5 =
+    "my-3.5"
+
+
+
+{- "my-4" -}
+
+
+my_4 : String
+my_4 =
+    "my-4"
+
+
+
+{- "my-5" -}
+
+
+my_5 : String
+my_5 =
+    "my-5"
+
+
+
+{- "my-6" -}
+
+
+my_6 : String
+my_6 =
+    "my-6"
+
+
+
+{- "my-7" -}
+
+
+my_7 : String
+my_7 =
+    "my-7"
+
+
+
+{- "my-8" -}
+
+
+my_8 : String
+my_8 =
+    "my-8"
+
+
+
+{- "my-9" -}
+
+
+my_9 : String
+my_9 =
+    "my-9"
+
+
+
+{- "my-10" -}
+
+
+my_10 : String
+my_10 =
+    "my-10"
+
+
+
+{- "my-11" -}
+
+
+my_11 : String
+my_11 =
+    "my-11"
+
+
+
+{- "my-12" -}
+
+
+my_12 : String
+my_12 =
+    "my-12"
+
+
+
+{- "my-14" -}
+
+
+my_14 : String
+my_14 =
+    "my-14"
+
+
+
+{- "my-16" -}
+
+
+my_16 : String
+my_16 =
+    "my-16"
+
+
+
+{- "my-20" -}
+
+
+my_20 : String
+my_20 =
+    "my-20"
+
+
+
+{- "my-24" -}
+
+
+my_24 : String
+my_24 =
+    "my-24"
+
+
+
+{- "my-28" -}
+
+
+my_28 : String
+my_28 =
+    "my-28"
+
+
+
+{- "my-32" -}
+
+
+my_32 : String
+my_32 =
+    "my-32"
+
+
+
+{- "my-36" -}
+
+
+my_36 : String
+my_36 =
+    "my-36"
+
+
+
+{- "my-40" -}
+
+
+my_40 : String
+my_40 =
+    "my-40"
+
+
+
+{- "my-44" -}
+
+
+my_44 : String
+my_44 =
+    "my-44"
+
+
+
+{- "my-48" -}
+
+
+my_48 : String
+my_48 =
+    "my-48"
+
+
+
+{- "my-52" -}
+
+
+my_52 : String
+my_52 =
+    "my-52"
+
+
+
+{- "my-56" -}
+
+
+my_56 : String
+my_56 =
+    "my-56"
+
+
+
+{- "my-60" -}
+
+
+my_60 : String
+my_60 =
+    "my-60"
+
+
+
+{- "my-64" -}
+
+
+my_64 : String
+my_64 =
+    "my-64"
+
+
+
+{- "my-72" -}
+
+
+my_72 : String
+my_72 =
+    "my-72"
+
+
+
+{- "my-80" -}
+
+
+my_80 : String
+my_80 =
+    "my-80"
+
+
+
+{- "my-96" -}
+
+
+my_96 : String
+my_96 =
+    "my-96"
+
+
+
+{- "my-auto" -}
+
+
+my_auto : String
+my_auto =
+    "my-auto"
+
+
+
+{- "-my-0" -}
+
+
+n_my_0 : String
+n_my_0 =
+    "-my-0"
+
+
+
+{- "-my-px" -}
+
+
+n_my_px : String
+n_my_px =
+    "-my-px"
+
+
+
+{- "-my-0.5" -}
+
+
+n_my_0_dot_5 : String
+n_my_0_dot_5 =
+    "-my-0.5"
+
+
+
+{- "-my-1" -}
+
+
+n_my_1 : String
+n_my_1 =
+    "-my-1"
+
+
+
+{- "-my-1.5" -}
+
+
+n_my_1_dot_5 : String
+n_my_1_dot_5 =
+    "-my-1.5"
+
+
+
+{- "-my-2" -}
+
+
+n_my_2 : String
+n_my_2 =
+    "-my-2"
+
+
+
+{- "-my-2.5" -}
+
+
+n_my_2_dot_5 : String
+n_my_2_dot_5 =
+    "-my-2.5"
+
+
+
+{- "-my-3" -}
+
+
+n_my_3 : String
+n_my_3 =
+    "-my-3"
+
+
+
+{- "-my-3.5" -}
+
+
+n_my_3_dot_5 : String
+n_my_3_dot_5 =
+    "-my-3.5"
+
+
+
+{- "-my-4" -}
+
+
+n_my_4 : String
+n_my_4 =
+    "-my-4"
+
+
+
+{- "-my-5" -}
+
+
+n_my_5 : String
+n_my_5 =
+    "-my-5"
+
+
+
+{- "-my-6" -}
+
+
+n_my_6 : String
+n_my_6 =
+    "-my-6"
+
+
+
+{- "-my-7" -}
+
+
+n_my_7 : String
+n_my_7 =
+    "-my-7"
+
+
+
+{- "-my-8" -}
+
+
+n_my_8 : String
+n_my_8 =
+    "-my-8"
+
+
+
+{- "-my-9" -}
+
+
+n_my_9 : String
+n_my_9 =
+    "-my-9"
+
+
+
+{- "-my-10" -}
+
+
+n_my_10 : String
+n_my_10 =
+    "-my-10"
+
+
+
+{- "-my-11" -}
+
+
+n_my_11 : String
+n_my_11 =
+    "-my-11"
+
+
+
+{- "-my-12" -}
+
+
+n_my_12 : String
+n_my_12 =
+    "-my-12"
+
+
+
+{- "-my-14" -}
+
+
+n_my_14 : String
+n_my_14 =
+    "-my-14"
+
+
+
+{- "-my-16" -}
+
+
+n_my_16 : String
+n_my_16 =
+    "-my-16"
+
+
+
+{- "-my-20" -}
+
+
+n_my_20 : String
+n_my_20 =
+    "-my-20"
+
+
+
+{- "-my-24" -}
+
+
+n_my_24 : String
+n_my_24 =
+    "-my-24"
+
+
+
+{- "-my-28" -}
+
+
+n_my_28 : String
+n_my_28 =
+    "-my-28"
+
+
+
+{- "-my-32" -}
+
+
+n_my_32 : String
+n_my_32 =
+    "-my-32"
+
+
+
+{- "-my-36" -}
+
+
+n_my_36 : String
+n_my_36 =
+    "-my-36"
+
+
+
+{- "-my-40" -}
+
+
+n_my_40 : String
+n_my_40 =
+    "-my-40"
+
+
+
+{- "-my-44" -}
+
+
+n_my_44 : String
+n_my_44 =
+    "-my-44"
+
+
+
+{- "-my-48" -}
+
+
+n_my_48 : String
+n_my_48 =
+    "-my-48"
+
+
+
+{- "-my-52" -}
+
+
+n_my_52 : String
+n_my_52 =
+    "-my-52"
+
+
+
+{- "-my-56" -}
+
+
+n_my_56 : String
+n_my_56 =
+    "-my-56"
+
+
+
+{- "-my-60" -}
+
+
+n_my_60 : String
+n_my_60 =
+    "-my-60"
+
+
+
+{- "-my-64" -}
+
+
+n_my_64 : String
+n_my_64 =
+    "-my-64"
+
+
+
+{- "-my-72" -}
+
+
+n_my_72 : String
+n_my_72 =
+    "-my-72"
+
+
+
+{- "-my-80" -}
+
+
+n_my_80 : String
+n_my_80 =
+    "-my-80"
+
+
+
+{- "-my-96" -}
+
+
+n_my_96 : String
+n_my_96 =
+    "-my-96"
+
+
+
+{- "mt-0" -}
+
+
+mt_0 : String
+mt_0 =
+    "mt-0"
+
+
+
+{- "mt-px" -}
+
+
+mt_px : String
+mt_px =
+    "mt-px"
+
+
+
+{- "mt-0.5" -}
+
+
+mt_0_dot_5 : String
+mt_0_dot_5 =
+    "mt-0.5"
+
+
+
+{- "mt-1" -}
+
+
+mt_1 : String
+mt_1 =
+    "mt-1"
+
+
+
+{- "mt-1.5" -}
+
+
+mt_1_dot_5 : String
+mt_1_dot_5 =
+    "mt-1.5"
+
+
+
+{- "mt-2" -}
+
+
+mt_2 : String
+mt_2 =
+    "mt-2"
+
+
+
+{- "mt-2.5" -}
+
+
+mt_2_dot_5 : String
+mt_2_dot_5 =
+    "mt-2.5"
+
+
+
+{- "mt-3" -}
+
+
+mt_3 : String
+mt_3 =
+    "mt-3"
+
+
+
+{- "mt-3.5" -}
+
+
+mt_3_dot_5 : String
+mt_3_dot_5 =
+    "mt-3.5"
+
+
+
+{- "mt-4" -}
+
+
+mt_4 : String
+mt_4 =
+    "mt-4"
+
+
+
+{- "mt-5" -}
+
+
+mt_5 : String
+mt_5 =
+    "mt-5"
+
+
+
+{- "mt-6" -}
+
+
+mt_6 : String
+mt_6 =
+    "mt-6"
+
+
+
+{- "mt-7" -}
+
+
+mt_7 : String
+mt_7 =
+    "mt-7"
+
+
+
+{- "mt-8" -}
+
+
+mt_8 : String
+mt_8 =
+    "mt-8"
+
+
+
+{- "mt-9" -}
+
+
+mt_9 : String
+mt_9 =
+    "mt-9"
+
+
+
+{- "mt-10" -}
+
+
+mt_10 : String
+mt_10 =
+    "mt-10"
+
+
+
+{- "mt-11" -}
+
+
+mt_11 : String
+mt_11 =
+    "mt-11"
+
+
+
+{- "mt-12" -}
+
+
+mt_12 : String
+mt_12 =
+    "mt-12"
+
+
+
+{- "mt-14" -}
+
+
+mt_14 : String
+mt_14 =
+    "mt-14"
+
+
+
+{- "mt-16" -}
+
+
+mt_16 : String
+mt_16 =
+    "mt-16"
+
+
+
+{- "mt-20" -}
+
+
+mt_20 : String
+mt_20 =
+    "mt-20"
+
+
+
+{- "mt-24" -}
+
+
+mt_24 : String
+mt_24 =
+    "mt-24"
+
+
+
+{- "mt-28" -}
+
+
+mt_28 : String
+mt_28 =
+    "mt-28"
+
+
+
+{- "mt-32" -}
+
+
+mt_32 : String
+mt_32 =
+    "mt-32"
+
+
+
+{- "mt-36" -}
+
+
+mt_36 : String
+mt_36 =
+    "mt-36"
+
+
+
+{- "mt-40" -}
+
+
+mt_40 : String
+mt_40 =
+    "mt-40"
+
+
+
+{- "mt-44" -}
+
+
+mt_44 : String
+mt_44 =
+    "mt-44"
+
+
+
+{- "mt-48" -}
+
+
+mt_48 : String
+mt_48 =
+    "mt-48"
+
+
+
+{- "mt-52" -}
+
+
+mt_52 : String
+mt_52 =
+    "mt-52"
+
+
+
+{- "mt-56" -}
+
+
+mt_56 : String
+mt_56 =
+    "mt-56"
+
+
+
+{- "mt-60" -}
+
+
+mt_60 : String
+mt_60 =
+    "mt-60"
+
+
+
+{- "mt-64" -}
+
+
+mt_64 : String
+mt_64 =
+    "mt-64"
+
+
+
+{- "mt-72" -}
+
+
+mt_72 : String
+mt_72 =
+    "mt-72"
+
+
+
+{- "mt-80" -}
+
+
+mt_80 : String
+mt_80 =
+    "mt-80"
+
+
+
+{- "mt-96" -}
+
+
+mt_96 : String
+mt_96 =
+    "mt-96"
+
+
+
+{- "mt-auto" -}
+
+
+mt_auto : String
+mt_auto =
+    "mt-auto"
+
+
+
+{- "-mt-0" -}
+
+
+n_mt_0 : String
+n_mt_0 =
+    "-mt-0"
+
+
+
+{- "-mt-px" -}
+
+
+n_mt_px : String
+n_mt_px =
+    "-mt-px"
+
+
+
+{- "-mt-0.5" -}
+
+
+n_mt_0_dot_5 : String
+n_mt_0_dot_5 =
+    "-mt-0.5"
+
+
+
+{- "-mt-1" -}
+
+
+n_mt_1 : String
+n_mt_1 =
+    "-mt-1"
+
+
+
+{- "-mt-1.5" -}
+
+
+n_mt_1_dot_5 : String
+n_mt_1_dot_5 =
+    "-mt-1.5"
+
+
+
+{- "-mt-2" -}
+
+
+n_mt_2 : String
+n_mt_2 =
+    "-mt-2"
+
+
+
+{- "-mt-2.5" -}
+
+
+n_mt_2_dot_5 : String
+n_mt_2_dot_5 =
+    "-mt-2.5"
+
+
+
+{- "-mt-3" -}
+
+
+n_mt_3 : String
+n_mt_3 =
+    "-mt-3"
+
+
+
+{- "-mt-3.5" -}
+
+
+n_mt_3_dot_5 : String
+n_mt_3_dot_5 =
+    "-mt-3.5"
+
+
+
+{- "-mt-4" -}
+
+
+n_mt_4 : String
+n_mt_4 =
+    "-mt-4"
+
+
+
+{- "-mt-5" -}
+
+
+n_mt_5 : String
+n_mt_5 =
+    "-mt-5"
+
+
+
+{- "-mt-6" -}
+
+
+n_mt_6 : String
+n_mt_6 =
+    "-mt-6"
+
+
+
+{- "-mt-7" -}
+
+
+n_mt_7 : String
+n_mt_7 =
+    "-mt-7"
+
+
+
+{- "-mt-8" -}
+
+
+n_mt_8 : String
+n_mt_8 =
+    "-mt-8"
+
+
+
+{- "-mt-9" -}
+
+
+n_mt_9 : String
+n_mt_9 =
+    "-mt-9"
+
+
+
+{- "-mt-10" -}
+
+
+n_mt_10 : String
+n_mt_10 =
+    "-mt-10"
+
+
+
+{- "-mt-11" -}
+
+
+n_mt_11 : String
+n_mt_11 =
+    "-mt-11"
+
+
+
+{- "-mt-12" -}
+
+
+n_mt_12 : String
+n_mt_12 =
+    "-mt-12"
+
+
+
+{- "-mt-14" -}
+
+
+n_mt_14 : String
+n_mt_14 =
+    "-mt-14"
+
+
+
+{- "-mt-16" -}
+
+
+n_mt_16 : String
+n_mt_16 =
+    "-mt-16"
+
+
+
+{- "-mt-20" -}
+
+
+n_mt_20 : String
+n_mt_20 =
+    "-mt-20"
+
+
+
+{- "-mt-24" -}
+
+
+n_mt_24 : String
+n_mt_24 =
+    "-mt-24"
+
+
+
+{- "-mt-28" -}
+
+
+n_mt_28 : String
+n_mt_28 =
+    "-mt-28"
+
+
+
+{- "-mt-32" -}
+
+
+n_mt_32 : String
+n_mt_32 =
+    "-mt-32"
+
+
+
+{- "-mt-36" -}
+
+
+n_mt_36 : String
+n_mt_36 =
+    "-mt-36"
+
+
+
+{- "-mt-40" -}
+
+
+n_mt_40 : String
+n_mt_40 =
+    "-mt-40"
+
+
+
+{- "-mt-44" -}
+
+
+n_mt_44 : String
+n_mt_44 =
+    "-mt-44"
+
+
+
+{- "-mt-48" -}
+
+
+n_mt_48 : String
+n_mt_48 =
+    "-mt-48"
+
+
+
+{- "-mt-52" -}
+
+
+n_mt_52 : String
+n_mt_52 =
+    "-mt-52"
+
+
+
+{- "-mt-56" -}
+
+
+n_mt_56 : String
+n_mt_56 =
+    "-mt-56"
+
+
+
+{- "-mt-60" -}
+
+
+n_mt_60 : String
+n_mt_60 =
+    "-mt-60"
+
+
+
+{- "-mt-64" -}
+
+
+n_mt_64 : String
+n_mt_64 =
+    "-mt-64"
+
+
+
+{- "-mt-72" -}
+
+
+n_mt_72 : String
+n_mt_72 =
+    "-mt-72"
+
+
+
+{- "-mt-80" -}
+
+
+n_mt_80 : String
+n_mt_80 =
+    "-mt-80"
+
+
+
+{- "-mt-96" -}
+
+
+n_mt_96 : String
+n_mt_96 =
+    "-mt-96"
+
+
+
+{- "mr-0" -}
+
+
+mr_0 : String
+mr_0 =
+    "mr-0"
+
+
+
+{- "mr-px" -}
+
+
+mr_px : String
+mr_px =
+    "mr-px"
+
+
+
+{- "mr-0.5" -}
+
+
+mr_0_dot_5 : String
+mr_0_dot_5 =
+    "mr-0.5"
+
+
+
+{- "mr-1" -}
+
+
+mr_1 : String
+mr_1 =
+    "mr-1"
+
+
+
+{- "mr-1.5" -}
+
+
+mr_1_dot_5 : String
+mr_1_dot_5 =
+    "mr-1.5"
+
+
+
+{- "mr-2" -}
+
+
+mr_2 : String
+mr_2 =
+    "mr-2"
+
+
+
+{- "mr-2.5" -}
+
+
+mr_2_dot_5 : String
+mr_2_dot_5 =
+    "mr-2.5"
+
+
+
+{- "mr-3" -}
+
+
+mr_3 : String
+mr_3 =
+    "mr-3"
+
+
+
+{- "mr-3.5" -}
+
+
+mr_3_dot_5 : String
+mr_3_dot_5 =
+    "mr-3.5"
+
+
+
+{- "mr-4" -}
+
+
+mr_4 : String
+mr_4 =
+    "mr-4"
+
+
+
+{- "mr-5" -}
+
+
+mr_5 : String
+mr_5 =
+    "mr-5"
+
+
+
+{- "mr-6" -}
+
+
+mr_6 : String
+mr_6 =
+    "mr-6"
+
+
+
+{- "mr-7" -}
+
+
+mr_7 : String
+mr_7 =
+    "mr-7"
+
+
+
+{- "mr-8" -}
+
+
+mr_8 : String
+mr_8 =
+    "mr-8"
+
+
+
+{- "mr-9" -}
+
+
+mr_9 : String
+mr_9 =
+    "mr-9"
+
+
+
+{- "mr-10" -}
+
+
+mr_10 : String
+mr_10 =
+    "mr-10"
+
+
+
+{- "mr-11" -}
+
+
+mr_11 : String
+mr_11 =
+    "mr-11"
+
+
+
+{- "mr-12" -}
+
+
+mr_12 : String
+mr_12 =
+    "mr-12"
+
+
+
+{- "mr-14" -}
+
+
+mr_14 : String
+mr_14 =
+    "mr-14"
+
+
+
+{- "mr-16" -}
+
+
+mr_16 : String
+mr_16 =
+    "mr-16"
+
+
+
+{- "mr-20" -}
+
+
+mr_20 : String
+mr_20 =
+    "mr-20"
+
+
+
+{- "mr-24" -}
+
+
+mr_24 : String
+mr_24 =
+    "mr-24"
+
+
+
+{- "mr-28" -}
+
+
+mr_28 : String
+mr_28 =
+    "mr-28"
+
+
+
+{- "mr-32" -}
+
+
+mr_32 : String
+mr_32 =
+    "mr-32"
+
+
+
+{- "mr-36" -}
+
+
+mr_36 : String
+mr_36 =
+    "mr-36"
+
+
+
+{- "mr-40" -}
+
+
+mr_40 : String
+mr_40 =
+    "mr-40"
+
+
+
+{- "mr-44" -}
+
+
+mr_44 : String
+mr_44 =
+    "mr-44"
+
+
+
+{- "mr-48" -}
+
+
+mr_48 : String
+mr_48 =
+    "mr-48"
+
+
+
+{- "mr-52" -}
+
+
+mr_52 : String
+mr_52 =
+    "mr-52"
+
+
+
+{- "mr-56" -}
+
+
+mr_56 : String
+mr_56 =
+    "mr-56"
+
+
+
+{- "mr-60" -}
+
+
+mr_60 : String
+mr_60 =
+    "mr-60"
+
+
+
+{- "mr-64" -}
+
+
+mr_64 : String
+mr_64 =
+    "mr-64"
+
+
+
+{- "mr-72" -}
+
+
+mr_72 : String
+mr_72 =
+    "mr-72"
+
+
+
+{- "mr-80" -}
+
+
+mr_80 : String
+mr_80 =
+    "mr-80"
+
+
+
+{- "mr-96" -}
+
+
+mr_96 : String
+mr_96 =
+    "mr-96"
+
+
+
+{- "mr-auto" -}
+
+
+mr_auto : String
+mr_auto =
+    "mr-auto"
+
+
+
+{- "-mr-0" -}
+
+
+n_mr_0 : String
+n_mr_0 =
+    "-mr-0"
+
+
+
+{- "-mr-px" -}
+
+
+n_mr_px : String
+n_mr_px =
+    "-mr-px"
+
+
+
+{- "-mr-0.5" -}
+
+
+n_mr_0_dot_5 : String
+n_mr_0_dot_5 =
+    "-mr-0.5"
+
+
+
+{- "-mr-1" -}
+
+
+n_mr_1 : String
+n_mr_1 =
+    "-mr-1"
+
+
+
+{- "-mr-1.5" -}
+
+
+n_mr_1_dot_5 : String
+n_mr_1_dot_5 =
+    "-mr-1.5"
+
+
+
+{- "-mr-2" -}
+
+
+n_mr_2 : String
+n_mr_2 =
+    "-mr-2"
+
+
+
+{- "-mr-2.5" -}
+
+
+n_mr_2_dot_5 : String
+n_mr_2_dot_5 =
+    "-mr-2.5"
+
+
+
+{- "-mr-3" -}
+
+
+n_mr_3 : String
+n_mr_3 =
+    "-mr-3"
+
+
+
+{- "-mr-3.5" -}
+
+
+n_mr_3_dot_5 : String
+n_mr_3_dot_5 =
+    "-mr-3.5"
+
+
+
+{- "-mr-4" -}
+
+
+n_mr_4 : String
+n_mr_4 =
+    "-mr-4"
+
+
+
+{- "-mr-5" -}
+
+
+n_mr_5 : String
+n_mr_5 =
+    "-mr-5"
+
+
+
+{- "-mr-6" -}
+
+
+n_mr_6 : String
+n_mr_6 =
+    "-mr-6"
+
+
+
+{- "-mr-7" -}
+
+
+n_mr_7 : String
+n_mr_7 =
+    "-mr-7"
+
+
+
+{- "-mr-8" -}
+
+
+n_mr_8 : String
+n_mr_8 =
+    "-mr-8"
+
+
+
+{- "-mr-9" -}
+
+
+n_mr_9 : String
+n_mr_9 =
+    "-mr-9"
+
+
+
+{- "-mr-10" -}
+
+
+n_mr_10 : String
+n_mr_10 =
+    "-mr-10"
+
+
+
+{- "-mr-11" -}
+
+
+n_mr_11 : String
+n_mr_11 =
+    "-mr-11"
+
+
+
+{- "-mr-12" -}
+
+
+n_mr_12 : String
+n_mr_12 =
+    "-mr-12"
+
+
+
+{- "-mr-14" -}
+
+
+n_mr_14 : String
+n_mr_14 =
+    "-mr-14"
+
+
+
+{- "-mr-16" -}
+
+
+n_mr_16 : String
+n_mr_16 =
+    "-mr-16"
+
+
+
+{- "-mr-20" -}
+
+
+n_mr_20 : String
+n_mr_20 =
+    "-mr-20"
+
+
+
+{- "-mr-24" -}
+
+
+n_mr_24 : String
+n_mr_24 =
+    "-mr-24"
+
+
+
+{- "-mr-28" -}
+
+
+n_mr_28 : String
+n_mr_28 =
+    "-mr-28"
+
+
+
+{- "-mr-32" -}
+
+
+n_mr_32 : String
+n_mr_32 =
+    "-mr-32"
+
+
+
+{- "-mr-36" -}
+
+
+n_mr_36 : String
+n_mr_36 =
+    "-mr-36"
+
+
+
+{- "-mr-40" -}
+
+
+n_mr_40 : String
+n_mr_40 =
+    "-mr-40"
+
+
+
+{- "-mr-44" -}
+
+
+n_mr_44 : String
+n_mr_44 =
+    "-mr-44"
+
+
+
+{- "-mr-48" -}
+
+
+n_mr_48 : String
+n_mr_48 =
+    "-mr-48"
+
+
+
+{- "-mr-52" -}
+
+
+n_mr_52 : String
+n_mr_52 =
+    "-mr-52"
+
+
+
+{- "-mr-56" -}
+
+
+n_mr_56 : String
+n_mr_56 =
+    "-mr-56"
+
+
+
+{- "-mr-60" -}
+
+
+n_mr_60 : String
+n_mr_60 =
+    "-mr-60"
+
+
+
+{- "-mr-64" -}
+
+
+n_mr_64 : String
+n_mr_64 =
+    "-mr-64"
+
+
+
+{- "-mr-72" -}
+
+
+n_mr_72 : String
+n_mr_72 =
+    "-mr-72"
+
+
+
+{- "-mr-80" -}
+
+
+n_mr_80 : String
+n_mr_80 =
+    "-mr-80"
+
+
+
+{- "-mr-96" -}
+
+
+n_mr_96 : String
+n_mr_96 =
+    "-mr-96"
+
+
+
+{- "mb-0" -}
+
+
+mb_0 : String
+mb_0 =
+    "mb-0"
+
+
+
+{- "mb-px" -}
+
+
+mb_px : String
+mb_px =
+    "mb-px"
+
+
+
+{- "mb-0.5" -}
+
+
+mb_0_dot_5 : String
+mb_0_dot_5 =
+    "mb-0.5"
+
+
+
+{- "mb-1" -}
+
+
+mb_1 : String
+mb_1 =
+    "mb-1"
+
+
+
+{- "mb-1.5" -}
+
+
+mb_1_dot_5 : String
+mb_1_dot_5 =
+    "mb-1.5"
+
+
+
+{- "mb-2" -}
+
+
+mb_2 : String
+mb_2 =
+    "mb-2"
+
+
+
+{- "mb-2.5" -}
+
+
+mb_2_dot_5 : String
+mb_2_dot_5 =
+    "mb-2.5"
+
+
+
+{- "mb-3" -}
+
+
+mb_3 : String
+mb_3 =
+    "mb-3"
+
+
+
+{- "mb-3.5" -}
+
+
+mb_3_dot_5 : String
+mb_3_dot_5 =
+    "mb-3.5"
+
+
+
+{- "mb-4" -}
+
+
+mb_4 : String
+mb_4 =
+    "mb-4"
+
+
+
+{- "mb-5" -}
+
+
+mb_5 : String
+mb_5 =
+    "mb-5"
+
+
+
+{- "mb-6" -}
+
+
+mb_6 : String
+mb_6 =
+    "mb-6"
+
+
+
+{- "mb-7" -}
+
+
+mb_7 : String
+mb_7 =
+    "mb-7"
+
+
+
+{- "mb-8" -}
+
+
+mb_8 : String
+mb_8 =
+    "mb-8"
+
+
+
+{- "mb-9" -}
+
+
+mb_9 : String
+mb_9 =
+    "mb-9"
+
+
+
+{- "mb-10" -}
+
+
+mb_10 : String
+mb_10 =
+    "mb-10"
+
+
+
+{- "mb-11" -}
+
+
+mb_11 : String
+mb_11 =
+    "mb-11"
+
+
+
+{- "mb-12" -}
+
+
+mb_12 : String
+mb_12 =
+    "mb-12"
+
+
+
+{- "mb-14" -}
+
+
+mb_14 : String
+mb_14 =
+    "mb-14"
+
+
+
+{- "mb-16" -}
+
+
+mb_16 : String
+mb_16 =
+    "mb-16"
+
+
+
+{- "mb-20" -}
+
+
+mb_20 : String
+mb_20 =
+    "mb-20"
+
+
+
+{- "mb-24" -}
+
+
+mb_24 : String
+mb_24 =
+    "mb-24"
+
+
+
+{- "mb-28" -}
+
+
+mb_28 : String
+mb_28 =
+    "mb-28"
+
+
+
+{- "mb-32" -}
+
+
+mb_32 : String
+mb_32 =
+    "mb-32"
+
+
+
+{- "mb-36" -}
+
+
+mb_36 : String
+mb_36 =
+    "mb-36"
+
+
+
+{- "mb-40" -}
+
+
+mb_40 : String
+mb_40 =
+    "mb-40"
+
+
+
+{- "mb-44" -}
+
+
+mb_44 : String
+mb_44 =
+    "mb-44"
+
+
+
+{- "mb-48" -}
+
+
+mb_48 : String
+mb_48 =
+    "mb-48"
+
+
+
+{- "mb-52" -}
+
+
+mb_52 : String
+mb_52 =
+    "mb-52"
+
+
+
+{- "mb-56" -}
+
+
+mb_56 : String
+mb_56 =
+    "mb-56"
+
+
+
+{- "mb-60" -}
+
+
+mb_60 : String
+mb_60 =
+    "mb-60"
+
+
+
+{- "mb-64" -}
+
+
+mb_64 : String
+mb_64 =
+    "mb-64"
+
+
+
+{- "mb-72" -}
+
+
+mb_72 : String
+mb_72 =
+    "mb-72"
+
+
+
+{- "mb-80" -}
+
+
+mb_80 : String
+mb_80 =
+    "mb-80"
+
+
+
+{- "mb-96" -}
+
+
+mb_96 : String
+mb_96 =
+    "mb-96"
+
+
+
+{- "mb-auto" -}
+
+
+mb_auto : String
+mb_auto =
+    "mb-auto"
+
+
+
+{- "-mb-0" -}
+
+
+n_mb_0 : String
+n_mb_0 =
+    "-mb-0"
+
+
+
+{- "-mb-px" -}
+
+
+n_mb_px : String
+n_mb_px =
+    "-mb-px"
+
+
+
+{- "-mb-0.5" -}
+
+
+n_mb_0_dot_5 : String
+n_mb_0_dot_5 =
+    "-mb-0.5"
+
+
+
+{- "-mb-1" -}
+
+
+n_mb_1 : String
+n_mb_1 =
+    "-mb-1"
+
+
+
+{- "-mb-1.5" -}
+
+
+n_mb_1_dot_5 : String
+n_mb_1_dot_5 =
+    "-mb-1.5"
+
+
+
+{- "-mb-2" -}
+
+
+n_mb_2 : String
+n_mb_2 =
+    "-mb-2"
+
+
+
+{- "-mb-2.5" -}
+
+
+n_mb_2_dot_5 : String
+n_mb_2_dot_5 =
+    "-mb-2.5"
+
+
+
+{- "-mb-3" -}
+
+
+n_mb_3 : String
+n_mb_3 =
+    "-mb-3"
+
+
+
+{- "-mb-3.5" -}
+
+
+n_mb_3_dot_5 : String
+n_mb_3_dot_5 =
+    "-mb-3.5"
+
+
+
+{- "-mb-4" -}
+
+
+n_mb_4 : String
+n_mb_4 =
+    "-mb-4"
+
+
+
+{- "-mb-5" -}
+
+
+n_mb_5 : String
+n_mb_5 =
+    "-mb-5"
+
+
+
+{- "-mb-6" -}
+
+
+n_mb_6 : String
+n_mb_6 =
+    "-mb-6"
+
+
+
+{- "-mb-7" -}
+
+
+n_mb_7 : String
+n_mb_7 =
+    "-mb-7"
+
+
+
+{- "-mb-8" -}
+
+
+n_mb_8 : String
+n_mb_8 =
+    "-mb-8"
+
+
+
+{- "-mb-9" -}
+
+
+n_mb_9 : String
+n_mb_9 =
+    "-mb-9"
+
+
+
+{- "-mb-10" -}
+
+
+n_mb_10 : String
+n_mb_10 =
+    "-mb-10"
+
+
+
+{- "-mb-11" -}
+
+
+n_mb_11 : String
+n_mb_11 =
+    "-mb-11"
+
+
+
+{- "-mb-12" -}
+
+
+n_mb_12 : String
+n_mb_12 =
+    "-mb-12"
+
+
+
+{- "-mb-14" -}
+
+
+n_mb_14 : String
+n_mb_14 =
+    "-mb-14"
+
+
+
+{- "-mb-16" -}
+
+
+n_mb_16 : String
+n_mb_16 =
+    "-mb-16"
+
+
+
+{- "-mb-20" -}
+
+
+n_mb_20 : String
+n_mb_20 =
+    "-mb-20"
+
+
+
+{- "-mb-24" -}
+
+
+n_mb_24 : String
+n_mb_24 =
+    "-mb-24"
+
+
+
+{- "-mb-28" -}
+
+
+n_mb_28 : String
+n_mb_28 =
+    "-mb-28"
+
+
+
+{- "-mb-32" -}
+
+
+n_mb_32 : String
+n_mb_32 =
+    "-mb-32"
+
+
+
+{- "-mb-36" -}
+
+
+n_mb_36 : String
+n_mb_36 =
+    "-mb-36"
+
+
+
+{- "-mb-40" -}
+
+
+n_mb_40 : String
+n_mb_40 =
+    "-mb-40"
+
+
+
+{- "-mb-44" -}
+
+
+n_mb_44 : String
+n_mb_44 =
+    "-mb-44"
+
+
+
+{- "-mb-48" -}
+
+
+n_mb_48 : String
+n_mb_48 =
+    "-mb-48"
+
+
+
+{- "-mb-52" -}
+
+
+n_mb_52 : String
+n_mb_52 =
+    "-mb-52"
+
+
+
+{- "-mb-56" -}
+
+
+n_mb_56 : String
+n_mb_56 =
+    "-mb-56"
+
+
+
+{- "-mb-60" -}
+
+
+n_mb_60 : String
+n_mb_60 =
+    "-mb-60"
+
+
+
+{- "-mb-64" -}
+
+
+n_mb_64 : String
+n_mb_64 =
+    "-mb-64"
+
+
+
+{- "-mb-72" -}
+
+
+n_mb_72 : String
+n_mb_72 =
+    "-mb-72"
+
+
+
+{- "-mb-80" -}
+
+
+n_mb_80 : String
+n_mb_80 =
+    "-mb-80"
+
+
+
+{- "-mb-96" -}
+
+
+n_mb_96 : String
+n_mb_96 =
+    "-mb-96"
+
+
+
+{- "ml-0" -}
+
+
+ml_0 : String
+ml_0 =
+    "ml-0"
+
+
+
+{- "ml-px" -}
+
+
+ml_px : String
+ml_px =
+    "ml-px"
+
+
+
+{- "ml-0.5" -}
+
+
+ml_0_dot_5 : String
+ml_0_dot_5 =
+    "ml-0.5"
+
+
+
+{- "ml-1" -}
+
+
+ml_1 : String
+ml_1 =
+    "ml-1"
+
+
+
+{- "ml-1.5" -}
+
+
+ml_1_dot_5 : String
+ml_1_dot_5 =
+    "ml-1.5"
+
+
+
+{- "ml-2" -}
+
+
+ml_2 : String
+ml_2 =
+    "ml-2"
+
+
+
+{- "ml-2.5" -}
+
+
+ml_2_dot_5 : String
+ml_2_dot_5 =
+    "ml-2.5"
+
+
+
+{- "ml-3" -}
+
+
+ml_3 : String
+ml_3 =
+    "ml-3"
+
+
+
+{- "ml-3.5" -}
+
+
+ml_3_dot_5 : String
+ml_3_dot_5 =
+    "ml-3.5"
+
+
+
+{- "ml-4" -}
+
+
+ml_4 : String
+ml_4 =
+    "ml-4"
+
+
+
+{- "ml-5" -}
+
+
+ml_5 : String
+ml_5 =
+    "ml-5"
+
+
+
+{- "ml-6" -}
+
+
+ml_6 : String
+ml_6 =
+    "ml-6"
+
+
+
+{- "ml-7" -}
+
+
+ml_7 : String
+ml_7 =
+    "ml-7"
+
+
+
+{- "ml-8" -}
+
+
+ml_8 : String
+ml_8 =
+    "ml-8"
+
+
+
+{- "ml-9" -}
+
+
+ml_9 : String
+ml_9 =
+    "ml-9"
+
+
+
+{- "ml-10" -}
+
+
+ml_10 : String
+ml_10 =
+    "ml-10"
+
+
+
+{- "ml-11" -}
+
+
+ml_11 : String
+ml_11 =
+    "ml-11"
+
+
+
+{- "ml-12" -}
+
+
+ml_12 : String
+ml_12 =
+    "ml-12"
+
+
+
+{- "ml-14" -}
+
+
+ml_14 : String
+ml_14 =
+    "ml-14"
+
+
+
+{- "ml-16" -}
+
+
+ml_16 : String
+ml_16 =
+    "ml-16"
+
+
+
+{- "ml-20" -}
+
+
+ml_20 : String
+ml_20 =
+    "ml-20"
+
+
+
+{- "ml-24" -}
+
+
+ml_24 : String
+ml_24 =
+    "ml-24"
+
+
+
+{- "ml-28" -}
+
+
+ml_28 : String
+ml_28 =
+    "ml-28"
+
+
+
+{- "ml-32" -}
+
+
+ml_32 : String
+ml_32 =
+    "ml-32"
+
+
+
+{- "ml-36" -}
+
+
+ml_36 : String
+ml_36 =
+    "ml-36"
+
+
+
+{- "ml-40" -}
+
+
+ml_40 : String
+ml_40 =
+    "ml-40"
+
+
+
+{- "ml-44" -}
+
+
+ml_44 : String
+ml_44 =
+    "ml-44"
+
+
+
+{- "ml-48" -}
+
+
+ml_48 : String
+ml_48 =
+    "ml-48"
+
+
+
+{- "ml-52" -}
+
+
+ml_52 : String
+ml_52 =
+    "ml-52"
+
+
+
+{- "ml-56" -}
+
+
+ml_56 : String
+ml_56 =
+    "ml-56"
+
+
+
+{- "ml-60" -}
+
+
+ml_60 : String
+ml_60 =
+    "ml-60"
+
+
+
+{- "ml-64" -}
+
+
+ml_64 : String
+ml_64 =
+    "ml-64"
+
+
+
+{- "ml-72" -}
+
+
+ml_72 : String
+ml_72 =
+    "ml-72"
+
+
+
+{- "ml-80" -}
+
+
+ml_80 : String
+ml_80 =
+    "ml-80"
+
+
+
+{- "ml-96" -}
+
+
+ml_96 : String
+ml_96 =
+    "ml-96"
+
+
+
+{- "ml-auto" -}
+
+
+ml_auto : String
+ml_auto =
+    "ml-auto"
+
+
+
+{- "-ml-0" -}
+
+
+n_ml_0 : String
+n_ml_0 =
+    "-ml-0"
+
+
+
+{- "-ml-px" -}
+
+
+n_ml_px : String
+n_ml_px =
+    "-ml-px"
+
+
+
+{- "-ml-0.5" -}
+
+
+n_ml_0_dot_5 : String
+n_ml_0_dot_5 =
+    "-ml-0.5"
+
+
+
+{- "-ml-1" -}
+
+
+n_ml_1 : String
+n_ml_1 =
+    "-ml-1"
+
+
+
+{- "-ml-1.5" -}
+
+
+n_ml_1_dot_5 : String
+n_ml_1_dot_5 =
+    "-ml-1.5"
+
+
+
+{- "-ml-2" -}
+
+
+n_ml_2 : String
+n_ml_2 =
+    "-ml-2"
+
+
+
+{- "-ml-2.5" -}
+
+
+n_ml_2_dot_5 : String
+n_ml_2_dot_5 =
+    "-ml-2.5"
+
+
+
+{- "-ml-3" -}
+
+
+n_ml_3 : String
+n_ml_3 =
+    "-ml-3"
+
+
+
+{- "-ml-3.5" -}
+
+
+n_ml_3_dot_5 : String
+n_ml_3_dot_5 =
+    "-ml-3.5"
+
+
+
+{- "-ml-4" -}
+
+
+n_ml_4 : String
+n_ml_4 =
+    "-ml-4"
+
+
+
+{- "-ml-5" -}
+
+
+n_ml_5 : String
+n_ml_5 =
+    "-ml-5"
+
+
+
+{- "-ml-6" -}
+
+
+n_ml_6 : String
+n_ml_6 =
+    "-ml-6"
+
+
+
+{- "-ml-7" -}
+
+
+n_ml_7 : String
+n_ml_7 =
+    "-ml-7"
+
+
+
+{- "-ml-8" -}
+
+
+n_ml_8 : String
+n_ml_8 =
+    "-ml-8"
+
+
+
+{- "-ml-9" -}
+
+
+n_ml_9 : String
+n_ml_9 =
+    "-ml-9"
+
+
+
+{- "-ml-10" -}
+
+
+n_ml_10 : String
+n_ml_10 =
+    "-ml-10"
+
+
+
+{- "-ml-11" -}
+
+
+n_ml_11 : String
+n_ml_11 =
+    "-ml-11"
+
+
+
+{- "-ml-12" -}
+
+
+n_ml_12 : String
+n_ml_12 =
+    "-ml-12"
+
+
+
+{- "-ml-14" -}
+
+
+n_ml_14 : String
+n_ml_14 =
+    "-ml-14"
+
+
+
+{- "-ml-16" -}
+
+
+n_ml_16 : String
+n_ml_16 =
+    "-ml-16"
+
+
+
+{- "-ml-20" -}
+
+
+n_ml_20 : String
+n_ml_20 =
+    "-ml-20"
+
+
+
+{- "-ml-24" -}
+
+
+n_ml_24 : String
+n_ml_24 =
+    "-ml-24"
+
+
+
+{- "-ml-28" -}
+
+
+n_ml_28 : String
+n_ml_28 =
+    "-ml-28"
+
+
+
+{- "-ml-32" -}
+
+
+n_ml_32 : String
+n_ml_32 =
+    "-ml-32"
+
+
+
+{- "-ml-36" -}
+
+
+n_ml_36 : String
+n_ml_36 =
+    "-ml-36"
+
+
+
+{- "-ml-40" -}
+
+
+n_ml_40 : String
+n_ml_40 =
+    "-ml-40"
+
+
+
+{- "-ml-44" -}
+
+
+n_ml_44 : String
+n_ml_44 =
+    "-ml-44"
+
+
+
+{- "-ml-48" -}
+
+
+n_ml_48 : String
+n_ml_48 =
+    "-ml-48"
+
+
+
+{- "-ml-52" -}
+
+
+n_ml_52 : String
+n_ml_52 =
+    "-ml-52"
+
+
+
+{- "-ml-56" -}
+
+
+n_ml_56 : String
+n_ml_56 =
+    "-ml-56"
+
+
+
+{- "-ml-60" -}
+
+
+n_ml_60 : String
+n_ml_60 =
+    "-ml-60"
+
+
+
+{- "-ml-64" -}
+
+
+n_ml_64 : String
+n_ml_64 =
+    "-ml-64"
+
+
+
+{- "-ml-72" -}
+
+
+n_ml_72 : String
+n_ml_72 =
+    "-ml-72"
+
+
+
+{- "-ml-80" -}
+
+
+n_ml_80 : String
+n_ml_80 =
+    "-ml-80"
+
+
+
+{- "-ml-96" -}
+
+
+n_ml_96 : String
+n_ml_96 =
+    "-ml-96"
+
+
+
 -- Font Size (https://tailwindcss.com/docs/font-size)
 {- "text-xs" -}
 
