@@ -1544,7 +1544,7 @@ itinerary { data, action, areCommentsExpanded, newComment } model =
                                     , onClick (CancelComment data.id)
                                     , class "font-bold py-2 px-4"
                                     , classList
-                                        [ ( "text-white", not newCommentData.isCreating )
+                                        [ ( "text-black", not newCommentData.isCreating )
                                         , ( "text-gray-800", newCommentData.isCreating )
                                         ]
                                     ]
@@ -1553,6 +1553,8 @@ itinerary { data, action, areCommentsExpanded, newComment } model =
                                     [ type_ "submit"
                                     , onClick (PostNewComment data.id)
                                     , class "font-bold py-2 px-4 rounded"
+
+                                    -- TODO Disabled if > 300 chars
                                     , classList
                                         [ ( "bg-blue-700 hover:bg-blue-700 text-white", not newCommentData.isCreating )
                                         , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", newCommentData.isCreating )
@@ -1690,28 +1692,49 @@ itinerary { data, action, areCommentsExpanded, newComment } model =
                                                         |> List.length
                                             in
                                             div [ class "p-4 flex gap-x-4 justify-between" ]
-                                                [ button
-                                                    [ type_ "submit"
-                                                    , class "font-bold py-2 px-4 rounded"
-                                                    , classList
-                                                        [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
-                                                        , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
+                                                (case newComment of
+                                                    Just _ ->
+                                                        [ button
+                                                            [ type_ "submit"
+                                                            , class "font-bold py-2 px-4 rounded w-full"
+                                                            , classList
+                                                                [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
+                                                                , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
+                                                                ]
+                                                            , disabled (myCommentsAmount == 0)
+                                                            ]
+                                                            [ text
+                                                                ("My comments ("
+                                                                    ++ (myCommentsAmount |> String.fromInt)
+                                                                    ++ ")"
+                                                                )
+                                                            ]
                                                         ]
-                                                    , disabled (myCommentsAmount == 0)
-                                                    ]
-                                                    [ text
-                                                        ("My comments ("
-                                                            ++ (myCommentsAmount |> String.fromInt)
-                                                            ++ ")"
-                                                        )
-                                                    ]
-                                                , button
-                                                    [ type_ "submit"
-                                                    , onClick (StartWritingComment data.id)
-                                                    , class "font-bold py-2 px-4 rounded bg-blue-700 hover:bg-blue-700 text-white"
-                                                    ]
-                                                    [ text "Post comment" ]
-                                                ]
+
+                                                    Nothing ->
+                                                        [ button
+                                                            [ type_ "submit"
+                                                            , class "font-bold py-2 px-4 rounded"
+                                                            , classList
+                                                                [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
+                                                                , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
+                                                                ]
+                                                            , disabled (myCommentsAmount == 0)
+                                                            ]
+                                                            [ text
+                                                                ("My comments ("
+                                                                    ++ (myCommentsAmount |> String.fromInt)
+                                                                    ++ ")"
+                                                                )
+                                                            ]
+                                                        , button
+                                                            [ type_ "submit"
+                                                            , onClick (StartWritingComment data.id)
+                                                            , class "font-bold py-2 px-4 rounded bg-blue-700 hover:bg-blue-700 text-white"
+                                                            ]
+                                                            [ text "Post comment" ]
+                                                        ]
+                                                )
 
                                         Nothing ->
                                             text ""
