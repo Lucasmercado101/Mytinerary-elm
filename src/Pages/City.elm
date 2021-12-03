@@ -97,8 +97,8 @@ type alias ItineraryFormData =
     }
 
 
-clearModalData : Model -> Model
-clearModalData model =
+clearNewItineraryModalData : Model -> Model
+clearNewItineraryModalData model =
     { model
         | newItineraryName = ""
         , newItineraryFirstActivity = ""
@@ -109,6 +109,22 @@ clearModalData model =
         , tag3 = ""
         , newItineraryTime = 0
         , newItineraryPrice = 0
+    }
+
+
+clearEditItineraryModalData : Model -> Model
+clearEditItineraryModalData model =
+    { model
+        | editItineraryId = -1
+        , editItineraryName = ""
+        , editItineraryFirstActivity = ""
+        , editItineraryRestActivities = []
+        , editItineraryActivitiesIdx = -1
+        , editItineraryTime = 0
+        , editItineraryPrice = 0
+        , editItineraryTag1 = ""
+        , editItineraryTag2 = ""
+        , editItineraryTag3 = ""
     }
 
 
@@ -298,7 +314,42 @@ update msg model =
                     ( { model | cityData = Error err }, Cmd.none )
 
         GotUser userSession ->
-            ( { model | userSession = userSession }, Cmd.none )
+            let
+                cityData =
+                    model.cityData
+            in
+            case userSession of
+                Nothing ->
+                    ( { model
+                        | userSession = userSession
+                        , isNewItineraryModalOpen = False
+                        , cityData =
+                            case cityData of
+                                Loaded data ->
+                                    Loaded
+                                        { data
+                                            | itineraries =
+                                                List.map
+                                                    (\l ->
+                                                        let
+                                                            newComment =
+                                                                l.newComment
+                                                        in
+                                                        { l | newComment = Nothing }
+                                                    )
+                                                    data.itineraries
+                                        }
+
+                                _ ->
+                                    cityData
+                      }
+                        |> clearNewItineraryModalData
+                        |> clearEditItineraryModalData
+                    , Cmd.none
+                    )
+
+                Just val ->
+                    ( { model | userSession = Just val }, Cmd.none )
 
         OpenItineraryMenu idx ->
             ( { model | itineraryMenuOpen = Just idx }
@@ -604,7 +655,7 @@ update msg model =
             ( { model | isNewItineraryModalOpen = True }, Cmd.none )
 
         CloseModal ->
-            ( { model | isNewItineraryModalOpen = False } |> clearModalData, Cmd.none )
+            ( { model | isNewItineraryModalOpen = False } |> clearNewItineraryModalData, Cmd.none )
 
         SubmitForm ->
             case model.userSession of
@@ -1630,15 +1681,15 @@ itinerary { data, action, areCommentsExpanded, newComment } model =
             ++ (if areCommentsExpanded then
                     [ div [ class "w-full h-px bg-gray-200" ] [] ]
                         ++ (newCommentHtml
-                                :: [ div [ class "p-4 flex gap-x-4 justify-between" ]
-                                        (case model.userSession of
-                                            Just userData ->
-                                                let
-                                                    myCommentsAmount =
-                                                        data.comments
-                                                            |> List.filter (\c -> c.author.id == userData.id)
-                                                            |> List.length
-                                                in
+                                :: [ case model.userSession of
+                                        Just userData ->
+                                            let
+                                                myCommentsAmount =
+                                                    data.comments
+                                                        |> List.filter (\c -> c.author.id == userData.id)
+                                                        |> List.length
+                                            in
+                                            div [ class "p-4 flex gap-x-4 justify-between" ]
                                                 [ button
                                                     [ type_ "submit"
                                                     , class "font-bold py-2 px-4 rounded"
@@ -1662,9 +1713,8 @@ itinerary { data, action, areCommentsExpanded, newComment } model =
                                                     [ text "Post comment" ]
                                                 ]
 
-                                            Nothing ->
-                                                []
-                                        )
+                                        Nothing ->
+                                            text ""
                                    , ul [ class "flex flex-col" ]
                                         (List.map
                                             (\comment ->
@@ -1672,6 +1722,13 @@ itinerary { data, action, areCommentsExpanded, newComment } model =
                                                     (case model.commentMenuOpen of
                                                         Just commentId ->
                                                             commentId == comment.id
+
+                                                        Nothing ->
+                                                            False
+                                                    )
+                                                    (case model.userSession of
+                                                        Just _ ->
+                                                            True
 
                                                         Nothing ->
                                                             False
@@ -1688,8 +1745,8 @@ itinerary { data, action, areCommentsExpanded, newComment } model =
         )
 
 
-itineraryComment : Comment -> Bool -> Html Msg
-itineraryComment ({ author, comment, action } as commentData) isMenuOpen =
+itineraryComment : Comment -> Bool -> Bool -> Html Msg
+itineraryComment ({ author, comment, action } as commentData) isMenuOpen showMenu =
     let
         isBeingDeleted =
             case action of
@@ -1735,31 +1792,35 @@ itineraryComment ({ author, comment, action } as commentData) isMenuOpen =
                     [ div [ class "flex w-10 h-10" ] [ p [ class "m-auto text-xl" ] [ text (String.left 1 author.username) ] ]
                     ]
                 , p [ class "ml-3 capitalize" ] [ text author.username ]
-                , div
-                    [ class "ml-auto relative" ]
-                    [ button [ onClick (OpenCommentMenu commentData.id), class "w-12 h-12", disabled isBeingDeleted ]
-                        [ div [ class "flex w-12 h-12", classList [ ( "text-gray-400", isBeingDeleted ) ] ] [ verticalDotsSvg ]
-                        ]
-                    , div
-                        [ classList
-                            [ ( "hidden"
-                              , not isMenuOpen
-                              )
+                , if showMenu then
+                    div
+                        [ class "ml-auto relative" ]
+                        [ button [ onClick (OpenCommentMenu commentData.id), class "w-12 h-12", disabled isBeingDeleted ]
+                            [ div [ class "flex w-12 h-12", classList [ ( "text-gray-400", isBeingDeleted ) ] ] [ verticalDotsSvg ]
                             ]
-                        , id ("comment-menu-" ++ String.fromInt commentData.id)
-                        ]
-                        [ ul [ class "flex flex-col gap-y-2 absolute top-0 right-0 bg-white shadow-md" ]
-                            [ li []
-                                [ button [ class "w-full px-2 py-1", onClick (DeleteComment commentData.id) ] [ text "Delete" ]
+                        , div
+                            [ classList
+                                [ ( "hidden"
+                                  , not isMenuOpen
+                                  )
                                 ]
+                            , id ("comment-menu-" ++ String.fromInt commentData.id)
+                            ]
+                            [ ul [ class "flex flex-col gap-y-2 absolute top-0 right-0 bg-white shadow-md" ]
+                                [ li []
+                                    [ button [ class "w-full px-2 py-1", onClick (DeleteComment commentData.id) ] [ text "Delete" ]
+                                    ]
 
-                            -- TODO
-                            -- , li []
-                            --     [ button [ class "w-full px-2 py-1", onClick (OpenEditItineraryModal data.id) ] [ text "Edit" ]
-                            --     ]
+                                -- TODO
+                                -- , li []
+                                --     [ button [ class "w-full px-2 py-1", onClick (OpenEditItineraryModal data.id) ] [ text "Edit" ]
+                                --     ]
+                                ]
                             ]
                         ]
-                    ]
+
+                  else
+                    text ""
                 ]
             , text comment
             ]
