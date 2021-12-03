@@ -18305,3 +18305,229 @@ border_pink_800 =
 border_pink_900 : String
 border_pink_900 =
     "border-pink-900"
+
+
+
+-- Border Width (https://tailwindcss.com/docs/border-width)
+{- "border-0" -}
+
+
+border_0 : String
+border_0 =
+    "border-0"
+
+
+
+{- "border-2" -}
+
+
+border_2 : String
+border_2 =
+    "border-2"
+
+
+
+{- "border-4" -}
+
+
+border_4 : String
+border_4 =
+    "border-4"
+
+
+
+{- "border-8" -}
+
+
+border_8 : String
+border_8 =
+    "border-8"
+
+
+
+{- "border" -}
+
+
+border : String
+border =
+    "border"
+
+
+
+{- "border-t-0" -}
+
+
+border_t_0 : String
+border_t_0 =
+    "border-t-0"
+
+
+
+{- "border-t-2" -}
+
+
+border_t_2 : String
+border_t_2 =
+    "border-t-2"
+
+
+
+{- "border-t-4" -}
+
+
+border_t_4 : String
+border_t_4 =
+    "border-t-4"
+
+
+
+{- "border-t-8" -}
+
+
+border_t_8 : String
+border_t_8 =
+    "border-t-8"
+
+
+
+{- "border-t" -}
+
+
+border_t : String
+border_t =
+    "border-t"
+
+
+
+{- "border-r-0" -}
+
+
+border_r_0 : String
+border_r_0 =
+    "border-r-0"
+
+
+
+{- "border-r-2" -}
+
+
+border_r_2 : String
+border_r_2 =
+    "border-r-2"
+
+
+
+{- "border-r-4" -}
+
+
+border_r_4 : String
+border_r_4 =
+    "border-r-4"
+
+
+
+{- "border-r-8" -}
+
+
+border_r_8 : String
+border_r_8 =
+    "border-r-8"
+
+
+
+{- "border-r" -}
+
+
+border_r : String
+border_r =
+    "border-r"
+
+
+
+{- "border-b-0" -}
+
+
+border_b_0 : String
+border_b_0 =
+    "border-b-0"
+
+
+
+{- "border-b-2" -}
+
+
+border_b_2 : String
+border_b_2 =
+    "border-b-2"
+
+
+
+{- "border-b-4" -}
+
+
+border_b_4 : String
+border_b_4 =
+    "border-b-4"
+
+
+
+{- "border-b-8" -}
+
+
+border_b_8 : String
+border_b_8 =
+    "border-b-8"
+
+
+
+{- "border-b" -}
+
+
+border_b : String
+border_b =
+    "border-b"
+
+
+
+{- "border-l-0" -}
+
+
+border_l_0 : String
+border_l_0 =
+    "border-l-0"
+
+
+
+{- "border-l-2" -}
+
+
+border_l_2 : String
+border_l_2 =
+    "border-l-2"
+
+
+
+{- "border-l-4" -}
+
+
+border_l_4 : String
+border_l_4 =
+    "border-l-4"
+
+
+
+{- "border-l-8" -}
+
+
+border_l_8 : String
+border_l_8 =
+    "border-l-8"
+
+
+
+{- "border-l" -}
+
+
+border_l : String
+border_l =
+    "border-l"
