@@ -17412,3 +17412,139 @@ border_double =
 border_none : String
 border_none =
     "border-none"
+
+
+
+-- Border Opacity (https://tailwindcss.com/docs/border-opacity)
+{- "border-opacity-0" -}
+
+
+border_opacity_0 : String
+border_opacity_0 =
+    "border-opacity-0"
+
+
+
+{- "border-opacity-5" -}
+
+
+border_opacity_5 : String
+border_opacity_5 =
+    "border-opacity-5"
+
+
+
+{- "border-opacity-10" -}
+
+
+border_opacity_10 : String
+border_opacity_10 =
+    "border-opacity-10"
+
+
+
+{- "border-opacity-20" -}
+
+
+border_opacity_20 : String
+border_opacity_20 =
+    "border-opacity-20"
+
+
+
+{- "border-opacity-25" -}
+
+
+border_opacity_25 : String
+border_opacity_25 =
+    "border-opacity-25"
+
+
+
+{- "border-opacity-30" -}
+
+
+border_opacity_30 : String
+border_opacity_30 =
+    "border-opacity-30"
+
+
+
+{- "border-opacity-40" -}
+
+
+border_opacity_40 : String
+border_opacity_40 =
+    "border-opacity-40"
+
+
+
+{- "border-opacity-50" -}
+
+
+border_opacity_50 : String
+border_opacity_50 =
+    "border-opacity-50"
+
+
+
+{- "border-opacity-60" -}
+
+
+border_opacity_60 : String
+border_opacity_60 =
+    "border-opacity-60"
+
+
+
+{- "border-opacity-70" -}
+
+
+border_opacity_70 : String
+border_opacity_70 =
+    "border-opacity-70"
+
+
+
+{- "border-opacity-75" -}
+
+
+border_opacity_75 : String
+border_opacity_75 =
+    "border-opacity-75"
+
+
+
+{- "border-opacity-80" -}
+
+
+border_opacity_80 : String
+border_opacity_80 =
+    "border-opacity-80"
+
+
+
+{- "border-opacity-90" -}
+
+
+border_opacity_90 : String
+border_opacity_90 =
+    "border-opacity-90"
+
+
+
+{- "border-opacity-95" -}
+
+
+border_opacity_95 : String
+border_opacity_95 =
+    "border-opacity-95"
+
+
+
+{- "border-opacity-100" -}
+
+
+border_opacity_100 : String
+border_opacity_100 =
+    "border-opacity-100"
