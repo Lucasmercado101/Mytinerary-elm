@@ -16180,3 +16180,40 @@ bg_opacity_95 =
 bg_opacity_100 : String
 bg_opacity_100 =
     "bg-opacity-100"
+
+
+
+-- Flex Direction (https://tailwindcss.com/docs/flex-direction)
+{- "flex-row" -}
+
+
+flex_row : String
+flex_row =
+    "flex-row"
+
+
+
+{- "flex-row-reverse" -}
+
+
+flex_row_reverse : String
+flex_row_reverse =
+    "flex-row-reverse"
+
+
+
+{- "flex-col" -}
+
+
+flex_col : String
+flex_col =
+    "flex-col"
+
+
+
+{- "flex-col-reverse" -}
+
+
+flex_col_reverse : String
+flex_col_reverse =
+    "flex-col-reverse"
