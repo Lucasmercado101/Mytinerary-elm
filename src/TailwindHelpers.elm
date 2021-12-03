@@ -9128,3 +9128,49 @@ gap_x_96 =
 gap_y_96 : String
 gap_y_96 =
     "gap-y-96"
+
+
+
+-- Position (https://tailwindcss.com/docs/position)
+{- "static" -}
+
+
+static : String
+static =
+    "static"
+
+
+
+{- "fixed" -}
+
+
+fixed : String
+fixed =
+    "fixed"
+
+
+
+{- "absolute" -}
+
+
+absolute : String
+absolute =
+    "absolute"
+
+
+
+{- "relative" -}
+
+
+relative : String
+relative =
+    "relative"
+
+
+
+{- "sticky" -}
+
+
+sticky : String
+sticky =
+    "sticky"
