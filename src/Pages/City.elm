@@ -142,6 +142,7 @@ type alias Itinerary =
     , action : Maybe Action
     , areCommentsExpanded : Bool
     , newComment : Maybe NewComment
+    , showOnlyMyComments : Bool
     }
 
 
@@ -171,6 +172,7 @@ type Msg
     = GotCity (Result Http.Error Api.City.City)
     | GotUser (Maybe UserData)
       ----------- Comment -----------
+    | ToggleMyComments Int
     | GotDeleteCommentResp (Maybe Http.Error) Int
     | DeleteComment Int
     | OpenCommentMenu Int
@@ -285,6 +287,7 @@ toItinerary i =
     , action = Nothing
     , areCommentsExpanded = False
     , newComment = Nothing
+    , showOnlyMyComments = False
     }
 
 
@@ -646,6 +649,42 @@ update msg model =
                               }
                             , Cmd.none
                             )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        ToggleMyComments id ->
+            case model.cityData of
+                Loaded cityData ->
+                    let
+                        itineraries =
+                            cityData.itineraries
+                    in
+                    ( { model
+                        | cityData =
+                            Loaded
+                                { cityData
+                                    | itineraries =
+                                        List.map
+                                            (\({ data } as itineraryData) ->
+                                                if data.id == id then
+                                                    { itineraryData
+                                                        | showOnlyMyComments =
+                                                            if itineraryData.showOnlyMyComments then
+                                                                False
+
+                                                            else
+                                                                True
+                                                    }
+
+                                                else
+                                                    itineraryData
+                                            )
+                                            itineraries
+                                }
+                      }
+                    , Cmd.none
+                    )
 
                 _ ->
                     ( model, Cmd.none )
@@ -1462,7 +1501,7 @@ view ({ cityData, isCreatingNewItinerary } as model) =
 
 
 itinerary : Itinerary -> Model -> Html Msg
-itinerary { data, action, areCommentsExpanded, newComment } model =
+itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments } model =
     let
         thisItineraryIsBeingDeleted : Bool
         thisItineraryIsBeingDeleted =
@@ -1681,86 +1720,117 @@ itinerary { data, action, areCommentsExpanded, newComment } model =
             ]
          ]
             ++ (if areCommentsExpanded then
-                    [ div [ class "w-full h-px bg-gray-200" ] [] ]
-                        ++ (newCommentHtml
-                                :: [ case model.userSession of
-                                        Just userData ->
-                                            let
-                                                myCommentsAmount =
-                                                    data.comments
-                                                        |> List.filter (\c -> c.author.id == userData.id)
-                                                        |> List.length
-                                            in
-                                            div [ class "p-4 flex gap-x-4 justify-between" ]
-                                                (case newComment of
-                                                    Just _ ->
-                                                        [ button
-                                                            [ type_ "submit"
-                                                            , class "font-bold py-2 px-4 rounded w-full"
-                                                            , classList
-                                                                [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
-                                                                , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
-                                                                ]
-                                                            , disabled (myCommentsAmount == 0)
-                                                            ]
-                                                            [ text
-                                                                ("My comments ("
-                                                                    ++ (myCommentsAmount |> String.fromInt)
-                                                                    ++ ")"
-                                                                )
-                                                            ]
+                    div [ class "w-full h-px bg-gray-200" ] []
+                        :: [ newCommentHtml
+                           , case model.userSession of
+                                Just userData ->
+                                    let
+                                        myCommentsAmount =
+                                            data.comments
+                                                |> List.filter (\c -> c.author.id == userData.id)
+                                                |> List.length
+                                    in
+                                    div [ class "p-4 flex gap-x-4 justify-between" ]
+                                        (case newComment of
+                                            Just _ ->
+                                                [ if showOnlyMyComments then
+                                                    button
+                                                        [ class "font-bold py-2 px-4 rounded w-full bg-blue-700 hover:bg-blue-700 text-white"
+                                                        , onClick (ToggleMyComments data.id)
                                                         ]
+                                                        [ text
+                                                            "Show all comments"
+                                                        ]
+
+                                                  else
+                                                    button
+                                                        [ class "font-bold py-2 px-4 rounded w-full"
+                                                        , classList
+                                                            [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
+                                                            , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
+                                                            ]
+                                                        , disabled (myCommentsAmount == 0)
+                                                        , onClick (ToggleMyComments data.id)
+                                                        ]
+                                                        [ text
+                                                            ("My comments ("
+                                                                ++ (myCommentsAmount |> String.fromInt)
+                                                                ++ ")"
+                                                            )
+                                                        ]
+                                                ]
+
+                                            Nothing ->
+                                                [ if showOnlyMyComments then
+                                                    button
+                                                        [ class "font-bold py-2 px-4 rounded  bg-blue-700 hover:bg-blue-700 text-white"
+                                                        , onClick (ToggleMyComments data.id)
+                                                        ]
+                                                        [ text
+                                                            "Show all comments"
+                                                        ]
+
+                                                  else
+                                                    button
+                                                        [ class "font-bold py-2 px-4 rounded"
+                                                        , classList
+                                                            [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
+                                                            , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
+                                                            ]
+                                                        , disabled (myCommentsAmount == 0)
+                                                        , onClick (ToggleMyComments data.id)
+                                                        ]
+                                                        [ text
+                                                            ("My comments ("
+                                                                ++ (myCommentsAmount |> String.fromInt)
+                                                                ++ ")"
+                                                            )
+                                                        ]
+                                                , button
+                                                    [ type_ "submit"
+                                                    , onClick (StartWritingComment data.id)
+                                                    , class "font-bold py-2 px-4 rounded bg-blue-700 hover:bg-blue-700 text-white"
+                                                    ]
+                                                    [ text "Post comment" ]
+                                                ]
+                                        )
+
+                                Nothing ->
+                                    text ""
+                           , ul [ class "flex flex-col" ]
+                                (data.comments
+                                    |> (\l ->
+                                            case model.userSession of
+                                                Just userData ->
+                                                    if showOnlyMyComments then
+                                                        List.filter (\el -> el.author.id == userData.id) l
+
+                                                    else
+                                                        l
+
+                                                Nothing ->
+                                                    l
+                                       )
+                                    |> List.map
+                                        (\comment ->
+                                            itineraryComment comment
+                                                (case model.commentMenuOpen of
+                                                    Just commentId ->
+                                                        commentId == comment.id
 
                                                     Nothing ->
-                                                        [ button
-                                                            [ type_ "submit"
-                                                            , class "font-bold py-2 px-4 rounded"
-                                                            , classList
-                                                                [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
-                                                                , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
-                                                                ]
-                                                            , disabled (myCommentsAmount == 0)
-                                                            ]
-                                                            [ text
-                                                                ("My comments ("
-                                                                    ++ (myCommentsAmount |> String.fromInt)
-                                                                    ++ ")"
-                                                                )
-                                                            ]
-                                                        , button
-                                                            [ type_ "submit"
-                                                            , onClick (StartWritingComment data.id)
-                                                            , class "font-bold py-2 px-4 rounded bg-blue-700 hover:bg-blue-700 text-white"
-                                                            ]
-                                                            [ text "Post comment" ]
-                                                        ]
+                                                        False
                                                 )
+                                                (case model.userSession of
+                                                    Just _ ->
+                                                        True
 
-                                        Nothing ->
-                                            text ""
-                                   , ul [ class "flex flex-col" ]
-                                        (List.map
-                                            (\comment ->
-                                                itineraryComment comment
-                                                    (case model.commentMenuOpen of
-                                                        Just commentId ->
-                                                            commentId == comment.id
-
-                                                        Nothing ->
-                                                            False
-                                                    )
-                                                    (case model.userSession of
-                                                        Just _ ->
-                                                            True
-
-                                                        Nothing ->
-                                                            False
-                                                    )
-                                            )
-                                            data.comments
+                                                    Nothing ->
+                                                        False
+                                                )
                                         )
-                                   ]
-                           )
+                                )
+                           ]
 
                 else
                     [ text "" ]
