@@ -162,6 +162,9 @@ type Msg
       -- New Comment
     | StartWritingComment Int
     | ChangeNewComment String Int
+    | CancelComment Int
+    | PostNewComment Int
+    | GotNewCommentResp (Result Http.Error Api.City.Comment) Int
       ----------- Itinerary -----------
     | DeletedItinerary (Maybe Http.Error) Int
     | GotNewItinerary (Result Http.Error Api.Itineraries.NewItineraryResponse)
@@ -1078,6 +1081,199 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
+        CancelComment id ->
+            case model.cityData of
+                Loaded cityData ->
+                    ( { model
+                        | cityData =
+                            Loaded
+                                { cityData
+                                    | itineraries =
+                                        List.map
+                                            (\i ->
+                                                if i.data.id == id then
+                                                    let
+                                                        c =
+                                                            i.newComment
+                                                    in
+                                                    { i
+                                                        | newComment =
+                                                            Nothing
+                                                    }
+
+                                                else
+                                                    i
+                                            )
+                                            cityData.itineraries
+                                }
+                      }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        PostNewComment id ->
+            case model.cityData of
+                Loaded cityData ->
+                    ( { model
+                        | cityData =
+                            Loaded
+                                { cityData
+                                    | itineraries =
+                                        List.map
+                                            (\i ->
+                                                if i.data.id == id then
+                                                    { i
+                                                        | newComment =
+                                                            case i.newComment of
+                                                                Just commentData ->
+                                                                    Just
+                                                                        { text = commentData.text
+                                                                        , isCreating = True
+                                                                        , error = Nothing
+                                                                        }
+
+                                                                Nothing ->
+                                                                    i.newComment
+                                                    }
+
+                                                else
+                                                    i
+                                            )
+                                            cityData.itineraries
+                                }
+                      }
+                    , case
+                        cityData.itineraries
+                            |> List.filter (\l -> l.data.id == id)
+                            |> List.head
+                      of
+                        Just i ->
+                            case i.newComment of
+                                Just newComment ->
+                                    Api.Itineraries.postComment id
+                                        newComment.text
+                                        (\l -> GotNewCommentResp l id)
+
+                                Nothing ->
+                                    Cmd.none
+
+                        Nothing ->
+                            Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        GotNewCommentResp resp itineraryId ->
+            case model.cityData of
+                Loaded cityData ->
+                    case model.userSession of
+                        Just userData ->
+                            case resp of
+                                Err err ->
+                                    let
+                                        errorMessage : String
+                                        errorMessage =
+                                            case err of
+                                                Http.BadStatus code ->
+                                                    case code of
+                                                        400 ->
+                                                            "Bad request"
+
+                                                        401 ->
+                                                            "Unauthorized"
+
+                                                        404 ->
+                                                            "Not found"
+
+                                                        _ ->
+                                                            "An unknown error ocurred: code " ++ String.fromInt code
+
+                                                _ ->
+                                                    "An unknown error ocurred"
+
+                                        itineraries =
+                                            cityData.itineraries
+                                    in
+                                    ( { model
+                                        | cityData =
+                                            Loaded
+                                                { cityData
+                                                    | itineraries =
+                                                        List.map
+                                                            (\l ->
+                                                                if l.data.id == itineraryId then
+                                                                    { l
+                                                                        | newComment =
+                                                                            case l.newComment of
+                                                                                Just v ->
+                                                                                    Just
+                                                                                        { text = v.text
+                                                                                        , error = Just errorMessage
+                                                                                        , isCreating = False
+                                                                                        }
+
+                                                                                Nothing ->
+                                                                                    l.newComment
+                                                                    }
+
+                                                                else
+                                                                    l
+                                                            )
+                                                            itineraries
+                                                }
+                                      }
+                                    , Cmd.none
+                                    )
+
+                                Ok comment ->
+                                    let
+                                        itineraries =
+                                            cityData.itineraries
+
+                                        newComment =
+                                            toComment comment
+                                    in
+                                    ( { model
+                                        | cityData =
+                                            Loaded
+                                                { cityData
+                                                    | itineraries =
+                                                        List.map
+                                                            (\l ->
+                                                                let
+                                                                    data =
+                                                                        l.data
+                                                                in
+                                                                if l.data.id == itineraryId then
+                                                                    { l
+                                                                        | newComment =
+                                                                            Nothing
+                                                                        , data =
+                                                                            { data
+                                                                                | comments =
+                                                                                    newComment
+                                                                                        :: data.comments
+                                                                            }
+                                                                    }
+
+                                                                else
+                                                                    l
+                                                            )
+                                                            itineraries
+                                                }
+                                      }
+                                    , Cmd.none
+                                    )
+
+                        Nothing ->
+                            ( model, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
+
 
 view : Model -> Browser.Document Msg
 view ({ cityData, isCreatingNewItinerary } as model) =
@@ -1248,7 +1444,20 @@ itinerary { data, action, areCommentsExpanded, newComment } model =
             case newComment of
                 Just newCommentData ->
                     div [ class "p-4 pb-0" ]
-                        [ div []
+                        [ div [ class "mb-2" ]
+                            [ if newCommentData.isCreating then
+                                infoHtml "Posting comment..."
+
+                              else
+                                text ""
+                            , case newCommentData.error of
+                                Just err ->
+                                    errorHtml err
+
+                                Nothing ->
+                                    text ""
+                            ]
+                        , div []
                             [ label
                                 [ class "block text-sm font-medium text-gray-700"
                                 , for "new-comment"
@@ -1265,17 +1474,41 @@ itinerary { data, action, areCommentsExpanded, newComment } model =
                                 ]
                                 []
                             ]
-                        , p
-                            [ class "mt-2 text-sm text-gray-500"
-                            , classList [ ( "text-red-500", String.length newCommentData.text > 300 ) ]
-                            ]
-                            [ text
-                                ((newCommentData.text
-                                    |> String.length
-                                    |> String.fromInt
-                                 )
-                                    ++ "/300"
-                                )
+                        , div [ class "flex justify-between" ]
+                            [ p
+                                [ class "mt-2 text-sm text-gray-500"
+                                , classList [ ( "text-red-500", String.length newCommentData.text > 300 ) ]
+                                ]
+                                [ text
+                                    ((newCommentData.text
+                                        |> String.length
+                                        |> String.fromInt
+                                     )
+                                        ++ "/300"
+                                    )
+                                ]
+                            , div [ class "flex mt-2" ]
+                                [ button
+                                    [ type_ "submit"
+                                    , onClick (CancelComment data.id)
+                                    , class "font-bold py-2 px-4"
+                                    , classList
+                                        [ ( "text-white", not newCommentData.isCreating )
+                                        , ( "text-gray-800", newCommentData.isCreating )
+                                        ]
+                                    ]
+                                    [ text "Cancel" ]
+                                , button
+                                    [ type_ "submit"
+                                    , onClick (PostNewComment data.id)
+                                    , class "font-bold py-2 px-4 rounded"
+                                    , classList
+                                        [ ( "bg-blue-700 hover:bg-blue-700 text-white", not newCommentData.isCreating )
+                                        , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", newCommentData.isCreating )
+                                        ]
+                                    ]
+                                    [ text "Create" ]
+                                ]
                             ]
                         ]
 
@@ -1396,57 +1629,58 @@ itinerary { data, action, areCommentsExpanded, newComment } model =
          ]
             ++ (if areCommentsExpanded then
                     [ div [ class "w-full h-px bg-gray-200" ] [] ]
-                        ++ [ newCommentHtml ]
-                        ++ [ div [ class "p-4 flex gap-x-4 justify-between" ]
-                                (case model.userSession of
-                                    Just userData ->
-                                        let
-                                            myCommentsAmount =
-                                                data.comments
-                                                    |> List.filter (\c -> c.author.id == userData.id)
-                                                    |> List.length
-                                        in
-                                        [ button
-                                            [ type_ "submit"
-                                            , class "font-bold py-2 px-4 rounded"
-                                            , classList
-                                                [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
-                                                , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
+                        ++ (newCommentHtml
+                                :: [ div [ class "p-4 flex gap-x-4 justify-between" ]
+                                        (case model.userSession of
+                                            Just userData ->
+                                                let
+                                                    myCommentsAmount =
+                                                        data.comments
+                                                            |> List.filter (\c -> c.author.id == userData.id)
+                                                            |> List.length
+                                                in
+                                                [ button
+                                                    [ type_ "submit"
+                                                    , class "font-bold py-2 px-4 rounded"
+                                                    , classList
+                                                        [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
+                                                        , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
+                                                        ]
+                                                    , disabled (myCommentsAmount == 0)
+                                                    ]
+                                                    [ text
+                                                        ("My comments ("
+                                                            ++ (myCommentsAmount |> String.fromInt)
+                                                            ++ ")"
+                                                        )
+                                                    ]
+                                                , button
+                                                    [ type_ "submit"
+                                                    , onClick (StartWritingComment data.id)
+                                                    , class "font-bold py-2 px-4 rounded bg-blue-700 hover:bg-blue-700 text-white"
+                                                    ]
+                                                    [ text "Post comment" ]
                                                 ]
-                                            , disabled (myCommentsAmount == 0)
-                                            ]
-                                            [ text
-                                                ("My comments ("
-                                                    ++ (myCommentsAmount |> String.fromInt)
-                                                    ++ ")"
-                                                )
-                                            ]
-                                        , button
-                                            [ type_ "submit"
-                                            , onClick (StartWritingComment data.id)
-                                            , class "font-bold py-2 px-4 rounded bg-blue-700 hover:bg-blue-700 text-white"
-                                            ]
-                                            [ text "Post comment" ]
-                                        ]
 
-                                    Nothing ->
-                                        []
-                                )
-                           , ul [ class "flex flex-col" ]
-                                (List.map
-                                    (\comment ->
-                                        itineraryComment comment
-                                            (case model.commentMenuOpen of
-                                                Just commentId ->
-                                                    commentId == comment.id
+                                            Nothing ->
+                                                []
+                                        )
+                                   , ul [ class "flex flex-col" ]
+                                        (List.map
+                                            (\comment ->
+                                                itineraryComment comment
+                                                    (case model.commentMenuOpen of
+                                                        Just commentId ->
+                                                            commentId == comment.id
 
-                                                Nothing ->
-                                                    False
+                                                        Nothing ->
+                                                            False
+                                                    )
                                             )
-                                    )
-                                    data.comments
-                                )
-                           ]
+                                            data.comments
+                                        )
+                                   ]
+                           )
 
                 else
                     [ text "" ]
