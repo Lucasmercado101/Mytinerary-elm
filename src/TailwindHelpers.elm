@@ -17366,3 +17366,49 @@ text_right =
 text_justify : String
 text_justify =
     "text-justify"
+
+
+
+-- Border Style (https://tailwindcss.com/docs/border-style)
+{- "border-solid" -}
+
+
+border_solid : String
+border_solid =
+    "border-solid"
+
+
+
+{- "border-dashed" -}
+
+
+border_dashed : String
+border_dashed =
+    "border-dashed"
+
+
+
+{- "border-dotted" -}
+
+
+border_dotted : String
+border_dotted =
+    "border-dotted"
+
+
+
+{- "border-double" -}
+
+
+border_double : String
+border_double =
+    "border-double"
+
+
+
+{- "border-none" -}
+
+
+border_none : String
+border_none =
+    "border-none"
