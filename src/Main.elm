@@ -189,14 +189,12 @@ update msg ({ page } as model) =
             ( model, Cmd.none )
 
         GotRefreshResponse response ->
-            ( model
-            , case response of
+            case response of
                 Ok data ->
-                    saveUserToLocalStorage data
+                    ( { model | user = LoggedIn data }, saveUserToLocalStorage data )
 
                 Err _ ->
-                    clearUserFromLocalStorageMsg
-            )
+                    ( { model | user = LoggedOut }, clearUserFromLocalStorageMsg )
 
         ClickedLink urlRequest ->
             case urlRequest of
