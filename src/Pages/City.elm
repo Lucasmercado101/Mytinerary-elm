@@ -5,8 +5,8 @@ import Api.Itineraries
 import Browser
 import Browser.Events
 import Dict exposing (Dict)
-import Html exposing (Html, button, div, form, h1, h2, h3, img, input, label, li, p, span, text, textarea, ul)
-import Html.Attributes exposing (class, classList, disabled, for, id, name, placeholder, required, rows, src, type_, value)
+import Html exposing (Html, a, button, div, form, h1, h2, h3, img, input, label, li, p, span, text, textarea, ul)
+import Html.Attributes exposing (class, classList, disabled, for, href, id, name, placeholder, required, rows, src, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Http
 import Json.Decode as Decode
@@ -692,7 +692,12 @@ update msg model =
 
         -- New Itinerary
         OpenModal ->
-            ( { model | isNewItineraryModalOpen = True }, Cmd.none )
+            case model.userSession of
+                Just _ ->
+                    ( { model | isNewItineraryModalOpen = True }, Cmd.none )
+
+                Nothing ->
+                    ( model, Cmd.none )
 
         CloseModal ->
             ( { model | isNewItineraryModalOpen = False } |> clearNewItineraryModalData, Cmd.none )
@@ -1397,6 +1402,15 @@ view ({ cityData, isCreatingNewItinerary } as model) =
                         ]
                     , div [ TW.apply [ bg_gray_200, flex, flex_grow, flex_col ] ]
                         (if List.length itineraries == 0 then
+                            let
+                                isLoggedIn =
+                                    case model.userSession of
+                                        Just _ ->
+                                            True
+
+                                        Nothing ->
+                                            False
+                            in
                             [ div [ TW.apply [ w_full, flex, flex_grow ] ]
                                 [ div
                                     [ TW.apply
@@ -1429,33 +1443,53 @@ view ({ cityData, isCreatingNewItinerary } as model) =
                                             ]
                                             [ text "Be the first to add an itinerary!" ]
                                         ]
-                                    , button
-                                        [ onClick OpenModal
-                                        , TW.apply
-                                            [ flex
-                                            , p_3
-                                            , gap_x_2
-                                            , font_semibold
-                                            , block
-                                            , rounded
-                                            , mx_auto
+                                    , if isLoggedIn then
+                                        button
+                                            [ onClick OpenModal
+                                            , TW.apply
+                                                [ flex
+                                                , p_3
+                                                , gap_x_2
+                                                , font_semibold
+                                                , block
+                                                , rounded
+                                                , mx_auto
+                                                ]
+                                            , classList
+                                                [ ( "bg-blue-700 hover:bg-blue-700 text-white", not isCreatingNewItinerary )
+                                                , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", isCreatingNewItinerary )
+                                                ]
                                             ]
-                                        , classList
-                                            [ ( "bg-blue-700 hover:bg-blue-700 text-white", not isCreatingNewItinerary )
-                                            , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", isCreatingNewItinerary )
-                                            ]
-                                        ]
-                                        [ plusSvg
-                                            [ [ w_6, h_6 ]
-                                                |> String.join " "
-                                                |> Svg.Attributes.class
-                                            ]
-                                        , if isCreatingNewItinerary then
-                                            text "Creating itinerary..."
+                                            [ plusSvg
+                                                [ [ w_6, h_6 ]
+                                                    |> String.join " "
+                                                    |> Svg.Attributes.class
+                                                ]
+                                            , if isCreatingNewItinerary then
+                                                text "Creating itinerary..."
 
-                                          else
-                                            text "Create Itinerary"
-                                        ]
+                                              else
+                                                text "Create Itinerary"
+                                            ]
+
+                                      else
+                                        a
+                                            [ href "/login"
+                                            , TW.apply
+                                                [ flex
+                                                , p_3
+                                                , gap_x_2
+                                                , font_semibold
+                                                , block
+                                                , rounded
+                                                , mx_auto
+                                                ]
+                                            , classList
+                                                [ ( "bg-blue-700 hover:bg-blue-700 text-white", not isCreatingNewItinerary )
+                                                , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", isCreatingNewItinerary )
+                                                ]
+                                            ]
+                                            [ text "Log in to create an itinerary" ]
                                     ]
                                 ]
                             ]
@@ -1475,20 +1509,25 @@ view ({ cityData, isCreatingNewItinerary } as model) =
 
                                   else
                                     text ""
-                                , button
-                                    [ onClick OpenModal
-                                    , class "mx-auto w-full md:w-64 block font-bold py-2 px-4 rounded"
-                                    , classList
-                                        [ ( "bg-blue-700 hover:bg-blue-700 text-white", not isCreatingNewItinerary )
-                                        , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", isCreatingNewItinerary )
-                                        ]
-                                    ]
-                                    [ if isCreatingNewItinerary then
-                                        text "Creating itinerary..."
+                                , case model.userSession of
+                                    Just _ ->
+                                        button
+                                            [ onClick OpenModal
+                                            , class "mx-auto w-full md:w-64 block font-bold py-2 px-4 rounded"
+                                            , classList
+                                                [ ( "bg-blue-700 hover:bg-blue-700 text-white", not isCreatingNewItinerary )
+                                                , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", isCreatingNewItinerary )
+                                                ]
+                                            ]
+                                            [ if isCreatingNewItinerary then
+                                                text "Creating itinerary..."
 
-                                      else
-                                        text "Create Itinerary"
-                                    ]
+                                              else
+                                                text "Create Itinerary"
+                                            ]
+
+                                    Nothing ->
+                                        text ""
                                 ]
                             , -- TODO add a max height
                               ul [ class "container mx-auto px-4 pb-4 flex flex-col md:flex-row md:flex-wrap items-baseline" ]
