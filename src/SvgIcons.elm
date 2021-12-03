@@ -161,3 +161,22 @@ mapMarkerOutlineSvg attrs =
             ]
             []
         ]
+
+
+plusSvg : List (Svg.Attribute msg) -> Html msg
+plusSvg attrs =
+    Svg.svg
+        (attrs
+            ++ [ Svg.Attributes.fill "none"
+               , Svg.Attributes.viewBox "0 0 24 24"
+               , Svg.Attributes.stroke "currentColor"
+               ]
+        )
+        [ Svg.path
+            [ Svg.Attributes.strokeLinecap "round"
+            , Svg.Attributes.strokeLinejoin "round"
+            , Svg.Attributes.strokeWidth "2"
+            , Svg.Attributes.d "M12 4v16m8-8H4"
+            ]
+            []
+        ]
