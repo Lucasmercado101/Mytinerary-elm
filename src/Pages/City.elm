@@ -1383,7 +1383,7 @@ view ({ cityData, isCreatingNewItinerary } as model) =
     , body =
         [ case cityData of
             Loading ->
-                text "Loading"
+                div [ class "w-full h-full flex justify-center items-center" ] [ p [ class "text-4xl block md:text-6xl" ] [ text "Loading..." ] ]
 
             Loaded { country, itineraries, name } ->
                 div [ class "h-full flex flex-col" ]
