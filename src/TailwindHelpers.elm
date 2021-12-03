@@ -16353,3 +16353,40 @@ opacity_95 =
 opacity_100 : String
 opacity_100 =
     "opacity-100"
+
+
+
+-- Flex (https://tailwindcss.com/docs/flex)
+{- "flex-1" -}
+
+
+flex_1 : String
+flex_1 =
+    "flex-1"
+
+
+
+{- "flex-auto" -}
+
+
+flex_auto : String
+flex_auto =
+    "flex-auto"
+
+
+
+{- "flex-initial" -}
+
+
+flex_initial : String
+flex_initial =
+    "flex-initial"
+
+
+
+{- "flex-none" -}
+
+
+flex_none : String
+flex_none =
+    "flex-none"
