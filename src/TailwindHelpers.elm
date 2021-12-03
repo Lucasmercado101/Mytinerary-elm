@@ -3508,3 +3508,121 @@ pl_72 =
 pl_80 : String
 pl_80 =
     "pl-80"
+
+
+
+-- Font Size (https://tailwindcss.com/docs/font-size)
+{- "text-xs" -}
+
+
+text_xs : String
+text_xs =
+    "text-xs"
+
+
+
+{- "text-sm" -}
+
+
+text_sm : String
+text_sm =
+    "text-sm"
+
+
+
+{- "text-base" -}
+
+
+text_base : String
+text_base =
+    "text-base"
+
+
+
+{- "text-lg" -}
+
+
+text_lg : String
+text_lg =
+    "text-lg"
+
+
+
+{- "text-xl" -}
+
+
+text_xl : String
+text_xl =
+    "text-xl"
+
+
+
+{- "text-2xl" -}
+
+
+text_2xl : String
+text_2xl =
+    "text-2xl"
+
+
+
+{- "text-3xl" -}
+
+
+text_3xl : String
+text_3xl =
+    "text-3xl"
+
+
+
+{- "text-4xl" -}
+
+
+text_4xl : String
+text_4xl =
+    "text-4xl"
+
+
+
+{- "text-5xl" -}
+
+
+text_5xl : String
+text_5xl =
+    "text-5xl"
+
+
+
+{- "text-6xl" -}
+
+
+text_6xl : String
+text_6xl =
+    "text-6xl"
+
+
+
+{- "text-7xl" -}
+
+
+text_7xl : String
+text_7xl =
+    "text-7xl"
+
+
+
+{- "text-8xl" -}
+
+
+text_8xl : String
+text_8xl =
+    "text-8xl"
+
+
+
+{- "text-9xl" -}
+
+
+text_9xl : String
+text_9xl =
+    "text-9xl"
