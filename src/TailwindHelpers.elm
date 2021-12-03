@@ -16044,3 +16044,139 @@ text_pink_800 =
 text_pink_900 : String
 text_pink_900 =
     "text-pink-900"
+
+
+
+-- Background Opacity (https://tailwindcss.com/docs/background-opacity)
+{- "bg-opacity-0" -}
+
+
+bg_opacity_0 : String
+bg_opacity_0 =
+    "bg-opacity-0"
+
+
+
+{- "bg-opacity-5" -}
+
+
+bg_opacity_5 : String
+bg_opacity_5 =
+    "bg-opacity-5"
+
+
+
+{- "bg-opacity-10" -}
+
+
+bg_opacity_10 : String
+bg_opacity_10 =
+    "bg-opacity-10"
+
+
+
+{- "bg-opacity-20" -}
+
+
+bg_opacity_20 : String
+bg_opacity_20 =
+    "bg-opacity-20"
+
+
+
+{- "bg-opacity-25" -}
+
+
+bg_opacity_25 : String
+bg_opacity_25 =
+    "bg-opacity-25"
+
+
+
+{- "bg-opacity-30" -}
+
+
+bg_opacity_30 : String
+bg_opacity_30 =
+    "bg-opacity-30"
+
+
+
+{- "bg-opacity-40" -}
+
+
+bg_opacity_40 : String
+bg_opacity_40 =
+    "bg-opacity-40"
+
+
+
+{- "bg-opacity-50" -}
+
+
+bg_opacity_50 : String
+bg_opacity_50 =
+    "bg-opacity-50"
+
+
+
+{- "bg-opacity-60" -}
+
+
+bg_opacity_60 : String
+bg_opacity_60 =
+    "bg-opacity-60"
+
+
+
+{- "bg-opacity-70" -}
+
+
+bg_opacity_70 : String
+bg_opacity_70 =
+    "bg-opacity-70"
+
+
+
+{- "bg-opacity-75" -}
+
+
+bg_opacity_75 : String
+bg_opacity_75 =
+    "bg-opacity-75"
+
+
+
+{- "bg-opacity-80" -}
+
+
+bg_opacity_80 : String
+bg_opacity_80 =
+    "bg-opacity-80"
+
+
+
+{- "bg-opacity-90" -}
+
+
+bg_opacity_90 : String
+bg_opacity_90 =
+    "bg-opacity-90"
+
+
+
+{- "bg-opacity-95" -}
+
+
+bg_opacity_95 : String
+bg_opacity_95 =
+    "bg-opacity-95"
+
+
+
+{- "bg-opacity-100" -}
+
+
+bg_opacity_100 : String
+bg_opacity_100 =
+    "bg-opacity-100"
