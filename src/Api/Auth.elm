@@ -1,7 +1,7 @@
 module Api.Auth exposing (User, logIn, logOut, refresh, registerUser)
 
 import Api.Common exposing (endpoint, postWithCredentials)
-import Http exposing (get, jsonBody)
+import Http exposing (emptyBody, expectJson, get, jsonBody)
 import Json.Decode as JD exposing (Decoder)
 import Json.Encode as JE
 
@@ -93,5 +93,5 @@ refresh : (Result Http.Error User -> msg) -> Cmd msg
 refresh msg =
     postWithCredentials
         (endpoint [ "auth", "refresh" ])
-        (Http.jsonBody JE.null)
-        (Http.expectJson msg userDecoder)
+        emptyBody
+        (expectJson msg userDecoder)
