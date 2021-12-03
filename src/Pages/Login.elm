@@ -3,11 +3,12 @@ port module Pages.Login exposing (Model, Msg, init, saveUserToLocalStorage, upda
 import Api.Auth
 import Browser
 import Browser.Navigation as Nav
-import Html exposing (br, button, div, form, input, label, p, text)
-import Html.Attributes exposing (class, classList, disabled, for, id, placeholder, required, type_, value)
+import Html exposing (br, button, div, form, img, input, label, p, text)
+import Html.Attributes exposing (class, classList, disabled, for, id, placeholder, required, src, type_, value)
 import Html.Events exposing (onInput, onSubmit)
 import Http
 import SvgIcons exposing (errorSvg)
+import TailwindHelpers as TW exposing (..)
 
 
 port saveUserToLocalStorage : UserData -> Cmd msg
@@ -74,7 +75,7 @@ update msg model =
 
 
 
--- TODO  https://tailwindui.com/components/application-ui/forms/sign-in-forms#component-fef1d7e9849359af76d4d6ead796938b
+-- https://source.unsplash.com/featured/vacationing
 
 
 view : Model -> Browser.Document Msg
@@ -95,89 +96,124 @@ view { password, username, logInState } =
                                 False
                        )
         in
-        [ form
-            [ onSubmit SubmitForm
-            , class
-                "flex flex-col container mx-auto px-4 gap-y-4"
-            ]
-            [ div []
-                [ label [ class "block text-gray-700 text-sm font-bold mb-2", for "username" ]
-                    [ text "Username" ]
-                , input
-                    [ required True
-                    , value username
-                    , onInput ChangeUsername
-                    , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    , id "username"
-                    , placeholder "Username"
-                    , type_ "text"
+        [ div [ class "flex h-full" ]
+            [ div [ TW.apply [ w_full ], class "flex-1" ]
+                [ img
+                    [ src "/assets/loginImage.jpg"
+                    , class "object-cover object-left h-full sm:block hidden"
+                    , TW.apply [ w_full ]
                     ]
                     []
                 ]
-            , div []
-                [ label [ class "block text-gray-700 text-sm font-bold mb-2", for "password" ]
-                    [ text "Password" ]
-                , input
-                    [ required True
-                    , value password
-                    , onInput ChangePassword
-                    , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    , id "password"
-                    , placeholder "Password"
-                    , type_ "text"
+            , div
+                [ TW.apply
+                    [ w_full
+                    , h_full
+                    , sm [ max_w_xl, px_16 ]
+                    , md [ max_w_2xl ]
+                    , lg [ max_w_3xl ]
                     ]
-                    []
+                , class "flex"
                 ]
-            , button
-                [ type_ "submit"
-                , class "font-bold py-2 px-4 rounded"
-                , classList
-                    [ ( "bg-blue-700 hover:bg-blue-700 text-white", not registerDisabled )
-                    , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", registerDisabled )
+                [ div
+                    [ class "flex flex-col"
+                    , TW.apply
+                        [ w_full
+                        , m_auto
+                        , gap_y_4
+                        , p_6
+                        ]
                     ]
-                , disabled registerDisabled
-                ]
-                [ case logInState of
-                    Idle ->
-                        text "Log In"
-
-                    LoggingIn ->
-                        text "Logging In.."
-
-                    Error _ ->
-                        text "Log In"
-                ]
-            , case logInState of
-                Error err ->
-                    div [ class "mx-auto w-full md:w-72 block font-bold rounded" ]
-                        [ div [ class "bg-red-100 p-2 font-semibold flex gap-x-2" ]
-                            [ errorSvg
-                            , p [ class "text-red-700" ]
-                                [ text
-                                    (case err of
-                                        Http.BadStatus code ->
-                                            case code of
-                                                400 ->
-                                                    "Bad request"
-
-                                                401 ->
-                                                    "Unauthorized"
-
-                                                404 ->
-                                                    "Not found"
-
-                                                _ ->
-                                                    "An unknown error ocurred: code " ++ String.fromInt code
-
-                                        _ ->
-                                            "An unknown error ocurred"
-                                    )
-                                ]
+                    [ img [ src "/assets/mytinerary_logo.svg", TW.apply [ w_64 ] ] []
+                    , p
+                        [ TW.apply
+                            [ md [ text_4xl ]
+                            , text_3xl
+                            , font_semibold
                             ]
                         ]
+                        [ text "Sign in to your account" ]
+                    , form
+                        [ onSubmit SubmitForm
+                        , class
+                            "flex flex-col gap-y-4 shadow-sm"
+                        ]
+                        [ div []
+                            [ label [ class "block text-gray-700 text-sm font-bold mb-2", for "username" ]
+                                [ text "Username" ]
+                            , input
+                                [ required True
+                                , value username
+                                , onInput ChangeUsername
+                                , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                , id "username"
+                                , placeholder "Username"
+                                , type_ "text"
+                                ]
+                                []
+                            ]
+                        , div []
+                            [ label [ class "block text-gray-700 text-sm font-bold mb-2", for "password" ]
+                                [ text "Password" ]
+                            , input
+                                [ required True
+                                , value password
+                                , onInput ChangePassword
+                                , class "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                , id "password"
+                                , placeholder "Password"
+                                , type_ "text"
+                                ]
+                                []
+                            ]
+                        , button
+                            [ type_ "submit"
+                            , class "font-bold py-2 px-4 rounded"
+                            , classList
+                                [ ( "bg-blue-700 hover:bg-blue-700 text-white", not registerDisabled )
+                                , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", registerDisabled )
+                                ]
+                            , disabled registerDisabled
+                            ]
+                            [ case logInState of
+                                Idle ->
+                                    text "Log In"
 
-                _ ->
-                    text ""
+                                LoggingIn ->
+                                    text "Logging In.."
+
+                                Error _ ->
+                                    text "Log In"
+                            ]
+                        , case logInState of
+                            Error err ->
+                                div
+                                    [ class "bg-red-100 flex rounded shadow-sm"
+                                    , TW.apply [ w_full, gap_x_2, font_semibold, p_2 ]
+                                    ]
+                                    [ errorSvg
+                                    , p [ class "text-red-700 flex" ]
+                                        [ text
+                                            (case err of
+                                                Http.BadStatus code ->
+                                                    case code of
+                                                        404 ->
+                                                            "A User with that username or password was not found"
+
+                                                        _ ->
+                                                            "An unknown error ocurred: code " ++ String.fromInt code
+
+                                                _ ->
+                                                    "An unknown error ocurred"
+                                            )
+                                        ]
+                                    ]
+
+                            _ ->
+                                text ""
+                        ]
+                    ]
+                ]
             ]
         ]
     }
