@@ -1,4 +1,4 @@
-port module Pages.Login exposing (Model, Msg, init, update, view)
+port module Pages.Login exposing (Model, Msg, init, saveUserToLocalStorage, update, view)
 
 import Api.Auth
 import Browser
