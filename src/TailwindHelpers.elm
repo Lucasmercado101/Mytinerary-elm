@@ -17310,3 +17310,22 @@ rounded_bl_3xl =
 rounded_bl_full : String
 rounded_bl_full =
     "rounded-bl-full"
+
+
+
+-- Flex Grow (https://tailwindcss.com/docs/flex-grow)
+{- "flex-grow-0" -}
+
+
+flex_grow_0 : String
+flex_grow_0 =
+    "flex-grow-0"
+
+
+
+{- "flex-grow" -}
+
+
+flex_grow : String
+flex_grow =
+    "flex-grow"
