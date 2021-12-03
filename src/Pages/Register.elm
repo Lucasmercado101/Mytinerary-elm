@@ -76,7 +76,7 @@ view { password, username, registeringState } =
             registerDisabled =
                 password == "" || username == ""
         in
-        [ div [ class "flex", TW.apply [ h_full ] ]
+        [ div [ class "flex", TW.apply [ h_full, flex_row_reverse ] ]
             [ div [ TW.apply [ w_full ], class "flex-1" ]
                 [ div
                     [ TW.apply [ w_full, h_full, relative ]
