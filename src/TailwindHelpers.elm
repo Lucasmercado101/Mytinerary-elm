@@ -15287,3 +15287,760 @@ bg_pink_800 =
 bg_pink_900 : String
 bg_pink_900 =
     "bg-pink-900"
+
+
+
+-- Text Color (https://tailwindcss.com/docs/text-color)
+{- "text-transparent" -}
+
+
+text_transparent : String
+text_transparent =
+    "text-transparent"
+
+
+
+{- "text-current" -}
+
+
+text_current : String
+text_current =
+    "text-current"
+
+
+
+{- "text-black" -}
+
+
+text_black : String
+text_black =
+    "text-black"
+
+
+
+{- "text-white" -}
+
+
+text_white : String
+text_white =
+    "text-white"
+
+
+
+{- "text-gray-50" -}
+
+
+text_gray_50 : String
+text_gray_50 =
+    "text-gray-50"
+
+
+
+{- "text-gray-100" -}
+
+
+text_gray_100 : String
+text_gray_100 =
+    "text-gray-100"
+
+
+
+{- "text-gray-200" -}
+
+
+text_gray_200 : String
+text_gray_200 =
+    "text-gray-200"
+
+
+
+{- "text-gray-300" -}
+
+
+text_gray_300 : String
+text_gray_300 =
+    "text-gray-300"
+
+
+
+{- "text-gray-400" -}
+
+
+text_gray_400 : String
+text_gray_400 =
+    "text-gray-400"
+
+
+
+{- "text-gray-500" -}
+
+
+text_gray_500 : String
+text_gray_500 =
+    "text-gray-500"
+
+
+
+{- "text-gray-600" -}
+
+
+text_gray_600 : String
+text_gray_600 =
+    "text-gray-600"
+
+
+
+{- "text-gray-700" -}
+
+
+text_gray_700 : String
+text_gray_700 =
+    "text-gray-700"
+
+
+
+{- "text-gray-800" -}
+
+
+text_gray_800 : String
+text_gray_800 =
+    "text-gray-800"
+
+
+
+{- "text-gray-900" -}
+
+
+text_gray_900 : String
+text_gray_900 =
+    "text-gray-900"
+
+
+
+{- "text-red-50" -}
+
+
+text_red_50 : String
+text_red_50 =
+    "text-red-50"
+
+
+
+{- "text-red-100" -}
+
+
+text_red_100 : String
+text_red_100 =
+    "text-red-100"
+
+
+
+{- "text-red-200" -}
+
+
+text_red_200 : String
+text_red_200 =
+    "text-red-200"
+
+
+
+{- "text-red-300" -}
+
+
+text_red_300 : String
+text_red_300 =
+    "text-red-300"
+
+
+
+{- "text-red-400" -}
+
+
+text_red_400 : String
+text_red_400 =
+    "text-red-400"
+
+
+
+{- "text-red-500" -}
+
+
+text_red_500 : String
+text_red_500 =
+    "text-red-500"
+
+
+
+{- "text-red-600" -}
+
+
+text_red_600 : String
+text_red_600 =
+    "text-red-600"
+
+
+
+{- "text-red-700" -}
+
+
+text_red_700 : String
+text_red_700 =
+    "text-red-700"
+
+
+
+{- "text-red-800" -}
+
+
+text_red_800 : String
+text_red_800 =
+    "text-red-800"
+
+
+
+{- "text-red-900" -}
+
+
+text_red_900 : String
+text_red_900 =
+    "text-red-900"
+
+
+
+{- "text-yellow-50" -}
+
+
+text_yellow_50 : String
+text_yellow_50 =
+    "text-yellow-50"
+
+
+
+{- "text-yellow-100" -}
+
+
+text_yellow_100 : String
+text_yellow_100 =
+    "text-yellow-100"
+
+
+
+{- "text-yellow-200" -}
+
+
+text_yellow_200 : String
+text_yellow_200 =
+    "text-yellow-200"
+
+
+
+{- "text-yellow-300" -}
+
+
+text_yellow_300 : String
+text_yellow_300 =
+    "text-yellow-300"
+
+
+
+{- "text-yellow-400" -}
+
+
+text_yellow_400 : String
+text_yellow_400 =
+    "text-yellow-400"
+
+
+
+{- "text-yellow-500" -}
+
+
+text_yellow_500 : String
+text_yellow_500 =
+    "text-yellow-500"
+
+
+
+{- "text-yellow-600" -}
+
+
+text_yellow_600 : String
+text_yellow_600 =
+    "text-yellow-600"
+
+
+
+{- "text-yellow-700" -}
+
+
+text_yellow_700 : String
+text_yellow_700 =
+    "text-yellow-700"
+
+
+
+{- "text-yellow-800" -}
+
+
+text_yellow_800 : String
+text_yellow_800 =
+    "text-yellow-800"
+
+
+
+{- "text-yellow-900" -}
+
+
+text_yellow_900 : String
+text_yellow_900 =
+    "text-yellow-900"
+
+
+
+{- "text-green-50" -}
+
+
+text_green_50 : String
+text_green_50 =
+    "text-green-50"
+
+
+
+{- "text-green-100" -}
+
+
+text_green_100 : String
+text_green_100 =
+    "text-green-100"
+
+
+
+{- "text-green-200" -}
+
+
+text_green_200 : String
+text_green_200 =
+    "text-green-200"
+
+
+
+{- "text-green-300" -}
+
+
+text_green_300 : String
+text_green_300 =
+    "text-green-300"
+
+
+
+{- "text-green-400" -}
+
+
+text_green_400 : String
+text_green_400 =
+    "text-green-400"
+
+
+
+{- "text-green-500" -}
+
+
+text_green_500 : String
+text_green_500 =
+    "text-green-500"
+
+
+
+{- "text-green-600" -}
+
+
+text_green_600 : String
+text_green_600 =
+    "text-green-600"
+
+
+
+{- "text-green-700" -}
+
+
+text_green_700 : String
+text_green_700 =
+    "text-green-700"
+
+
+
+{- "text-green-800" -}
+
+
+text_green_800 : String
+text_green_800 =
+    "text-green-800"
+
+
+
+{- "text-green-900" -}
+
+
+text_green_900 : String
+text_green_900 =
+    "text-green-900"
+
+
+
+{- "text-blue-50" -}
+
+
+text_blue_50 : String
+text_blue_50 =
+    "text-blue-50"
+
+
+
+{- "text-blue-100" -}
+
+
+text_blue_100 : String
+text_blue_100 =
+    "text-blue-100"
+
+
+
+{- "text-blue-200" -}
+
+
+text_blue_200 : String
+text_blue_200 =
+    "text-blue-200"
+
+
+
+{- "text-blue-300" -}
+
+
+text_blue_300 : String
+text_blue_300 =
+    "text-blue-300"
+
+
+
+{- "text-blue-400" -}
+
+
+text_blue_400 : String
+text_blue_400 =
+    "text-blue-400"
+
+
+
+{- "text-blue-500" -}
+
+
+text_blue_500 : String
+text_blue_500 =
+    "text-blue-500"
+
+
+
+{- "text-blue-600" -}
+
+
+text_blue_600 : String
+text_blue_600 =
+    "text-blue-600"
+
+
+
+{- "text-blue-700" -}
+
+
+text_blue_700 : String
+text_blue_700 =
+    "text-blue-700"
+
+
+
+{- "text-blue-800" -}
+
+
+text_blue_800 : String
+text_blue_800 =
+    "text-blue-800"
+
+
+
+{- "text-blue-900" -}
+
+
+text_blue_900 : String
+text_blue_900 =
+    "text-blue-900"
+
+
+
+{- "text-indigo-50" -}
+
+
+text_indigo_50 : String
+text_indigo_50 =
+    "text-indigo-50"
+
+
+
+{- "text-indigo-100" -}
+
+
+text_indigo_100 : String
+text_indigo_100 =
+    "text-indigo-100"
+
+
+
+{- "text-indigo-200" -}
+
+
+text_indigo_200 : String
+text_indigo_200 =
+    "text-indigo-200"
+
+
+
+{- "text-indigo-300" -}
+
+
+text_indigo_300 : String
+text_indigo_300 =
+    "text-indigo-300"
+
+
+
+{- "text-indigo-400" -}
+
+
+text_indigo_400 : String
+text_indigo_400 =
+    "text-indigo-400"
+
+
+
+{- "text-indigo-500" -}
+
+
+text_indigo_500 : String
+text_indigo_500 =
+    "text-indigo-500"
+
+
+
+{- "text-indigo-600" -}
+
+
+text_indigo_600 : String
+text_indigo_600 =
+    "text-indigo-600"
+
+
+
+{- "text-indigo-700" -}
+
+
+text_indigo_700 : String
+text_indigo_700 =
+    "text-indigo-700"
+
+
+
+{- "text-indigo-800" -}
+
+
+text_indigo_800 : String
+text_indigo_800 =
+    "text-indigo-800"
+
+
+
+{- "text-indigo-900" -}
+
+
+text_indigo_900 : String
+text_indigo_900 =
+    "text-indigo-900"
+
+
+
+{- "text-purple-50" -}
+
+
+text_purple_50 : String
+text_purple_50 =
+    "text-purple-50"
+
+
+
+{- "text-purple-100" -}
+
+
+text_purple_100 : String
+text_purple_100 =
+    "text-purple-100"
+
+
+
+{- "text-purple-200" -}
+
+
+text_purple_200 : String
+text_purple_200 =
+    "text-purple-200"
+
+
+
+{- "text-purple-300" -}
+
+
+text_purple_300 : String
+text_purple_300 =
+    "text-purple-300"
+
+
+
+{- "text-purple-400" -}
+
+
+text_purple_400 : String
+text_purple_400 =
+    "text-purple-400"
+
+
+
+{- "text-purple-500" -}
+
+
+text_purple_500 : String
+text_purple_500 =
+    "text-purple-500"
+
+
+
+{- "text-purple-600" -}
+
+
+text_purple_600 : String
+text_purple_600 =
+    "text-purple-600"
+
+
+
+{- "text-purple-700" -}
+
+
+text_purple_700 : String
+text_purple_700 =
+    "text-purple-700"
+
+
+
+{- "text-purple-800" -}
+
+
+text_purple_800 : String
+text_purple_800 =
+    "text-purple-800"
+
+
+
+{- "text-purple-900" -}
+
+
+text_purple_900 : String
+text_purple_900 =
+    "text-purple-900"
+
+
+
+{- "text-pink-50" -}
+
+
+text_pink_50 : String
+text_pink_50 =
+    "text-pink-50"
+
+
+
+{- "text-pink-100" -}
+
+
+text_pink_100 : String
+text_pink_100 =
+    "text-pink-100"
+
+
+
+{- "text-pink-200" -}
+
+
+text_pink_200 : String
+text_pink_200 =
+    "text-pink-200"
+
+
+
+{- "text-pink-300" -}
+
+
+text_pink_300 : String
+text_pink_300 =
+    "text-pink-300"
+
+
+
+{- "text-pink-400" -}
+
+
+text_pink_400 : String
+text_pink_400 =
+    "text-pink-400"
+
+
+
+{- "text-pink-500" -}
+
+
+text_pink_500 : String
+text_pink_500 =
+    "text-pink-500"
+
+
+
+{- "text-pink-600" -}
+
+
+text_pink_600 : String
+text_pink_600 =
+    "text-pink-600"
+
+
+
+{- "text-pink-700" -}
+
+
+text_pink_700 : String
+text_pink_700 =
+    "text-pink-700"
+
+
+
+{- "text-pink-800" -}
+
+
+text_pink_800 : String
+text_pink_800 =
+    "text-pink-800"
+
+
+
+{- "text-pink-900" -}
+
+
+text_pink_900 : String
+text_pink_900 =
+    "text-pink-900"
