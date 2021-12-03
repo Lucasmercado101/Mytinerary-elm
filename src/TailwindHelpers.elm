@@ -16217,3 +16217,139 @@ flex_col =
 flex_col_reverse : String
 flex_col_reverse =
     "flex-col-reverse"
+
+
+
+-- Opacity (https://tailwindcss.com/docs/opacity)
+{- "opacity-0" -}
+
+
+opacity_0 : String
+opacity_0 =
+    "opacity-0"
+
+
+
+{- "opacity-5" -}
+
+
+opacity_5 : String
+opacity_5 =
+    "opacity-5"
+
+
+
+{- "opacity-10" -}
+
+
+opacity_10 : String
+opacity_10 =
+    "opacity-10"
+
+
+
+{- "opacity-20" -}
+
+
+opacity_20 : String
+opacity_20 =
+    "opacity-20"
+
+
+
+{- "opacity-25" -}
+
+
+opacity_25 : String
+opacity_25 =
+    "opacity-25"
+
+
+
+{- "opacity-30" -}
+
+
+opacity_30 : String
+opacity_30 =
+    "opacity-30"
+
+
+
+{- "opacity-40" -}
+
+
+opacity_40 : String
+opacity_40 =
+    "opacity-40"
+
+
+
+{- "opacity-50" -}
+
+
+opacity_50 : String
+opacity_50 =
+    "opacity-50"
+
+
+
+{- "opacity-60" -}
+
+
+opacity_60 : String
+opacity_60 =
+    "opacity-60"
+
+
+
+{- "opacity-70" -}
+
+
+opacity_70 : String
+opacity_70 =
+    "opacity-70"
+
+
+
+{- "opacity-75" -}
+
+
+opacity_75 : String
+opacity_75 =
+    "opacity-75"
+
+
+
+{- "opacity-80" -}
+
+
+opacity_80 : String
+opacity_80 =
+    "opacity-80"
+
+
+
+{- "opacity-90" -}
+
+
+opacity_90 : String
+opacity_90 =
+    "opacity-90"
+
+
+
+{- "opacity-95" -}
+
+
+opacity_95 : String
+opacity_95 =
+    "opacity-95"
+
+
+
+{- "opacity-100" -}
+
+
+opacity_100 : String
+opacity_100 =
+    "opacity-100"
