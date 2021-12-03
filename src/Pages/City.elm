@@ -12,7 +12,8 @@ import Http
 import Json.Decode as Decode
 import Session exposing (UserData)
 import Svg.Attributes
-import SvgIcons exposing (chevronDownSvg, clockSvg, errorSvg, verticalDotsSvg, xSvg)
+import SvgIcons exposing (chevronDownSvg, clockSvg, errorSvg, mapMarkerOutlineSvg, plusSvg, verticalDotsSvg, xSvg)
+import TailwindHelpers as TW exposing (..)
 import Tuple exposing (first)
 
 
@@ -1394,44 +1395,107 @@ view ({ cityData, isCreatingNewItinerary } as model) =
                         , h1 [ class "text-3xl font-semibold mb-2" ] [ text name ]
                         , p [ class "text-2xl" ] [ text country ]
                         ]
-                    , div [ class "bg-gray-200 flex-grow" ]
-                        [ h2
-                            [ class "pt-2 text-center text-2xl" ]
-                            [ text "Itineraries" ]
-                        , div [ class "px-4 my-2 flex flex-col gap-y-4" ]
-                            [ if model.creatingNewItineraryError /= "" then
-                                div [ class "mx-auto w-full md:w-72 block font-bold rounded" ]
-                                    [ div [ class "bg-red-100 p-2 font-semibold flex gap-x-2" ]
-                                        [ errorSvg
-                                        , p [ class "text-red-700" ] [ text model.creatingNewItineraryError ]
+                    , div [ TW.apply [ bg_gray_200, flex, flex_grow, flex_col ] ]
+                        (if List.length itineraries == 0 then
+                            [ div [ TW.apply [ w_full, flex, flex_grow ] ]
+                                [ div
+                                    [ TW.apply
+                                        [ m_auto
+                                        , text_center
+                                        , flex
+                                        , flex_col
+                                        , gap_y_3
                                         ]
                                     ]
+                                    [ mapMarkerOutlineSvg
+                                        [ [ w_12, h_12, opacity_40, mx_auto ]
+                                            |> String.join " "
+                                            |> Svg.Attributes.class
+                                        ]
+                                    , div []
+                                        [ p
+                                            [ TW.apply
+                                                [ text_black
+                                                , font_semibold
+                                                ]
+                                            ]
+                                            [ text "No itineraries" ]
+                                        , p
+                                            [ TW.apply
+                                                [ text_black
+                                                , font_semibold
+                                                , opacity_50
+                                                ]
+                                            ]
+                                            [ text "Be the first to add an itinerary!" ]
+                                        ]
+                                    , button
+                                        [ onClick OpenModal
+                                        , TW.apply
+                                            [ flex
+                                            , p_3
+                                            , gap_x_2
+                                            , font_semibold
+                                            , block
+                                            , rounded
+                                            , mx_auto
+                                            ]
+                                        , classList
+                                            [ ( "bg-blue-700 hover:bg-blue-700 text-white", not isCreatingNewItinerary )
+                                            , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", isCreatingNewItinerary )
+                                            ]
+                                        ]
+                                        [ plusSvg
+                                            [ [ w_6, h_6 ]
+                                                |> String.join " "
+                                                |> Svg.Attributes.class
+                                            ]
+                                        , if isCreatingNewItinerary then
+                                            text "Creating itinerary..."
 
-                              else
-                                text ""
-                            , button
-                                [ onClick OpenModal
-                                , class "mx-auto w-full md:w-64 block font-bold py-2 px-4 rounded"
-                                , classList
-                                    [ ( "bg-blue-700 hover:bg-blue-700 text-white", not isCreatingNewItinerary )
-                                    , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", isCreatingNewItinerary )
+                                          else
+                                            text "Create Itinerary"
+                                        ]
                                     ]
                                 ]
-                                [ if isCreatingNewItinerary then
-                                    text "Creating itinerary..."
+                            ]
+
+                         else
+                            [ h2
+                                [ class "pt-2 text-center text-2xl" ]
+                                [ text "Itineraries" ]
+                            , div [ class "px-4 my-2 flex flex-col gap-y-4" ]
+                                [ if model.creatingNewItineraryError /= "" then
+                                    div [ class "mx-auto w-full md:w-72 block font-bold rounded" ]
+                                        [ div [ class "bg-red-100 p-2 font-semibold flex gap-x-2" ]
+                                            [ errorSvg
+                                            , p [ class "text-red-700" ] [ text model.creatingNewItineraryError ]
+                                            ]
+                                        ]
 
                                   else
-                                    text "Create Itinerary"
-                                ]
-                            ]
-                        , if List.length itineraries == 0 then
-                            p [ class "text-xl text-center mt-5" ] [ text "There are no itineraries" ]
+                                    text ""
+                                , button
+                                    [ onClick OpenModal
+                                    , class "mx-auto w-full md:w-64 block font-bold py-2 px-4 rounded"
+                                    , classList
+                                        [ ( "bg-blue-700 hover:bg-blue-700 text-white", not isCreatingNewItinerary )
+                                        , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", isCreatingNewItinerary )
+                                        ]
+                                    ]
+                                    [ if isCreatingNewItinerary then
+                                        text "Creating itinerary..."
 
-                          else
-                            -- TODO add a max height
-                            ul [ class "container mx-auto px-4 pb-4 flex flex-col md:flex-row md:flex-wrap items-baseline" ]
+                                      else
+                                        text "Create Itinerary"
+                                    ]
+                                ]
+                            , -- TODO add a max height
+                              ul [ class "container mx-auto px-4 pb-4 flex flex-col md:flex-row md:flex-wrap items-baseline" ]
                                 (List.map (\l -> li [ class "md:w-1/2 xl:w-1/3 w-full p-2" ] [ itinerary l model ]) itineraries)
-                        ]
+                            ]
+                                ++ []
+                        )
                     ]
 
             Error err ->
