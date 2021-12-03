@@ -8182,3 +8182,949 @@ font_extrabold =
 font_black : String
 font_black =
     "font-black"
+
+
+
+-- Gap (https://tailwindcss.com/docs/gap)
+{- "gap-0" -}
+
+
+gap_0 : String
+gap_0 =
+    "gap-0"
+
+
+
+{- "gap-x-0" -}
+
+
+gap_x_0 : String
+gap_x_0 =
+    "gap-x-0"
+
+
+
+{- "gap-y-0" -}
+
+
+gap_y_0 : String
+gap_y_0 =
+    "gap-y-0"
+
+
+
+{- "gap-px" -}
+
+
+gap_px : String
+gap_px =
+    "gap-px"
+
+
+
+{- "gap-x-px" -}
+
+
+gap_x_px : String
+gap_x_px =
+    "gap-x-px"
+
+
+
+{- "gap-y-px" -}
+
+
+gap_y_px : String
+gap_y_px =
+    "gap-y-px"
+
+
+
+{- "gap-0.5" -}
+
+
+gap_0_dot_5 : String
+gap_0_dot_5 =
+    "gap-0.5"
+
+
+
+{- "gap-x-0.5" -}
+
+
+gap_x_0_dot_5 : String
+gap_x_0_dot_5 =
+    "gap-x-0.5"
+
+
+
+{- "gap-y-0.5" -}
+
+
+gap_y_0_dot_5 : String
+gap_y_0_dot_5 =
+    "gap-y-0.5"
+
+
+
+{- "gap-1" -}
+
+
+gap_1 : String
+gap_1 =
+    "gap-1"
+
+
+
+{- "gap-x-1" -}
+
+
+gap_x_1 : String
+gap_x_1 =
+    "gap-x-1"
+
+
+
+{- "gap-y-1" -}
+
+
+gap_y_1 : String
+gap_y_1 =
+    "gap-y-1"
+
+
+
+{- "gap-1.5" -}
+
+
+gap_1_dot_5 : String
+gap_1_dot_5 =
+    "gap-1.5"
+
+
+
+{- "gap-x-1.5" -}
+
+
+gap_x_1_dot_5 : String
+gap_x_1_dot_5 =
+    "gap-x-1.5"
+
+
+
+{- "gap-y-1.5" -}
+
+
+gap_y_1_dot_5 : String
+gap_y_1_dot_5 =
+    "gap-y-1.5"
+
+
+
+{- "gap-2" -}
+
+
+gap_2 : String
+gap_2 =
+    "gap-2"
+
+
+
+{- "gap-x-2" -}
+
+
+gap_x_2 : String
+gap_x_2 =
+    "gap-x-2"
+
+
+
+{- "gap-y-2" -}
+
+
+gap_y_2 : String
+gap_y_2 =
+    "gap-y-2"
+
+
+
+{- "gap-2.5" -}
+
+
+gap_2_dot_5 : String
+gap_2_dot_5 =
+    "gap-2.5"
+
+
+
+{- "gap-x-2.5" -}
+
+
+gap_x_2_dot_5 : String
+gap_x_2_dot_5 =
+    "gap-x-2.5"
+
+
+
+{- "gap-y-2.5" -}
+
+
+gap_y_2_dot_5 : String
+gap_y_2_dot_5 =
+    "gap-y-2.5"
+
+
+
+{- "gap-3" -}
+
+
+gap_3 : String
+gap_3 =
+    "gap-3"
+
+
+
+{- "gap-x-3" -}
+
+
+gap_x_3 : String
+gap_x_3 =
+    "gap-x-3"
+
+
+
+{- "gap-y-3" -}
+
+
+gap_y_3 : String
+gap_y_3 =
+    "gap-y-3"
+
+
+
+{- "gap-3.5" -}
+
+
+gap_3_dot_5 : String
+gap_3_dot_5 =
+    "gap-3.5"
+
+
+
+{- "gap-x-3.5" -}
+
+
+gap_x_3_dot_5 : String
+gap_x_3_dot_5 =
+    "gap-x-3.5"
+
+
+
+{- "gap-y-3.5" -}
+
+
+gap_y_3_dot_5 : String
+gap_y_3_dot_5 =
+    "gap-y-3.5"
+
+
+
+{- "gap-4" -}
+
+
+gap_4 : String
+gap_4 =
+    "gap-4"
+
+
+
+{- "gap-x-4" -}
+
+
+gap_x_4 : String
+gap_x_4 =
+    "gap-x-4"
+
+
+
+{- "gap-y-4" -}
+
+
+gap_y_4 : String
+gap_y_4 =
+    "gap-y-4"
+
+
+
+{- "gap-5" -}
+
+
+gap_5 : String
+gap_5 =
+    "gap-5"
+
+
+
+{- "gap-x-5" -}
+
+
+gap_x_5 : String
+gap_x_5 =
+    "gap-x-5"
+
+
+
+{- "gap-y-5" -}
+
+
+gap_y_5 : String
+gap_y_5 =
+    "gap-y-5"
+
+
+
+{- "gap-6" -}
+
+
+gap_6 : String
+gap_6 =
+    "gap-6"
+
+
+
+{- "gap-x-6" -}
+
+
+gap_x_6 : String
+gap_x_6 =
+    "gap-x-6"
+
+
+
+{- "gap-y-6" -}
+
+
+gap_y_6 : String
+gap_y_6 =
+    "gap-y-6"
+
+
+
+{- "gap-7" -}
+
+
+gap_7 : String
+gap_7 =
+    "gap-7"
+
+
+
+{- "gap-x-7" -}
+
+
+gap_x_7 : String
+gap_x_7 =
+    "gap-x-7"
+
+
+
+{- "gap-y-7" -}
+
+
+gap_y_7 : String
+gap_y_7 =
+    "gap-y-7"
+
+
+
+{- "gap-8" -}
+
+
+gap_8 : String
+gap_8 =
+    "gap-8"
+
+
+
+{- "gap-x-8" -}
+
+
+gap_x_8 : String
+gap_x_8 =
+    "gap-x-8"
+
+
+
+{- "gap-y-8" -}
+
+
+gap_y_8 : String
+gap_y_8 =
+    "gap-y-8"
+
+
+
+{- "gap-9" -}
+
+
+gap_9 : String
+gap_9 =
+    "gap-9"
+
+
+
+{- "gap-x-9" -}
+
+
+gap_x_9 : String
+gap_x_9 =
+    "gap-x-9"
+
+
+
+{- "gap-y-9" -}
+
+
+gap_y_9 : String
+gap_y_9 =
+    "gap-y-9"
+
+
+
+{- "gap-10" -}
+
+
+gap_10 : String
+gap_10 =
+    "gap-10"
+
+
+
+{- "gap-x-10" -}
+
+
+gap_x_10 : String
+gap_x_10 =
+    "gap-x-10"
+
+
+
+{- "gap-y-10" -}
+
+
+gap_y_10 : String
+gap_y_10 =
+    "gap-y-10"
+
+
+
+{- "gap-11" -}
+
+
+gap_11 : String
+gap_11 =
+    "gap-11"
+
+
+
+{- "gap-x-11" -}
+
+
+gap_x_11 : String
+gap_x_11 =
+    "gap-x-11"
+
+
+
+{- "gap-y-11" -}
+
+
+gap_y_11 : String
+gap_y_11 =
+    "gap-y-11"
+
+
+
+{- "gap-12" -}
+
+
+gap_12 : String
+gap_12 =
+    "gap-12"
+
+
+
+{- "gap-x-12" -}
+
+
+gap_x_12 : String
+gap_x_12 =
+    "gap-x-12"
+
+
+
+{- "gap-y-12" -}
+
+
+gap_y_12 : String
+gap_y_12 =
+    "gap-y-12"
+
+
+
+{- "gap-14" -}
+
+
+gap_14 : String
+gap_14 =
+    "gap-14"
+
+
+
+{- "gap-x-14" -}
+
+
+gap_x_14 : String
+gap_x_14 =
+    "gap-x-14"
+
+
+
+{- "gap-y-14" -}
+
+
+gap_y_14 : String
+gap_y_14 =
+    "gap-y-14"
+
+
+
+{- "gap-16" -}
+
+
+gap_16 : String
+gap_16 =
+    "gap-16"
+
+
+
+{- "gap-x-16" -}
+
+
+gap_x_16 : String
+gap_x_16 =
+    "gap-x-16"
+
+
+
+{- "gap-y-16" -}
+
+
+gap_y_16 : String
+gap_y_16 =
+    "gap-y-16"
+
+
+
+{- "gap-20" -}
+
+
+gap_20 : String
+gap_20 =
+    "gap-20"
+
+
+
+{- "gap-x-20" -}
+
+
+gap_x_20 : String
+gap_x_20 =
+    "gap-x-20"
+
+
+
+{- "gap-y-20" -}
+
+
+gap_y_20 : String
+gap_y_20 =
+    "gap-y-20"
+
+
+
+{- "gap-24" -}
+
+
+gap_24 : String
+gap_24 =
+    "gap-24"
+
+
+
+{- "gap-x-24" -}
+
+
+gap_x_24 : String
+gap_x_24 =
+    "gap-x-24"
+
+
+
+{- "gap-y-24" -}
+
+
+gap_y_24 : String
+gap_y_24 =
+    "gap-y-24"
+
+
+
+{- "gap-28" -}
+
+
+gap_28 : String
+gap_28 =
+    "gap-28"
+
+
+
+{- "gap-x-28" -}
+
+
+gap_x_28 : String
+gap_x_28 =
+    "gap-x-28"
+
+
+
+{- "gap-y-28" -}
+
+
+gap_y_28 : String
+gap_y_28 =
+    "gap-y-28"
+
+
+
+{- "gap-32" -}
+
+
+gap_32 : String
+gap_32 =
+    "gap-32"
+
+
+
+{- "gap-x-32" -}
+
+
+gap_x_32 : String
+gap_x_32 =
+    "gap-x-32"
+
+
+
+{- "gap-y-32" -}
+
+
+gap_y_32 : String
+gap_y_32 =
+    "gap-y-32"
+
+
+
+{- "gap-36" -}
+
+
+gap_36 : String
+gap_36 =
+    "gap-36"
+
+
+
+{- "gap-x-36" -}
+
+
+gap_x_36 : String
+gap_x_36 =
+    "gap-x-36"
+
+
+
+{- "gap-y-36" -}
+
+
+gap_y_36 : String
+gap_y_36 =
+    "gap-y-36"
+
+
+
+{- "gap-40" -}
+
+
+gap_40 : String
+gap_40 =
+    "gap-40"
+
+
+
+{- "gap-x-40" -}
+
+
+gap_x_40 : String
+gap_x_40 =
+    "gap-x-40"
+
+
+
+{- "gap-y-40" -}
+
+
+gap_y_40 : String
+gap_y_40 =
+    "gap-y-40"
+
+
+
+{- "gap-44" -}
+
+
+gap_44 : String
+gap_44 =
+    "gap-44"
+
+
+
+{- "gap-x-44" -}
+
+
+gap_x_44 : String
+gap_x_44 =
+    "gap-x-44"
+
+
+
+{- "gap-y-44" -}
+
+
+gap_y_44 : String
+gap_y_44 =
+    "gap-y-44"
+
+
+
+{- "gap-48" -}
+
+
+gap_48 : String
+gap_48 =
+    "gap-48"
+
+
+
+{- "gap-x-48" -}
+
+
+gap_x_48 : String
+gap_x_48 =
+    "gap-x-48"
+
+
+
+{- "gap-y-48" -}
+
+
+gap_y_48 : String
+gap_y_48 =
+    "gap-y-48"
+
+
+
+{- "gap-52" -}
+
+
+gap_52 : String
+gap_52 =
+    "gap-52"
+
+
+
+{- "gap-x-52" -}
+
+
+gap_x_52 : String
+gap_x_52 =
+    "gap-x-52"
+
+
+
+{- "gap-y-52" -}
+
+
+gap_y_52 : String
+gap_y_52 =
+    "gap-y-52"
+
+
+
+{- "gap-56" -}
+
+
+gap_56 : String
+gap_56 =
+    "gap-56"
+
+
+
+{- "gap-x-56" -}
+
+
+gap_x_56 : String
+gap_x_56 =
+    "gap-x-56"
+
+
+
+{- "gap-y-56" -}
+
+
+gap_y_56 : String
+gap_y_56 =
+    "gap-y-56"
+
+
+
+{- "gap-60" -}
+
+
+gap_60 : String
+gap_60 =
+    "gap-60"
+
+
+
+{- "gap-x-60" -}
+
+
+gap_x_60 : String
+gap_x_60 =
+    "gap-x-60"
+
+
+
+{- "gap-y-60" -}
+
+
+gap_y_60 : String
+gap_y_60 =
+    "gap-y-60"
+
+
+
+{- "gap-64" -}
+
+
+gap_64 : String
+gap_64 =
+    "gap-64"
+
+
+
+{- "gap-x-64" -}
+
+
+gap_x_64 : String
+gap_x_64 =
+    "gap-x-64"
+
+
+
+{- "gap-y-64" -}
+
+
+gap_y_64 : String
+gap_y_64 =
+    "gap-y-64"
+
+
+
+{- "gap-72" -}
+
+
+gap_72 : String
+gap_72 =
+    "gap-72"
+
+
+
+{- "gap-x-72" -}
+
+
+gap_x_72 : String
+gap_x_72 =
+    "gap-x-72"
+
+
+
+{- "gap-y-72" -}
+
+
+gap_y_72 : String
+gap_y_72 =
+    "gap-y-72"
+
+
+
+{- "gap-80" -}
+
+
+gap_80 : String
+gap_80 =
+    "gap-80"
+
+
+
+{- "gap-x-80" -}
+
+
+gap_x_80 : String
+gap_x_80 =
+    "gap-x-80"
+
+
+
+{- "gap-y-80" -}
+
+
+gap_y_80 : String
+gap_y_80 =
+    "gap-y-80"
+
+
+
+{- "gap-96" -}
+
+
+gap_96 : String
+gap_96 =
+    "gap-96"
+
+
+
+{- "gap-x-96" -}
+
+
+gap_x_96 : String
+gap_x_96 =
+    "gap-x-96"
+
+
+
+{- "gap-y-96" -}
+
+
+gap_y_96 : String
+gap_y_96 =
+    "gap-y-96"
