@@ -3,8 +3,8 @@ port module Pages.Login exposing (Model, Msg, init, saveUserToLocalStorage, upda
 import Api.Auth
 import Browser
 import Browser.Navigation as Nav
-import Html exposing (br, button, div, form, img, input, label, p, text)
-import Html.Attributes exposing (class, classList, disabled, for, id, placeholder, required, src, type_, value)
+import Html exposing (a, button, div, form, img, input, label, p, text)
+import Html.Attributes exposing (class, classList, disabled, for, href, id, placeholder, required, src, type_, value)
 import Html.Events exposing (onInput, onSubmit)
 import Http
 import SvgIcons exposing (errorSvg)
@@ -98,12 +98,35 @@ view { password, username, logInState } =
         in
         [ div [ class "flex", TW.apply [ h_full ] ]
             [ div [ TW.apply [ w_full ], class "flex-1" ]
-                [ img
-                    [ src "/assets/loginImage.jpg"
-                    , class "object-cover object-left h-full sm:block hidden"
-                    , TW.apply [ w_full ]
+                [ div
+                    [ TW.apply [ w_full, h_full, relative ]
                     ]
-                    []
+                    [ img
+                        [ src "/assets/loginImage.jpg"
+                        , class "object-cover object-left h-full sm:block hidden"
+                        , TW.apply [ w_full, h_full ]
+                        ]
+                        []
+                    , div
+                        [ TW.apply
+                            [ absolute
+                            , bottom_0
+                            , left_0
+                            , bg_black
+                            , w_full
+                            , bg_opacity_50
+                            ]
+                        ]
+                        [ div [ TW.apply [ p_2, text_white ] ]
+                            [ text "Photo by "
+                            , a [ TW.apply [ text_purple_400 ], href "https://unsplash.com/@8moments?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText" ]
+                                [ text "Simon Berger" ]
+                            , text " on "
+                            , a [ TW.apply [ text_purple_400 ], href "https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText" ]
+                                [ text "Unsplash" ]
+                            ]
+                        ]
+                    ]
                 ]
             , div
                 [ TW.apply
