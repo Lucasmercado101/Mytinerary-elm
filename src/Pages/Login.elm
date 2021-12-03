@@ -100,6 +100,7 @@ view { password, username, logInState } =
             [ div [ TW.apply [ w_full ], class "flex-1" ]
                 [ div
                     [ TW.apply [ w_full, h_full, relative ]
+                    , class "sm:block hidden"
                     ]
                     [ img
                         [ src "/assets/loginImage.jpg"
