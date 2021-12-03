@@ -1,5 +1,15 @@
 module TailwindHelpers exposing (..)
 
+import Html exposing (Attribute)
+import Html.Attributes exposing (class)
+
+
+apply : List String -> Attribute msg
+apply classes =
+    class (String.join " " classes)
+
+
+
 -- Resposive helpers (https://tailwindcss.com/docs/responsive-design)
 
 
