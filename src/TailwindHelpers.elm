@@ -17548,3 +17548,760 @@ border_opacity_95 =
 border_opacity_100 : String
 border_opacity_100 =
     "border-opacity-100"
+
+
+
+-- Border Color (https://tailwindcss.com/docs/border-color)
+{- "border-transparent" -}
+
+
+border_transparent : String
+border_transparent =
+    "border-transparent"
+
+
+
+{- "border-current" -}
+
+
+border_current : String
+border_current =
+    "border-current"
+
+
+
+{- "border-black" -}
+
+
+border_black : String
+border_black =
+    "border-black"
+
+
+
+{- "border-white" -}
+
+
+border_white : String
+border_white =
+    "border-white"
+
+
+
+{- "border-gray-50" -}
+
+
+border_gray_50 : String
+border_gray_50 =
+    "border-gray-50"
+
+
+
+{- "border-gray-100" -}
+
+
+border_gray_100 : String
+border_gray_100 =
+    "border-gray-100"
+
+
+
+{- "border-gray-200" -}
+
+
+border_gray_200 : String
+border_gray_200 =
+    "border-gray-200"
+
+
+
+{- "border-gray-300" -}
+
+
+border_gray_300 : String
+border_gray_300 =
+    "border-gray-300"
+
+
+
+{- "border-gray-400" -}
+
+
+border_gray_400 : String
+border_gray_400 =
+    "border-gray-400"
+
+
+
+{- "border-gray-500" -}
+
+
+border_gray_500 : String
+border_gray_500 =
+    "border-gray-500"
+
+
+
+{- "border-gray-600" -}
+
+
+border_gray_600 : String
+border_gray_600 =
+    "border-gray-600"
+
+
+
+{- "border-gray-700" -}
+
+
+border_gray_700 : String
+border_gray_700 =
+    "border-gray-700"
+
+
+
+{- "border-gray-800" -}
+
+
+border_gray_800 : String
+border_gray_800 =
+    "border-gray-800"
+
+
+
+{- "border-gray-900" -}
+
+
+border_gray_900 : String
+border_gray_900 =
+    "border-gray-900"
+
+
+
+{- "border-red-50" -}
+
+
+border_red_50 : String
+border_red_50 =
+    "border-red-50"
+
+
+
+{- "border-red-100" -}
+
+
+border_red_100 : String
+border_red_100 =
+    "border-red-100"
+
+
+
+{- "border-red-200" -}
+
+
+border_red_200 : String
+border_red_200 =
+    "border-red-200"
+
+
+
+{- "border-red-300" -}
+
+
+border_red_300 : String
+border_red_300 =
+    "border-red-300"
+
+
+
+{- "border-red-400" -}
+
+
+border_red_400 : String
+border_red_400 =
+    "border-red-400"
+
+
+
+{- "border-red-500" -}
+
+
+border_red_500 : String
+border_red_500 =
+    "border-red-500"
+
+
+
+{- "border-red-600" -}
+
+
+border_red_600 : String
+border_red_600 =
+    "border-red-600"
+
+
+
+{- "border-red-700" -}
+
+
+border_red_700 : String
+border_red_700 =
+    "border-red-700"
+
+
+
+{- "border-red-800" -}
+
+
+border_red_800 : String
+border_red_800 =
+    "border-red-800"
+
+
+
+{- "border-red-900" -}
+
+
+border_red_900 : String
+border_red_900 =
+    "border-red-900"
+
+
+
+{- "border-yellow-50" -}
+
+
+border_yellow_50 : String
+border_yellow_50 =
+    "border-yellow-50"
+
+
+
+{- "border-yellow-100" -}
+
+
+border_yellow_100 : String
+border_yellow_100 =
+    "border-yellow-100"
+
+
+
+{- "border-yellow-200" -}
+
+
+border_yellow_200 : String
+border_yellow_200 =
+    "border-yellow-200"
+
+
+
+{- "border-yellow-300" -}
+
+
+border_yellow_300 : String
+border_yellow_300 =
+    "border-yellow-300"
+
+
+
+{- "border-yellow-400" -}
+
+
+border_yellow_400 : String
+border_yellow_400 =
+    "border-yellow-400"
+
+
+
+{- "border-yellow-500" -}
+
+
+border_yellow_500 : String
+border_yellow_500 =
+    "border-yellow-500"
+
+
+
+{- "border-yellow-600" -}
+
+
+border_yellow_600 : String
+border_yellow_600 =
+    "border-yellow-600"
+
+
+
+{- "border-yellow-700" -}
+
+
+border_yellow_700 : String
+border_yellow_700 =
+    "border-yellow-700"
+
+
+
+{- "border-yellow-800" -}
+
+
+border_yellow_800 : String
+border_yellow_800 =
+    "border-yellow-800"
+
+
+
+{- "border-yellow-900" -}
+
+
+border_yellow_900 : String
+border_yellow_900 =
+    "border-yellow-900"
+
+
+
+{- "border-green-50" -}
+
+
+border_green_50 : String
+border_green_50 =
+    "border-green-50"
+
+
+
+{- "border-green-100" -}
+
+
+border_green_100 : String
+border_green_100 =
+    "border-green-100"
+
+
+
+{- "border-green-200" -}
+
+
+border_green_200 : String
+border_green_200 =
+    "border-green-200"
+
+
+
+{- "border-green-300" -}
+
+
+border_green_300 : String
+border_green_300 =
+    "border-green-300"
+
+
+
+{- "border-green-400" -}
+
+
+border_green_400 : String
+border_green_400 =
+    "border-green-400"
+
+
+
+{- "border-green-500" -}
+
+
+border_green_500 : String
+border_green_500 =
+    "border-green-500"
+
+
+
+{- "border-green-600" -}
+
+
+border_green_600 : String
+border_green_600 =
+    "border-green-600"
+
+
+
+{- "border-green-700" -}
+
+
+border_green_700 : String
+border_green_700 =
+    "border-green-700"
+
+
+
+{- "border-green-800" -}
+
+
+border_green_800 : String
+border_green_800 =
+    "border-green-800"
+
+
+
+{- "border-green-900" -}
+
+
+border_green_900 : String
+border_green_900 =
+    "border-green-900"
+
+
+
+{- "border-blue-50" -}
+
+
+border_blue_50 : String
+border_blue_50 =
+    "border-blue-50"
+
+
+
+{- "border-blue-100" -}
+
+
+border_blue_100 : String
+border_blue_100 =
+    "border-blue-100"
+
+
+
+{- "border-blue-200" -}
+
+
+border_blue_200 : String
+border_blue_200 =
+    "border-blue-200"
+
+
+
+{- "border-blue-300" -}
+
+
+border_blue_300 : String
+border_blue_300 =
+    "border-blue-300"
+
+
+
+{- "border-blue-400" -}
+
+
+border_blue_400 : String
+border_blue_400 =
+    "border-blue-400"
+
+
+
+{- "border-blue-500" -}
+
+
+border_blue_500 : String
+border_blue_500 =
+    "border-blue-500"
+
+
+
+{- "border-blue-600" -}
+
+
+border_blue_600 : String
+border_blue_600 =
+    "border-blue-600"
+
+
+
+{- "border-blue-700" -}
+
+
+border_blue_700 : String
+border_blue_700 =
+    "border-blue-700"
+
+
+
+{- "border-blue-800" -}
+
+
+border_blue_800 : String
+border_blue_800 =
+    "border-blue-800"
+
+
+
+{- "border-blue-900" -}
+
+
+border_blue_900 : String
+border_blue_900 =
+    "border-blue-900"
+
+
+
+{- "border-indigo-50" -}
+
+
+border_indigo_50 : String
+border_indigo_50 =
+    "border-indigo-50"
+
+
+
+{- "border-indigo-100" -}
+
+
+border_indigo_100 : String
+border_indigo_100 =
+    "border-indigo-100"
+
+
+
+{- "border-indigo-200" -}
+
+
+border_indigo_200 : String
+border_indigo_200 =
+    "border-indigo-200"
+
+
+
+{- "border-indigo-300" -}
+
+
+border_indigo_300 : String
+border_indigo_300 =
+    "border-indigo-300"
+
+
+
+{- "border-indigo-400" -}
+
+
+border_indigo_400 : String
+border_indigo_400 =
+    "border-indigo-400"
+
+
+
+{- "border-indigo-500" -}
+
+
+border_indigo_500 : String
+border_indigo_500 =
+    "border-indigo-500"
+
+
+
+{- "border-indigo-600" -}
+
+
+border_indigo_600 : String
+border_indigo_600 =
+    "border-indigo-600"
+
+
+
+{- "border-indigo-700" -}
+
+
+border_indigo_700 : String
+border_indigo_700 =
+    "border-indigo-700"
+
+
+
+{- "border-indigo-800" -}
+
+
+border_indigo_800 : String
+border_indigo_800 =
+    "border-indigo-800"
+
+
+
+{- "border-indigo-900" -}
+
+
+border_indigo_900 : String
+border_indigo_900 =
+    "border-indigo-900"
+
+
+
+{- "border-purple-50" -}
+
+
+border_purple_50 : String
+border_purple_50 =
+    "border-purple-50"
+
+
+
+{- "border-purple-100" -}
+
+
+border_purple_100 : String
+border_purple_100 =
+    "border-purple-100"
+
+
+
+{- "border-purple-200" -}
+
+
+border_purple_200 : String
+border_purple_200 =
+    "border-purple-200"
+
+
+
+{- "border-purple-300" -}
+
+
+border_purple_300 : String
+border_purple_300 =
+    "border-purple-300"
+
+
+
+{- "border-purple-400" -}
+
+
+border_purple_400 : String
+border_purple_400 =
+    "border-purple-400"
+
+
+
+{- "border-purple-500" -}
+
+
+border_purple_500 : String
+border_purple_500 =
+    "border-purple-500"
+
+
+
+{- "border-purple-600" -}
+
+
+border_purple_600 : String
+border_purple_600 =
+    "border-purple-600"
+
+
+
+{- "border-purple-700" -}
+
+
+border_purple_700 : String
+border_purple_700 =
+    "border-purple-700"
+
+
+
+{- "border-purple-800" -}
+
+
+border_purple_800 : String
+border_purple_800 =
+    "border-purple-800"
+
+
+
+{- "border-purple-900" -}
+
+
+border_purple_900 : String
+border_purple_900 =
+    "border-purple-900"
+
+
+
+{- "border-pink-50" -}
+
+
+border_pink_50 : String
+border_pink_50 =
+    "border-pink-50"
+
+
+
+{- "border-pink-100" -}
+
+
+border_pink_100 : String
+border_pink_100 =
+    "border-pink-100"
+
+
+
+{- "border-pink-200" -}
+
+
+border_pink_200 : String
+border_pink_200 =
+    "border-pink-200"
+
+
+
+{- "border-pink-300" -}
+
+
+border_pink_300 : String
+border_pink_300 =
+    "border-pink-300"
+
+
+
+{- "border-pink-400" -}
+
+
+border_pink_400 : String
+border_pink_400 =
+    "border-pink-400"
+
+
+
+{- "border-pink-500" -}
+
+
+border_pink_500 : String
+border_pink_500 =
+    "border-pink-500"
+
+
+
+{- "border-pink-600" -}
+
+
+border_pink_600 : String
+border_pink_600 =
+    "border-pink-600"
+
+
+
+{- "border-pink-700" -}
+
+
+border_pink_700 : String
+border_pink_700 =
+    "border-pink-700"
+
+
+
+{- "border-pink-800" -}
+
+
+border_pink_800 : String
+border_pink_800 =
+    "border-pink-800"
+
+
+
+{- "border-pink-900" -}
+
+
+border_pink_900 : String
+border_pink_900 =
+    "border-pink-900"
