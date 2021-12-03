@@ -1428,7 +1428,8 @@ view ({ cityData, isCreatingNewItinerary } as model) =
                             p [ class "text-xl text-center mt-5" ] [ text "There are no itineraries" ]
 
                           else
-                            ul [ class "container mx-auto px-4 pb-4 flex flex-col md:flex-row md:flex-wrap items-stretch" ]
+                            -- TODO add a max height
+                            ul [ class "container mx-auto px-4 pb-4 flex flex-col md:flex-row md:flex-wrap items-baseline" ]
                                 (List.map (\l -> li [ class "md:w-1/2 xl:w-1/3 w-full p-2" ] [ itinerary l model ]) itineraries)
                         ]
                     ]
@@ -1533,6 +1534,10 @@ itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments } 
         newCommentHtml =
             case newComment of
                 Just newCommentData ->
+                    let
+                        tooManyChars =
+                            String.length newCommentData.text > 300
+                    in
                     div [ class "p-4 pb-0" ]
                         [ div [ class "mb-2" ]
                             [ if newCommentData.isCreating then
@@ -1579,8 +1584,7 @@ itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments } 
                                 ]
                             , div [ class "flex mt-2" ]
                                 [ button
-                                    [ type_ "submit"
-                                    , onClick (CancelComment data.id)
+                                    [ onClick (CancelComment data.id)
                                     , class "font-bold py-2 px-4"
                                     , classList
                                         [ ( "text-black", not newCommentData.isCreating )
@@ -1589,14 +1593,12 @@ itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments } 
                                     ]
                                     [ text "Cancel" ]
                                 , button
-                                    [ type_ "submit"
-                                    , onClick (PostNewComment data.id)
+                                    [ onClick (PostNewComment data.id)
                                     , class "font-bold py-2 px-4 rounded"
-
-                                    -- TODO Disabled if > 300 chars
+                                    , disabled (newCommentData.isCreating || tooManyChars)
                                     , classList
-                                        [ ( "bg-blue-700 hover:bg-blue-700 text-white", not newCommentData.isCreating )
-                                        , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", newCommentData.isCreating )
+                                        [ ( "bg-blue-700 hover:bg-blue-700 text-white", not newCommentData.isCreating && not tooManyChars )
+                                        , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", newCommentData.isCreating || tooManyChars )
                                         ]
                                     ]
                                     [ text "Create" ]
