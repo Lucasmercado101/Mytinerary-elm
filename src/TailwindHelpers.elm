@@ -14530,3 +14530,760 @@ n_left_3_slash_4 =
 n_left_full : String
 n_left_full =
     "-left-full"
+
+
+
+-- Background Color (https://tailwindcss.com/docs/background-color)
+{- "bg-transparent" -}
+
+
+bg_transparent : String
+bg_transparent =
+    "bg-transparent"
+
+
+
+{- "bg-current" -}
+
+
+bg_current : String
+bg_current =
+    "bg-current"
+
+
+
+{- "bg-black" -}
+
+
+bg_black : String
+bg_black =
+    "bg-black"
+
+
+
+{- "bg-white" -}
+
+
+bg_white : String
+bg_white =
+    "bg-white"
+
+
+
+{- "bg-gray-50" -}
+
+
+bg_gray_50 : String
+bg_gray_50 =
+    "bg-gray-50"
+
+
+
+{- "bg-gray-100" -}
+
+
+bg_gray_100 : String
+bg_gray_100 =
+    "bg-gray-100"
+
+
+
+{- "bg-gray-200" -}
+
+
+bg_gray_200 : String
+bg_gray_200 =
+    "bg-gray-200"
+
+
+
+{- "bg-gray-300" -}
+
+
+bg_gray_300 : String
+bg_gray_300 =
+    "bg-gray-300"
+
+
+
+{- "bg-gray-400" -}
+
+
+bg_gray_400 : String
+bg_gray_400 =
+    "bg-gray-400"
+
+
+
+{- "bg-gray-500" -}
+
+
+bg_gray_500 : String
+bg_gray_500 =
+    "bg-gray-500"
+
+
+
+{- "bg-gray-600" -}
+
+
+bg_gray_600 : String
+bg_gray_600 =
+    "bg-gray-600"
+
+
+
+{- "bg-gray-700" -}
+
+
+bg_gray_700 : String
+bg_gray_700 =
+    "bg-gray-700"
+
+
+
+{- "bg-gray-800" -}
+
+
+bg_gray_800 : String
+bg_gray_800 =
+    "bg-gray-800"
+
+
+
+{- "bg-gray-900" -}
+
+
+bg_gray_900 : String
+bg_gray_900 =
+    "bg-gray-900"
+
+
+
+{- "bg-red-50" -}
+
+
+bg_red_50 : String
+bg_red_50 =
+    "bg-red-50"
+
+
+
+{- "bg-red-100" -}
+
+
+bg_red_100 : String
+bg_red_100 =
+    "bg-red-100"
+
+
+
+{- "bg-red-200" -}
+
+
+bg_red_200 : String
+bg_red_200 =
+    "bg-red-200"
+
+
+
+{- "bg-red-300" -}
+
+
+bg_red_300 : String
+bg_red_300 =
+    "bg-red-300"
+
+
+
+{- "bg-red-400" -}
+
+
+bg_red_400 : String
+bg_red_400 =
+    "bg-red-400"
+
+
+
+{- "bg-red-500" -}
+
+
+bg_red_500 : String
+bg_red_500 =
+    "bg-red-500"
+
+
+
+{- "bg-red-600" -}
+
+
+bg_red_600 : String
+bg_red_600 =
+    "bg-red-600"
+
+
+
+{- "bg-red-700" -}
+
+
+bg_red_700 : String
+bg_red_700 =
+    "bg-red-700"
+
+
+
+{- "bg-red-800" -}
+
+
+bg_red_800 : String
+bg_red_800 =
+    "bg-red-800"
+
+
+
+{- "bg-red-900" -}
+
+
+bg_red_900 : String
+bg_red_900 =
+    "bg-red-900"
+
+
+
+{- "bg-yellow-50" -}
+
+
+bg_yellow_50 : String
+bg_yellow_50 =
+    "bg-yellow-50"
+
+
+
+{- "bg-yellow-100" -}
+
+
+bg_yellow_100 : String
+bg_yellow_100 =
+    "bg-yellow-100"
+
+
+
+{- "bg-yellow-200" -}
+
+
+bg_yellow_200 : String
+bg_yellow_200 =
+    "bg-yellow-200"
+
+
+
+{- "bg-yellow-300" -}
+
+
+bg_yellow_300 : String
+bg_yellow_300 =
+    "bg-yellow-300"
+
+
+
+{- "bg-yellow-400" -}
+
+
+bg_yellow_400 : String
+bg_yellow_400 =
+    "bg-yellow-400"
+
+
+
+{- "bg-yellow-500" -}
+
+
+bg_yellow_500 : String
+bg_yellow_500 =
+    "bg-yellow-500"
+
+
+
+{- "bg-yellow-600" -}
+
+
+bg_yellow_600 : String
+bg_yellow_600 =
+    "bg-yellow-600"
+
+
+
+{- "bg-yellow-700" -}
+
+
+bg_yellow_700 : String
+bg_yellow_700 =
+    "bg-yellow-700"
+
+
+
+{- "bg-yellow-800" -}
+
+
+bg_yellow_800 : String
+bg_yellow_800 =
+    "bg-yellow-800"
+
+
+
+{- "bg-yellow-900" -}
+
+
+bg_yellow_900 : String
+bg_yellow_900 =
+    "bg-yellow-900"
+
+
+
+{- "bg-green-50" -}
+
+
+bg_green_50 : String
+bg_green_50 =
+    "bg-green-50"
+
+
+
+{- "bg-green-100" -}
+
+
+bg_green_100 : String
+bg_green_100 =
+    "bg-green-100"
+
+
+
+{- "bg-green-200" -}
+
+
+bg_green_200 : String
+bg_green_200 =
+    "bg-green-200"
+
+
+
+{- "bg-green-300" -}
+
+
+bg_green_300 : String
+bg_green_300 =
+    "bg-green-300"
+
+
+
+{- "bg-green-400" -}
+
+
+bg_green_400 : String
+bg_green_400 =
+    "bg-green-400"
+
+
+
+{- "bg-green-500" -}
+
+
+bg_green_500 : String
+bg_green_500 =
+    "bg-green-500"
+
+
+
+{- "bg-green-600" -}
+
+
+bg_green_600 : String
+bg_green_600 =
+    "bg-green-600"
+
+
+
+{- "bg-green-700" -}
+
+
+bg_green_700 : String
+bg_green_700 =
+    "bg-green-700"
+
+
+
+{- "bg-green-800" -}
+
+
+bg_green_800 : String
+bg_green_800 =
+    "bg-green-800"
+
+
+
+{- "bg-green-900" -}
+
+
+bg_green_900 : String
+bg_green_900 =
+    "bg-green-900"
+
+
+
+{- "bg-blue-50" -}
+
+
+bg_blue_50 : String
+bg_blue_50 =
+    "bg-blue-50"
+
+
+
+{- "bg-blue-100" -}
+
+
+bg_blue_100 : String
+bg_blue_100 =
+    "bg-blue-100"
+
+
+
+{- "bg-blue-200" -}
+
+
+bg_blue_200 : String
+bg_blue_200 =
+    "bg-blue-200"
+
+
+
+{- "bg-blue-300" -}
+
+
+bg_blue_300 : String
+bg_blue_300 =
+    "bg-blue-300"
+
+
+
+{- "bg-blue-400" -}
+
+
+bg_blue_400 : String
+bg_blue_400 =
+    "bg-blue-400"
+
+
+
+{- "bg-blue-500" -}
+
+
+bg_blue_500 : String
+bg_blue_500 =
+    "bg-blue-500"
+
+
+
+{- "bg-blue-600" -}
+
+
+bg_blue_600 : String
+bg_blue_600 =
+    "bg-blue-600"
+
+
+
+{- "bg-blue-700" -}
+
+
+bg_blue_700 : String
+bg_blue_700 =
+    "bg-blue-700"
+
+
+
+{- "bg-blue-800" -}
+
+
+bg_blue_800 : String
+bg_blue_800 =
+    "bg-blue-800"
+
+
+
+{- "bg-blue-900" -}
+
+
+bg_blue_900 : String
+bg_blue_900 =
+    "bg-blue-900"
+
+
+
+{- "bg-indigo-50" -}
+
+
+bg_indigo_50 : String
+bg_indigo_50 =
+    "bg-indigo-50"
+
+
+
+{- "bg-indigo-100" -}
+
+
+bg_indigo_100 : String
+bg_indigo_100 =
+    "bg-indigo-100"
+
+
+
+{- "bg-indigo-200" -}
+
+
+bg_indigo_200 : String
+bg_indigo_200 =
+    "bg-indigo-200"
+
+
+
+{- "bg-indigo-300" -}
+
+
+bg_indigo_300 : String
+bg_indigo_300 =
+    "bg-indigo-300"
+
+
+
+{- "bg-indigo-400" -}
+
+
+bg_indigo_400 : String
+bg_indigo_400 =
+    "bg-indigo-400"
+
+
+
+{- "bg-indigo-500" -}
+
+
+bg_indigo_500 : String
+bg_indigo_500 =
+    "bg-indigo-500"
+
+
+
+{- "bg-indigo-600" -}
+
+
+bg_indigo_600 : String
+bg_indigo_600 =
+    "bg-indigo-600"
+
+
+
+{- "bg-indigo-700" -}
+
+
+bg_indigo_700 : String
+bg_indigo_700 =
+    "bg-indigo-700"
+
+
+
+{- "bg-indigo-800" -}
+
+
+bg_indigo_800 : String
+bg_indigo_800 =
+    "bg-indigo-800"
+
+
+
+{- "bg-indigo-900" -}
+
+
+bg_indigo_900 : String
+bg_indigo_900 =
+    "bg-indigo-900"
+
+
+
+{- "bg-purple-50" -}
+
+
+bg_purple_50 : String
+bg_purple_50 =
+    "bg-purple-50"
+
+
+
+{- "bg-purple-100" -}
+
+
+bg_purple_100 : String
+bg_purple_100 =
+    "bg-purple-100"
+
+
+
+{- "bg-purple-200" -}
+
+
+bg_purple_200 : String
+bg_purple_200 =
+    "bg-purple-200"
+
+
+
+{- "bg-purple-300" -}
+
+
+bg_purple_300 : String
+bg_purple_300 =
+    "bg-purple-300"
+
+
+
+{- "bg-purple-400" -}
+
+
+bg_purple_400 : String
+bg_purple_400 =
+    "bg-purple-400"
+
+
+
+{- "bg-purple-500" -}
+
+
+bg_purple_500 : String
+bg_purple_500 =
+    "bg-purple-500"
+
+
+
+{- "bg-purple-600" -}
+
+
+bg_purple_600 : String
+bg_purple_600 =
+    "bg-purple-600"
+
+
+
+{- "bg-purple-700" -}
+
+
+bg_purple_700 : String
+bg_purple_700 =
+    "bg-purple-700"
+
+
+
+{- "bg-purple-800" -}
+
+
+bg_purple_800 : String
+bg_purple_800 =
+    "bg-purple-800"
+
+
+
+{- "bg-purple-900" -}
+
+
+bg_purple_900 : String
+bg_purple_900 =
+    "bg-purple-900"
+
+
+
+{- "bg-pink-50" -}
+
+
+bg_pink_50 : String
+bg_pink_50 =
+    "bg-pink-50"
+
+
+
+{- "bg-pink-100" -}
+
+
+bg_pink_100 : String
+bg_pink_100 =
+    "bg-pink-100"
+
+
+
+{- "bg-pink-200" -}
+
+
+bg_pink_200 : String
+bg_pink_200 =
+    "bg-pink-200"
+
+
+
+{- "bg-pink-300" -}
+
+
+bg_pink_300 : String
+bg_pink_300 =
+    "bg-pink-300"
+
+
+
+{- "bg-pink-400" -}
+
+
+bg_pink_400 : String
+bg_pink_400 =
+    "bg-pink-400"
+
+
+
+{- "bg-pink-500" -}
+
+
+bg_pink_500 : String
+bg_pink_500 =
+    "bg-pink-500"
+
+
+
+{- "bg-pink-600" -}
+
+
+bg_pink_600 : String
+bg_pink_600 =
+    "bg-pink-600"
+
+
+
+{- "bg-pink-700" -}
+
+
+bg_pink_700 : String
+bg_pink_700 =
+    "bg-pink-700"
+
+
+
+{- "bg-pink-800" -}
+
+
+bg_pink_800 : String
+bg_pink_800 =
+    "bg-pink-800"
+
+
+
+{- "bg-pink-900" -}
+
+
+bg_pink_900 : String
+bg_pink_900 =
+    "bg-pink-900"
