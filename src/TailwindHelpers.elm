@@ -9174,3 +9174,5359 @@ relative =
 sticky : String
 sticky =
     "sticky"
+
+
+
+-- Top / Right / Bottom / Left (https://tailwindcss.com/docs/top-right-bottom-left)
+{- "inset-0" -}
+
+
+inset_0 : String
+inset_0 =
+    "inset-0"
+
+
+
+{- "-inset-0" -}
+
+
+n_inset_0 : String
+n_inset_0 =
+    "-inset-0"
+
+
+
+{- "inset-x-0" -}
+
+
+inset_x_0 : String
+inset_x_0 =
+    "inset-x-0"
+
+
+
+{- "-inset-x-0" -}
+
+
+n_inset_x_0 : String
+n_inset_x_0 =
+    "-inset-x-0"
+
+
+
+{- "inset-y-0" -}
+
+
+inset_y_0 : String
+inset_y_0 =
+    "inset-y-0"
+
+
+
+{- "-inset-y-0" -}
+
+
+n_inset_y_0 : String
+n_inset_y_0 =
+    "-inset-y-0"
+
+
+
+{- "top-0" -}
+
+
+top_0 : String
+top_0 =
+    "top-0"
+
+
+
+{- "-top-0" -}
+
+
+n_top_0 : String
+n_top_0 =
+    "-top-0"
+
+
+
+{- "right-0" -}
+
+
+right_0 : String
+right_0 =
+    "right-0"
+
+
+
+{- "-right-0" -}
+
+
+n_right_0 : String
+n_right_0 =
+    "-right-0"
+
+
+
+{- "bottom-0" -}
+
+
+bottom_0 : String
+bottom_0 =
+    "bottom-0"
+
+
+
+{- "-bottom-0" -}
+
+
+n_bottom_0 : String
+n_bottom_0 =
+    "-bottom-0"
+
+
+
+{- "left-0" -}
+
+
+left_0 : String
+left_0 =
+    "left-0"
+
+
+
+{- "-left-0" -}
+
+
+n_left_0 : String
+n_left_0 =
+    "-left-0"
+
+
+
+{- "inset-px" -}
+
+
+inset_px : String
+inset_px =
+    "inset-px"
+
+
+
+{- "-inset-px" -}
+
+
+n_inset_px : String
+n_inset_px =
+    "-inset-px"
+
+
+
+{- "inset-x-px" -}
+
+
+inset_x_px : String
+inset_x_px =
+    "inset-x-px"
+
+
+
+{- "-inset-x-px" -}
+
+
+n_inset_x_px : String
+n_inset_x_px =
+    "-inset-x-px"
+
+
+
+{- "inset-y-px" -}
+
+
+inset_y_px : String
+inset_y_px =
+    "inset-y-px"
+
+
+
+{- "-inset-y-px" -}
+
+
+n_inset_y_px : String
+n_inset_y_px =
+    "-inset-y-px"
+
+
+
+{- "top-px" -}
+
+
+top_px : String
+top_px =
+    "top-px"
+
+
+
+{- "-top-px" -}
+
+
+n_top_px : String
+n_top_px =
+    "-top-px"
+
+
+
+{- "right-px" -}
+
+
+right_px : String
+right_px =
+    "right-px"
+
+
+
+{- "-right-px" -}
+
+
+n_right_px : String
+n_right_px =
+    "-right-px"
+
+
+
+{- "bottom-px" -}
+
+
+bottom_px : String
+bottom_px =
+    "bottom-px"
+
+
+
+{- "-bottom-px" -}
+
+
+n_bottom_px : String
+n_bottom_px =
+    "-bottom-px"
+
+
+
+{- "left-px" -}
+
+
+left_px : String
+left_px =
+    "left-px"
+
+
+
+{- "-left-px" -}
+
+
+n_left_px : String
+n_left_px =
+    "-left-px"
+
+
+
+{- "inset-0.5" -}
+
+
+inset_0_dot_5 : String
+inset_0_dot_5 =
+    "inset-0.5"
+
+
+
+{- "-inset-0.5" -}
+
+
+n_inset_0_dot_5 : String
+n_inset_0_dot_5 =
+    "-inset-0.5"
+
+
+
+{- "inset-x-0.5" -}
+
+
+inset_x_0_dot_5 : String
+inset_x_0_dot_5 =
+    "inset-x-0.5"
+
+
+
+{- "-inset-x-0.5" -}
+
+
+n_inset_x_0_dot_5 : String
+n_inset_x_0_dot_5 =
+    "-inset-x-0.5"
+
+
+
+{- "inset-y-0.5" -}
+
+
+inset_y_0_dot_5 : String
+inset_y_0_dot_5 =
+    "inset-y-0.5"
+
+
+
+{- "-inset-y-0.5" -}
+
+
+n_inset_y_0_dot_5 : String
+n_inset_y_0_dot_5 =
+    "-inset-y-0.5"
+
+
+
+{- "top-0.5" -}
+
+
+top_0_dot_5 : String
+top_0_dot_5 =
+    "top-0.5"
+
+
+
+{- "-top-0.5" -}
+
+
+n_top_0_dot_5 : String
+n_top_0_dot_5 =
+    "-top-0.5"
+
+
+
+{- "right-0.5" -}
+
+
+right_0_dot_5 : String
+right_0_dot_5 =
+    "right-0.5"
+
+
+
+{- "-right-0.5" -}
+
+
+n_right_0_dot_5 : String
+n_right_0_dot_5 =
+    "-right-0.5"
+
+
+
+{- "bottom-0.5" -}
+
+
+bottom_0_dot_5 : String
+bottom_0_dot_5 =
+    "bottom-0.5"
+
+
+
+{- "-bottom-0.5" -}
+
+
+n_bottom_0_dot_5 : String
+n_bottom_0_dot_5 =
+    "-bottom-0.5"
+
+
+
+{- "left-0.5" -}
+
+
+left_0_dot_5 : String
+left_0_dot_5 =
+    "left-0.5"
+
+
+
+{- "-left-0.5" -}
+
+
+n_left_0_dot_5 : String
+n_left_0_dot_5 =
+    "-left-0.5"
+
+
+
+{- "inset-1" -}
+
+
+inset_1 : String
+inset_1 =
+    "inset-1"
+
+
+
+{- "-inset-1" -}
+
+
+n_inset_1 : String
+n_inset_1 =
+    "-inset-1"
+
+
+
+{- "inset-x-1" -}
+
+
+inset_x_1 : String
+inset_x_1 =
+    "inset-x-1"
+
+
+
+{- "-inset-x-1" -}
+
+
+n_inset_x_1 : String
+n_inset_x_1 =
+    "-inset-x-1"
+
+
+
+{- "inset-y-1" -}
+
+
+inset_y_1 : String
+inset_y_1 =
+    "inset-y-1"
+
+
+
+{- "-inset-y-1" -}
+
+
+n_inset_y_1 : String
+n_inset_y_1 =
+    "-inset-y-1"
+
+
+
+{- "top-1" -}
+
+
+top_1 : String
+top_1 =
+    "top-1"
+
+
+
+{- "-top-1" -}
+
+
+n_top_1 : String
+n_top_1 =
+    "-top-1"
+
+
+
+{- "right-1" -}
+
+
+right_1 : String
+right_1 =
+    "right-1"
+
+
+
+{- "-right-1" -}
+
+
+n_right_1 : String
+n_right_1 =
+    "-right-1"
+
+
+
+{- "bottom-1" -}
+
+
+bottom_1 : String
+bottom_1 =
+    "bottom-1"
+
+
+
+{- "-bottom-1" -}
+
+
+n_bottom_1 : String
+n_bottom_1 =
+    "-bottom-1"
+
+
+
+{- "left-1" -}
+
+
+left_1 : String
+left_1 =
+    "left-1"
+
+
+
+{- "-left-1" -}
+
+
+n_left_1 : String
+n_left_1 =
+    "-left-1"
+
+
+
+{- "inset-1.5" -}
+
+
+inset_1_dot_5 : String
+inset_1_dot_5 =
+    "inset-1.5"
+
+
+
+{- "-inset-1.5" -}
+
+
+n_inset_1_dot_5 : String
+n_inset_1_dot_5 =
+    "-inset-1.5"
+
+
+
+{- "inset-x-1.5" -}
+
+
+inset_x_1_dot_5 : String
+inset_x_1_dot_5 =
+    "inset-x-1.5"
+
+
+
+{- "-inset-x-1.5" -}
+
+
+n_inset_x_1_dot_5 : String
+n_inset_x_1_dot_5 =
+    "-inset-x-1.5"
+
+
+
+{- "inset-y-1.5" -}
+
+
+inset_y_1_dot_5 : String
+inset_y_1_dot_5 =
+    "inset-y-1.5"
+
+
+
+{- "-inset-y-1.5" -}
+
+
+n_inset_y_1_dot_5 : String
+n_inset_y_1_dot_5 =
+    "-inset-y-1.5"
+
+
+
+{- "top-1.5" -}
+
+
+top_1_dot_5 : String
+top_1_dot_5 =
+    "top-1.5"
+
+
+
+{- "-top-1.5" -}
+
+
+n_top_1_dot_5 : String
+n_top_1_dot_5 =
+    "-top-1.5"
+
+
+
+{- "right-1.5" -}
+
+
+right_1_dot_5 : String
+right_1_dot_5 =
+    "right-1.5"
+
+
+
+{- "-right-1.5" -}
+
+
+n_right_1_dot_5 : String
+n_right_1_dot_5 =
+    "-right-1.5"
+
+
+
+{- "bottom-1.5" -}
+
+
+bottom_1_dot_5 : String
+bottom_1_dot_5 =
+    "bottom-1.5"
+
+
+
+{- "-bottom-1.5" -}
+
+
+n_bottom_1_dot_5 : String
+n_bottom_1_dot_5 =
+    "-bottom-1.5"
+
+
+
+{- "left-1.5" -}
+
+
+left_1_dot_5 : String
+left_1_dot_5 =
+    "left-1.5"
+
+
+
+{- "-left-1.5" -}
+
+
+n_left_1_dot_5 : String
+n_left_1_dot_5 =
+    "-left-1.5"
+
+
+
+{- "inset-2" -}
+
+
+inset_2 : String
+inset_2 =
+    "inset-2"
+
+
+
+{- "-inset-2" -}
+
+
+n_inset_2 : String
+n_inset_2 =
+    "-inset-2"
+
+
+
+{- "inset-x-2" -}
+
+
+inset_x_2 : String
+inset_x_2 =
+    "inset-x-2"
+
+
+
+{- "-inset-x-2" -}
+
+
+n_inset_x_2 : String
+n_inset_x_2 =
+    "-inset-x-2"
+
+
+
+{- "inset-y-2" -}
+
+
+inset_y_2 : String
+inset_y_2 =
+    "inset-y-2"
+
+
+
+{- "-inset-y-2" -}
+
+
+n_inset_y_2 : String
+n_inset_y_2 =
+    "-inset-y-2"
+
+
+
+{- "top-2" -}
+
+
+top_2 : String
+top_2 =
+    "top-2"
+
+
+
+{- "-top-2" -}
+
+
+n_top_2 : String
+n_top_2 =
+    "-top-2"
+
+
+
+{- "right-2" -}
+
+
+right_2 : String
+right_2 =
+    "right-2"
+
+
+
+{- "-right-2" -}
+
+
+n_right_2 : String
+n_right_2 =
+    "-right-2"
+
+
+
+{- "bottom-2" -}
+
+
+bottom_2 : String
+bottom_2 =
+    "bottom-2"
+
+
+
+{- "-bottom-2" -}
+
+
+n_bottom_2 : String
+n_bottom_2 =
+    "-bottom-2"
+
+
+
+{- "left-2" -}
+
+
+left_2 : String
+left_2 =
+    "left-2"
+
+
+
+{- "-left-2" -}
+
+
+n_left_2 : String
+n_left_2 =
+    "-left-2"
+
+
+
+{- "inset-2.5" -}
+
+
+inset_2_dot_5 : String
+inset_2_dot_5 =
+    "inset-2.5"
+
+
+
+{- "-inset-2.5" -}
+
+
+n_inset_2_dot_5 : String
+n_inset_2_dot_5 =
+    "-inset-2.5"
+
+
+
+{- "inset-x-2.5" -}
+
+
+inset_x_2_dot_5 : String
+inset_x_2_dot_5 =
+    "inset-x-2.5"
+
+
+
+{- "-inset-x-2.5" -}
+
+
+n_inset_x_2_dot_5 : String
+n_inset_x_2_dot_5 =
+    "-inset-x-2.5"
+
+
+
+{- "inset-y-2.5" -}
+
+
+inset_y_2_dot_5 : String
+inset_y_2_dot_5 =
+    "inset-y-2.5"
+
+
+
+{- "-inset-y-2.5" -}
+
+
+n_inset_y_2_dot_5 : String
+n_inset_y_2_dot_5 =
+    "-inset-y-2.5"
+
+
+
+{- "top-2.5" -}
+
+
+top_2_dot_5 : String
+top_2_dot_5 =
+    "top-2.5"
+
+
+
+{- "-top-2.5" -}
+
+
+n_top_2_dot_5 : String
+n_top_2_dot_5 =
+    "-top-2.5"
+
+
+
+{- "right-2.5" -}
+
+
+right_2_dot_5 : String
+right_2_dot_5 =
+    "right-2.5"
+
+
+
+{- "-right-2.5" -}
+
+
+n_right_2_dot_5 : String
+n_right_2_dot_5 =
+    "-right-2.5"
+
+
+
+{- "bottom-2.5" -}
+
+
+bottom_2_dot_5 : String
+bottom_2_dot_5 =
+    "bottom-2.5"
+
+
+
+{- "-bottom-2.5" -}
+
+
+n_bottom_2_dot_5 : String
+n_bottom_2_dot_5 =
+    "-bottom-2.5"
+
+
+
+{- "left-2.5" -}
+
+
+left_2_dot_5 : String
+left_2_dot_5 =
+    "left-2.5"
+
+
+
+{- "-left-2.5" -}
+
+
+n_left_2_dot_5 : String
+n_left_2_dot_5 =
+    "-left-2.5"
+
+
+
+{- "inset-3" -}
+
+
+inset_3 : String
+inset_3 =
+    "inset-3"
+
+
+
+{- "-inset-3" -}
+
+
+n_inset_3 : String
+n_inset_3 =
+    "-inset-3"
+
+
+
+{- "inset-x-3" -}
+
+
+inset_x_3 : String
+inset_x_3 =
+    "inset-x-3"
+
+
+
+{- "-inset-x-3" -}
+
+
+n_inset_x_3 : String
+n_inset_x_3 =
+    "-inset-x-3"
+
+
+
+{- "inset-y-3" -}
+
+
+inset_y_3 : String
+inset_y_3 =
+    "inset-y-3"
+
+
+
+{- "-inset-y-3" -}
+
+
+n_inset_y_3 : String
+n_inset_y_3 =
+    "-inset-y-3"
+
+
+
+{- "top-3" -}
+
+
+top_3 : String
+top_3 =
+    "top-3"
+
+
+
+{- "-top-3" -}
+
+
+n_top_3 : String
+n_top_3 =
+    "-top-3"
+
+
+
+{- "right-3" -}
+
+
+right_3 : String
+right_3 =
+    "right-3"
+
+
+
+{- "-right-3" -}
+
+
+n_right_3 : String
+n_right_3 =
+    "-right-3"
+
+
+
+{- "bottom-3" -}
+
+
+bottom_3 : String
+bottom_3 =
+    "bottom-3"
+
+
+
+{- "-bottom-3" -}
+
+
+n_bottom_3 : String
+n_bottom_3 =
+    "-bottom-3"
+
+
+
+{- "left-3" -}
+
+
+left_3 : String
+left_3 =
+    "left-3"
+
+
+
+{- "-left-3" -}
+
+
+n_left_3 : String
+n_left_3 =
+    "-left-3"
+
+
+
+{- "inset-3.5" -}
+
+
+inset_3_dot_5 : String
+inset_3_dot_5 =
+    "inset-3.5"
+
+
+
+{- "-inset-3.5" -}
+
+
+n_inset_3_dot_5 : String
+n_inset_3_dot_5 =
+    "-inset-3.5"
+
+
+
+{- "inset-x-3.5" -}
+
+
+inset_x_3_dot_5 : String
+inset_x_3_dot_5 =
+    "inset-x-3.5"
+
+
+
+{- "-inset-x-3.5" -}
+
+
+n_inset_x_3_dot_5 : String
+n_inset_x_3_dot_5 =
+    "-inset-x-3.5"
+
+
+
+{- "inset-y-3.5" -}
+
+
+inset_y_3_dot_5 : String
+inset_y_3_dot_5 =
+    "inset-y-3.5"
+
+
+
+{- "-inset-y-3.5" -}
+
+
+n_inset_y_3_dot_5 : String
+n_inset_y_3_dot_5 =
+    "-inset-y-3.5"
+
+
+
+{- "top-3.5" -}
+
+
+top_3_dot_5 : String
+top_3_dot_5 =
+    "top-3.5"
+
+
+
+{- "-top-3.5" -}
+
+
+n_top_3_dot_5 : String
+n_top_3_dot_5 =
+    "-top-3.5"
+
+
+
+{- "right-3.5" -}
+
+
+right_3_dot_5 : String
+right_3_dot_5 =
+    "right-3.5"
+
+
+
+{- "-right-3.5" -}
+
+
+n_right_3_dot_5 : String
+n_right_3_dot_5 =
+    "-right-3.5"
+
+
+
+{- "bottom-3.5" -}
+
+
+bottom_3_dot_5 : String
+bottom_3_dot_5 =
+    "bottom-3.5"
+
+
+
+{- "-bottom-3.5" -}
+
+
+n_bottom_3_dot_5 : String
+n_bottom_3_dot_5 =
+    "-bottom-3.5"
+
+
+
+{- "left-3.5" -}
+
+
+left_3_dot_5 : String
+left_3_dot_5 =
+    "left-3.5"
+
+
+
+{- "-left-3.5" -}
+
+
+n_left_3_dot_5 : String
+n_left_3_dot_5 =
+    "-left-3.5"
+
+
+
+{- "inset-4" -}
+
+
+inset_4 : String
+inset_4 =
+    "inset-4"
+
+
+
+{- "-inset-4" -}
+
+
+n_inset_4 : String
+n_inset_4 =
+    "-inset-4"
+
+
+
+{- "inset-x-4" -}
+
+
+inset_x_4 : String
+inset_x_4 =
+    "inset-x-4"
+
+
+
+{- "-inset-x-4" -}
+
+
+n_inset_x_4 : String
+n_inset_x_4 =
+    "-inset-x-4"
+
+
+
+{- "inset-y-4" -}
+
+
+inset_y_4 : String
+inset_y_4 =
+    "inset-y-4"
+
+
+
+{- "-inset-y-4" -}
+
+
+n_inset_y_4 : String
+n_inset_y_4 =
+    "-inset-y-4"
+
+
+
+{- "top-4" -}
+
+
+top_4 : String
+top_4 =
+    "top-4"
+
+
+
+{- "-top-4" -}
+
+
+n_top_4 : String
+n_top_4 =
+    "-top-4"
+
+
+
+{- "right-4" -}
+
+
+right_4 : String
+right_4 =
+    "right-4"
+
+
+
+{- "-right-4" -}
+
+
+n_right_4 : String
+n_right_4 =
+    "-right-4"
+
+
+
+{- "bottom-4" -}
+
+
+bottom_4 : String
+bottom_4 =
+    "bottom-4"
+
+
+
+{- "-bottom-4" -}
+
+
+n_bottom_4 : String
+n_bottom_4 =
+    "-bottom-4"
+
+
+
+{- "left-4" -}
+
+
+left_4 : String
+left_4 =
+    "left-4"
+
+
+
+{- "-left-4" -}
+
+
+n_left_4 : String
+n_left_4 =
+    "-left-4"
+
+
+
+{- "inset-5" -}
+
+
+inset_5 : String
+inset_5 =
+    "inset-5"
+
+
+
+{- "-inset-5" -}
+
+
+n_inset_5 : String
+n_inset_5 =
+    "-inset-5"
+
+
+
+{- "inset-x-5" -}
+
+
+inset_x_5 : String
+inset_x_5 =
+    "inset-x-5"
+
+
+
+{- "-inset-x-5" -}
+
+
+n_inset_x_5 : String
+n_inset_x_5 =
+    "-inset-x-5"
+
+
+
+{- "inset-y-5" -}
+
+
+inset_y_5 : String
+inset_y_5 =
+    "inset-y-5"
+
+
+
+{- "-inset-y-5" -}
+
+
+n_inset_y_5 : String
+n_inset_y_5 =
+    "-inset-y-5"
+
+
+
+{- "top-5" -}
+
+
+top_5 : String
+top_5 =
+    "top-5"
+
+
+
+{- "-top-5" -}
+
+
+n_top_5 : String
+n_top_5 =
+    "-top-5"
+
+
+
+{- "right-5" -}
+
+
+right_5 : String
+right_5 =
+    "right-5"
+
+
+
+{- "-right-5" -}
+
+
+n_right_5 : String
+n_right_5 =
+    "-right-5"
+
+
+
+{- "bottom-5" -}
+
+
+bottom_5 : String
+bottom_5 =
+    "bottom-5"
+
+
+
+{- "-bottom-5" -}
+
+
+n_bottom_5 : String
+n_bottom_5 =
+    "-bottom-5"
+
+
+
+{- "left-5" -}
+
+
+left_5 : String
+left_5 =
+    "left-5"
+
+
+
+{- "-left-5" -}
+
+
+n_left_5 : String
+n_left_5 =
+    "-left-5"
+
+
+
+{- "inset-6" -}
+
+
+inset_6 : String
+inset_6 =
+    "inset-6"
+
+
+
+{- "-inset-6" -}
+
+
+n_inset_6 : String
+n_inset_6 =
+    "-inset-6"
+
+
+
+{- "inset-x-6" -}
+
+
+inset_x_6 : String
+inset_x_6 =
+    "inset-x-6"
+
+
+
+{- "-inset-x-6" -}
+
+
+n_inset_x_6 : String
+n_inset_x_6 =
+    "-inset-x-6"
+
+
+
+{- "inset-y-6" -}
+
+
+inset_y_6 : String
+inset_y_6 =
+    "inset-y-6"
+
+
+
+{- "-inset-y-6" -}
+
+
+n_inset_y_6 : String
+n_inset_y_6 =
+    "-inset-y-6"
+
+
+
+{- "top-6" -}
+
+
+top_6 : String
+top_6 =
+    "top-6"
+
+
+
+{- "-top-6" -}
+
+
+n_top_6 : String
+n_top_6 =
+    "-top-6"
+
+
+
+{- "right-6" -}
+
+
+right_6 : String
+right_6 =
+    "right-6"
+
+
+
+{- "-right-6" -}
+
+
+n_right_6 : String
+n_right_6 =
+    "-right-6"
+
+
+
+{- "bottom-6" -}
+
+
+bottom_6 : String
+bottom_6 =
+    "bottom-6"
+
+
+
+{- "-bottom-6" -}
+
+
+n_bottom_6 : String
+n_bottom_6 =
+    "-bottom-6"
+
+
+
+{- "left-6" -}
+
+
+left_6 : String
+left_6 =
+    "left-6"
+
+
+
+{- "-left-6" -}
+
+
+n_left_6 : String
+n_left_6 =
+    "-left-6"
+
+
+
+{- "inset-7" -}
+
+
+inset_7 : String
+inset_7 =
+    "inset-7"
+
+
+
+{- "-inset-7" -}
+
+
+n_inset_7 : String
+n_inset_7 =
+    "-inset-7"
+
+
+
+{- "inset-x-7" -}
+
+
+inset_x_7 : String
+inset_x_7 =
+    "inset-x-7"
+
+
+
+{- "-inset-x-7" -}
+
+
+n_inset_x_7 : String
+n_inset_x_7 =
+    "-inset-x-7"
+
+
+
+{- "inset-y-7" -}
+
+
+inset_y_7 : String
+inset_y_7 =
+    "inset-y-7"
+
+
+
+{- "-inset-y-7" -}
+
+
+n_inset_y_7 : String
+n_inset_y_7 =
+    "-inset-y-7"
+
+
+
+{- "top-7" -}
+
+
+top_7 : String
+top_7 =
+    "top-7"
+
+
+
+{- "-top-7" -}
+
+
+n_top_7 : String
+n_top_7 =
+    "-top-7"
+
+
+
+{- "right-7" -}
+
+
+right_7 : String
+right_7 =
+    "right-7"
+
+
+
+{- "-right-7" -}
+
+
+n_right_7 : String
+n_right_7 =
+    "-right-7"
+
+
+
+{- "bottom-7" -}
+
+
+bottom_7 : String
+bottom_7 =
+    "bottom-7"
+
+
+
+{- "-bottom-7" -}
+
+
+n_bottom_7 : String
+n_bottom_7 =
+    "-bottom-7"
+
+
+
+{- "left-7" -}
+
+
+left_7 : String
+left_7 =
+    "left-7"
+
+
+
+{- "-left-7" -}
+
+
+n_left_7 : String
+n_left_7 =
+    "-left-7"
+
+
+
+{- "inset-8" -}
+
+
+inset_8 : String
+inset_8 =
+    "inset-8"
+
+
+
+{- "-inset-8" -}
+
+
+n_inset_8 : String
+n_inset_8 =
+    "-inset-8"
+
+
+
+{- "inset-x-8" -}
+
+
+inset_x_8 : String
+inset_x_8 =
+    "inset-x-8"
+
+
+
+{- "-inset-x-8" -}
+
+
+n_inset_x_8 : String
+n_inset_x_8 =
+    "-inset-x-8"
+
+
+
+{- "inset-y-8" -}
+
+
+inset_y_8 : String
+inset_y_8 =
+    "inset-y-8"
+
+
+
+{- "-inset-y-8" -}
+
+
+n_inset_y_8 : String
+n_inset_y_8 =
+    "-inset-y-8"
+
+
+
+{- "top-8" -}
+
+
+top_8 : String
+top_8 =
+    "top-8"
+
+
+
+{- "-top-8" -}
+
+
+n_top_8 : String
+n_top_8 =
+    "-top-8"
+
+
+
+{- "right-8" -}
+
+
+right_8 : String
+right_8 =
+    "right-8"
+
+
+
+{- "-right-8" -}
+
+
+n_right_8 : String
+n_right_8 =
+    "-right-8"
+
+
+
+{- "bottom-8" -}
+
+
+bottom_8 : String
+bottom_8 =
+    "bottom-8"
+
+
+
+{- "-bottom-8" -}
+
+
+n_bottom_8 : String
+n_bottom_8 =
+    "-bottom-8"
+
+
+
+{- "left-8" -}
+
+
+left_8 : String
+left_8 =
+    "left-8"
+
+
+
+{- "-left-8" -}
+
+
+n_left_8 : String
+n_left_8 =
+    "-left-8"
+
+
+
+{- "inset-9" -}
+
+
+inset_9 : String
+inset_9 =
+    "inset-9"
+
+
+
+{- "-inset-9" -}
+
+
+n_inset_9 : String
+n_inset_9 =
+    "-inset-9"
+
+
+
+{- "inset-x-9" -}
+
+
+inset_x_9 : String
+inset_x_9 =
+    "inset-x-9"
+
+
+
+{- "-inset-x-9" -}
+
+
+n_inset_x_9 : String
+n_inset_x_9 =
+    "-inset-x-9"
+
+
+
+{- "inset-y-9" -}
+
+
+inset_y_9 : String
+inset_y_9 =
+    "inset-y-9"
+
+
+
+{- "-inset-y-9" -}
+
+
+n_inset_y_9 : String
+n_inset_y_9 =
+    "-inset-y-9"
+
+
+
+{- "top-9" -}
+
+
+top_9 : String
+top_9 =
+    "top-9"
+
+
+
+{- "-top-9" -}
+
+
+n_top_9 : String
+n_top_9 =
+    "-top-9"
+
+
+
+{- "right-9" -}
+
+
+right_9 : String
+right_9 =
+    "right-9"
+
+
+
+{- "-right-9" -}
+
+
+n_right_9 : String
+n_right_9 =
+    "-right-9"
+
+
+
+{- "bottom-9" -}
+
+
+bottom_9 : String
+bottom_9 =
+    "bottom-9"
+
+
+
+{- "-bottom-9" -}
+
+
+n_bottom_9 : String
+n_bottom_9 =
+    "-bottom-9"
+
+
+
+{- "left-9" -}
+
+
+left_9 : String
+left_9 =
+    "left-9"
+
+
+
+{- "-left-9" -}
+
+
+n_left_9 : String
+n_left_9 =
+    "-left-9"
+
+
+
+{- "inset-10" -}
+
+
+inset_10 : String
+inset_10 =
+    "inset-10"
+
+
+
+{- "-inset-10" -}
+
+
+n_inset_10 : String
+n_inset_10 =
+    "-inset-10"
+
+
+
+{- "inset-x-10" -}
+
+
+inset_x_10 : String
+inset_x_10 =
+    "inset-x-10"
+
+
+
+{- "-inset-x-10" -}
+
+
+n_inset_x_10 : String
+n_inset_x_10 =
+    "-inset-x-10"
+
+
+
+{- "inset-y-10" -}
+
+
+inset_y_10 : String
+inset_y_10 =
+    "inset-y-10"
+
+
+
+{- "-inset-y-10" -}
+
+
+n_inset_y_10 : String
+n_inset_y_10 =
+    "-inset-y-10"
+
+
+
+{- "top-10" -}
+
+
+top_10 : String
+top_10 =
+    "top-10"
+
+
+
+{- "-top-10" -}
+
+
+n_top_10 : String
+n_top_10 =
+    "-top-10"
+
+
+
+{- "right-10" -}
+
+
+right_10 : String
+right_10 =
+    "right-10"
+
+
+
+{- "-right-10" -}
+
+
+n_right_10 : String
+n_right_10 =
+    "-right-10"
+
+
+
+{- "bottom-10" -}
+
+
+bottom_10 : String
+bottom_10 =
+    "bottom-10"
+
+
+
+{- "-bottom-10" -}
+
+
+n_bottom_10 : String
+n_bottom_10 =
+    "-bottom-10"
+
+
+
+{- "left-10" -}
+
+
+left_10 : String
+left_10 =
+    "left-10"
+
+
+
+{- "-left-10" -}
+
+
+n_left_10 : String
+n_left_10 =
+    "-left-10"
+
+
+
+{- "inset-11" -}
+
+
+inset_11 : String
+inset_11 =
+    "inset-11"
+
+
+
+{- "-inset-11" -}
+
+
+n_inset_11 : String
+n_inset_11 =
+    "-inset-11"
+
+
+
+{- "inset-x-11" -}
+
+
+inset_x_11 : String
+inset_x_11 =
+    "inset-x-11"
+
+
+
+{- "-inset-x-11" -}
+
+
+n_inset_x_11 : String
+n_inset_x_11 =
+    "-inset-x-11"
+
+
+
+{- "inset-y-11" -}
+
+
+inset_y_11 : String
+inset_y_11 =
+    "inset-y-11"
+
+
+
+{- "-inset-y-11" -}
+
+
+n_inset_y_11 : String
+n_inset_y_11 =
+    "-inset-y-11"
+
+
+
+{- "top-11" -}
+
+
+top_11 : String
+top_11 =
+    "top-11"
+
+
+
+{- "-top-11" -}
+
+
+n_top_11 : String
+n_top_11 =
+    "-top-11"
+
+
+
+{- "right-11" -}
+
+
+right_11 : String
+right_11 =
+    "right-11"
+
+
+
+{- "-right-11" -}
+
+
+n_right_11 : String
+n_right_11 =
+    "-right-11"
+
+
+
+{- "bottom-11" -}
+
+
+bottom_11 : String
+bottom_11 =
+    "bottom-11"
+
+
+
+{- "-bottom-11" -}
+
+
+n_bottom_11 : String
+n_bottom_11 =
+    "-bottom-11"
+
+
+
+{- "left-11" -}
+
+
+left_11 : String
+left_11 =
+    "left-11"
+
+
+
+{- "-left-11" -}
+
+
+n_left_11 : String
+n_left_11 =
+    "-left-11"
+
+
+
+{- "inset-12" -}
+
+
+inset_12 : String
+inset_12 =
+    "inset-12"
+
+
+
+{- "-inset-12" -}
+
+
+n_inset_12 : String
+n_inset_12 =
+    "-inset-12"
+
+
+
+{- "inset-x-12" -}
+
+
+inset_x_12 : String
+inset_x_12 =
+    "inset-x-12"
+
+
+
+{- "-inset-x-12" -}
+
+
+n_inset_x_12 : String
+n_inset_x_12 =
+    "-inset-x-12"
+
+
+
+{- "inset-y-12" -}
+
+
+inset_y_12 : String
+inset_y_12 =
+    "inset-y-12"
+
+
+
+{- "-inset-y-12" -}
+
+
+n_inset_y_12 : String
+n_inset_y_12 =
+    "-inset-y-12"
+
+
+
+{- "top-12" -}
+
+
+top_12 : String
+top_12 =
+    "top-12"
+
+
+
+{- "-top-12" -}
+
+
+n_top_12 : String
+n_top_12 =
+    "-top-12"
+
+
+
+{- "right-12" -}
+
+
+right_12 : String
+right_12 =
+    "right-12"
+
+
+
+{- "-right-12" -}
+
+
+n_right_12 : String
+n_right_12 =
+    "-right-12"
+
+
+
+{- "bottom-12" -}
+
+
+bottom_12 : String
+bottom_12 =
+    "bottom-12"
+
+
+
+{- "-bottom-12" -}
+
+
+n_bottom_12 : String
+n_bottom_12 =
+    "-bottom-12"
+
+
+
+{- "left-12" -}
+
+
+left_12 : String
+left_12 =
+    "left-12"
+
+
+
+{- "-left-12" -}
+
+
+n_left_12 : String
+n_left_12 =
+    "-left-12"
+
+
+
+{- "inset-14" -}
+
+
+inset_14 : String
+inset_14 =
+    "inset-14"
+
+
+
+{- "-inset-14" -}
+
+
+n_inset_14 : String
+n_inset_14 =
+    "-inset-14"
+
+
+
+{- "inset-x-14" -}
+
+
+inset_x_14 : String
+inset_x_14 =
+    "inset-x-14"
+
+
+
+{- "-inset-x-14" -}
+
+
+n_inset_x_14 : String
+n_inset_x_14 =
+    "-inset-x-14"
+
+
+
+{- "inset-y-14" -}
+
+
+inset_y_14 : String
+inset_y_14 =
+    "inset-y-14"
+
+
+
+{- "-inset-y-14" -}
+
+
+n_inset_y_14 : String
+n_inset_y_14 =
+    "-inset-y-14"
+
+
+
+{- "top-14" -}
+
+
+top_14 : String
+top_14 =
+    "top-14"
+
+
+
+{- "-top-14" -}
+
+
+n_top_14 : String
+n_top_14 =
+    "-top-14"
+
+
+
+{- "right-14" -}
+
+
+right_14 : String
+right_14 =
+    "right-14"
+
+
+
+{- "-right-14" -}
+
+
+n_right_14 : String
+n_right_14 =
+    "-right-14"
+
+
+
+{- "bottom-14" -}
+
+
+bottom_14 : String
+bottom_14 =
+    "bottom-14"
+
+
+
+{- "-bottom-14" -}
+
+
+n_bottom_14 : String
+n_bottom_14 =
+    "-bottom-14"
+
+
+
+{- "left-14" -}
+
+
+left_14 : String
+left_14 =
+    "left-14"
+
+
+
+{- "-left-14" -}
+
+
+n_left_14 : String
+n_left_14 =
+    "-left-14"
+
+
+
+{- "inset-16" -}
+
+
+inset_16 : String
+inset_16 =
+    "inset-16"
+
+
+
+{- "-inset-16" -}
+
+
+n_inset_16 : String
+n_inset_16 =
+    "-inset-16"
+
+
+
+{- "inset-x-16" -}
+
+
+inset_x_16 : String
+inset_x_16 =
+    "inset-x-16"
+
+
+
+{- "-inset-x-16" -}
+
+
+n_inset_x_16 : String
+n_inset_x_16 =
+    "-inset-x-16"
+
+
+
+{- "inset-y-16" -}
+
+
+inset_y_16 : String
+inset_y_16 =
+    "inset-y-16"
+
+
+
+{- "-inset-y-16" -}
+
+
+n_inset_y_16 : String
+n_inset_y_16 =
+    "-inset-y-16"
+
+
+
+{- "top-16" -}
+
+
+top_16 : String
+top_16 =
+    "top-16"
+
+
+
+{- "-top-16" -}
+
+
+n_top_16 : String
+n_top_16 =
+    "-top-16"
+
+
+
+{- "right-16" -}
+
+
+right_16 : String
+right_16 =
+    "right-16"
+
+
+
+{- "-right-16" -}
+
+
+n_right_16 : String
+n_right_16 =
+    "-right-16"
+
+
+
+{- "bottom-16" -}
+
+
+bottom_16 : String
+bottom_16 =
+    "bottom-16"
+
+
+
+{- "-bottom-16" -}
+
+
+n_bottom_16 : String
+n_bottom_16 =
+    "-bottom-16"
+
+
+
+{- "left-16" -}
+
+
+left_16 : String
+left_16 =
+    "left-16"
+
+
+
+{- "-left-16" -}
+
+
+n_left_16 : String
+n_left_16 =
+    "-left-16"
+
+
+
+{- "inset-20" -}
+
+
+inset_20 : String
+inset_20 =
+    "inset-20"
+
+
+
+{- "-inset-20" -}
+
+
+n_inset_20 : String
+n_inset_20 =
+    "-inset-20"
+
+
+
+{- "inset-x-20" -}
+
+
+inset_x_20 : String
+inset_x_20 =
+    "inset-x-20"
+
+
+
+{- "-inset-x-20" -}
+
+
+n_inset_x_20 : String
+n_inset_x_20 =
+    "-inset-x-20"
+
+
+
+{- "inset-y-20" -}
+
+
+inset_y_20 : String
+inset_y_20 =
+    "inset-y-20"
+
+
+
+{- "-inset-y-20" -}
+
+
+n_inset_y_20 : String
+n_inset_y_20 =
+    "-inset-y-20"
+
+
+
+{- "top-20" -}
+
+
+top_20 : String
+top_20 =
+    "top-20"
+
+
+
+{- "-top-20" -}
+
+
+n_top_20 : String
+n_top_20 =
+    "-top-20"
+
+
+
+{- "right-20" -}
+
+
+right_20 : String
+right_20 =
+    "right-20"
+
+
+
+{- "-right-20" -}
+
+
+n_right_20 : String
+n_right_20 =
+    "-right-20"
+
+
+
+{- "bottom-20" -}
+
+
+bottom_20 : String
+bottom_20 =
+    "bottom-20"
+
+
+
+{- "-bottom-20" -}
+
+
+n_bottom_20 : String
+n_bottom_20 =
+    "-bottom-20"
+
+
+
+{- "left-20" -}
+
+
+left_20 : String
+left_20 =
+    "left-20"
+
+
+
+{- "-left-20" -}
+
+
+n_left_20 : String
+n_left_20 =
+    "-left-20"
+
+
+
+{- "inset-24" -}
+
+
+inset_24 : String
+inset_24 =
+    "inset-24"
+
+
+
+{- "-inset-24" -}
+
+
+n_inset_24 : String
+n_inset_24 =
+    "-inset-24"
+
+
+
+{- "inset-x-24" -}
+
+
+inset_x_24 : String
+inset_x_24 =
+    "inset-x-24"
+
+
+
+{- "-inset-x-24" -}
+
+
+n_inset_x_24 : String
+n_inset_x_24 =
+    "-inset-x-24"
+
+
+
+{- "inset-y-24" -}
+
+
+inset_y_24 : String
+inset_y_24 =
+    "inset-y-24"
+
+
+
+{- "-inset-y-24" -}
+
+
+n_inset_y_24 : String
+n_inset_y_24 =
+    "-inset-y-24"
+
+
+
+{- "top-24" -}
+
+
+top_24 : String
+top_24 =
+    "top-24"
+
+
+
+{- "-top-24" -}
+
+
+n_top_24 : String
+n_top_24 =
+    "-top-24"
+
+
+
+{- "right-24" -}
+
+
+right_24 : String
+right_24 =
+    "right-24"
+
+
+
+{- "-right-24" -}
+
+
+n_right_24 : String
+n_right_24 =
+    "-right-24"
+
+
+
+{- "bottom-24" -}
+
+
+bottom_24 : String
+bottom_24 =
+    "bottom-24"
+
+
+
+{- "-bottom-24" -}
+
+
+n_bottom_24 : String
+n_bottom_24 =
+    "-bottom-24"
+
+
+
+{- "left-24" -}
+
+
+left_24 : String
+left_24 =
+    "left-24"
+
+
+
+{- "-left-24" -}
+
+
+n_left_24 : String
+n_left_24 =
+    "-left-24"
+
+
+
+{- "inset-28" -}
+
+
+inset_28 : String
+inset_28 =
+    "inset-28"
+
+
+
+{- "-inset-28" -}
+
+
+n_inset_28 : String
+n_inset_28 =
+    "-inset-28"
+
+
+
+{- "inset-x-28" -}
+
+
+inset_x_28 : String
+inset_x_28 =
+    "inset-x-28"
+
+
+
+{- "-inset-x-28" -}
+
+
+n_inset_x_28 : String
+n_inset_x_28 =
+    "-inset-x-28"
+
+
+
+{- "inset-y-28" -}
+
+
+inset_y_28 : String
+inset_y_28 =
+    "inset-y-28"
+
+
+
+{- "-inset-y-28" -}
+
+
+n_inset_y_28 : String
+n_inset_y_28 =
+    "-inset-y-28"
+
+
+
+{- "top-28" -}
+
+
+top_28 : String
+top_28 =
+    "top-28"
+
+
+
+{- "-top-28" -}
+
+
+n_top_28 : String
+n_top_28 =
+    "-top-28"
+
+
+
+{- "right-28" -}
+
+
+right_28 : String
+right_28 =
+    "right-28"
+
+
+
+{- "-right-28" -}
+
+
+n_right_28 : String
+n_right_28 =
+    "-right-28"
+
+
+
+{- "bottom-28" -}
+
+
+bottom_28 : String
+bottom_28 =
+    "bottom-28"
+
+
+
+{- "-bottom-28" -}
+
+
+n_bottom_28 : String
+n_bottom_28 =
+    "-bottom-28"
+
+
+
+{- "left-28" -}
+
+
+left_28 : String
+left_28 =
+    "left-28"
+
+
+
+{- "-left-28" -}
+
+
+n_left_28 : String
+n_left_28 =
+    "-left-28"
+
+
+
+{- "inset-32" -}
+
+
+inset_32 : String
+inset_32 =
+    "inset-32"
+
+
+
+{- "-inset-32" -}
+
+
+n_inset_32 : String
+n_inset_32 =
+    "-inset-32"
+
+
+
+{- "inset-x-32" -}
+
+
+inset_x_32 : String
+inset_x_32 =
+    "inset-x-32"
+
+
+
+{- "-inset-x-32" -}
+
+
+n_inset_x_32 : String
+n_inset_x_32 =
+    "-inset-x-32"
+
+
+
+{- "inset-y-32" -}
+
+
+inset_y_32 : String
+inset_y_32 =
+    "inset-y-32"
+
+
+
+{- "-inset-y-32" -}
+
+
+n_inset_y_32 : String
+n_inset_y_32 =
+    "-inset-y-32"
+
+
+
+{- "top-32" -}
+
+
+top_32 : String
+top_32 =
+    "top-32"
+
+
+
+{- "-top-32" -}
+
+
+n_top_32 : String
+n_top_32 =
+    "-top-32"
+
+
+
+{- "right-32" -}
+
+
+right_32 : String
+right_32 =
+    "right-32"
+
+
+
+{- "-right-32" -}
+
+
+n_right_32 : String
+n_right_32 =
+    "-right-32"
+
+
+
+{- "bottom-32" -}
+
+
+bottom_32 : String
+bottom_32 =
+    "bottom-32"
+
+
+
+{- "-bottom-32" -}
+
+
+n_bottom_32 : String
+n_bottom_32 =
+    "-bottom-32"
+
+
+
+{- "left-32" -}
+
+
+left_32 : String
+left_32 =
+    "left-32"
+
+
+
+{- "-left-32" -}
+
+
+n_left_32 : String
+n_left_32 =
+    "-left-32"
+
+
+
+{- "inset-36" -}
+
+
+inset_36 : String
+inset_36 =
+    "inset-36"
+
+
+
+{- "-inset-36" -}
+
+
+n_inset_36 : String
+n_inset_36 =
+    "-inset-36"
+
+
+
+{- "inset-x-36" -}
+
+
+inset_x_36 : String
+inset_x_36 =
+    "inset-x-36"
+
+
+
+{- "-inset-x-36" -}
+
+
+n_inset_x_36 : String
+n_inset_x_36 =
+    "-inset-x-36"
+
+
+
+{- "inset-y-36" -}
+
+
+inset_y_36 : String
+inset_y_36 =
+    "inset-y-36"
+
+
+
+{- "-inset-y-36" -}
+
+
+n_inset_y_36 : String
+n_inset_y_36 =
+    "-inset-y-36"
+
+
+
+{- "top-36" -}
+
+
+top_36 : String
+top_36 =
+    "top-36"
+
+
+
+{- "-top-36" -}
+
+
+n_top_36 : String
+n_top_36 =
+    "-top-36"
+
+
+
+{- "right-36" -}
+
+
+right_36 : String
+right_36 =
+    "right-36"
+
+
+
+{- "-right-36" -}
+
+
+n_right_36 : String
+n_right_36 =
+    "-right-36"
+
+
+
+{- "bottom-36" -}
+
+
+bottom_36 : String
+bottom_36 =
+    "bottom-36"
+
+
+
+{- "-bottom-36" -}
+
+
+n_bottom_36 : String
+n_bottom_36 =
+    "-bottom-36"
+
+
+
+{- "left-36" -}
+
+
+left_36 : String
+left_36 =
+    "left-36"
+
+
+
+{- "-left-36" -}
+
+
+n_left_36 : String
+n_left_36 =
+    "-left-36"
+
+
+
+{- "inset-40" -}
+
+
+inset_40 : String
+inset_40 =
+    "inset-40"
+
+
+
+{- "-inset-40" -}
+
+
+n_inset_40 : String
+n_inset_40 =
+    "-inset-40"
+
+
+
+{- "inset-x-40" -}
+
+
+inset_x_40 : String
+inset_x_40 =
+    "inset-x-40"
+
+
+
+{- "-inset-x-40" -}
+
+
+n_inset_x_40 : String
+n_inset_x_40 =
+    "-inset-x-40"
+
+
+
+{- "inset-y-40" -}
+
+
+inset_y_40 : String
+inset_y_40 =
+    "inset-y-40"
+
+
+
+{- "-inset-y-40" -}
+
+
+n_inset_y_40 : String
+n_inset_y_40 =
+    "-inset-y-40"
+
+
+
+{- "top-40" -}
+
+
+top_40 : String
+top_40 =
+    "top-40"
+
+
+
+{- "-top-40" -}
+
+
+n_top_40 : String
+n_top_40 =
+    "-top-40"
+
+
+
+{- "right-40" -}
+
+
+right_40 : String
+right_40 =
+    "right-40"
+
+
+
+{- "-right-40" -}
+
+
+n_right_40 : String
+n_right_40 =
+    "-right-40"
+
+
+
+{- "bottom-40" -}
+
+
+bottom_40 : String
+bottom_40 =
+    "bottom-40"
+
+
+
+{- "-bottom-40" -}
+
+
+n_bottom_40 : String
+n_bottom_40 =
+    "-bottom-40"
+
+
+
+{- "left-40" -}
+
+
+left_40 : String
+left_40 =
+    "left-40"
+
+
+
+{- "-left-40" -}
+
+
+n_left_40 : String
+n_left_40 =
+    "-left-40"
+
+
+
+{- "inset-44" -}
+
+
+inset_44 : String
+inset_44 =
+    "inset-44"
+
+
+
+{- "-inset-44" -}
+
+
+n_inset_44 : String
+n_inset_44 =
+    "-inset-44"
+
+
+
+{- "inset-x-44" -}
+
+
+inset_x_44 : String
+inset_x_44 =
+    "inset-x-44"
+
+
+
+{- "-inset-x-44" -}
+
+
+n_inset_x_44 : String
+n_inset_x_44 =
+    "-inset-x-44"
+
+
+
+{- "inset-y-44" -}
+
+
+inset_y_44 : String
+inset_y_44 =
+    "inset-y-44"
+
+
+
+{- "-inset-y-44" -}
+
+
+n_inset_y_44 : String
+n_inset_y_44 =
+    "-inset-y-44"
+
+
+
+{- "top-44" -}
+
+
+top_44 : String
+top_44 =
+    "top-44"
+
+
+
+{- "-top-44" -}
+
+
+n_top_44 : String
+n_top_44 =
+    "-top-44"
+
+
+
+{- "right-44" -}
+
+
+right_44 : String
+right_44 =
+    "right-44"
+
+
+
+{- "-right-44" -}
+
+
+n_right_44 : String
+n_right_44 =
+    "-right-44"
+
+
+
+{- "bottom-44" -}
+
+
+bottom_44 : String
+bottom_44 =
+    "bottom-44"
+
+
+
+{- "-bottom-44" -}
+
+
+n_bottom_44 : String
+n_bottom_44 =
+    "-bottom-44"
+
+
+
+{- "left-44" -}
+
+
+left_44 : String
+left_44 =
+    "left-44"
+
+
+
+{- "-left-44" -}
+
+
+n_left_44 : String
+n_left_44 =
+    "-left-44"
+
+
+
+{- "inset-48" -}
+
+
+inset_48 : String
+inset_48 =
+    "inset-48"
+
+
+
+{- "-inset-48" -}
+
+
+n_inset_48 : String
+n_inset_48 =
+    "-inset-48"
+
+
+
+{- "inset-x-48" -}
+
+
+inset_x_48 : String
+inset_x_48 =
+    "inset-x-48"
+
+
+
+{- "-inset-x-48" -}
+
+
+n_inset_x_48 : String
+n_inset_x_48 =
+    "-inset-x-48"
+
+
+
+{- "inset-y-48" -}
+
+
+inset_y_48 : String
+inset_y_48 =
+    "inset-y-48"
+
+
+
+{- "-inset-y-48" -}
+
+
+n_inset_y_48 : String
+n_inset_y_48 =
+    "-inset-y-48"
+
+
+
+{- "top-48" -}
+
+
+top_48 : String
+top_48 =
+    "top-48"
+
+
+
+{- "-top-48" -}
+
+
+n_top_48 : String
+n_top_48 =
+    "-top-48"
+
+
+
+{- "right-48" -}
+
+
+right_48 : String
+right_48 =
+    "right-48"
+
+
+
+{- "-right-48" -}
+
+
+n_right_48 : String
+n_right_48 =
+    "-right-48"
+
+
+
+{- "bottom-48" -}
+
+
+bottom_48 : String
+bottom_48 =
+    "bottom-48"
+
+
+
+{- "-bottom-48" -}
+
+
+n_bottom_48 : String
+n_bottom_48 =
+    "-bottom-48"
+
+
+
+{- "left-48" -}
+
+
+left_48 : String
+left_48 =
+    "left-48"
+
+
+
+{- "-left-48" -}
+
+
+n_left_48 : String
+n_left_48 =
+    "-left-48"
+
+
+
+{- "inset-52" -}
+
+
+inset_52 : String
+inset_52 =
+    "inset-52"
+
+
+
+{- "-inset-52" -}
+
+
+n_inset_52 : String
+n_inset_52 =
+    "-inset-52"
+
+
+
+{- "inset-x-52" -}
+
+
+inset_x_52 : String
+inset_x_52 =
+    "inset-x-52"
+
+
+
+{- "-inset-x-52" -}
+
+
+n_inset_x_52 : String
+n_inset_x_52 =
+    "-inset-x-52"
+
+
+
+{- "inset-y-52" -}
+
+
+inset_y_52 : String
+inset_y_52 =
+    "inset-y-52"
+
+
+
+{- "-inset-y-52" -}
+
+
+n_inset_y_52 : String
+n_inset_y_52 =
+    "-inset-y-52"
+
+
+
+{- "top-52" -}
+
+
+top_52 : String
+top_52 =
+    "top-52"
+
+
+
+{- "-top-52" -}
+
+
+n_top_52 : String
+n_top_52 =
+    "-top-52"
+
+
+
+{- "right-52" -}
+
+
+right_52 : String
+right_52 =
+    "right-52"
+
+
+
+{- "-right-52" -}
+
+
+n_right_52 : String
+n_right_52 =
+    "-right-52"
+
+
+
+{- "bottom-52" -}
+
+
+bottom_52 : String
+bottom_52 =
+    "bottom-52"
+
+
+
+{- "-bottom-52" -}
+
+
+n_bottom_52 : String
+n_bottom_52 =
+    "-bottom-52"
+
+
+
+{- "left-52" -}
+
+
+left_52 : String
+left_52 =
+    "left-52"
+
+
+
+{- "-left-52" -}
+
+
+n_left_52 : String
+n_left_52 =
+    "-left-52"
+
+
+
+{- "inset-56" -}
+
+
+inset_56 : String
+inset_56 =
+    "inset-56"
+
+
+
+{- "-inset-56" -}
+
+
+n_inset_56 : String
+n_inset_56 =
+    "-inset-56"
+
+
+
+{- "inset-x-56" -}
+
+
+inset_x_56 : String
+inset_x_56 =
+    "inset-x-56"
+
+
+
+{- "-inset-x-56" -}
+
+
+n_inset_x_56 : String
+n_inset_x_56 =
+    "-inset-x-56"
+
+
+
+{- "inset-y-56" -}
+
+
+inset_y_56 : String
+inset_y_56 =
+    "inset-y-56"
+
+
+
+{- "-inset-y-56" -}
+
+
+n_inset_y_56 : String
+n_inset_y_56 =
+    "-inset-y-56"
+
+
+
+{- "top-56" -}
+
+
+top_56 : String
+top_56 =
+    "top-56"
+
+
+
+{- "-top-56" -}
+
+
+n_top_56 : String
+n_top_56 =
+    "-top-56"
+
+
+
+{- "right-56" -}
+
+
+right_56 : String
+right_56 =
+    "right-56"
+
+
+
+{- "-right-56" -}
+
+
+n_right_56 : String
+n_right_56 =
+    "-right-56"
+
+
+
+{- "bottom-56" -}
+
+
+bottom_56 : String
+bottom_56 =
+    "bottom-56"
+
+
+
+{- "-bottom-56" -}
+
+
+n_bottom_56 : String
+n_bottom_56 =
+    "-bottom-56"
+
+
+
+{- "left-56" -}
+
+
+left_56 : String
+left_56 =
+    "left-56"
+
+
+
+{- "-left-56" -}
+
+
+n_left_56 : String
+n_left_56 =
+    "-left-56"
+
+
+
+{- "inset-60" -}
+
+
+inset_60 : String
+inset_60 =
+    "inset-60"
+
+
+
+{- "-inset-60" -}
+
+
+n_inset_60 : String
+n_inset_60 =
+    "-inset-60"
+
+
+
+{- "inset-x-60" -}
+
+
+inset_x_60 : String
+inset_x_60 =
+    "inset-x-60"
+
+
+
+{- "-inset-x-60" -}
+
+
+n_inset_x_60 : String
+n_inset_x_60 =
+    "-inset-x-60"
+
+
+
+{- "inset-y-60" -}
+
+
+inset_y_60 : String
+inset_y_60 =
+    "inset-y-60"
+
+
+
+{- "-inset-y-60" -}
+
+
+n_inset_y_60 : String
+n_inset_y_60 =
+    "-inset-y-60"
+
+
+
+{- "top-60" -}
+
+
+top_60 : String
+top_60 =
+    "top-60"
+
+
+
+{- "-top-60" -}
+
+
+n_top_60 : String
+n_top_60 =
+    "-top-60"
+
+
+
+{- "right-60" -}
+
+
+right_60 : String
+right_60 =
+    "right-60"
+
+
+
+{- "-right-60" -}
+
+
+n_right_60 : String
+n_right_60 =
+    "-right-60"
+
+
+
+{- "bottom-60" -}
+
+
+bottom_60 : String
+bottom_60 =
+    "bottom-60"
+
+
+
+{- "-bottom-60" -}
+
+
+n_bottom_60 : String
+n_bottom_60 =
+    "-bottom-60"
+
+
+
+{- "left-60" -}
+
+
+left_60 : String
+left_60 =
+    "left-60"
+
+
+
+{- "-left-60" -}
+
+
+n_left_60 : String
+n_left_60 =
+    "-left-60"
+
+
+
+{- "inset-64" -}
+
+
+inset_64 : String
+inset_64 =
+    "inset-64"
+
+
+
+{- "-inset-64" -}
+
+
+n_inset_64 : String
+n_inset_64 =
+    "-inset-64"
+
+
+
+{- "inset-x-64" -}
+
+
+inset_x_64 : String
+inset_x_64 =
+    "inset-x-64"
+
+
+
+{- "-inset-x-64" -}
+
+
+n_inset_x_64 : String
+n_inset_x_64 =
+    "-inset-x-64"
+
+
+
+{- "inset-y-64" -}
+
+
+inset_y_64 : String
+inset_y_64 =
+    "inset-y-64"
+
+
+
+{- "-inset-y-64" -}
+
+
+n_inset_y_64 : String
+n_inset_y_64 =
+    "-inset-y-64"
+
+
+
+{- "top-64" -}
+
+
+top_64 : String
+top_64 =
+    "top-64"
+
+
+
+{- "-top-64" -}
+
+
+n_top_64 : String
+n_top_64 =
+    "-top-64"
+
+
+
+{- "right-64" -}
+
+
+right_64 : String
+right_64 =
+    "right-64"
+
+
+
+{- "-right-64" -}
+
+
+n_right_64 : String
+n_right_64 =
+    "-right-64"
+
+
+
+{- "bottom-64" -}
+
+
+bottom_64 : String
+bottom_64 =
+    "bottom-64"
+
+
+
+{- "-bottom-64" -}
+
+
+n_bottom_64 : String
+n_bottom_64 =
+    "-bottom-64"
+
+
+
+{- "left-64" -}
+
+
+left_64 : String
+left_64 =
+    "left-64"
+
+
+
+{- "-left-64" -}
+
+
+n_left_64 : String
+n_left_64 =
+    "-left-64"
+
+
+
+{- "inset-72" -}
+
+
+inset_72 : String
+inset_72 =
+    "inset-72"
+
+
+
+{- "-inset-72" -}
+
+
+n_inset_72 : String
+n_inset_72 =
+    "-inset-72"
+
+
+
+{- "inset-x-72" -}
+
+
+inset_x_72 : String
+inset_x_72 =
+    "inset-x-72"
+
+
+
+{- "-inset-x-72" -}
+
+
+n_inset_x_72 : String
+n_inset_x_72 =
+    "-inset-x-72"
+
+
+
+{- "inset-y-72" -}
+
+
+inset_y_72 : String
+inset_y_72 =
+    "inset-y-72"
+
+
+
+{- "-inset-y-72" -}
+
+
+n_inset_y_72 : String
+n_inset_y_72 =
+    "-inset-y-72"
+
+
+
+{- "top-72" -}
+
+
+top_72 : String
+top_72 =
+    "top-72"
+
+
+
+{- "-top-72" -}
+
+
+n_top_72 : String
+n_top_72 =
+    "-top-72"
+
+
+
+{- "right-72" -}
+
+
+right_72 : String
+right_72 =
+    "right-72"
+
+
+
+{- "-right-72" -}
+
+
+n_right_72 : String
+n_right_72 =
+    "-right-72"
+
+
+
+{- "bottom-72" -}
+
+
+bottom_72 : String
+bottom_72 =
+    "bottom-72"
+
+
+
+{- "-bottom-72" -}
+
+
+n_bottom_72 : String
+n_bottom_72 =
+    "-bottom-72"
+
+
+
+{- "left-72" -}
+
+
+left_72 : String
+left_72 =
+    "left-72"
+
+
+
+{- "-left-72" -}
+
+
+n_left_72 : String
+n_left_72 =
+    "-left-72"
+
+
+
+{- "inset-80" -}
+
+
+inset_80 : String
+inset_80 =
+    "inset-80"
+
+
+
+{- "-inset-80" -}
+
+
+n_inset_80 : String
+n_inset_80 =
+    "-inset-80"
+
+
+
+{- "inset-x-80" -}
+
+
+inset_x_80 : String
+inset_x_80 =
+    "inset-x-80"
+
+
+
+{- "-inset-x-80" -}
+
+
+n_inset_x_80 : String
+n_inset_x_80 =
+    "-inset-x-80"
+
+
+
+{- "inset-y-80" -}
+
+
+inset_y_80 : String
+inset_y_80 =
+    "inset-y-80"
+
+
+
+{- "-inset-y-80" -}
+
+
+n_inset_y_80 : String
+n_inset_y_80 =
+    "-inset-y-80"
+
+
+
+{- "top-80" -}
+
+
+top_80 : String
+top_80 =
+    "top-80"
+
+
+
+{- "-top-80" -}
+
+
+n_top_80 : String
+n_top_80 =
+    "-top-80"
+
+
+
+{- "right-80" -}
+
+
+right_80 : String
+right_80 =
+    "right-80"
+
+
+
+{- "-right-80" -}
+
+
+n_right_80 : String
+n_right_80 =
+    "-right-80"
+
+
+
+{- "bottom-80" -}
+
+
+bottom_80 : String
+bottom_80 =
+    "bottom-80"
+
+
+
+{- "-bottom-80" -}
+
+
+n_bottom_80 : String
+n_bottom_80 =
+    "-bottom-80"
+
+
+
+{- "left-80" -}
+
+
+left_80 : String
+left_80 =
+    "left-80"
+
+
+
+{- "-left-80" -}
+
+
+n_left_80 : String
+n_left_80 =
+    "-left-80"
+
+
+
+{- "inset-96" -}
+
+
+inset_96 : String
+inset_96 =
+    "inset-96"
+
+
+
+{- "-inset-96" -}
+
+
+n_inset_96 : String
+n_inset_96 =
+    "-inset-96"
+
+
+
+{- "inset-x-96" -}
+
+
+inset_x_96 : String
+inset_x_96 =
+    "inset-x-96"
+
+
+
+{- "-inset-x-96" -}
+
+
+n_inset_x_96 : String
+n_inset_x_96 =
+    "-inset-x-96"
+
+
+
+{- "inset-y-96" -}
+
+
+inset_y_96 : String
+inset_y_96 =
+    "inset-y-96"
+
+
+
+{- "-inset-y-96" -}
+
+
+n_inset_y_96 : String
+n_inset_y_96 =
+    "-inset-y-96"
+
+
+
+{- "top-96" -}
+
+
+top_96 : String
+top_96 =
+    "top-96"
+
+
+
+{- "-top-96" -}
+
+
+n_top_96 : String
+n_top_96 =
+    "-top-96"
+
+
+
+{- "right-96" -}
+
+
+right_96 : String
+right_96 =
+    "right-96"
+
+
+
+{- "-right-96" -}
+
+
+n_right_96 : String
+n_right_96 =
+    "-right-96"
+
+
+
+{- "bottom-96" -}
+
+
+bottom_96 : String
+bottom_96 =
+    "bottom-96"
+
+
+
+{- "-bottom-96" -}
+
+
+n_bottom_96 : String
+n_bottom_96 =
+    "-bottom-96"
+
+
+
+{- "left-96" -}
+
+
+left_96 : String
+left_96 =
+    "left-96"
+
+
+
+{- "-left-96" -}
+
+
+n_left_96 : String
+n_left_96 =
+    "-left-96"
+
+
+
+{- "inset-auto" -}
+
+
+inset_auto : String
+inset_auto =
+    "inset-auto"
+
+
+
+{- "inset-1/2" -}
+
+
+inset_1_slash_2 : String
+inset_1_slash_2 =
+    "inset-1/2"
+
+
+
+{- "inset-1/3" -}
+
+
+inset_1_slash_3 : String
+inset_1_slash_3 =
+    "inset-1/3"
+
+
+
+{- "inset-2/3" -}
+
+
+inset_2_slash_3 : String
+inset_2_slash_3 =
+    "inset-2/3"
+
+
+
+{- "inset-1/4" -}
+
+
+inset_1_slash_4 : String
+inset_1_slash_4 =
+    "inset-1/4"
+
+
+
+{- "inset-2/4" -}
+
+
+inset_2_slash_4 : String
+inset_2_slash_4 =
+    "inset-2/4"
+
+
+
+{- "inset-3/4" -}
+
+
+inset_3_slash_4 : String
+inset_3_slash_4 =
+    "inset-3/4"
+
+
+
+{- "inset-full" -}
+
+
+inset_full : String
+inset_full =
+    "inset-full"
+
+
+
+{- "-inset-1/2" -}
+
+
+n_inset_1_slash_2 : String
+n_inset_1_slash_2 =
+    "-inset-1/2"
+
+
+
+{- "-inset-1/3" -}
+
+
+n_inset_1_slash_3 : String
+n_inset_1_slash_3 =
+    "-inset-1/3"
+
+
+
+{- "-inset-2/3" -}
+
+
+n_inset_2_slash_3 : String
+n_inset_2_slash_3 =
+    "-inset-2/3"
+
+
+
+{- "-inset-1/4" -}
+
+
+n_inset_1_slash_4 : String
+n_inset_1_slash_4 =
+    "-inset-1/4"
+
+
+
+{- "-inset-2/4" -}
+
+
+n_inset_2_slash_4 : String
+n_inset_2_slash_4 =
+    "-inset-2/4"
+
+
+
+{- "-inset-3/4" -}
+
+
+n_inset_3_slash_4 : String
+n_inset_3_slash_4 =
+    "-inset-3/4"
+
+
+
+{- "-inset-full" -}
+
+
+n_inset_full : String
+n_inset_full =
+    "-inset-full"
+
+
+
+{- "inset-x-auto" -}
+
+
+inset_x_auto : String
+inset_x_auto =
+    "inset-x-auto"
+
+
+
+{- "inset-x-1/2" -}
+
+
+inset_x_1_slash_2 : String
+inset_x_1_slash_2 =
+    "inset-x-1/2"
+
+
+
+{- "inset-x-1/3" -}
+
+
+inset_x_1_slash_3 : String
+inset_x_1_slash_3 =
+    "inset-x-1/3"
+
+
+
+{- "inset-x-2/3" -}
+
+
+inset_x_2_slash_3 : String
+inset_x_2_slash_3 =
+    "inset-x-2/3"
+
+
+
+{- "inset-x-1/4" -}
+
+
+inset_x_1_slash_4 : String
+inset_x_1_slash_4 =
+    "inset-x-1/4"
+
+
+
+{- "inset-x-2/4" -}
+
+
+inset_x_2_slash_4 : String
+inset_x_2_slash_4 =
+    "inset-x-2/4"
+
+
+
+{- "inset-x-3/4" -}
+
+
+inset_x_3_slash_4 : String
+inset_x_3_slash_4 =
+    "inset-x-3/4"
+
+
+
+{- "inset-x-full" -}
+
+
+inset_x_full : String
+inset_x_full =
+    "inset-x-full"
+
+
+
+{- "-inset-x-1/2" -}
+
+
+n_inset_x_1_slash_2 : String
+n_inset_x_1_slash_2 =
+    "-inset-x-1/2"
+
+
+
+{- "-inset-x-1/3" -}
+
+
+n_inset_x_1_slash_3 : String
+n_inset_x_1_slash_3 =
+    "-inset-x-1/3"
+
+
+
+{- "-inset-x-2/3" -}
+
+
+n_inset_x_2_slash_3 : String
+n_inset_x_2_slash_3 =
+    "-inset-x-2/3"
+
+
+
+{- "-inset-x-1/4" -}
+
+
+n_inset_x_1_slash_4 : String
+n_inset_x_1_slash_4 =
+    "-inset-x-1/4"
+
+
+
+{- "-inset-x-2/4" -}
+
+
+n_inset_x_2_slash_4 : String
+n_inset_x_2_slash_4 =
+    "-inset-x-2/4"
+
+
+
+{- "-inset-x-3/4" -}
+
+
+n_inset_x_3_slash_4 : String
+n_inset_x_3_slash_4 =
+    "-inset-x-3/4"
+
+
+
+{- "-inset-x-full" -}
+
+
+n_inset_x_full : String
+n_inset_x_full =
+    "-inset-x-full"
+
+
+
+{- "inset-y-auto" -}
+
+
+inset_y_auto : String
+inset_y_auto =
+    "inset-y-auto"
+
+
+
+{- "inset-y-1/2" -}
+
+
+inset_y_1_slash_2 : String
+inset_y_1_slash_2 =
+    "inset-y-1/2"
+
+
+
+{- "inset-y-1/3" -}
+
+
+inset_y_1_slash_3 : String
+inset_y_1_slash_3 =
+    "inset-y-1/3"
+
+
+
+{- "inset-y-2/3" -}
+
+
+inset_y_2_slash_3 : String
+inset_y_2_slash_3 =
+    "inset-y-2/3"
+
+
+
+{- "inset-y-1/4" -}
+
+
+inset_y_1_slash_4 : String
+inset_y_1_slash_4 =
+    "inset-y-1/4"
+
+
+
+{- "inset-y-2/4" -}
+
+
+inset_y_2_slash_4 : String
+inset_y_2_slash_4 =
+    "inset-y-2/4"
+
+
+
+{- "inset-y-3/4" -}
+
+
+inset_y_3_slash_4 : String
+inset_y_3_slash_4 =
+    "inset-y-3/4"
+
+
+
+{- "inset-y-full" -}
+
+
+inset_y_full : String
+inset_y_full =
+    "inset-y-full"
+
+
+
+{- "-inset-y-1/2" -}
+
+
+n_inset_y_1_slash_2 : String
+n_inset_y_1_slash_2 =
+    "-inset-y-1/2"
+
+
+
+{- "-inset-y-1/3" -}
+
+
+n_inset_y_1_slash_3 : String
+n_inset_y_1_slash_3 =
+    "-inset-y-1/3"
+
+
+
+{- "-inset-y-2/3" -}
+
+
+n_inset_y_2_slash_3 : String
+n_inset_y_2_slash_3 =
+    "-inset-y-2/3"
+
+
+
+{- "-inset-y-1/4" -}
+
+
+n_inset_y_1_slash_4 : String
+n_inset_y_1_slash_4 =
+    "-inset-y-1/4"
+
+
+
+{- "-inset-y-2/4" -}
+
+
+n_inset_y_2_slash_4 : String
+n_inset_y_2_slash_4 =
+    "-inset-y-2/4"
+
+
+
+{- "-inset-y-3/4" -}
+
+
+n_inset_y_3_slash_4 : String
+n_inset_y_3_slash_4 =
+    "-inset-y-3/4"
+
+
+
+{- "-inset-y-full" -}
+
+
+n_inset_y_full : String
+n_inset_y_full =
+    "-inset-y-full"
+
+
+
+{- "top-auto" -}
+
+
+top_auto : String
+top_auto =
+    "top-auto"
+
+
+
+{- "top-1/2" -}
+
+
+top_1_slash_2 : String
+top_1_slash_2 =
+    "top-1/2"
+
+
+
+{- "top-1/3" -}
+
+
+top_1_slash_3 : String
+top_1_slash_3 =
+    "top-1/3"
+
+
+
+{- "top-2/3" -}
+
+
+top_2_slash_3 : String
+top_2_slash_3 =
+    "top-2/3"
+
+
+
+{- "top-1/4" -}
+
+
+top_1_slash_4 : String
+top_1_slash_4 =
+    "top-1/4"
+
+
+
+{- "top-2/4" -}
+
+
+top_2_slash_4 : String
+top_2_slash_4 =
+    "top-2/4"
+
+
+
+{- "top-3/4" -}
+
+
+top_3_slash_4 : String
+top_3_slash_4 =
+    "top-3/4"
+
+
+
+{- "top-full" -}
+
+
+top_full : String
+top_full =
+    "top-full"
+
+
+
+{- "-top-1/2" -}
+
+
+n_top_1_slash_2 : String
+n_top_1_slash_2 =
+    "-top-1/2"
+
+
+
+{- "-top-1/3" -}
+
+
+n_top_1_slash_3 : String
+n_top_1_slash_3 =
+    "-top-1/3"
+
+
+
+{- "-top-2/3" -}
+
+
+n_top_2_slash_3 : String
+n_top_2_slash_3 =
+    "-top-2/3"
+
+
+
+{- "-top-1/4" -}
+
+
+n_top_1_slash_4 : String
+n_top_1_slash_4 =
+    "-top-1/4"
+
+
+
+{- "-top-2/4" -}
+
+
+n_top_2_slash_4 : String
+n_top_2_slash_4 =
+    "-top-2/4"
+
+
+
+{- "-top-3/4" -}
+
+
+n_top_3_slash_4 : String
+n_top_3_slash_4 =
+    "-top-3/4"
+
+
+
+{- "-top-full" -}
+
+
+n_top_full : String
+n_top_full =
+    "-top-full"
+
+
+
+{- "right-auto" -}
+
+
+right_auto : String
+right_auto =
+    "right-auto"
+
+
+
+{- "right-1/2" -}
+
+
+right_1_slash_2 : String
+right_1_slash_2 =
+    "right-1/2"
+
+
+
+{- "right-1/3" -}
+
+
+right_1_slash_3 : String
+right_1_slash_3 =
+    "right-1/3"
+
+
+
+{- "right-2/3" -}
+
+
+right_2_slash_3 : String
+right_2_slash_3 =
+    "right-2/3"
+
+
+
+{- "right-1/4" -}
+
+
+right_1_slash_4 : String
+right_1_slash_4 =
+    "right-1/4"
+
+
+
+{- "right-2/4" -}
+
+
+right_2_slash_4 : String
+right_2_slash_4 =
+    "right-2/4"
+
+
+
+{- "right-3/4" -}
+
+
+right_3_slash_4 : String
+right_3_slash_4 =
+    "right-3/4"
+
+
+
+{- "right-full" -}
+
+
+right_full : String
+right_full =
+    "right-full"
+
+
+
+{- "-right-1/2" -}
+
+
+n_right_1_slash_2 : String
+n_right_1_slash_2 =
+    "-right-1/2"
+
+
+
+{- "-right-1/3" -}
+
+
+n_right_1_slash_3 : String
+n_right_1_slash_3 =
+    "-right-1/3"
+
+
+
+{- "-right-2/3" -}
+
+
+n_right_2_slash_3 : String
+n_right_2_slash_3 =
+    "-right-2/3"
+
+
+
+{- "-right-1/4" -}
+
+
+n_right_1_slash_4 : String
+n_right_1_slash_4 =
+    "-right-1/4"
+
+
+
+{- "-right-2/4" -}
+
+
+n_right_2_slash_4 : String
+n_right_2_slash_4 =
+    "-right-2/4"
+
+
+
+{- "-right-3/4" -}
+
+
+n_right_3_slash_4 : String
+n_right_3_slash_4 =
+    "-right-3/4"
+
+
+
+{- "-right-full" -}
+
+
+n_right_full : String
+n_right_full =
+    "-right-full"
+
+
+
+{- "bottom-auto" -}
+
+
+bottom_auto : String
+bottom_auto =
+    "bottom-auto"
+
+
+
+{- "bottom-1/2" -}
+
+
+bottom_1_slash_2 : String
+bottom_1_slash_2 =
+    "bottom-1/2"
+
+
+
+{- "bottom-1/3" -}
+
+
+bottom_1_slash_3 : String
+bottom_1_slash_3 =
+    "bottom-1/3"
+
+
+
+{- "bottom-2/3" -}
+
+
+bottom_2_slash_3 : String
+bottom_2_slash_3 =
+    "bottom-2/3"
+
+
+
+{- "bottom-1/4" -}
+
+
+bottom_1_slash_4 : String
+bottom_1_slash_4 =
+    "bottom-1/4"
+
+
+
+{- "bottom-2/4" -}
+
+
+bottom_2_slash_4 : String
+bottom_2_slash_4 =
+    "bottom-2/4"
+
+
+
+{- "bottom-3/4" -}
+
+
+bottom_3_slash_4 : String
+bottom_3_slash_4 =
+    "bottom-3/4"
+
+
+
+{- "bottom-full" -}
+
+
+bottom_full : String
+bottom_full =
+    "bottom-full"
+
+
+
+{- "-bottom-1/2" -}
+
+
+n_bottom_1_slash_2 : String
+n_bottom_1_slash_2 =
+    "-bottom-1/2"
+
+
+
+{- "-bottom-1/3" -}
+
+
+n_bottom_1_slash_3 : String
+n_bottom_1_slash_3 =
+    "-bottom-1/3"
+
+
+
+{- "-bottom-2/3" -}
+
+
+n_bottom_2_slash_3 : String
+n_bottom_2_slash_3 =
+    "-bottom-2/3"
+
+
+
+{- "-bottom-1/4" -}
+
+
+n_bottom_1_slash_4 : String
+n_bottom_1_slash_4 =
+    "-bottom-1/4"
+
+
+
+{- "-bottom-2/4" -}
+
+
+n_bottom_2_slash_4 : String
+n_bottom_2_slash_4 =
+    "-bottom-2/4"
+
+
+
+{- "-bottom-3/4" -}
+
+
+n_bottom_3_slash_4 : String
+n_bottom_3_slash_4 =
+    "-bottom-3/4"
+
+
+
+{- "-bottom-full" -}
+
+
+n_bottom_full : String
+n_bottom_full =
+    "-bottom-full"
+
+
+
+{- "left-auto" -}
+
+
+left_auto : String
+left_auto =
+    "left-auto"
+
+
+
+{- "left-1/2" -}
+
+
+left_1_slash_2 : String
+left_1_slash_2 =
+    "left-1/2"
+
+
+
+{- "left-1/3" -}
+
+
+left_1_slash_3 : String
+left_1_slash_3 =
+    "left-1/3"
+
+
+
+{- "left-2/3" -}
+
+
+left_2_slash_3 : String
+left_2_slash_3 =
+    "left-2/3"
+
+
+
+{- "left-1/4" -}
+
+
+left_1_slash_4 : String
+left_1_slash_4 =
+    "left-1/4"
+
+
+
+{- "left-2/4" -}
+
+
+left_2_slash_4 : String
+left_2_slash_4 =
+    "left-2/4"
+
+
+
+{- "left-3/4" -}
+
+
+left_3_slash_4 : String
+left_3_slash_4 =
+    "left-3/4"
+
+
+
+{- "left-full" -}
+
+
+left_full : String
+left_full =
+    "left-full"
+
+
+
+{- "-left-1/2" -}
+
+
+n_left_1_slash_2 : String
+n_left_1_slash_2 =
+    "-left-1/2"
+
+
+
+{- "-left-1/3" -}
+
+
+n_left_1_slash_3 : String
+n_left_1_slash_3 =
+    "-left-1/3"
+
+
+
+{- "-left-2/3" -}
+
+
+n_left_2_slash_3 : String
+n_left_2_slash_3 =
+    "-left-2/3"
+
+
+
+{- "-left-1/4" -}
+
+
+n_left_1_slash_4 : String
+n_left_1_slash_4 =
+    "-left-1/4"
+
+
+
+{- "-left-2/4" -}
+
+
+n_left_2_slash_4 : String
+n_left_2_slash_4 =
+    "-left-2/4"
+
+
+
+{- "-left-3/4" -}
+
+
+n_left_3_slash_4 : String
+n_left_3_slash_4 =
+    "-left-3/4"
+
+
+
+{- "-left-full" -}
+
+
+n_left_full : String
+n_left_full =
+    "-left-full"
