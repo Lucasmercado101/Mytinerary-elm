@@ -16580,3 +16580,733 @@ list_item =
 hidden : String
 hidden =
     "hidden"
+
+
+
+-- Border Radius (https://tailwindcss.com/docs/border-radius#rounded-corners)
+{- "rounded-none" -}
+
+
+rounded_none : String
+rounded_none =
+    "rounded-none"
+
+
+
+{- "rounded-sm" -}
+
+
+rounded_sm : String
+rounded_sm =
+    "rounded-sm"
+
+
+
+{- "rounded" -}
+
+
+rounded : String
+rounded =
+    "rounded"
+
+
+
+{- "rounded-md" -}
+
+
+rounded_md : String
+rounded_md =
+    "rounded-md"
+
+
+
+{- "rounded-lg" -}
+
+
+rounded_lg : String
+rounded_lg =
+    "rounded-lg"
+
+
+
+{- "rounded-xl" -}
+
+
+rounded_xl : String
+rounded_xl =
+    "rounded-xl"
+
+
+
+{- "rounded-2xl" -}
+
+
+rounded_2xl : String
+rounded_2xl =
+    "rounded-2xl"
+
+
+
+{- "rounded-3xl" -}
+
+
+rounded_3xl : String
+rounded_3xl =
+    "rounded-3xl"
+
+
+
+{- "rounded-full" -}
+
+
+rounded_full : String
+rounded_full =
+    "rounded-full"
+
+
+
+{- "rounded-t-none" -}
+
+
+rounded_t_none : String
+rounded_t_none =
+    "rounded-t-none"
+
+
+
+{- "rounded-t-sm" -}
+
+
+rounded_t_sm : String
+rounded_t_sm =
+    "rounded-t-sm"
+
+
+
+{- "rounded-t" -}
+
+
+rounded_t : String
+rounded_t =
+    "rounded-t"
+
+
+
+{- "rounded-t-md" -}
+
+
+rounded_t_md : String
+rounded_t_md =
+    "rounded-t-md"
+
+
+
+{- "rounded-t-lg" -}
+
+
+rounded_t_lg : String
+rounded_t_lg =
+    "rounded-t-lg"
+
+
+
+{- "rounded-t-xl" -}
+
+
+rounded_t_xl : String
+rounded_t_xl =
+    "rounded-t-xl"
+
+
+
+{- "rounded-t-2xl" -}
+
+
+rounded_t_2xl : String
+rounded_t_2xl =
+    "rounded-t-2xl"
+
+
+
+{- "rounded-t-3xl" -}
+
+
+rounded_t_3xl : String
+rounded_t_3xl =
+    "rounded-t-3xl"
+
+
+
+{- "rounded-t-full" -}
+
+
+rounded_t_full : String
+rounded_t_full =
+    "rounded-t-full"
+
+
+
+{- "rounded-r-none" -}
+
+
+rounded_r_none : String
+rounded_r_none =
+    "rounded-r-none"
+
+
+
+{- "rounded-r-sm" -}
+
+
+rounded_r_sm : String
+rounded_r_sm =
+    "rounded-r-sm"
+
+
+
+{- "rounded-r" -}
+
+
+rounded_r : String
+rounded_r =
+    "rounded-r"
+
+
+
+{- "rounded-r-md" -}
+
+
+rounded_r_md : String
+rounded_r_md =
+    "rounded-r-md"
+
+
+
+{- "rounded-r-lg" -}
+
+
+rounded_r_lg : String
+rounded_r_lg =
+    "rounded-r-lg"
+
+
+
+{- "rounded-r-xl" -}
+
+
+rounded_r_xl : String
+rounded_r_xl =
+    "rounded-r-xl"
+
+
+
+{- "rounded-r-2xl" -}
+
+
+rounded_r_2xl : String
+rounded_r_2xl =
+    "rounded-r-2xl"
+
+
+
+{- "rounded-r-3xl" -}
+
+
+rounded_r_3xl : String
+rounded_r_3xl =
+    "rounded-r-3xl"
+
+
+
+{- "rounded-r-full" -}
+
+
+rounded_r_full : String
+rounded_r_full =
+    "rounded-r-full"
+
+
+
+{- "rounded-b-none" -}
+
+
+rounded_b_none : String
+rounded_b_none =
+    "rounded-b-none"
+
+
+
+{- "rounded-b-sm" -}
+
+
+rounded_b_sm : String
+rounded_b_sm =
+    "rounded-b-sm"
+
+
+
+{- "rounded-b" -}
+
+
+rounded_b : String
+rounded_b =
+    "rounded-b"
+
+
+
+{- "rounded-b-md" -}
+
+
+rounded_b_md : String
+rounded_b_md =
+    "rounded-b-md"
+
+
+
+{- "rounded-b-lg" -}
+
+
+rounded_b_lg : String
+rounded_b_lg =
+    "rounded-b-lg"
+
+
+
+{- "rounded-b-xl" -}
+
+
+rounded_b_xl : String
+rounded_b_xl =
+    "rounded-b-xl"
+
+
+
+{- "rounded-b-2xl" -}
+
+
+rounded_b_2xl : String
+rounded_b_2xl =
+    "rounded-b-2xl"
+
+
+
+{- "rounded-b-3xl" -}
+
+
+rounded_b_3xl : String
+rounded_b_3xl =
+    "rounded-b-3xl"
+
+
+
+{- "rounded-b-full" -}
+
+
+rounded_b_full : String
+rounded_b_full =
+    "rounded-b-full"
+
+
+
+{- "rounded-l-none" -}
+
+
+rounded_l_none : String
+rounded_l_none =
+    "rounded-l-none"
+
+
+
+{- "rounded-l-sm" -}
+
+
+rounded_l_sm : String
+rounded_l_sm =
+    "rounded-l-sm"
+
+
+
+{- "rounded-l" -}
+
+
+rounded_l : String
+rounded_l =
+    "rounded-l"
+
+
+
+{- "rounded-l-md" -}
+
+
+rounded_l_md : String
+rounded_l_md =
+    "rounded-l-md"
+
+
+
+{- "rounded-l-lg" -}
+
+
+rounded_l_lg : String
+rounded_l_lg =
+    "rounded-l-lg"
+
+
+
+{- "rounded-l-xl" -}
+
+
+rounded_l_xl : String
+rounded_l_xl =
+    "rounded-l-xl"
+
+
+
+{- "rounded-l-2xl" -}
+
+
+rounded_l_2xl : String
+rounded_l_2xl =
+    "rounded-l-2xl"
+
+
+
+{- "rounded-l-3xl" -}
+
+
+rounded_l_3xl : String
+rounded_l_3xl =
+    "rounded-l-3xl"
+
+
+
+{- "rounded-l-full" -}
+
+
+rounded_l_full : String
+rounded_l_full =
+    "rounded-l-full"
+
+
+
+{- "rounded-tl-none" -}
+
+
+rounded_tl_none : String
+rounded_tl_none =
+    "rounded-tl-none"
+
+
+
+{- "rounded-tl-sm" -}
+
+
+rounded_tl_sm : String
+rounded_tl_sm =
+    "rounded-tl-sm"
+
+
+
+{- "rounded-tl" -}
+
+
+rounded_tl : String
+rounded_tl =
+    "rounded-tl"
+
+
+
+{- "rounded-tl-md" -}
+
+
+rounded_tl_md : String
+rounded_tl_md =
+    "rounded-tl-md"
+
+
+
+{- "rounded-tl-lg" -}
+
+
+rounded_tl_lg : String
+rounded_tl_lg =
+    "rounded-tl-lg"
+
+
+
+{- "rounded-tl-xl" -}
+
+
+rounded_tl_xl : String
+rounded_tl_xl =
+    "rounded-tl-xl"
+
+
+
+{- "rounded-tl-2xl" -}
+
+
+rounded_tl_2xl : String
+rounded_tl_2xl =
+    "rounded-tl-2xl"
+
+
+
+{- "rounded-tl-3xl" -}
+
+
+rounded_tl_3xl : String
+rounded_tl_3xl =
+    "rounded-tl-3xl"
+
+
+
+{- "rounded-tl-full" -}
+
+
+rounded_tl_full : String
+rounded_tl_full =
+    "rounded-tl-full"
+
+
+
+{- "rounded-tr-none" -}
+
+
+rounded_tr_none : String
+rounded_tr_none =
+    "rounded-tr-none"
+
+
+
+{- "rounded-tr-sm" -}
+
+
+rounded_tr_sm : String
+rounded_tr_sm =
+    "rounded-tr-sm"
+
+
+
+{- "rounded-tr" -}
+
+
+rounded_tr : String
+rounded_tr =
+    "rounded-tr"
+
+
+
+{- "rounded-tr-md" -}
+
+
+rounded_tr_md : String
+rounded_tr_md =
+    "rounded-tr-md"
+
+
+
+{- "rounded-tr-lg" -}
+
+
+rounded_tr_lg : String
+rounded_tr_lg =
+    "rounded-tr-lg"
+
+
+
+{- "rounded-tr-xl" -}
+
+
+rounded_tr_xl : String
+rounded_tr_xl =
+    "rounded-tr-xl"
+
+
+
+{- "rounded-tr-2xl" -}
+
+
+rounded_tr_2xl : String
+rounded_tr_2xl =
+    "rounded-tr-2xl"
+
+
+
+{- "rounded-tr-3xl" -}
+
+
+rounded_tr_3xl : String
+rounded_tr_3xl =
+    "rounded-tr-3xl"
+
+
+
+{- "rounded-tr-full" -}
+
+
+rounded_tr_full : String
+rounded_tr_full =
+    "rounded-tr-full"
+
+
+
+{- "rounded-br-none" -}
+
+
+rounded_br_none : String
+rounded_br_none =
+    "rounded-br-none"
+
+
+
+{- "rounded-br-sm" -}
+
+
+rounded_br_sm : String
+rounded_br_sm =
+    "rounded-br-sm"
+
+
+
+{- "rounded-br" -}
+
+
+rounded_br : String
+rounded_br =
+    "rounded-br"
+
+
+
+{- "rounded-br-md" -}
+
+
+rounded_br_md : String
+rounded_br_md =
+    "rounded-br-md"
+
+
+
+{- "rounded-br-lg" -}
+
+
+rounded_br_lg : String
+rounded_br_lg =
+    "rounded-br-lg"
+
+
+
+{- "rounded-br-xl" -}
+
+
+rounded_br_xl : String
+rounded_br_xl =
+    "rounded-br-xl"
+
+
+
+{- "rounded-br-2xl" -}
+
+
+rounded_br_2xl : String
+rounded_br_2xl =
+    "rounded-br-2xl"
+
+
+
+{- "rounded-br-3xl" -}
+
+
+rounded_br_3xl : String
+rounded_br_3xl =
+    "rounded-br-3xl"
+
+
+
+{- "rounded-br-full" -}
+
+
+rounded_br_full : String
+rounded_br_full =
+    "rounded-br-full"
+
+
+
+{- "rounded-bl-none" -}
+
+
+rounded_bl_none : String
+rounded_bl_none =
+    "rounded-bl-none"
+
+
+
+{- "rounded-bl-sm" -}
+
+
+rounded_bl_sm : String
+rounded_bl_sm =
+    "rounded-bl-sm"
+
+
+
+{- "rounded-bl" -}
+
+
+rounded_bl : String
+rounded_bl =
+    "rounded-bl"
+
+
+
+{- "rounded-bl-md" -}
+
+
+rounded_bl_md : String
+rounded_bl_md =
+    "rounded-bl-md"
+
+
+
+{- "rounded-bl-lg" -}
+
+
+rounded_bl_lg : String
+rounded_bl_lg =
+    "rounded-bl-lg"
+
+
+
+{- "rounded-bl-xl" -}
+
+
+rounded_bl_xl : String
+rounded_bl_xl =
+    "rounded-bl-xl"
+
+
+
+{- "rounded-bl-2xl" -}
+
+
+rounded_bl_2xl : String
+rounded_bl_2xl =
+    "rounded-bl-2xl"
+
+
+
+{- "rounded-bl-3xl" -}
+
+
+rounded_bl_3xl : String
+rounded_bl_3xl =
+    "rounded-bl-3xl"
+
+
+
+{- "rounded-bl-full" -}
+
+
+rounded_bl_full : String
+rounded_bl_full =
+    "rounded-bl-full"
