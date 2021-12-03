@@ -1,19 +1,20 @@
 module Main exposing (main)
 
-import Api.Auth
+import Api.Auth exposing (refresh)
 import Browser
 import Browser.Events
 import Browser.Navigation as Nav
 import Html exposing (Html, a, button, div, img, li, p, text, ul)
 import Html.Attributes exposing (class, classList, href, id, src)
 import Html.Events exposing (onClick)
+import Http
 import Json.Decode as Decode
 import Pages.Cities as Cities
 import Pages.City as City
 import Pages.Landing as Landing
-import Pages.Login as Login
+import Pages.Login as Login exposing (saveUserToLocalStorage)
 import Pages.Register as Register
-import Session exposing (UserSession(..))
+import Session exposing (UserSession(..), clearUserFromLocalStorageMsg)
 import SvgIcons exposing (avatarSvg, burgerSvg)
 import Url exposing (Url)
 import Url.Parser as Parser exposing ((</>), Parser, s)
@@ -140,7 +141,6 @@ type alias Model =
 
 init : Maybe Session.UserData -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init userData url key =
-    -- TODO check if user is logged in and update user accordingly
     updateUrl url
         { page = PageNotFound
         , key = key
@@ -154,6 +154,15 @@ init userData url key =
                 Nothing ->
                     LoggedOut
         }
+        |> (\( m, c ) ->
+                ( m
+                , Cmd.batch
+                    [ c
+                    , refresh
+                        GotRefreshResponse
+                    ]
+                )
+           )
 
 
 type Msg
@@ -166,6 +175,7 @@ type Msg
     | GotLoginMsg Login.Msg
     | LogOut
     | NoOp
+    | GotRefreshResponse (Result Http.Error Session.UserData)
       -- Navbar
     | ToggleMenu
     | ToggleUserMenu
@@ -177,6 +187,16 @@ update msg ({ page } as model) =
     case msg of
         NoOp ->
             ( model, Cmd.none )
+
+        GotRefreshResponse response ->
+            ( model
+            , case response of
+                Ok data ->
+                    saveUserToLocalStorage data
+
+                Err _ ->
+                    clearUserFromLocalStorageMsg
+            )
 
         ClickedLink urlRequest ->
             case urlRequest of
