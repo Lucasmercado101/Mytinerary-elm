@@ -1,4 +1,4 @@
-module Api.Auth exposing (User, logIn, logOut, registerUser)
+module Api.Auth exposing (User, logIn, logOut, refresh, registerUser)
 
 import Api.Common exposing (endpoint, postWithCredentials)
 import Http exposing (get, jsonBody)
@@ -87,3 +87,11 @@ registerUser newUser msg =
                 |> jsonBody
         , expect = Http.expectJson msg userDecoder
         }
+
+
+refresh : (Result Http.Error User -> msg) -> Cmd msg
+refresh msg =
+    postWithCredentials
+        (endpoint [ "auth", "refresh" ])
+        (Http.jsonBody JE.null)
+        (Http.expectJson msg userDecoder)
