@@ -8100,3 +8100,85 @@ text_8xl =
 text_9xl : String
 text_9xl =
     "text-9xl"
+
+
+
+-- Font Weight (https://tailwindcss.com/docs/font-weight)
+{- "font-thin" -}
+
+
+font_thin : String
+font_thin =
+    "font-thin"
+
+
+
+{- "font-extralight" -}
+
+
+font_extralight : String
+font_extralight =
+    "font-extralight"
+
+
+
+{- "font-light" -}
+
+
+font_light : String
+font_light =
+    "font-light"
+
+
+
+{- "font-normal" -}
+
+
+font_normal : String
+font_normal =
+    "font-normal"
+
+
+
+{- "font-medium" -}
+
+
+font_medium : String
+font_medium =
+    "font-medium"
+
+
+
+{- "font-semibold" -}
+
+
+font_semibold : String
+font_semibold =
+    "font-semibold"
+
+
+
+{- "font-bold" -}
+
+
+font_bold : String
+font_bold =
+    "font-bold"
+
+
+
+{- "font-extrabold" -}
+
+
+font_extrabold : String
+font_extrabold =
+    "font-extrabold"
+
+
+
+{- "ont-black" -}
+
+
+font_black : String
+font_black =
+    "font-black"
