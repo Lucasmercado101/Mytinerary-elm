@@ -16390,3 +16390,193 @@ flex_initial =
 flex_none : String
 flex_none =
     "flex-none"
+
+
+
+-- Display (https://tailwindcss.com/docs/display)
+{- "block" -}
+
+
+block : String
+block =
+    "block"
+
+
+
+{- "inline-block" -}
+
+
+inline_block : String
+inline_block =
+    "inline-block"
+
+
+
+{- "inline" -}
+
+
+inline : String
+inline =
+    "inline"
+
+
+
+{- "flex" -}
+
+
+flex : String
+flex =
+    "flex"
+
+
+
+{- "inline-flex" -}
+
+
+inline_flex : String
+inline_flex =
+    "inline-flex"
+
+
+
+{- "table" -}
+
+
+table : String
+table =
+    "table"
+
+
+
+{- "inline-table" -}
+
+
+inline_table : String
+inline_table =
+    "inline-table"
+
+
+
+{- "table-caption" -}
+
+
+table_caption : String
+table_caption =
+    "table-caption"
+
+
+
+{- "table-cell" -}
+
+
+table_cell : String
+table_cell =
+    "table-cell"
+
+
+
+{- "table-column" -}
+
+
+table_column : String
+table_column =
+    "table-column"
+
+
+
+{- "table-column-group" -}
+
+
+table_column_group : String
+table_column_group =
+    "table-column-group"
+
+
+
+{- "table-footer-group" -}
+
+
+table_footer_group : String
+table_footer_group =
+    "table-footer-group"
+
+
+
+{- "table-header-group" -}
+
+
+table_header_group : String
+table_header_group =
+    "table-header-group"
+
+
+
+{- "table-row-group" -}
+
+
+table_row_group : String
+table_row_group =
+    "table-row-group"
+
+
+
+{- "table-row" -}
+
+
+table_row : String
+table_row =
+    "table-row"
+
+
+
+{- "flow-root" -}
+
+
+flow_root : String
+flow_root =
+    "flow-root"
+
+
+
+{- "grid" -}
+
+
+grid : String
+grid =
+    "grid"
+
+
+
+{- "inline-grid" -}
+
+
+inline_grid : String
+inline_grid =
+    "inline-grid"
+
+
+
+{- "contents" -}
+
+
+contents : String
+contents =
+    "contents"
+
+
+
+{- "list-item" -}
+
+
+list_item : String
+list_item =
+    "list-item"
+
+
+
+{- "hidden" -}
+
+
+hidden : String
+hidden =
+    "hidden"
