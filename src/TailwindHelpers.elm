@@ -43,7 +43,7 @@ s2xl strs =
 
 
 -- Width (https://tailwindcss.com/docs/width)
-{- w-0 -}
+{- "w-0" -}
 
 
 w_0 : String
@@ -52,7 +52,7 @@ w_0 =
 
 
 
-{- w-px -}
+{- "w-px" -}
 
 
 w_px : String
@@ -61,7 +61,7 @@ w_px =
 
 
 
-{- w-0.5 -}
+{- "w-0.5" -}
 
 
 w_0_dot_5 : String
@@ -70,7 +70,7 @@ w_0_dot_5 =
 
 
 
-{- w-1 -}
+{- "w-1" -}
 
 
 w_1 : String
@@ -79,7 +79,7 @@ w_1 =
 
 
 
-{- w-1.5 -}
+{- "w-1.5" -}
 
 
 w_1_dot_5 : String
@@ -88,7 +88,7 @@ w_1_dot_5 =
 
 
 
-{- w-2 -}
+{- "w-2" -}
 
 
 w_2 : String
@@ -97,7 +97,7 @@ w_2 =
 
 
 
-{- w-2.5 -}
+{- "w-2.5" -}
 
 
 w_2_dot_5 : String
@@ -106,7 +106,7 @@ w_2_dot_5 =
 
 
 
-{- w-3 -}
+{- "w-3" -}
 
 
 w_3 : String
@@ -115,7 +115,7 @@ w_3 =
 
 
 
-{- w-3.5 -}
+{- "w-3.5" -}
 
 
 w_3__dot_ot_5 : String
@@ -124,7 +124,7 @@ w_3__dot_ot_5 =
 
 
 
-{- w-4 -}
+{- "w-4" -}
 
 
 w_4 : String
@@ -133,7 +133,7 @@ w_4 =
 
 
 
-{- w-5 -}
+{- "w-5" -}
 
 
 w_5 : String
@@ -142,7 +142,7 @@ w_5 =
 
 
 
-{- w-6 -}
+{- "w-6" -}
 
 
 w_6 : String
@@ -151,7 +151,7 @@ w_6 =
 
 
 
-{- w-7 -}
+{- "w-7" -}
 
 
 w_7 : String
@@ -160,7 +160,7 @@ w_7 =
 
 
 
-{- w-8 -}
+{- "w-8" -}
 
 
 w_8 : String
@@ -169,7 +169,7 @@ w_8 =
 
 
 
-{- w-9 -}
+{- "w-9" -}
 
 
 w_9 : String
@@ -178,7 +178,7 @@ w_9 =
 
 
 
-{- w-10 -}
+{- "w-10" -}
 
 
 w_10 : String
@@ -187,7 +187,7 @@ w_10 =
 
 
 
-{- w-11 -}
+{- "w-11" -}
 
 
 w_11 : String
@@ -196,7 +196,7 @@ w_11 =
 
 
 
-{- w-12 -}
+{- "w-12" -}
 
 
 w_12 : String
@@ -205,7 +205,7 @@ w_12 =
 
 
 
-{- w-14 -}
+{- "w-14" -}
 
 
 w_14 : String
@@ -214,7 +214,7 @@ w_14 =
 
 
 
-{- w-16 -}
+{- "w-16" -}
 
 
 w_16 : String
@@ -223,7 +223,7 @@ w_16 =
 
 
 
-{- w-20 -}
+{- "w-20" -}
 
 
 w_20 : String
@@ -232,7 +232,7 @@ w_20 =
 
 
 
-{- w-24 -}
+{- "w-24" -}
 
 
 w_24 : String
@@ -241,7 +241,7 @@ w_24 =
 
 
 
-{- w-28 -}
+{- "w-28" -}
 
 
 w_28 : String
@@ -250,7 +250,7 @@ w_28 =
 
 
 
-{- w-32 -}
+{- "w-32" -}
 
 
 w_32 : String
@@ -259,7 +259,7 @@ w_32 =
 
 
 
-{- w-36 -}
+{- "w-36" -}
 
 
 w_36 : String
@@ -268,7 +268,7 @@ w_36 =
 
 
 
-{- w-40 -}
+{- "w-40" -}
 
 
 w_40 : String
@@ -277,7 +277,7 @@ w_40 =
 
 
 
-{- w-44 -}
+{- "w-44" -}
 
 
 w_44 : String
@@ -286,7 +286,7 @@ w_44 =
 
 
 
-{- w-48 -}
+{- "w-48" -}
 
 
 w_48 : String
@@ -295,7 +295,7 @@ w_48 =
 
 
 
-{- w-52 -}
+{- "w-52" -}
 
 
 w_52 : String
@@ -304,7 +304,7 @@ w_52 =
 
 
 
-{- w-56 -}
+{- "w-56" -}
 
 
 w_56 : String
@@ -313,7 +313,7 @@ w_56 =
 
 
 
-{- w-60 -}
+{- "w-60" -}
 
 
 w_60 : String
@@ -322,7 +322,7 @@ w_60 =
 
 
 
-{- w-64 -}
+{- "w-64" -}
 
 
 w_64 : String
@@ -331,7 +331,7 @@ w_64 =
 
 
 
-{- w-72 -}
+{- "w-72" -}
 
 
 w_72 : String
@@ -340,7 +340,7 @@ w_72 =
 
 
 
-{- w-80 -}
+{- "w-80" -}
 
 
 w_80 : String
@@ -349,7 +349,7 @@ w_80 =
 
 
 
-{- w-96 -}
+{- "w-96" -}
 
 
 w_96 : String
@@ -358,7 +358,7 @@ w_96 =
 
 
 
-{- w-auto -}
+{- "w-auto" -}
 
 
 w_auto : String
@@ -367,7 +367,7 @@ w_auto =
 
 
 
-{- w-1/2 -}
+{- "w-1/2" -}
 
 
 w_1_slash_2 : String
@@ -376,7 +376,7 @@ w_1_slash_2 =
 
 
 
-{- w-1/3 -}
+{- "w-1/3" -}
 
 
 w_1_slash_3 : String
@@ -385,7 +385,7 @@ w_1_slash_3 =
 
 
 
-{- w-2/3 -}
+{- "w-2/3" -}
 
 
 w_2_slash_3 : String
@@ -394,7 +394,7 @@ w_2_slash_3 =
 
 
 
-{- w-1/4 -}
+{- "w-1/4" -}
 
 
 w_1_slash_4 : String
@@ -403,7 +403,7 @@ w_1_slash_4 =
 
 
 
-{- w-2/4 -}
+{- "w-2/4" -}
 
 
 w_2_slash_4 : String
@@ -412,7 +412,7 @@ w_2_slash_4 =
 
 
 
-{- w-3/4 -}
+{- "w-3/4" -}
 
 
 w_3_slash_4 : String
@@ -421,7 +421,7 @@ w_3_slash_4 =
 
 
 
-{- w-1/5 -}
+{- "w-1/5" -}
 
 
 w_1_slash_5 : String
@@ -430,7 +430,7 @@ w_1_slash_5 =
 
 
 
-{- w-2/5 -}
+{- "w-2/5" -}
 
 
 w_2_slash_5 : String
@@ -439,7 +439,7 @@ w_2_slash_5 =
 
 
 
-{- w-3/5 -}
+{- "w-3/5" -}
 
 
 w_3_slash_5 : String
@@ -448,7 +448,7 @@ w_3_slash_5 =
 
 
 
-{- w-4/5 -}
+{- "w-4/5" -}
 
 
 w_4_slash_5 : String
@@ -457,7 +457,7 @@ w_4_slash_5 =
 
 
 
-{- w-1/6 -}
+{- "w-1/6" -}
 
 
 w_1_slash_6 : String
@@ -466,7 +466,7 @@ w_1_slash_6 =
 
 
 
-{- w-2/6 -}
+{- "w-2/6" -}
 
 
 w_2_slash_6 : String
@@ -475,7 +475,7 @@ w_2_slash_6 =
 
 
 
-{- w-3/6 -}
+{- "w-3/6" -}
 
 
 w_3_slash_6 : String
@@ -484,7 +484,7 @@ w_3_slash_6 =
 
 
 
-{- w-4/6 -}
+{- "w-4/6" -}
 
 
 w_4_slash_6 : String
@@ -493,7 +493,7 @@ w_4_slash_6 =
 
 
 
-{- w-5/6 -}
+{- "w-5/6" -}
 
 
 w_5_slash_6 : String
@@ -502,7 +502,7 @@ w_5_slash_6 =
 
 
 
-{- w-1/12 -}
+{- "w-1/12" -}
 
 
 w_1_slash_12 : String
@@ -511,7 +511,7 @@ w_1_slash_12 =
 
 
 
-{- w-2/12 -}
+{- "w-2/12" -}
 
 
 w_2_slash_12 : String
@@ -520,7 +520,7 @@ w_2_slash_12 =
 
 
 
-{- w-3/12 -}
+{- "w-3/12" -}
 
 
 w_3_slash_12 : String
@@ -529,7 +529,7 @@ w_3_slash_12 =
 
 
 
-{- w-4/12 -}
+{- "w-4/12" -}
 
 
 w_4_slash_12 : String
@@ -538,7 +538,7 @@ w_4_slash_12 =
 
 
 
-{- w-5/12 -}
+{- "w-5/12" -}
 
 
 w_5_slash_12 : String
@@ -547,7 +547,7 @@ w_5_slash_12 =
 
 
 
-{- w-6/12 -}
+{- "w-6/12" -}
 
 
 w_6_slash_12 : String
@@ -556,7 +556,7 @@ w_6_slash_12 =
 
 
 
-{- w-7/12 -}
+{- "w-7/12" -}
 
 
 w_7_slash_12 : String
@@ -565,7 +565,7 @@ w_7_slash_12 =
 
 
 
-{- w-8/12 -}
+{- "w-8/12" -}
 
 
 w_8_slash_12 : String
@@ -574,7 +574,7 @@ w_8_slash_12 =
 
 
 
-{- w-9/12 -}
+{- "w-9/12" -}
 
 
 w_9_slash_12 : String
@@ -583,7 +583,7 @@ w_9_slash_12 =
 
 
 
-{- w-10/12 -}
+{- "w-10/12" -}
 
 
 w_10_slash__12 : String
@@ -592,7 +592,7 @@ w_10_slash__12 =
 
 
 
-{- w-11/12 -}
+{- "w-11/12" -}
 
 
 w_11_slash__12 : String
@@ -601,7 +601,7 @@ w_11_slash__12 =
 
 
 
-{- w-full -}
+{- "w-full" -}
 
 
 w_full : String
@@ -610,7 +610,7 @@ w_full =
 
 
 
-{- w-screen -}
+{- "w-screen" -}
 
 
 w_screen : String
@@ -619,7 +619,7 @@ w_screen =
 
 
 
-{- w-min -}
+{- "w-min" -}
 
 
 w_min : String
@@ -628,7 +628,7 @@ w_min =
 
 
 
-{- w-max -}
+{- "w-max" -}
 
 
 w_max : String
@@ -638,6 +638,7 @@ w_max =
 
 
 -- Max Width (https://tailwindcss.com/docs/max-width)
+{- "max-w-0" -}
 
 
 max_w_0 : String
@@ -645,9 +646,17 @@ max_w_0 =
     "max-w-0"
 
 
+
+{- "max-w-none" -}
+
+
 max_w_none : String
 max_w_none =
     "max-w-none"
+
+
+
+{- "max-w-xs" -}
 
 
 max_w_xs : String
@@ -655,9 +664,17 @@ max_w_xs =
     "max-w-xs"
 
 
+
+{- "max-w-sm" -}
+
+
 max_w_sm : String
 max_w_sm =
     "max-w-sm"
+
+
+
+{- "max-w-md" -}
 
 
 max_w_md : String
@@ -665,9 +682,17 @@ max_w_md =
     "max-w-md"
 
 
+
+{- "max-w-lg" -}
+
+
 max_w_lg : String
 max_w_lg =
     "max-w-lg"
+
+
+
+{- "max-w-xl" -}
 
 
 max_w_xl : String
@@ -675,9 +700,17 @@ max_w_xl =
     "max-w-xl"
 
 
+
+{- "max-w-2xl" -}
+
+
 max_w_2xl : String
 max_w_2xl =
     "max-w-2xl"
+
+
+
+{- "max-w-3xl" -}
 
 
 max_w_3xl : String
@@ -685,9 +718,17 @@ max_w_3xl =
     "max-w-3xl"
 
 
+
+{- "max-w-4xl" -}
+
+
 max_w_4xl : String
 max_w_4xl =
     "max-w-4xl"
+
+
+
+{- "max-w-5xl" -}
 
 
 max_w_5xl : String
@@ -695,9 +736,17 @@ max_w_5xl =
     "max-w-5xl"
 
 
+
+{- "max-w-6xl" -}
+
+
 max_w_6xl : String
 max_w_6xl =
     "max-w-6xl"
+
+
+
+{- "max-w-7xl" -}
 
 
 max_w_7xl : String
@@ -705,9 +754,17 @@ max_w_7xl =
     "max-w-7xl"
 
 
+
+{- "max-w-full" -}
+
+
 max_w_full : String
 max_w_full =
     "max-w-full"
+
+
+
+{- "max-w-min" -}
 
 
 max_w_min : String
@@ -715,9 +772,17 @@ max_w_min =
     "max-w-min"
 
 
+
+{- "max-w-max" -}
+
+
 max_w_max : String
 max_w_max =
     "max-w-max"
+
+
+
+{- "max-w-prose" -}
 
 
 max_w_prose : String
@@ -725,9 +790,17 @@ max_w_prose =
     "max-w-prose"
 
 
+
+{- "max-w-screen-sm" -}
+
+
 max_w_screen_sm : String
 max_w_screen_sm =
     "max-w-screen-sm"
+
+
+
+{- "max-w-screen-md" -}
 
 
 max_w_screen_md : String
@@ -735,9 +808,17 @@ max_w_screen_md =
     "max-w-screen-md"
 
 
+
+{- "max-w-screen-lg" -}
+
+
 max_w_screen_lg : String
 max_w_screen_lg =
     "max-w-screen-lg"
+
+
+
+{- "max-w-screen-xl" -}
 
 
 max_w_screen_xl : String
@@ -745,9 +826,491 @@ max_w_screen_xl =
     "max-w-screen-xl"
 
 
+
+{- "max-w-screen-2x" -}
+
+
 max_w_screen_2xl : String
 max_w_screen_2xl =
     "max-w-screen-2x"
+
+
+
+-- Height (https://tailwindcss.com/docs/height)
+{- "h-0" -}
+
+
+h_0 : String
+h_0 =
+    "h-0"
+
+
+
+{- "h-px" -}
+
+
+h_px : String
+h_px =
+    "h-px"
+
+
+
+{- "h-0.5" -}
+
+
+h_0_dot_5 : String
+h_0_dot_5 =
+    "h-0.5"
+
+
+
+{- "h-1" -}
+
+
+h_1 : String
+h_1 =
+    "h-1"
+
+
+
+{- "h-1.5" -}
+
+
+h_1_dot_5 : String
+h_1_dot_5 =
+    "h-1.5"
+
+
+
+{- "h-2" -}
+
+
+h_2 : String
+h_2 =
+    "h-2"
+
+
+
+{- "h-2.5" -}
+
+
+h_2_dot_5 : String
+h_2_dot_5 =
+    "h-2.5"
+
+
+
+{- "h-3" -}
+
+
+h_3 : String
+h_3 =
+    "h-3"
+
+
+
+{- "h-3.5" -}
+
+
+h_3_dot_5 : String
+h_3_dot_5 =
+    "h-3.5"
+
+
+
+{- "h-4" -}
+
+
+h_4 : String
+h_4 =
+    "h-4"
+
+
+
+{- "h-5" -}
+
+
+h_5 : String
+h_5 =
+    "h-5"
+
+
+
+{- "h-6" -}
+
+
+h_6 : String
+h_6 =
+    "h-6"
+
+
+
+{- "h-7" -}
+
+
+h_7 : String
+h_7 =
+    "h-7"
+
+
+
+{- "h-8" -}
+
+
+h_8 : String
+h_8 =
+    "h-8"
+
+
+
+{- "h-9" -}
+
+
+h_9 : String
+h_9 =
+    "h-9"
+
+
+
+{- "h-10" -}
+
+
+h_10 : String
+h_10 =
+    "h-10"
+
+
+
+{- "h-11" -}
+
+
+h_11 : String
+h_11 =
+    "h-11"
+
+
+
+{- "h-12" -}
+
+
+h_12 : String
+h_12 =
+    "h-12"
+
+
+
+{- "h-14" -}
+
+
+h_14 : String
+h_14 =
+    "h-14"
+
+
+
+{- "h-16" -}
+
+
+h_16 : String
+h_16 =
+    "h-16"
+
+
+
+{- "h-20" -}
+
+
+h_20 : String
+h_20 =
+    "h-20"
+
+
+
+{- "h-24" -}
+
+
+h_24 : String
+h_24 =
+    "h-24"
+
+
+
+{- "h-28" -}
+
+
+h_28 : String
+h_28 =
+    "h-28"
+
+
+
+{- "h-32" -}
+
+
+h_32 : String
+h_32 =
+    "h-32"
+
+
+
+{- "h-36" -}
+
+
+h_36 : String
+h_36 =
+    "h-36"
+
+
+
+{- "h-40" -}
+
+
+h_40 : String
+h_40 =
+    "h-40"
+
+
+
+{- "h-44" -}
+
+
+h_44 : String
+h_44 =
+    "h-44"
+
+
+
+{- "h-48" -}
+
+
+h_48 : String
+h_48 =
+    "h-48"
+
+
+
+{- "h-52" -}
+
+
+h_52 : String
+h_52 =
+    "h-52"
+
+
+
+{- "h-56" -}
+
+
+h_56 : String
+h_56 =
+    "h-56"
+
+
+
+{- "h-60" -}
+
+
+h_60 : String
+h_60 =
+    "h-60"
+
+
+
+{- "h-64" -}
+
+
+h_64 : String
+h_64 =
+    "h-64"
+
+
+
+{- "h-72" -}
+
+
+h_72 : String
+h_72 =
+    "h-72"
+
+
+
+{- "h-80" -}
+
+
+h_80 : String
+h_80 =
+    "h-80"
+
+
+
+{- "h-96" -}
+
+
+h_96 : String
+h_96 =
+    "h-96"
+
+
+
+{- "h-auto" -}
+
+
+h_auto : String
+h_auto =
+    "h-auto"
+
+
+
+{- "h-1/2" -}
+
+
+h_1_slash_2 : String
+h_1_slash_2 =
+    "h-1/2"
+
+
+
+{- "h-1/3" -}
+
+
+h_1_slash_3 : String
+h_1_slash_3 =
+    "h-1/3"
+
+
+
+{- "h-2/3" -}
+
+
+h_2_slash_3 : String
+h_2_slash_3 =
+    "h-2/3"
+
+
+
+{- "h-1/4" -}
+
+
+h_1_slash_4 : String
+h_1_slash_4 =
+    "h-1/4"
+
+
+
+{- "h-2/4" -}
+
+
+h_2_slash_4 : String
+h_2_slash_4 =
+    "h-2/4"
+
+
+
+{- "h-3/4" -}
+
+
+h_3_slash_4 : String
+h_3_slash_4 =
+    "h-3/4"
+
+
+
+{- "h-1/5" -}
+
+
+h_1_slash_5 : String
+h_1_slash_5 =
+    "h-1/5"
+
+
+
+{- "h-2/5" -}
+
+
+h_2_slash_5 : String
+h_2_slash_5 =
+    "h-2/5"
+
+
+
+{- "h-3/5" -}
+
+
+h_3_slash_5 : String
+h_3_slash_5 =
+    "h-3/5"
+
+
+
+{- "h-4/5" -}
+
+
+h_4_slash_5 : String
+h_4_slash_5 =
+    "h-4/5"
+
+
+
+{- "h-1/6" -}
+
+
+h_1_slash_6 : String
+h_1_slash_6 =
+    "h-1/6"
+
+
+
+{- "h-2/6" -}
+
+
+h_2_slash_6 : String
+h_2_slash_6 =
+    "h-2/6"
+
+
+
+{- "h-3/6" -}
+
+
+h_3_slash_6 : String
+h_3_slash_6 =
+    "h-3/6"
+
+
+
+{- "h-4/6" -}
+
+
+h_4_slash_6 : String
+h_4_slash_6 =
+    "h-4/6"
+
+
+
+{- "h-5/6" -}
+
+
+h_5_slash_6 : String
+h_5_slash_6 =
+    "h-5/6"
+
+
+
+{- "h-full" -}
+
+
+h_full : String
+h_full =
+    "h-full"
+
+
+
+{- "h-screen" -}
+
+
+h_screen : String
+h_screen =
+    "h-screen"
 
 
 
