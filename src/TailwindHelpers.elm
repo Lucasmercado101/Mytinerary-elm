@@ -17329,3 +17329,40 @@ flex_grow_0 =
 flex_grow : String
 flex_grow =
     "flex-grow"
+
+
+
+-- Text Alignment (https://tailwindcss.com/docs/text-align)
+{- "text-left" -}
+
+
+text_left : String
+text_left =
+    "text-left"
+
+
+
+{- "text-center" -}
+
+
+text_center : String
+text_center =
+    "text-center"
+
+
+
+{- "text-right" -}
+
+
+text_right : String
+text_right =
+    "text-right"
+
+
+
+{- "text-justify" -}
+
+
+text_justify : String
+text_justify =
+    "text-justify"
