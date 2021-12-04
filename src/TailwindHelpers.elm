@@ -9,6 +9,11 @@ apply classes =
     class (String.join " " classes)
 
 
+hover : List String -> String
+hover strs =
+    strs
+        |> List.map (\str -> "hover:" ++ str)
+        |> String.join " "
 
 -- Resposive helpers (https://tailwindcss.com/docs/responsive-design)
 
