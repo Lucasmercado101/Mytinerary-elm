@@ -8,6 +8,7 @@ import Dict exposing (Dict)
 import Html exposing (Html, a, button, div, form, h1, h2, h3, img, input, label, li, p, span, text, textarea, ul)
 import Html.Attributes exposing (class, classList, disabled, for, href, id, name, placeholder, required, rows, src, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
+import HtmlComponents
 import Http
 import Json.Decode as Decode
 import Session exposing (UserData)
@@ -1849,13 +1850,9 @@ itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments } 
                                                             ]
 
                                                       else
-                                                        button
-                                                            [ class "font-bold py-2 px-4 rounded w-full"
-                                                            , classList
-                                                                [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
-                                                                , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
-                                                                ]
-                                                            , onClick (ToggleMyComments data.id)
+                                                        HtmlComponents.button
+                                                            [ onClick (ToggleMyComments data.id)
+                                                            , TW.apply [ w_full ]
                                                             ]
                                                             [ text
                                                                 ("My comments ("
@@ -1873,23 +1870,15 @@ itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments } 
                                                 div [ class "p-4 flex gap-x-4 justify-between" ]
                                                     [ if myCommentsAmount > 0 then
                                                         if showOnlyMyComments then
-                                                            button
-                                                                [ class "font-bold py-2 px-4 rounded  bg-blue-700 hover:bg-blue-700 text-white"
-                                                                , onClick (ToggleMyComments data.id)
+                                                            HtmlComponents.button
+                                                                [ onClick (ToggleMyComments data.id)
                                                                 ]
                                                                 [ text
                                                                     "Show all comments"
                                                                 ]
 
                                                         else
-                                                            button
-                                                                [ class "font-bold py-2 px-4 rounded"
-                                                                , classList
-                                                                    [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
-                                                                    , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
-                                                                    ]
-                                                                , onClick (ToggleMyComments data.id)
-                                                                ]
+                                                            HtmlComponents.button [ onClick (ToggleMyComments data.id) ]
                                                                 [ text
                                                                     ("My comments ("
                                                                         ++ (myCommentsAmount |> String.fromInt)
