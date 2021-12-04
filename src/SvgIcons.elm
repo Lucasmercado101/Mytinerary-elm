@@ -6,6 +6,10 @@ import Svg
 import Svg.Attributes
 
 
+
+-- https://heroicons.com/
+
+
 burgerSvg : Html msg
 burgerSvg =
     Svg.svg
@@ -177,6 +181,25 @@ plusSvg attrs =
             , Svg.Attributes.strokeLinejoin "round"
             , Svg.Attributes.strokeWidth "2"
             , Svg.Attributes.d "M12 4v16m8-8H4"
+            ]
+            []
+        ]
+
+
+annotationSvg : List (Svg.Attribute msg) -> Html msg
+annotationSvg attrs =
+    Svg.svg
+        ([ Svg.Attributes.fill "none"
+         , Svg.Attributes.viewBox "0 0 24 24"
+         , Svg.Attributes.stroke "currentColor"
+         ]
+            ++ attrs
+        )
+        [ Svg.path
+            [ Svg.Attributes.strokeLinecap "round"
+            , Svg.Attributes.strokeLinejoin "round"
+            , Svg.Attributes.strokeWidth "2"
+            , Svg.Attributes.d "M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
             ]
             []
         ]
