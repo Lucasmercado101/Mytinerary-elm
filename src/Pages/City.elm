@@ -1888,11 +1888,10 @@ itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments } 
 
                                                       else
                                                         text ""
-                                                    , button
+                                                    , HtmlComponents.button
                                                         [ type_ "submit"
                                                         , onClick (StartWritingComment data.id)
-                                                        , class "font-bold py-2 px-4 rounded bg-blue-700 hover:bg-blue-700 text-white"
-                                                        , classList [ ( "w-full", myCommentsAmount < 1 ) ]
+                                                        , classList [ ( w_full, myCommentsAmount < 1 ) ]
                                                         ]
                                                         [ text "Post comment" ]
                                                     ]
