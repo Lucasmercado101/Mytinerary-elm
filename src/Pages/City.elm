@@ -12,7 +12,7 @@ import Http
 import Json.Decode as Decode
 import Session exposing (UserData)
 import Svg.Attributes
-import SvgIcons exposing (chevronDownSvg, clockSvg, errorSvg, mapMarkerOutlineSvg, plusSvg, verticalDotsSvg, xSvg)
+import SvgIcons exposing (annotationSvg, chevronDownSvg, clockSvg, errorSvg, mapMarkerOutlineSvg, plusSvg, verticalDotsSvg, xSvg)
 import TailwindHelpers as TW exposing (..)
 import Tuple exposing (first)
 
@@ -1869,46 +1869,134 @@ itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments } 
                                                 div [ class "pt-2" ] []
 
                                         Nothing ->
-                                            div [ class "p-4 flex gap-x-4 justify-between" ]
-                                                [ if myCommentsAmount > 0 then
-                                                    if showOnlyMyComments then
-                                                        button
-                                                            [ class "font-bold py-2 px-4 rounded  bg-blue-700 hover:bg-blue-700 text-white"
-                                                            , onClick (ToggleMyComments data.id)
-                                                            ]
-                                                            [ text
-                                                                "Show all comments"
-                                                            ]
-
-                                                    else
-                                                        button
-                                                            [ class "font-bold py-2 px-4 rounded"
-                                                            , classList
-                                                                [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
-                                                                , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
+                                            if List.length data.comments /= 0 then
+                                                div [ class "p-4 flex gap-x-4 justify-between" ]
+                                                    [ if myCommentsAmount > 0 then
+                                                        if showOnlyMyComments then
+                                                            button
+                                                                [ class "font-bold py-2 px-4 rounded  bg-blue-700 hover:bg-blue-700 text-white"
+                                                                , onClick (ToggleMyComments data.id)
                                                                 ]
-                                                            , onClick (ToggleMyComments data.id)
-                                                            ]
-                                                            [ text
-                                                                ("My comments ("
-                                                                    ++ (myCommentsAmount |> String.fromInt)
-                                                                    ++ ")"
-                                                                )
-                                                            ]
+                                                                [ text
+                                                                    "Show all comments"
+                                                                ]
 
-                                                  else
-                                                    text ""
-                                                , button
-                                                    [ type_ "submit"
-                                                    , onClick (StartWritingComment data.id)
-                                                    , class "font-bold py-2 px-4 rounded bg-blue-700 hover:bg-blue-700 text-white"
-                                                    , classList [ ( "w-full", myCommentsAmount < 1 ) ]
+                                                        else
+                                                            button
+                                                                [ class "font-bold py-2 px-4 rounded"
+                                                                , classList
+                                                                    [ ( "bg-blue-700 hover:bg-blue-700 text-white", myCommentsAmount > 0 )
+                                                                    , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", myCommentsAmount == 0 )
+                                                                    ]
+                                                                , onClick (ToggleMyComments data.id)
+                                                                ]
+                                                                [ text
+                                                                    ("My comments ("
+                                                                        ++ (myCommentsAmount |> String.fromInt)
+                                                                        ++ ")"
+                                                                    )
+                                                                ]
+
+                                                      else
+                                                        text ""
+                                                    , button
+                                                        [ type_ "submit"
+                                                        , onClick (StartWritingComment data.id)
+                                                        , class "font-bold py-2 px-4 rounded bg-blue-700 hover:bg-blue-700 text-white"
+                                                        , classList [ ( "w-full", myCommentsAmount < 1 ) ]
+                                                        ]
+                                                        [ text "Post comment" ]
                                                     ]
-                                                    [ text "Post comment" ]
-                                                ]
+
+                                            else
+                                                text ""
 
                                 Nothing ->
                                     text ""
+                           , if List.length data.comments == 0 then
+                                case newComment of
+                                    Just _ ->
+                                        text ""
+
+                                    Nothing ->
+                                        div
+                                            [ TW.apply
+                                                [ m_auto
+                                                , text_center
+                                                , flex
+                                                , flex_col
+                                                , gap_y_3
+                                                , py_4
+                                                ]
+                                            ]
+                                            [ annotationSvg
+                                                [ [ w_12, h_12, opacity_40, mx_auto ]
+                                                    |> String.join " "
+                                                    |> Svg.Attributes.class
+                                                ]
+                                            , div []
+                                                [ p
+                                                    [ TW.apply
+                                                        [ text_black
+                                                        , font_semibold
+                                                        ]
+                                                    ]
+                                                    [ text "No comments" ]
+                                                , p
+                                                    [ TW.apply
+                                                        [ text_black
+                                                        , font_semibold
+                                                        , opacity_50
+                                                        ]
+                                                    ]
+                                                    [ text "Be the first to add a comment!" ]
+                                                ]
+                                            , case model.userSession of
+                                                Just val ->
+                                                    button
+                                                        [ onClick (StartWritingComment data.id)
+                                                        , TW.apply
+                                                            [ flex
+                                                            , p_3
+                                                            , gap_x_2
+                                                            , font_semibold
+                                                            , block
+                                                            , rounded
+                                                            , mx_auto
+                                                            , text_white
+                                                            , bg_blue_500
+                                                            , hover [ bg_blue_700 ]
+                                                            ]
+                                                        ]
+                                                        [ plusSvg
+                                                            [ [ w_6, h_6 ]
+                                                                |> String.join " "
+                                                                |> Svg.Attributes.class
+                                                            ]
+                                                        , text "Post a comment"
+                                                        ]
+
+                                                Nothing ->
+                                                    a
+                                                        [ href "/login"
+                                                        , TW.apply
+                                                            [ flex
+                                                            , p_3
+                                                            , gap_x_2
+                                                            , font_semibold
+                                                            , block
+                                                            , rounded
+                                                            , mx_auto
+                                                            , text_white
+                                                            , bg_blue_500
+                                                            , hover [ bg_blue_700 ]
+                                                            ]
+                                                        ]
+                                                        [ text "Log in to post a comment" ]
+                                            ]
+
+                             else
+                                text ""
                            , ul [ class "flex flex-col" ]
                                 (data.comments
                                     |> (\l ->
