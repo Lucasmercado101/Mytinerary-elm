@@ -43,10 +43,6 @@ init key =
     )
 
 
-
--- https://source.unsplash.com/featured/vacation
-
-
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -84,7 +80,7 @@ view { password, username, registeringState } =
                     ]
                     [ img
                         [ src "/assets/registerImage.jpg"
-                        , class "object-cover object-left h-full sm:block hidden"
+                        , class "object-cover object-bottom h-full sm:block hidden"
                         , TW.apply [ w_full, h_full ]
                         ]
                         []
