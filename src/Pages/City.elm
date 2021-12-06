@@ -1166,8 +1166,11 @@ update msg model =
         -- Edit Itinerary
         OpenEditItineraryModal id ->
             case model.cityData of
-                Loaded cityData ->
+                Loaded val ->
                     let
+                        cityData =
+                            val.data
+
                         itineraryData =
                             List.filter (\{ data } -> data.id == id) cityData.itineraries
                                 |> List.head
@@ -1195,17 +1198,21 @@ update msg model =
                                             ( "", "", "" )
                             in
                             ( { model
-                                | isEditItineraryModalOpen = True
-                                , editItineraryId = id
-                                , editItineraryName = data.title
-                                , editItineraryTime = data.time
-                                , editItineraryPrice = data.price
-                                , editItineraryFirstActivity = firstActivity
-                                , editItineraryRestActivities = restActivities
-                                , editItineraryActivitiesIdx = List.length restActivities
-                                , editItineraryTag1 = tag1
-                                , editItineraryTag2 = tag2
-                                , editItineraryTag3 = tag3
+                                | cityData =
+                                    Loaded
+                                        { val
+                                            | isEditItineraryModalOpen = True
+                                            , editItineraryId = id
+                                            , editItineraryName = data.title
+                                            , editItineraryTime = data.time
+                                            , editItineraryPrice = data.price
+                                            , editItineraryFirstActivity = firstActivity
+                                            , editItineraryRestActivities = restActivities
+                                            , editItineraryActivitiesIdx = List.length restActivities
+                                            , editItineraryTag1 = tag1
+                                            , editItineraryTag2 = tag2
+                                            , editItineraryTag3 = tag3
+                                        }
                               }
                             , Cmd.none
                             )
@@ -1217,47 +1224,101 @@ update msg model =
                     ( model, Cmd.none )
 
         CloseEditItineraryModal ->
-            ( { model | isEditItineraryModalOpen = False }, Cmd.none )
+            case model.cityData of
+                Loaded val ->
+                    ( { model | cityData = Loaded { val | isEditItineraryModalOpen = False } }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
 
         ChangeEditItineraryName newEditItineraryName ->
-            ( { model | editItineraryName = newEditItineraryName }, Cmd.none )
+            case model.cityData of
+                Loaded val ->
+                    ( { model | cityData = Loaded { val | editItineraryName = newEditItineraryName } }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
 
         ChangeEditItineraryTime newEditItineraryTime ->
-            ( { model | editItineraryTime = Maybe.withDefault 0 (String.toInt newEditItineraryTime) }, Cmd.none )
+            case model.cityData of
+                Loaded val ->
+                    ( { model | cityData = Loaded { val | editItineraryTime = Maybe.withDefault 0 (String.toInt newEditItineraryTime) } }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
 
         ChangeEditItineraryPrice newEditItineraryPrice ->
-            ( { model | editItineraryPrice = Maybe.withDefault 0 (String.toInt newEditItineraryPrice) }, Cmd.none )
+            case model.cityData of
+                Loaded val ->
+                    ( { model | cityData = Loaded { val | editItineraryPrice = Maybe.withDefault 0 (String.toInt newEditItineraryPrice) } }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
 
         ChangeEditTag1 newEditTag ->
-            ( { model | editItineraryTag1 = newEditTag }, Cmd.none )
+            case model.cityData of
+                Loaded val ->
+                    ( { model | cityData = Loaded { val | editItineraryTag1 = newEditTag } }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
 
         ChangeEditTag2 newEditTag ->
-            ( { model | editItineraryTag2 = newEditTag }, Cmd.none )
+            case model.cityData of
+                Loaded val ->
+                    ( { model | cityData = Loaded { val | editItineraryTag2 = newEditTag } }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
 
         ChangeEditTag3 newEditTag ->
-            ( { model | editItineraryTag3 = newEditTag }, Cmd.none )
+            case model.cityData of
+                Loaded val ->
+                    ( { model | cityData = Loaded { val | editItineraryTag3 = newEditTag } }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
 
         ChangeEditItineraryFirstActivity newEditFirstActivity ->
-            ( { model | editItineraryFirstActivity = newEditFirstActivity }, Cmd.none )
+            case model.cityData of
+                Loaded val ->
+                    ( { model | cityData = Loaded { val | editItineraryFirstActivity = newEditFirstActivity } }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
 
         RemoveEditItineraryActivity idx ->
-            let
-                restActivities =
-                    List.filter (\( i, _ ) -> i /= idx) model.editItineraryRestActivities
-            in
-            ( { model | editItineraryRestActivities = restActivities }, Cmd.none )
+            case model.cityData of
+                Loaded val ->
+                    let
+                        restActivities =
+                            List.filter (\( i, _ ) -> i /= idx) val.editItineraryRestActivities
+                    in
+                    ( { model | cityData = Loaded { val | editItineraryRestActivities = restActivities } }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
 
         AddEditItineraryActivity ->
-            let
-                newIdx =
-                    model.editItineraryActivitiesIdx + 1
-            in
-            ( { model
-                | editItineraryRestActivities = model.editItineraryRestActivities ++ [ ( newIdx, "" ) ]
-                , editItineraryActivitiesIdx = newIdx
-              }
-            , Cmd.none
-            )
+            case model.cityData of
+                Loaded val ->
+                    let
+                        newIdx =
+                            val.editItineraryActivitiesIdx + 1
+                    in
+                    ( { model
+                        | cityData =
+                            Loaded
+                                { val
+                                    | editItineraryRestActivities = val.editItineraryRestActivities ++ [ ( newIdx, "" ) ]
+                                    , editItineraryActivitiesIdx = newIdx
+                                }
+                      }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
 
         ChangeEditItineraryActivity idx newActivity ->
             let
