@@ -402,19 +402,33 @@ update msg model =
                 Just val ->
                     ( { model | userSession = Just val }, Cmd.none )
 
-        OpenItineraryMenu idx ->
-            ( { model | itineraryMenuOpen = Just idx }
-            , Cmd.none
-            )
+        OpenItineraryMenu id ->
+            case model.cityData of
+                Loaded data ->
+                    ( { model | cityData = Loaded { data | itineraryMenuOpen = Just id } }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
 
         CloseItineraryMenu ->
-            ( { model | itineraryMenuOpen = Nothing }
-            , Cmd.none
-            )
+            case model.cityData of
+                Loaded data ->
+                    ( { model | cityData = Loaded { data | itineraryMenuOpen = Nothing } }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
 
         DeleteItinerary idx ->
             case model.cityData of
-                Loaded cityData ->
+                Loaded val ->
+                    let
+                        cityData =
+                            val.data
+                    in
                     let
                         newCityData =
                             { cityData
@@ -1892,22 +1906,26 @@ view ({ cityData } as model) =
             _ ->
                 text ""
         , case cityData of
-            Loaded loadedCityData ->
-                if model.isEditItineraryModalOpen then
+            Loaded ({ isEditItineraryModalOpen, editItineraryId, editItineraryName, editItineraryTime, editItineraryPrice, editItineraryTag1, editItineraryTag2, editItineraryTag3, editItineraryFirstActivity, editItineraryRestActivities } as val) ->
+                let
+                    itineraries =
+                        val.data.itineraries
+                in
+                if isEditItineraryModalOpen then
                     editItineraryModal
-                        { name = model.editItineraryName
-                        , time = model.editItineraryTime
-                        , price = model.editItineraryPrice
-                        , tag1 = model.editItineraryTag1
-                        , tag2 = model.editItineraryTag2
-                        , tag3 = model.editItineraryTag3
-                        , firstActivity = model.editItineraryFirstActivity
-                        , restActivities = model.editItineraryRestActivities
+                        { name = editItineraryName
+                        , time = editItineraryTime
+                        , price = editItineraryPrice
+                        , tag1 = editItineraryTag1
+                        , tag2 = editItineraryTag2
+                        , tag3 = editItineraryTag3
+                        , firstActivity = editItineraryFirstActivity
+                        , restActivities = editItineraryRestActivities
                         }
-                        (loadedCityData.itineraries
+                        (itineraries
                             |> List.any
                                 (\{ data, action } ->
-                                    if data.id == model.editItineraryId then
+                                    if data.id == editItineraryId then
                                         case action of
                                             Just Editing ->
                                                 True
