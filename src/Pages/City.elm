@@ -4,6 +4,7 @@ import Api.City
 import Api.Itineraries
 import Browser
 import Browser.Events
+import Common exposing (Request(..))
 import Dict exposing (Dict)
 import Html exposing (Html, a, button, div, form, h1, h2, h3, img, input, label, li, p, span, text, textarea, ul)
 import Html.Attributes exposing (class, classList, disabled, for, href, id, name, placeholder, required, rows, src, type_, value)
@@ -37,23 +38,9 @@ subscriptions model =
         ]
 
 
-type alias City =
-    { id : Int
-    , name : String
-    , country : String
-    , itineraries : List Itinerary
-    }
-
-
-type CityDataRequest
-    = Loading
-    | Loaded City
-    | Error Http.Error
-
-
 type alias Model =
     { cityId : Int
-    , cityData : CityDataRequest
+    , cityData : Request City Http.Error
     , userSession : Maybe UserData
     , commentMenuOpen : Maybe Int
 
@@ -130,6 +117,14 @@ clearEditItineraryModalData model =
     }
 
 
+type alias City =
+    { id : Int
+    , name : String
+    , country : String
+    , itineraries : List Itinerary
+    }
+
+
 type alias Itinerary =
     { data :
         { id : Int
@@ -176,6 +171,7 @@ type Msg
       ----------- Comment -----------
     | ToggleMyComments Int
     | GotDeleteCommentResp (Maybe Http.Error) Int
+    | EditComment Int
     | DeleteComment Int
     | OpenCommentMenu Int
     | CloseCommentMenu
@@ -1371,6 +1367,9 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
+        EditComment id ->
+            Debug.todo "EditComment"
+
 
 view : Model -> Browser.Document Msg
 view ({ cityData, isCreatingNewItinerary } as model) =
@@ -2091,11 +2090,9 @@ itineraryComment ({ author, comment, action } as commentData) isMenuOpen showMen
                                 [ li []
                                     [ button [ class "w-full px-2 py-1", onClick (DeleteComment commentData.id) ] [ text "Delete" ]
                                     ]
-
-                                -- TODO
-                                -- , li []
-                                --     [ button [ class "w-full px-2 py-1", onClick (OpenEditItineraryModal data.id) ] [ text "Edit" ]
-                                --     ]
+                                , li []
+                                    [ button [ class "w-full px-2 py-1", onClick (EditComment commentData.id) ] [ text "Edit" ]
+                                    ]
                                 ]
                             ]
                         ]
