@@ -256,6 +256,7 @@ type LoadedCityMsg {- The city data has been loaded so... -}
     | ChangeActivity Int String
     | RemoveActivity Int
     | SubmitForm
+    | RetryCreatingNewItinerary
       -- Edit Itinerary
     | OpenEditItineraryModal Int
     | CloseEditItineraryModal
@@ -796,6 +797,42 @@ update msg model =
 
                                         Closed ->
                                             ( model, Cmd.none )
+
+                                Nothing ->
+                                    ( model, Cmd.none )
+
+                        RetryCreatingNewItinerary ->
+                            case val.newItineraryModal.retryData of
+                                Just retryData ->
+                                    let
+                                        newItineraryModalData =
+                                            val.newItineraryModal
+                                    in
+                                    ( { model
+                                        | cityData =
+                                            Loaded
+                                                { val
+                                                    | newItineraryModal =
+                                                        { newItineraryModalData
+                                                            | isCreating = Creating
+                                                        }
+                                                }
+                                      }
+                                    , Api.Itineraries.postItinerary cityData.id
+                                        { title = retryData.name
+                                        , activities =
+                                            retryData.firstActivity
+                                                :: (retryData.restActivities
+                                                        |> List.filter (\( _, l ) -> l /= "")
+                                                        |> List.map Tuple.second
+                                                   )
+                                        , price = retryData.price
+                                        , tags = [ retryData.tag1, retryData.tag2, retryData.tag3 ]
+                                        , duration = retryData.time
+                                        }
+                                        GotNewItinerary
+                                        |> Cmd.map GotLoadedCityMsg
+                                    )
 
                                 Nothing ->
                                     ( model, Cmd.none )
@@ -2000,10 +2037,35 @@ view ({ cityData } as model) =
                                 [ text "Itineraries" ]
                             , div [ class "px-4 my-2 flex flex-col gap-y-4" ]
                                 [ if creatingNewItineraryError /= "" then
-                                    div [ class "mx-auto w-full md:w-72 block font-bold rounded" ]
-                                        [ div [ class "bg-red-100 p-2 font-semibold flex gap-x-2" ]
+                                    div [ class "mx-auto w-full md:w-72 block rounded" ]
+                                        [ div
+                                            [ TW.apply
+                                                [ bg_red_100
+                                                , p_3
+                                                , flex
+                                                , gap_x_2
+                                                ]
+                                            ]
                                             [ errorSvg
-                                            , p [ class "text-red-700" ] [ text creatingNewItineraryError ]
+                                            , p [ TW.apply [ text_red_700 ] ]
+                                                [ div [ TW.apply [ flex, flex_col ] ]
+                                                    [ p [ TW.apply [ font_bold ] ] [ text "Error" ]
+                                                    , text creatingNewItineraryError
+                                                    , button
+                                                        [ TW.apply
+                                                            [ bg_red_300
+                                                            , py_2
+                                                            , px_4
+                                                            , font_bold
+                                                            , flex_grow
+                                                            , rounded
+                                                            , hover [ bg_red_500, text_red_200 ]
+                                                            ]
+                                                        , onClick RetryCreatingNewItinerary
+                                                        ]
+                                                        [ text "Retry?" ]
+                                                    ]
+                                                ]
                                             ]
                                         ]
 
@@ -2033,7 +2095,6 @@ view ({ cityData } as model) =
                               ul [ class "container mx-auto px-4 pb-4 flex flex-col md:flex-row md:flex-wrap items-baseline" ]
                                 (List.map (\l -> li [ class "md:w-1/2 xl:w-1/3 w-full p-2" ] [ itinerary l model ]) itineraries)
                             ]
-                                ++ []
                         )
                     ]
 
