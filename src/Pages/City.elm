@@ -23,54 +23,63 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
         [ Sub.map GotUser Session.localStorageUserSub
-        , case model.itineraryMenuOpen of
-            Just idx ->
-                Browser.Events.onMouseDown (outsideTarget ("itinerary-menu-" ++ String.fromInt idx) CloseItineraryMenu)
-
-            Nothing ->
-                Sub.none
         , case model.commentMenuOpen of
             Just idx ->
                 Browser.Events.onMouseDown (outsideTarget ("comment-menu-" ++ String.fromInt idx) CloseCommentMenu)
 
             Nothing ->
                 Sub.none
+        , case model.cityData of
+            Loaded val ->
+                case val.itineraryMenuOpen of
+                    Just idx ->
+                        Browser.Events.onMouseDown (outsideTarget ("itinerary-menu-" ++ String.fromInt idx) CloseItineraryMenu)
+
+                    Nothing ->
+                        Sub.none
+
+            _ ->
+                Sub.none
         ]
 
 
 type alias Model =
     { cityId : Int
-    , cityData : Request City Http.Error
+    , cityData :
+        Request
+            { data : City
+
+            -- New itinerary
+            , isNewItineraryModalOpen : Bool
+            , newItineraryName : String
+            , newItineraryFirstActivity : String
+            , newItineraryRestActivities : List ( Int, String )
+            , newItineraryActivitiesIdx : Int
+            , tag1 : String
+            , tag2 : String
+            , tag3 : String
+            , newItineraryTime : Int
+            , newItineraryPrice : Int
+            , isCreatingNewItinerary : Bool
+            , itineraryMenuOpen : Maybe Int
+            , creatingNewItineraryError : String
+
+            -- Edit Itinerary
+            , isEditItineraryModalOpen : Bool
+            , editItineraryId : Int
+            , editItineraryName : String
+            , editItineraryFirstActivity : String
+            , editItineraryRestActivities : List ( Int, String )
+            , editItineraryActivitiesIdx : Int
+            , editItineraryTime : Int
+            , editItineraryPrice : Int
+            , editItineraryTag1 : String
+            , editItineraryTag2 : String
+            , editItineraryTag3 : String
+            }
+            Http.Error
     , userSession : Maybe UserData
     , commentMenuOpen : Maybe Int
-
-    -- New itinerary
-    , isNewItineraryModalOpen : Bool
-    , newItineraryName : String
-    , newItineraryFirstActivity : String
-    , newItineraryRestActivities : List ( Int, String )
-    , newItineraryActivitiesIdx : Int
-    , tag1 : String
-    , tag2 : String
-    , tag3 : String
-    , newItineraryTime : Int
-    , newItineraryPrice : Int
-    , isCreatingNewItinerary : Bool
-    , itineraryMenuOpen : Maybe Int
-    , creatingNewItineraryError : String
-
-    -- Edit Itinerary
-    , isEditItineraryModalOpen : Bool
-    , editItineraryId : Int
-    , editItineraryName : String
-    , editItineraryFirstActivity : String
-    , editItineraryRestActivities : List ( Int, String )
-    , editItineraryActivitiesIdx : Int
-    , editItineraryTime : Int
-    , editItineraryPrice : Int
-    , editItineraryTag1 : String
-    , editItineraryTag2 : String
-    , editItineraryTag3 : String
     }
 
 
@@ -89,31 +98,49 @@ type alias ItineraryFormData =
 clearNewItineraryModalData : Model -> Model
 clearNewItineraryModalData model =
     { model
-        | newItineraryName = ""
-        , newItineraryFirstActivity = ""
-        , newItineraryRestActivities = []
-        , newItineraryActivitiesIdx = 0
-        , tag1 = ""
-        , tag2 = ""
-        , tag3 = ""
-        , newItineraryTime = 0
-        , newItineraryPrice = 0
+        | cityData =
+            case model.cityData of
+                Loaded val ->
+                    Loaded
+                        { val
+                            | newItineraryName = ""
+                            , newItineraryFirstActivity = ""
+                            , newItineraryRestActivities = []
+                            , newItineraryActivitiesIdx = 0
+                            , tag1 = ""
+                            , tag2 = ""
+                            , tag3 = ""
+                            , newItineraryTime = 0
+                            , newItineraryPrice = 0
+                        }
+
+                _ ->
+                    model.cityData
     }
 
 
 clearEditItineraryModalData : Model -> Model
 clearEditItineraryModalData model =
     { model
-        | editItineraryId = -1
-        , editItineraryName = ""
-        , editItineraryFirstActivity = ""
-        , editItineraryRestActivities = []
-        , editItineraryActivitiesIdx = -1
-        , editItineraryTime = 0
-        , editItineraryPrice = 0
-        , editItineraryTag1 = ""
-        , editItineraryTag2 = ""
-        , editItineraryTag3 = ""
+        | cityData =
+            case model.cityData of
+                Loaded val ->
+                    Loaded
+                        { val
+                            | editItineraryId = -1
+                            , editItineraryName = ""
+                            , editItineraryFirstActivity = ""
+                            , editItineraryRestActivities = []
+                            , editItineraryActivitiesIdx = -1
+                            , editItineraryTime = 0
+                            , editItineraryPrice = 0
+                            , editItineraryTag1 = ""
+                            , editItineraryTag2 = ""
+                            , editItineraryTag3 = ""
+                        }
+
+                _ ->
+                    model.cityData
     }
 
 
@@ -239,34 +266,6 @@ init cityId =
       , cityData = Loading
       , userSession = Nothing
       , commentMenuOpen = Nothing
-
-      -- New itinerary
-      , newItineraryName = ""
-      , newItineraryFirstActivity = ""
-      , newItineraryRestActivities = []
-      , newItineraryActivitiesIdx = 0
-      , tag1 = ""
-      , tag2 = ""
-      , tag3 = ""
-      , newItineraryTime = 0
-      , newItineraryPrice = 0
-      , isNewItineraryModalOpen = False
-      , isCreatingNewItinerary = False
-      , itineraryMenuOpen = Nothing
-      , creatingNewItineraryError = ""
-
-      -- Edit itinerary
-      , isEditItineraryModalOpen = False
-      , editItineraryId = -1
-      , editItineraryName = ""
-      , editItineraryFirstActivity = ""
-      , editItineraryRestActivities = []
-      , editItineraryActivitiesIdx = 0
-      , editItineraryTime = 0
-      , editItineraryPrice = 0
-      , editItineraryTag1 = ""
-      , editItineraryTag2 = ""
-      , editItineraryTag3 = ""
       }
     , Cmd.batch
         [ Api.City.getCity cityId GotCity
@@ -321,7 +320,36 @@ update msg model =
                 Ok cityData ->
                     ( { model
                         | cityData =
-                            Loaded (toCity cityData)
+                            Loaded
+                                { data = toCity cityData
+                                , -- New itinerary
+                                  newItineraryName = ""
+                                , newItineraryFirstActivity = ""
+                                , newItineraryRestActivities = []
+                                , newItineraryActivitiesIdx = 0
+                                , tag1 = ""
+                                , tag2 = ""
+                                , tag3 = ""
+                                , newItineraryTime = 0
+                                , newItineraryPrice = 0
+                                , isNewItineraryModalOpen = False
+                                , isCreatingNewItinerary = False
+                                , itineraryMenuOpen = Nothing
+                                , creatingNewItineraryError = ""
+
+                                -- Edit itinerary
+                                , isEditItineraryModalOpen = False
+                                , editItineraryId = -1
+                                , editItineraryName = ""
+                                , editItineraryFirstActivity = ""
+                                , editItineraryRestActivities = []
+                                , editItineraryActivitiesIdx = 0
+                                , editItineraryTime = 0
+                                , editItineraryPrice = 0
+                                , editItineraryTag1 = ""
+                                , editItineraryTag2 = ""
+                                , editItineraryTag3 = ""
+                                }
                       }
                     , Cmd.none
                     )
@@ -331,33 +359,40 @@ update msg model =
 
         GotUser userSession ->
             let
-                cityData =
+                cityReq =
                     model.cityData
             in
             case userSession of
                 Nothing ->
                     ( { model
                         | userSession = userSession
-                        , isNewItineraryModalOpen = False
                         , cityData =
-                            case cityData of
-                                Loaded data ->
+                            case cityReq of
+                                Loaded val ->
+                                    let
+                                        cityData =
+                                            val.data
+                                    in
                                     Loaded
-                                        { data
-                                            | itineraries =
-                                                List.map
-                                                    (\l ->
-                                                        let
-                                                            newComment =
-                                                                l.newComment
-                                                        in
-                                                        { l | newComment = Nothing }
-                                                    )
-                                                    data.itineraries
+                                        { val
+                                            | isNewItineraryModalOpen = False
+                                            , data =
+                                                { cityData
+                                                    | itineraries =
+                                                        List.map
+                                                            (\l ->
+                                                                let
+                                                                    newComment =
+                                                                        l.newComment
+                                                                in
+                                                                { l | newComment = Nothing }
+                                                            )
+                                                            cityData.itineraries
+                                                }
                                         }
 
                                 _ ->
-                                    cityData
+                                    cityReq
                       }
                         |> clearNewItineraryModalData
                         |> clearEditItineraryModalData
@@ -1645,18 +1680,26 @@ update msg model =
 
 
 view : Model -> Browser.Document Msg
-view ({ cityData, isCreatingNewItinerary } as model) =
+view ({ cityData } as model) =
     let
         cityName =
             case cityData of
                 Loading ->
                     "Loading city..."
 
-                Loaded { name } ->
-                    name
+                Loaded { data } ->
+                    data.name
 
                 Error _ ->
                     "Failed to load city"
+
+        isCreatingNewItinerary =
+            case cityData of
+                Loaded data ->
+                    data.isCreatingNewItinerary
+
+                _ ->
+                    False
     in
     { title = cityName
     , body =
@@ -1664,7 +1707,11 @@ view ({ cityData, isCreatingNewItinerary } as model) =
             Loading ->
                 div [ class "w-full h-full flex justify-center items-center" ] [ p [ class "text-4xl block md:text-6xl" ] [ text "Loading..." ] ]
 
-            Loaded { country, itineraries, name } ->
+            Loaded { data } ->
+                let
+                    { country, itineraries, name } =
+                        data
+                in
                 div [ class "h-full flex flex-col" ]
                     [ div
                         [ class "block relative py-8 text-white text-center"
@@ -2096,33 +2143,38 @@ itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments, e
                  ]
                     ++ (case model.userSession of
                             Just userData ->
-                                if userData.id == data.creator.id then
-                                    [ div [ class "ml-auto relative" ]
-                                        [ button [ onClick (OpenItineraryMenu data.id), class "w-12 h-12", disabled thisItineraryIsBeingDeleted ]
-                                            [ div [ class "flex w-12 h-12", classList [ ( "text-gray-400", thisItineraryIsBeingDeleted ) ] ] [ verticalDotsSvg ]
-                                            ]
-                                        , div
-                                            [ classList
-                                                [ ( "hidden"
-                                                  , not (Maybe.withDefault -1 model.itineraryMenuOpen == data.id)
-                                                  )
-                                                ]
-                                            , id ("itinerary-menu-" ++ String.fromInt data.id)
-                                            ]
-                                            [ ul [ class "flex flex-col gap-y-2 absolute top-0 right-0 bg-white shadow-md" ]
-                                                [ li []
-                                                    [ button [ class "w-full px-2 py-1", onClick (DeleteItinerary data.id) ] [ text "Delete" ]
+                                case model.cityData of
+                                    Loaded val ->
+                                        if userData.id == data.creator.id then
+                                            [ div [ class "ml-auto relative" ]
+                                                [ button [ onClick (OpenItineraryMenu data.id), class "w-12 h-12", disabled thisItineraryIsBeingDeleted ]
+                                                    [ div [ class "flex w-12 h-12", classList [ ( "text-gray-400", thisItineraryIsBeingDeleted ) ] ] [ verticalDotsSvg ]
                                                     ]
-                                                , li []
-                                                    [ button [ class "w-full px-2 py-1", onClick (OpenEditItineraryModal data.id) ] [ text "Edit" ]
+                                                , div
+                                                    [ classList
+                                                        [ ( "hidden"
+                                                          , not (Maybe.withDefault -1 val.itineraryMenuOpen == data.id)
+                                                          )
+                                                        ]
+                                                    , id ("itinerary-menu-" ++ String.fromInt data.id)
+                                                    ]
+                                                    [ ul [ class "flex flex-col gap-y-2 absolute top-0 right-0 bg-white shadow-md" ]
+                                                        [ li []
+                                                            [ button [ class "w-full px-2 py-1", onClick (DeleteItinerary data.id) ] [ text "Delete" ]
+                                                            ]
+                                                        , li []
+                                                            [ button [ class "w-full px-2 py-1", onClick (OpenEditItineraryModal data.id) ] [ text "Edit" ]
+                                                            ]
+                                                        ]
                                                     ]
                                                 ]
                                             ]
-                                        ]
-                                    ]
 
-                                else
-                                    []
+                                        else
+                                            []
+
+                                    _ ->
+                                        []
 
                             Nothing ->
                                 []
