@@ -1,4 +1,4 @@
-module Common exposing (Request)
+module Common exposing (Request(..))
 
 
 type Request a b
