@@ -1707,7 +1707,7 @@ view ({ cityData } as model) =
             Loading ->
                 div [ class "w-full h-full flex justify-center items-center" ] [ p [ class "text-4xl block md:text-6xl" ] [ text "Loading..." ] ]
 
-            Loaded { data } ->
+            Loaded { data, creatingNewItineraryError } ->
                 let
                     { country, itineraries, name } =
                         data
@@ -1819,11 +1819,11 @@ view ({ cityData } as model) =
                                 [ class "pt-2 text-center text-2xl" ]
                                 [ text "Itineraries" ]
                             , div [ class "px-4 my-2 flex flex-col gap-y-4" ]
-                                [ if model.creatingNewItineraryError /= "" then
+                                [ if creatingNewItineraryError /= "" then
                                     div [ class "mx-auto w-full md:w-72 block font-bold rounded" ]
                                         [ div [ class "bg-red-100 p-2 font-semibold flex gap-x-2" ]
                                             [ errorSvg
-                                            , p [ class "text-red-700" ] [ text model.creatingNewItineraryError ]
+                                            , p [ class "text-red-700" ] [ text creatingNewItineraryError ]
                                             ]
                                         ]
 
@@ -1871,21 +1871,26 @@ view ({ cityData } as model) =
 
                     _ ->
                         p [ class "text-center text-xl mt-5" ] [ text "An unknown error ocurred, please refresh the page and try again." ]
-        , if model.isNewItineraryModalOpen then
-            modal
-                { name = model.newItineraryName
-                , time = model.newItineraryTime
-                , price = model.newItineraryPrice
-                , tag1 = model.tag1
-                , tag2 = model.tag2
-                , tag3 = model.tag3
-                , firstActivity = model.newItineraryFirstActivity
-                , restActivities = model.newItineraryRestActivities
-                }
-                model.isCreatingNewItinerary
+        , case model.cityData of
+            Loaded { isNewItineraryModalOpen, isCreatingNewItinerary, newItineraryName, newItineraryTime, newItineraryPrice, tag1, tag2, tag3, newItineraryFirstActivity, newItineraryRestActivities } ->
+                if isNewItineraryModalOpen then
+                    modal
+                        { name = newItineraryName
+                        , time = newItineraryTime
+                        , price = newItineraryPrice
+                        , tag1 = tag1
+                        , tag2 = tag2
+                        , tag3 = tag3
+                        , firstActivity = newItineraryFirstActivity
+                        , restActivities = newItineraryRestActivities
+                        }
+                        isCreatingNewItinerary
 
-          else
-            text ""
+                else
+                    text ""
+
+            _ ->
+                text ""
         , case cityData of
             Loaded loadedCityData ->
                 if model.isEditItineraryModalOpen then
