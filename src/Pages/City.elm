@@ -47,39 +47,43 @@ type alias Model =
     { cityId : Int
     , cityData :
         Request
-            { data : City
-
-            -- New itinerary
-            , isNewItineraryModalOpen : Bool
-            , newItineraryName : String
-            , newItineraryFirstActivity : String
-            , newItineraryRestActivities : List ( Int, String )
-            , newItineraryActivitiesIdx : Int
-            , tag1 : String
-            , tag2 : String
-            , tag3 : String
-            , newItineraryTime : Int
-            , newItineraryPrice : Int
-            , isCreatingNewItinerary : Bool
-            , itineraryMenuOpen : Maybe Int
-            , creatingNewItineraryError : String
-
-            -- Edit Itinerary
-            , isEditItineraryModalOpen : Bool
-            , editItineraryId : Int
-            , editItineraryName : String
-            , editItineraryFirstActivity : String
-            , editItineraryRestActivities : List ( Int, String )
-            , editItineraryActivitiesIdx : Int
-            , editItineraryTime : Int
-            , editItineraryPrice : Int
-            , editItineraryTag1 : String
-            , editItineraryTag2 : String
-            , editItineraryTag3 : String
-            }
+            CityDataLoaded
             Http.Error
     , userSession : Maybe UserData
     , commentMenuOpen : Maybe Int
+    }
+
+
+type alias CityDataLoaded =
+    { data : City
+
+    -- New itinerary
+    , isNewItineraryModalOpen : Bool
+    , newItineraryName : String
+    , newItineraryFirstActivity : String
+    , newItineraryRestActivities : List ( Int, String )
+    , newItineraryActivitiesIdx : Int
+    , tag1 : String
+    , tag2 : String
+    , tag3 : String
+    , newItineraryTime : Int
+    , newItineraryPrice : Int
+    , isCreatingNewItinerary : Bool
+    , itineraryMenuOpen : Maybe Int
+    , creatingNewItineraryError : String
+
+    -- Edit Itinerary
+    , isEditItineraryModalOpen : Bool
+    , editItineraryId : Int
+    , editItineraryName : String
+    , editItineraryFirstActivity : String
+    , editItineraryRestActivities : List ( Int, String )
+    , editItineraryActivitiesIdx : Int
+    , editItineraryTime : Int
+    , editItineraryPrice : Int
+    , editItineraryTag1 : String
+    , editItineraryTag2 : String
+    , editItineraryTag3 : String
     }
 
 
@@ -2054,155 +2058,8 @@ view ({ cityData } as model) =
             Loading ->
                 div [ class "w-full h-full flex justify-center items-center" ] [ p [ class "text-4xl block md:text-6xl" ] [ text "Loading..." ] ]
 
-            Loaded { data, creatingNewItineraryError } ->
-                let
-                    { country, itineraries, name } =
-                        data
-                in
-                div [ class "h-full flex flex-col" ]
-                    [ div
-                        [ class "block relative py-8 text-white text-center"
-                        ]
-                        [ img [ class "city-bgr bg-black", src ("https://source.unsplash.com/featured/?" ++ name) ] []
-                        , h1 [ class "text-3xl font-semibold mb-2" ] [ text name ]
-                        , p [ class "text-2xl" ] [ text country ]
-                        ]
-                    , div [ TW.apply [ bg_gray_200, flex, flex_grow, flex_col ] ]
-                        (if List.length itineraries == 0 then
-                            let
-                                isLoggedIn =
-                                    case model.userSession of
-                                        Just _ ->
-                                            True
-
-                                        Nothing ->
-                                            False
-                            in
-                            [ div [ TW.apply [ w_full, flex, flex_grow ] ]
-                                [ div
-                                    [ TW.apply
-                                        [ m_auto
-                                        , text_center
-                                        , flex
-                                        , flex_col
-                                        , gap_y_3
-                                        ]
-                                    ]
-                                    [ mapMarkerOutlineSvg
-                                        [ [ w_12, h_12, opacity_40, mx_auto ]
-                                            |> String.join " "
-                                            |> Svg.Attributes.class
-                                        ]
-                                    , div []
-                                        [ p
-                                            [ TW.apply
-                                                [ text_black
-                                                , font_semibold
-                                                ]
-                                            ]
-                                            [ text "No itineraries" ]
-                                        , p
-                                            [ TW.apply
-                                                [ text_black
-                                                , font_semibold
-                                                , opacity_50
-                                                ]
-                                            ]
-                                            [ text "Be the first to add an itinerary!" ]
-                                        ]
-                                    , if isLoggedIn then
-                                        button
-                                            [ onClick OpenModal
-                                            , TW.apply
-                                                [ flex
-                                                , p_3
-                                                , gap_x_2
-                                                , font_semibold
-                                                , block
-                                                , rounded
-                                                , mx_auto
-                                                ]
-                                            , classList
-                                                [ ( "bg-blue-700 hover:bg-blue-700 text-white", not isCreatingNewItinerary )
-                                                , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", isCreatingNewItinerary )
-                                                ]
-                                            ]
-                                            [ plusSvg
-                                                [ [ w_6, h_6 ]
-                                                    |> String.join " "
-                                                    |> Svg.Attributes.class
-                                                ]
-                                            , if isCreatingNewItinerary then
-                                                text "Creating itinerary..."
-
-                                              else
-                                                text "Create Itinerary"
-                                            ]
-
-                                      else
-                                        a
-                                            [ href "/login"
-                                            , TW.apply
-                                                [ flex
-                                                , p_3
-                                                , gap_x_2
-                                                , font_semibold
-                                                , block
-                                                , rounded
-                                                , mx_auto
-                                                ]
-                                            , classList
-                                                [ ( "bg-blue-700 hover:bg-blue-700 text-white", not isCreatingNewItinerary )
-                                                , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", isCreatingNewItinerary )
-                                                ]
-                                            ]
-                                            [ text "Log in to create an itinerary" ]
-                                    ]
-                                ]
-                            ]
-
-                         else
-                            [ h2
-                                [ class "pt-2 text-center text-2xl" ]
-                                [ text "Itineraries" ]
-                            , div [ class "px-4 my-2 flex flex-col gap-y-4" ]
-                                [ if creatingNewItineraryError /= "" then
-                                    div [ class "mx-auto w-full md:w-72 block font-bold rounded" ]
-                                        [ div [ class "bg-red-100 p-2 font-semibold flex gap-x-2" ]
-                                            [ errorSvg
-                                            , p [ class "text-red-700" ] [ text creatingNewItineraryError ]
-                                            ]
-                                        ]
-
-                                  else
-                                    text ""
-                                , case model.userSession of
-                                    Just _ ->
-                                        button
-                                            [ onClick OpenModal
-                                            , class "mx-auto w-full md:w-64 block font-bold py-2 px-4 rounded"
-                                            , classList
-                                                [ ( "bg-blue-700 hover:bg-blue-700 text-white", not isCreatingNewItinerary )
-                                                , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", isCreatingNewItinerary )
-                                                ]
-                                            ]
-                                            [ if isCreatingNewItinerary then
-                                                text "Creating itinerary..."
-
-                                              else
-                                                text "Create Itinerary"
-                                            ]
-
-                                    Nothing ->
-                                        text ""
-                                ]
-                            , -- TODO add a max height
-                              ul [ class "container mx-auto px-4 pb-4 flex flex-col md:flex-row md:flex-wrap items-baseline" ]
-                                (List.map (\l -> li [ class "md:w-1/2 xl:w-1/3 w-full p-2" ] [ itinerary l model ]) itineraries)
-                            ]
-                                ++ []
-                        )
-                    ]
+            Loaded data ->
+                dataLoadedView data
 
             Error err ->
                 case err of
@@ -2278,6 +2135,158 @@ view ({ cityData } as model) =
                 text ""
         ]
     }
+
+
+dataLoadedView : CityDataLoaded -> Html Msg
+dataLoadedView { data, creatingNewItineraryError } =
+    let
+        { country, itineraries, name } =
+            data
+    in
+    div [ class "h-full flex flex-col" ]
+        [ div
+            [ class "block relative py-8 text-white text-center"
+            ]
+            [ img [ class "city-bgr bg-black", src ("https://source.unsplash.com/featured/?" ++ name) ] []
+            , h1 [ class "text-3xl font-semibold mb-2" ] [ text name ]
+            , p [ class "text-2xl" ] [ text country ]
+            ]
+        , div [ TW.apply [ bg_gray_200, flex, flex_grow, flex_col ] ]
+            (if List.length itineraries == 0 then
+                let
+                    isLoggedIn =
+                        case model.userSession of
+                            Just _ ->
+                                True
+
+                            Nothing ->
+                                False
+                in
+                [ div [ TW.apply [ w_full, flex, flex_grow ] ]
+                    [ div
+                        [ TW.apply
+                            [ m_auto
+                            , text_center
+                            , flex
+                            , flex_col
+                            , gap_y_3
+                            ]
+                        ]
+                        [ mapMarkerOutlineSvg
+                            [ [ w_12, h_12, opacity_40, mx_auto ]
+                                |> String.join " "
+                                |> Svg.Attributes.class
+                            ]
+                        , div []
+                            [ p
+                                [ TW.apply
+                                    [ text_black
+                                    , font_semibold
+                                    ]
+                                ]
+                                [ text "No itineraries" ]
+                            , p
+                                [ TW.apply
+                                    [ text_black
+                                    , font_semibold
+                                    , opacity_50
+                                    ]
+                                ]
+                                [ text "Be the first to add an itinerary!" ]
+                            ]
+                        , if isLoggedIn then
+                            button
+                                [ onClick OpenModal
+                                , TW.apply
+                                    [ flex
+                                    , p_3
+                                    , gap_x_2
+                                    , font_semibold
+                                    , block
+                                    , rounded
+                                    , mx_auto
+                                    ]
+                                , classList
+                                    [ ( "bg-blue-700 hover:bg-blue-700 text-white", not isCreatingNewItinerary )
+                                    , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", isCreatingNewItinerary )
+                                    ]
+                                ]
+                                [ plusSvg
+                                    [ [ w_6, h_6 ]
+                                        |> String.join " "
+                                        |> Svg.Attributes.class
+                                    ]
+                                , if isCreatingNewItinerary then
+                                    text "Creating itinerary..."
+
+                                  else
+                                    text "Create Itinerary"
+                                ]
+
+                          else
+                            a
+                                [ href "/login"
+                                , TW.apply
+                                    [ flex
+                                    , p_3
+                                    , gap_x_2
+                                    , font_semibold
+                                    , block
+                                    , rounded
+                                    , mx_auto
+                                    ]
+                                , classList
+                                    [ ( "bg-blue-700 hover:bg-blue-700 text-white", not isCreatingNewItinerary )
+                                    , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", isCreatingNewItinerary )
+                                    ]
+                                ]
+                                [ text "Log in to create an itinerary" ]
+                        ]
+                    ]
+                ]
+
+             else
+                [ h2
+                    [ class "pt-2 text-center text-2xl" ]
+                    [ text "Itineraries" ]
+                , div [ class "px-4 my-2 flex flex-col gap-y-4" ]
+                    [ if creatingNewItineraryError /= "" then
+                        div [ class "mx-auto w-full md:w-72 block font-bold rounded" ]
+                            [ div [ class "bg-red-100 p-2 font-semibold flex gap-x-2" ]
+                                [ errorSvg
+                                , p [ class "text-red-700" ] [ text creatingNewItineraryError ]
+                                ]
+                            ]
+
+                      else
+                        text ""
+                    , case model.userSession of
+                        Just _ ->
+                            button
+                                [ onClick OpenModal
+                                , class "mx-auto w-full md:w-64 block font-bold py-2 px-4 rounded"
+                                , classList
+                                    [ ( "bg-blue-700 hover:bg-blue-700 text-white", not isCreatingNewItinerary )
+                                    , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", isCreatingNewItinerary )
+                                    ]
+                                ]
+                                [ if isCreatingNewItinerary then
+                                    text "Creating itinerary..."
+
+                                  else
+                                    text "Create Itinerary"
+                                ]
+
+                        Nothing ->
+                            text ""
+                    ]
+                , -- TODO add a max height
+                  ul [ class "container mx-auto px-4 pb-4 flex flex-col md:flex-row md:flex-wrap items-baseline" ]
+                    (List.map (\l -> li [ class "md:w-1/2 xl:w-1/3 w-full p-2" ] [ itinerary l model ]) itineraries)
+                ]
+                    ++ []
+            )
+        ]
 
 
 itinerary : Itinerary -> Model -> Html Msg
