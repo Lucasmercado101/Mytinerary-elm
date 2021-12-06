@@ -470,33 +470,12 @@ update msg model =
                                     )
 
                                 Just error ->
-                                    let
-                                        errorMessage : String
-                                        errorMessage =
-                                            case error of
-                                                Http.BadStatus code ->
-                                                    case code of
-                                                        400 ->
-                                                            "Bad request"
-
-                                                        401 ->
-                                                            "Unauthorized"
-
-                                                        404 ->
-                                                            "Not found"
-
-                                                        _ ->
-                                                            "An unknown error ocurred: code " ++ String.fromInt code
-
-                                                _ ->
-                                                    "An unknown error ocurred"
-                                    in
                                     ( { val
                                         | itineraries =
                                             List.map
                                                 (\({ data } as itineraryData) ->
                                                     if data.id == idx then
-                                                        { itineraryData | action = Just (FailedToDelete errorMessage) }
+                                                        { itineraryData | action = Just (FailedToDelete (errorMessage error)) }
 
                                                     else
                                                         itineraryData
@@ -845,33 +824,13 @@ update msg model =
 
                                         Err err ->
                                             let
-                                                errorMessage : String
-                                                errorMessage =
-                                                    case err of
-                                                        Http.BadStatus code ->
-                                                            case code of
-                                                                401 ->
-                                                                    "Unauthorized"
-
-                                                                400 ->
-                                                                    "Bad request"
-
-                                                                404 ->
-                                                                    "Not found"
-
-                                                                _ ->
-                                                                    "An unknown error ocurred: code " ++ String.fromInt code
-
-                                                        _ ->
-                                                            "An unknown error ocurred"
-
                                                 itineraryModalData =
                                                     val.newItineraryModal
                                             in
                                             ( { val
                                                 | newItineraryModal =
                                                     { itineraryModalData
-                                                        | isCreating = Failed errorMessage
+                                                        | isCreating = Failed (errorMessage err)
                                                     }
                                               }
                                             , Cmd.none
@@ -917,33 +876,12 @@ update msg model =
                                         |> toLoaded
 
                                 Err err ->
-                                    let
-                                        errorMessage : String
-                                        errorMessage =
-                                            case err of
-                                                Http.BadStatus code ->
-                                                    case code of
-                                                        400 ->
-                                                            "Bad request"
-
-                                                        401 ->
-                                                            "Unauthorized"
-
-                                                        404 ->
-                                                            "Not found"
-
-                                                        _ ->
-                                                            "An unknown error ocurred: code " ++ String.fromInt code
-
-                                                _ ->
-                                                    "An unknown error ocurred"
-                                    in
                                     ( { val
                                         | itineraries =
                                             List.map
                                                 (\({ data } as itineraryData) ->
                                                     if data.id == idx then
-                                                        { itineraryData | action = Just (FailedToEdit errorMessage) }
+                                                        { itineraryData | action = Just (FailedToEdit (errorMessage err)) }
 
                                                     else
                                                         itineraryData
@@ -1513,27 +1451,6 @@ update msg model =
                                 Just userData ->
                                     case resp of
                                         Err err ->
-                                            let
-                                                errorMessage : String
-                                                errorMessage =
-                                                    case err of
-                                                        Http.BadStatus code ->
-                                                            case code of
-                                                                400 ->
-                                                                    "Bad request"
-
-                                                                401 ->
-                                                                    "Unauthorized"
-
-                                                                404 ->
-                                                                    "Not found"
-
-                                                                _ ->
-                                                                    "An unknown error ocurred: code " ++ String.fromInt code
-
-                                                        _ ->
-                                                            "An unknown error ocurred"
-                                            in
                                             ( { val
                                                 | itineraries =
                                                     List.map
@@ -1545,7 +1462,7 @@ update msg model =
                                                                             Just v ->
                                                                                 Just
                                                                                     { text = v.text
-                                                                                    , error = Just errorMessage
+                                                                                    , error = Just (errorMessage err)
                                                                                     , isCreating = False
                                                                                     }
 
@@ -3184,6 +3101,27 @@ editFormActivities { firstActivity, restActivities } isEditingItinerary =
                    ]
             )
         ]
+
+
+errorMessage : Http.Error -> String
+errorMessage err =
+    case err of
+        Http.BadStatus code ->
+            case code of
+                400 ->
+                    "Bad request"
+
+                401 ->
+                    "Unauthorized"
+
+                404 ->
+                    "Not found"
+
+                _ ->
+                    "An unknown error ocurred: code " ++ String.fromInt code
+
+        _ ->
+            "An unknown error ocurred"
 
 
 validateFormData : ItineraryFormData -> Bool
