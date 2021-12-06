@@ -7,6 +7,7 @@ module Api.Itineraries exposing
     , patchItinerary
     , postComment
     , postItinerary
+    , putComment
     )
 
 import Api.City
@@ -159,3 +160,16 @@ deleteComment commentId msg =
     deleteWithCredentials
         (endpoint [ "itinerary-comment", String.fromInt commentId ])
         (Http.expectWhatever msg)
+
+
+putComment : String -> Int -> (Result Http.Error () -> msg) -> Cmd msg
+putComment newComment commentId msg =
+    riskyRequest
+        { method = "PUT"
+        , url = endpoint [ "itinerary-comment", String.fromInt commentId ]
+        , body = stringBody "text/plain" newComment
+        , expect = Http.expectWhatever msg
+        , timeout = Nothing
+        , tracker = Nothing
+        , headers = []
+        }
