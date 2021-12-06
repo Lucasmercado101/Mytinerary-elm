@@ -2414,201 +2414,202 @@ itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments, e
             ]
          ]
             ++ (if areCommentsExpanded then
-                    div [ class "w-full h-px bg-gray-200" ] []
-                        :: [ newCommentHtml
-                           , editCommentHtml
-                           , case model.userSession of
-                                Just userData ->
-                                    let
-                                        myCommentsAmount =
-                                            data.comments
-                                                |> List.filter (\c -> c.author.id == userData.id)
-                                                |> List.length
-                                    in
-                                    case newComment of
-                                        Just _ ->
-                                            if myCommentsAmount > 0 then
-                                                div [ class "p-4" ]
-                                                    [ if showOnlyMyComments then
-                                                        button
-                                                            [ class "font-bold py-2 px-4 rounded w-full bg-blue-700 hover:bg-blue-700 text-white"
-                                                            , onClick (ToggleMyComments data.id)
+                    [ div [ class "w-full h-px bg-gray-200" ]
+                        [ newCommentHtml
+                        , editCommentHtml
+                        , case model.userSession of
+                            Just userData ->
+                                let
+                                    myCommentsAmount =
+                                        data.comments
+                                            |> List.filter (\c -> c.author.id == userData.id)
+                                            |> List.length
+                                in
+                                case newComment of
+                                    Just _ ->
+                                        if myCommentsAmount > 0 then
+                                            div [ class "p-4" ]
+                                                [ if showOnlyMyComments then
+                                                    button
+                                                        [ class "font-bold py-2 px-4 rounded w-full bg-blue-700 hover:bg-blue-700 text-white"
+                                                        , onClick (ToggleMyComments data.id)
+                                                        ]
+                                                        [ text
+                                                            "Show all comments"
+                                                        ]
+
+                                                  else
+                                                    HtmlComponents.button
+                                                        [ onClick (ToggleMyComments data.id)
+                                                        , TW.apply [ w_full ]
+                                                        ]
+                                                        [ text
+                                                            ("My comments ("
+                                                                ++ (myCommentsAmount |> String.fromInt)
+                                                                ++ ")"
+                                                            )
+                                                        ]
+                                                ]
+
+                                        else
+                                            div [ class "pt-2" ] []
+
+                                    Nothing ->
+                                        if List.length data.comments /= 0 then
+                                            div [ class "p-4 flex gap-x-4 justify-between" ]
+                                                [ if myCommentsAmount > 0 then
+                                                    if showOnlyMyComments then
+                                                        HtmlComponents.button
+                                                            [ onClick (ToggleMyComments data.id)
                                                             ]
                                                             [ text
                                                                 "Show all comments"
                                                             ]
 
-                                                      else
-                                                        HtmlComponents.button
-                                                            [ onClick (ToggleMyComments data.id)
-                                                            , TW.apply [ w_full ]
-                                                            ]
+                                                    else
+                                                        HtmlComponents.button [ onClick (ToggleMyComments data.id) ]
                                                             [ text
                                                                 ("My comments ("
                                                                     ++ (myCommentsAmount |> String.fromInt)
                                                                     ++ ")"
                                                                 )
                                                             ]
+
+                                                  else
+                                                    text ""
+                                                , HtmlComponents.button
+                                                    [ type_ "submit"
+                                                    , onClick (StartWritingComment data.id)
+                                                    , classList [ ( w_full, myCommentsAmount < 1 ) ]
                                                     ]
+                                                    [ text "Post comment" ]
+                                                ]
 
-                                            else
-                                                div [ class "pt-2" ] []
+                                        else
+                                            text ""
 
-                                        Nothing ->
-                                            if List.length data.comments /= 0 then
-                                                div [ class "p-4 flex gap-x-4 justify-between" ]
-                                                    [ if myCommentsAmount > 0 then
-                                                        if showOnlyMyComments then
-                                                            HtmlComponents.button
-                                                                [ onClick (ToggleMyComments data.id)
-                                                                ]
-                                                                [ text
-                                                                    "Show all comments"
-                                                                ]
-
-                                                        else
-                                                            HtmlComponents.button [ onClick (ToggleMyComments data.id) ]
-                                                                [ text
-                                                                    ("My comments ("
-                                                                        ++ (myCommentsAmount |> String.fromInt)
-                                                                        ++ ")"
-                                                                    )
-                                                                ]
-
-                                                      else
-                                                        text ""
-                                                    , HtmlComponents.button
-                                                        [ type_ "submit"
-                                                        , onClick (StartWritingComment data.id)
-                                                        , classList [ ( w_full, myCommentsAmount < 1 ) ]
-                                                        ]
-                                                        [ text "Post comment" ]
-                                                    ]
-
-                                            else
-                                                text ""
+                            Nothing ->
+                                text ""
+                        , if List.length data.comments == 0 then
+                            case newComment of
+                                Just _ ->
+                                    text ""
 
                                 Nothing ->
-                                    text ""
-                           , if List.length data.comments == 0 then
-                                case newComment of
-                                    Just _ ->
-                                        text ""
-
-                                    Nothing ->
-                                        div
-                                            [ TW.apply
-                                                [ m_auto
-                                                , text_center
-                                                , flex
-                                                , flex_col
-                                                , gap_y_3
-                                                , py_4
-                                                ]
+                                    div
+                                        [ TW.apply
+                                            [ m_auto
+                                            , text_center
+                                            , flex
+                                            , flex_col
+                                            , gap_y_3
+                                            , py_4
                                             ]
-                                            [ annotationSvg
-                                                [ [ w_12, h_12, opacity_40, mx_auto ]
-                                                    |> String.join " "
-                                                    |> Svg.Attributes.class
+                                        ]
+                                        [ annotationSvg
+                                            [ [ w_12, h_12, opacity_40, mx_auto ]
+                                                |> String.join " "
+                                                |> Svg.Attributes.class
+                                            ]
+                                        , div []
+                                            [ p
+                                                [ TW.apply
+                                                    [ text_black
+                                                    , font_semibold
+                                                    ]
                                                 ]
-                                            , div []
-                                                [ p
-                                                    [ TW.apply
-                                                        [ text_black
+                                                [ text "No comments" ]
+                                            , p
+                                                [ TW.apply
+                                                    [ text_black
+                                                    , font_semibold
+                                                    , opacity_50
+                                                    ]
+                                                ]
+                                                [ text "Be the first to add a comment!" ]
+                                            ]
+                                        , case model.userSession of
+                                            Just val ->
+                                                button
+                                                    [ onClick (StartWritingComment data.id)
+                                                    , TW.apply
+                                                        [ flex
+                                                        , p_3
+                                                        , gap_x_2
                                                         , font_semibold
+                                                        , block
+                                                        , rounded
+                                                        , mx_auto
+                                                        , text_white
+                                                        , bg_blue_500
+                                                        , hover [ bg_blue_700 ]
                                                         ]
                                                     ]
-                                                    [ text "No comments" ]
-                                                , p
-                                                    [ TW.apply
-                                                        [ text_black
+                                                    [ plusSvg
+                                                        [ [ w_6, h_6 ]
+                                                            |> String.join " "
+                                                            |> Svg.Attributes.class
+                                                        ]
+                                                    , text "Post a comment"
+                                                    ]
+
+                                            Nothing ->
+                                                a
+                                                    [ href "/login"
+                                                    , TW.apply
+                                                        [ flex
+                                                        , p_3
+                                                        , gap_x_2
                                                         , font_semibold
-                                                        , opacity_50
+                                                        , block
+                                                        , rounded
+                                                        , mx_auto
+                                                        , text_white
+                                                        , bg_blue_500
+                                                        , hover [ bg_blue_700 ]
                                                         ]
                                                     ]
-                                                    [ text "Be the first to add a comment!" ]
-                                                ]
-                                            , case model.userSession of
-                                                Just val ->
-                                                    button
-                                                        [ onClick (StartWritingComment data.id)
-                                                        , TW.apply
-                                                            [ flex
-                                                            , p_3
-                                                            , gap_x_2
-                                                            , font_semibold
-                                                            , block
-                                                            , rounded
-                                                            , mx_auto
-                                                            , text_white
-                                                            , bg_blue_500
-                                                            , hover [ bg_blue_700 ]
-                                                            ]
-                                                        ]
-                                                        [ plusSvg
-                                                            [ [ w_6, h_6 ]
-                                                                |> String.join " "
-                                                                |> Svg.Attributes.class
-                                                            ]
-                                                        , text "Post a comment"
-                                                        ]
+                                                    [ text "Log in to post a comment" ]
+                                        ]
 
-                                                Nothing ->
-                                                    a
-                                                        [ href "/login"
-                                                        , TW.apply
-                                                            [ flex
-                                                            , p_3
-                                                            , gap_x_2
-                                                            , font_semibold
-                                                            , block
-                                                            , rounded
-                                                            , mx_auto
-                                                            , text_white
-                                                            , bg_blue_500
-                                                            , hover [ bg_blue_700 ]
-                                                            ]
-                                                        ]
-                                                        [ text "Log in to post a comment" ]
-                                            ]
+                          else
+                            text ""
+                        , ul [ class "flex flex-col" ]
+                            (data.comments
+                                |> (\l ->
+                                        case model.userSession of
+                                            Just userData ->
+                                                if showOnlyMyComments then
+                                                    List.filter (\el -> el.author.id == userData.id) l
 
-                             else
-                                text ""
-                           , ul [ class "flex flex-col" ]
-                                (data.comments
-                                    |> (\l ->
-                                            case model.userSession of
-                                                Just userData ->
-                                                    if showOnlyMyComments then
-                                                        List.filter (\el -> el.author.id == userData.id) l
-
-                                                    else
-                                                        l
-
-                                                Nothing ->
+                                                else
                                                     l
-                                       )
-                                    |> List.map
-                                        (\comment ->
-                                            itineraryComment data.id
-                                                comment
-                                                (case model.commentMenuOpen of
-                                                    Just commentId ->
-                                                        commentId == comment.id
 
-                                                    Nothing ->
-                                                        False
-                                                )
-                                                (case model.userSession of
-                                                    Just _ ->
-                                                        True
+                                            Nothing ->
+                                                l
+                                   )
+                                |> List.map
+                                    (\comment ->
+                                        itineraryComment data.id
+                                            comment
+                                            (case model.commentMenuOpen of
+                                                Just commentId ->
+                                                    commentId == comment.id
 
-                                                    Nothing ->
-                                                        False
-                                                )
-                                        )
-                                )
-                           ]
+                                                Nothing ->
+                                                    False
+                                            )
+                                            (case model.userSession of
+                                                Just _ ->
+                                                    True
+
+                                                Nothing ->
+                                                    False
+                                            )
+                                    )
+                            )
+                        ]
+                    ]
 
                 else
                     [ text "" ]
