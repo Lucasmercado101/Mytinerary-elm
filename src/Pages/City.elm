@@ -140,12 +140,20 @@ type alias Itinerary =
     , areCommentsExpanded : Bool
     , newComment : Maybe NewComment
     , showOnlyMyComments : Bool
+    , editingComment : Maybe EditingComment
     }
 
 
 type alias NewComment =
     { text : String
     , isCreating : Bool
+    , error : Maybe String
+    }
+
+
+type alias EditingComment =
+    { text : String
+    , isEditing : Bool
     , error : Maybe String
     }
 
@@ -171,7 +179,7 @@ type Msg
       ----------- Comment -----------
     | ToggleMyComments Int
     | GotDeleteCommentResp (Maybe Http.Error) Int
-    | EditComment Int
+    | EditComment Int Int
     | DeleteComment Int
     | OpenCommentMenu Int
     | CloseCommentMenu
@@ -181,6 +189,10 @@ type Msg
     | CancelComment Int
     | PostNewComment Int
     | GotNewCommentResp (Result Http.Error Api.City.Comment) Int
+      -- Edit Comment
+    | ChangeEditComment String Int
+    | CancelEditComment Int
+    | PostEditComment Int
       ----------- Itinerary -----------
     | DeletedItinerary (Maybe Http.Error) Int
     | GotNewItinerary (Result Http.Error Api.Itineraries.NewItineraryResponse)
@@ -286,6 +298,7 @@ toItinerary i =
     , areCommentsExpanded = False
     , newComment = Nothing
     , showOnlyMyComments = False
+    , editingComment = Nothing
     }
 
 
@@ -1120,6 +1133,7 @@ update msg model =
                                                                 , isCreating = False
                                                                 , error = Nothing
                                                                 }
+                                                        , editingComment = Nothing
                                                     }
 
                                                 else
@@ -1185,10 +1199,6 @@ update msg model =
                                         List.map
                                             (\i ->
                                                 if i.data.id == id then
-                                                    let
-                                                        c =
-                                                            i.newComment
-                                                    in
                                                     { i
                                                         | newComment =
                                                             Nothing
@@ -1367,8 +1377,125 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-        EditComment id ->
-            Debug.todo "EditComment"
+        EditComment itineraryId commentId ->
+            case model.cityData of
+                Loaded cityData ->
+                    ( { model
+                        | cityData =
+                            Loaded
+                                { cityData
+                                    | itineraries =
+                                        List.map
+                                            (\i ->
+                                                if i.data.id == itineraryId then
+                                                    { i
+                                                        | editingComment =
+                                                            Just
+                                                                { text =
+                                                                    i.data.comments
+                                                                        |> List.filter (\o -> o.id == commentId)
+                                                                        |> List.head
+                                                                        |> (\o ->
+                                                                                case o of
+                                                                                    Just val ->
+                                                                                        val.comment
+
+                                                                                    Nothing ->
+                                                                                        ""
+                                                                           )
+                                                                , error = Nothing
+                                                                , isEditing = False
+                                                                }
+                                                        , newComment = Nothing
+                                                    }
+
+                                                else
+                                                    i
+                                            )
+                                            cityData.itineraries
+                                }
+                        , commentMenuOpen = Nothing
+                      }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        ChangeEditComment newComment itineraryId ->
+            case model.cityData of
+                Loaded cityData ->
+                    ( { model
+                        | cityData =
+                            Loaded
+                                { cityData
+                                    | itineraries =
+                                        List.map
+                                            (\i ->
+                                                if i.data.id == itineraryId then
+                                                    let
+                                                        c =
+                                                            i.editingComment
+                                                    in
+                                                    { i
+                                                        | editingComment =
+                                                            case c of
+                                                                Just commentData ->
+                                                                    Just
+                                                                        { commentData
+                                                                            | text = newComment
+                                                                        }
+
+                                                                Nothing ->
+                                                                    c
+                                                    }
+
+                                                else
+                                                    i
+                                            )
+                                            cityData.itineraries
+                                }
+                      }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        CancelEditComment itineraryId ->
+            case model.cityData of
+                Loaded cityData ->
+                    ( { model
+                        | cityData =
+                            Loaded
+                                { cityData
+                                    | itineraries =
+                                        List.map
+                                            (\i ->
+                                                if i.data.id == itineraryId then
+                                                    { i
+                                                        | editingComment =
+                                                            Nothing
+                                                    }
+
+                                                else
+                                                    i
+                                            )
+                                            cityData.itineraries
+                                }
+                      }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        PostEditComment itineraryId ->
+            Debug.todo "PostEditComment"
+
+
+
+-- VIEW
 
 
 view : Model -> Browser.Document Msg
@@ -1605,7 +1732,7 @@ view ({ cityData, isCreatingNewItinerary } as model) =
 
 
 itinerary : Itinerary -> Model -> Html Msg
-itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments } model =
+itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments, editingComment } model =
     let
         thisItineraryIsBeingDeleted : Bool
         thisItineraryIsBeingDeleted =
@@ -1705,6 +1832,86 @@ itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments } 
                                         ]
                                     ]
                                     [ text "Create" ]
+                                ]
+                            ]
+                        ]
+
+                Nothing ->
+                    text ""
+
+        editCommentHtml : Html Msg
+        editCommentHtml =
+            case editingComment of
+                Just editingCommentData ->
+                    let
+                        tooManyChars =
+                            String.length editingCommentData.text > 300
+                    in
+                    div [ class "p-4 pb-0" ]
+                        [ div [ class "mb-2" ]
+                            [ if editingCommentData.isEditing then
+                                infoHtml "Editing comment..."
+
+                              else
+                                text ""
+                            , case editingCommentData.error of
+                                Just err ->
+                                    errorHtml err
+
+                                Nothing ->
+                                    text ""
+                            ]
+                        , div []
+                            [ label
+                                [ class "block text-sm font-medium text-gray-700"
+                                , for "edit-comment"
+                                ]
+                                [ text "Edit Comment" ]
+                            ]
+                        , div [ class "mt-1" ]
+                            [ textarea
+                                [ class "shadow-sm mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-1"
+                                , id "edit-comment"
+                                , placeholder "Leave a comment..."
+                                , rows 3
+                                , value editingCommentData.text
+                                , onInput (\l -> ChangeEditComment l data.id)
+                                ]
+                                []
+                            ]
+                        , div [ class "flex justify-between" ]
+                            [ p
+                                [ class "mt-2 text-sm text-gray-500"
+                                , classList [ ( "text-red-500", String.length editingCommentData.text > 300 ) ]
+                                ]
+                                [ text
+                                    ((editingCommentData.text
+                                        |> String.length
+                                        |> String.fromInt
+                                     )
+                                        ++ "/300"
+                                    )
+                                ]
+                            , div [ class "flex mt-2" ]
+                                [ button
+                                    [ onClick (CancelEditComment data.id)
+                                    , class "font-bold py-2 px-4"
+                                    , classList
+                                        [ ( "text-black", not editingCommentData.isEditing )
+                                        , ( "text-gray-800", editingCommentData.isEditing )
+                                        ]
+                                    ]
+                                    [ text "Cancel" ]
+                                , button
+                                    [ onClick (PostEditComment data.id)
+                                    , class "font-bold py-2 px-4 rounded"
+                                    , disabled (editingCommentData.isEditing || tooManyChars)
+                                    , classList
+                                        [ ( "bg-blue-700 hover:bg-blue-700 text-white", not editingCommentData.isEditing && not tooManyChars )
+                                        , ( "bg-gray-300 hover:bg-gray-400 text-gray-800", editingCommentData.isEditing || tooManyChars )
+                                        ]
+                                    ]
+                                    [ text "Edit" ]
                                 ]
                             ]
                         ]
@@ -1827,6 +2034,7 @@ itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments } 
             ++ (if areCommentsExpanded then
                     div [ class "w-full h-px bg-gray-200" ] []
                         :: [ newCommentHtml
+                           , editCommentHtml
                            , case model.userSession of
                                 Just userData ->
                                     let
@@ -2000,7 +2208,8 @@ itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments } 
                                        )
                                     |> List.map
                                         (\comment ->
-                                            itineraryComment comment
+                                            itineraryComment data.id
+                                                comment
                                                 (case model.commentMenuOpen of
                                                     Just commentId ->
                                                         commentId == comment.id
@@ -2025,8 +2234,8 @@ itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments } 
         )
 
 
-itineraryComment : Comment -> Bool -> Bool -> Html Msg
-itineraryComment ({ author, comment, action } as commentData) isMenuOpen showMenu =
+itineraryComment : Int -> Comment -> Bool -> Bool -> Html Msg
+itineraryComment itineraryId ({ author, comment, action } as commentData) isMenuOpen showMenu =
     let
         isBeingDeleted =
             case action of
@@ -2091,7 +2300,7 @@ itineraryComment ({ author, comment, action } as commentData) isMenuOpen showMen
                                     [ button [ class "w-full px-2 py-1", onClick (DeleteComment commentData.id) ] [ text "Delete" ]
                                     ]
                                 , li []
-                                    [ button [ class "w-full px-2 py-1", onClick (EditComment commentData.id) ] [ text "Edit" ]
+                                    [ button [ class "w-full px-2 py-1", onClick (EditComment itineraryId commentData.id) ] [ text "Edit" ]
                                     ]
                                 ]
                             ]
