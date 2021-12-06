@@ -49,22 +49,22 @@ type alias Model =
         Request
             { data : City
             , itineraries : List Itinerary
+            , modal : NewItineraryModal
 
             -- New itinerary
-            , isNewItineraryModalOpen : Bool
-            , newItineraryName : String
-            , newItineraryFirstActivity : String
-            , newItineraryRestActivities : List ( Int, String )
-            , newItineraryActivitiesIdx : Int
-            , tag1 : String
-            , tag2 : String
-            , tag3 : String
-            , newItineraryTime : Int
-            , newItineraryPrice : Int
-            , isCreatingNewItinerary : Bool
-            , itineraryMenuOpen : Maybe Int
-            , creatingNewItineraryError : String
-
+            -- , isNewItineraryModalOpen : Bool
+            -- , newItineraryName : String
+            -- , newItineraryFirstActivity : String
+            -- , newItineraryRestActivities : List ( Int, String )
+            -- , newItineraryActivitiesIdx : Int
+            -- , tag1 : String
+            -- , tag2 : String
+            -- , tag3 : String
+            -- , newItineraryTime : Int
+            -- , newItineraryPrice : Int
+            -- , isCreatingNewItinerary : Bool
+            -- , itineraryMenuOpen : Maybe Int
+            -- , creatingNewItineraryError : String
             -- Edit Itinerary
             , isEditItineraryModalOpen : Bool
             , editItineraryId : Int
@@ -82,6 +82,15 @@ type alias Model =
     , userSession : Maybe UserData
     , commentMenuOpen : Maybe Int
     }
+
+
+type NewItineraryModal
+    = ModalIsClosed
+    | ModalIsOpen
+        { data : ItineraryFormData
+        , isCreating : Bool
+        }
+    | Failed ItineraryFormData
 
 
 type alias ItineraryFormData =
@@ -326,20 +335,7 @@ update msg model =
                             Loaded
                                 { data = toCity cityData
                                 , itineraries = List.map toItinerary cityData.itineraries
-                                , -- New itinerary
-                                  newItineraryName = ""
-                                , newItineraryFirstActivity = ""
-                                , newItineraryRestActivities = []
-                                , newItineraryActivitiesIdx = 0
-                                , tag1 = ""
-                                , tag2 = ""
-                                , tag3 = ""
-                                , newItineraryTime = 0
-                                , newItineraryPrice = 0
-                                , isNewItineraryModalOpen = False
-                                , isCreatingNewItinerary = False
-                                , itineraryMenuOpen = Nothing
-                                , creatingNewItineraryError = ""
+                                , modal = ModalIsClosed
 
                                 -- Edit itinerary
                                 , isEditItineraryModalOpen = False
