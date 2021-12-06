@@ -106,6 +106,7 @@ type alias ItineraryFormData =
     { name : String
     , firstActivity : String
     , restActivities : List ( Int, String )
+    , activitiesId : Int
     , tag1 : String
     , tag2 : String
     , tag3 : String
@@ -118,6 +119,7 @@ emptyItineraryFormData =
     { name = ""
     , firstActivity = ""
     , restActivities = []
+    , activitiesId = 0
     , tag1 = ""
     , tag2 = ""
     , tag3 = ""
@@ -1067,52 +1069,90 @@ update msg model =
                                 Closed ->
                                     ( model, Cmd.none )
 
-                        RemoveActivity idx ->
-                            let
-                                restActivities =
-                                    List.filter (\( i, _ ) -> i /= idx) val.newItineraryRestActivities
-                            in
-                            ( { model | cityData = Loaded { val | newItineraryRestActivities = restActivities } }, Cmd.none )
+                        RemoveActivity activityId ->
+                            case val.newItineraryModal.isOpen of
+                                Open formData ->
+                                    let
+                                        restActivities =
+                                            List.filter (\( i, _ ) -> i /= activityId) formData.restActivities
+
+                                        newItineraryModalData =
+                                            val.newItineraryModal
+                                    in
+                                    ( { model | cityData = Loaded { val | newItineraryModal = { newItineraryModalData | isOpen = Open { formData | restActivities = restActivities } } } }, Cmd.none )
+
+                                Closed ->
+                                    ( model, Cmd.none )
 
                         AddActivity ->
-                            let
-                                newIdx =
-                                    val.newItineraryActivitiesIdx + 1
-                            in
-                            ( { model
-                                | cityData =
-                                    Loaded
-                                        { val
-                                            | newItineraryRestActivities = val.newItineraryRestActivities ++ [ ( newIdx, "" ) ]
-                                            , newItineraryActivitiesIdx = newIdx
-                                        }
-                              }
-                            , Cmd.none
-                            )
+                            case val.newItineraryModal.isOpen of
+                                Open formData ->
+                                    let
+                                        newId =
+                                            formData.activitiesId + 1
+
+                                        newItineraryModalData =
+                                            val.newItineraryModal
+                                    in
+                                    ( { model
+                                        | cityData =
+                                            Loaded
+                                                { val
+                                                    | newItineraryModal =
+                                                        { newItineraryModalData
+                                                            | isOpen =
+                                                                Open
+                                                                    { formData
+                                                                        | restActivities = formData.restActivities ++ [ ( newId, "" ) ]
+                                                                        , activitiesId = newId
+                                                                    }
+                                                        }
+                                                }
+                                      }
+                                    , Cmd.none
+                                    )
+
+                                Closed ->
+                                    ( model, Cmd.none )
 
                         ChangeActivity idx newActivity ->
-                            let
-                                activities =
-                                    val.newItineraryRestActivities
-                            in
-                            ( { model
-                                | cityData =
-                                    Loaded
-                                        { val
-                                            | newItineraryRestActivities =
-                                                List.map
-                                                    (\( id, act ) ->
-                                                        if idx == id then
-                                                            ( id, newActivity )
+                            case val.newItineraryModal.isOpen of
+                                Open formData ->
+                                    let
+                                        activities =
+                                            formData.restActivities
 
-                                                        else
-                                                            ( id, act )
-                                                    )
-                                                    activities
-                                        }
-                              }
-                            , Cmd.none
-                            )
+                                        newItineraryModalData =
+                                            val.newItineraryModal
+                                    in
+                                    ( { model
+                                        | cityData =
+                                            Loaded
+                                                { val
+                                                    | newItineraryModal =
+                                                        { newItineraryModalData
+                                                            | isOpen =
+                                                                Open
+                                                                    { formData
+                                                                        | restActivities =
+                                                                            List.map
+                                                                                (\( id, act ) ->
+                                                                                    if idx == id then
+                                                                                        ( id, newActivity )
+
+                                                                                    else
+                                                                                        ( id, act )
+                                                                                )
+                                                                                activities
+                                                                    }
+                                                        }
+                                                }
+                                      }
+                                    , Cmd.none
+                                    )
+
+                                Closed ->
+                                    ( model, Cmd.none )
 
                         -- Edit Itinerary
                         OpenEditItineraryModal id ->
