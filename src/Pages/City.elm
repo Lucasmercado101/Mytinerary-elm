@@ -25,7 +25,7 @@ subscriptions model =
         [ Sub.map GotUser Session.localStorageUserSub
         , case model.commentMenuOpen of
             Just idx ->
-                Browser.Events.onMouseDown (outsideTarget ("comment-menu-" ++ String.fromInt idx) CloseCommentMenu)
+                Browser.Events.onMouseDown (outsideTarget ("comment-menu-" ++ String.fromInt idx) (GotLoadedCityMsg CloseCommentMenu))
 
             Nothing ->
                 Sub.none
@@ -33,7 +33,7 @@ subscriptions model =
             Loaded val ->
                 case val.itineraryMenuOpen of
                     Just idx ->
-                        Browser.Events.onMouseDown (outsideTarget ("itinerary-menu-" ++ String.fromInt idx) CloseItineraryMenu)
+                        Browser.Events.onMouseDown (outsideTarget ("itinerary-menu-" ++ String.fromInt idx) (GotLoadedCityMsg CloseItineraryMenu))
 
                     Nothing ->
                         Sub.none
@@ -602,10 +602,10 @@ update msg model =
                                         (\l ->
                                             case l of
                                                 Ok _ ->
-                                                    GotLoadedCityMsg GotDeleteCommentResp Nothing id
+                                                    GotLoadedCityMsg (GotDeleteCommentResp Nothing id)
 
                                                 Err v ->
-                                                    GotLoadedCityMsg GotDeleteCommentResp (Just v) id
+                                                    GotLoadedCityMsg (GotDeleteCommentResp (Just v) id)
                                         )
                                     )
 
@@ -1993,10 +1993,11 @@ view ({ cityData } as model) =
             _ ->
                 text ""
         ]
+            |> List.map (Html.map GotLoadedCityMsg)
     }
 
 
-itinerary : Itinerary -> Model -> Html Msg
+itinerary : Itinerary -> Model -> Html LoadedCityMsg
 itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments, editingComment } model =
     let
         thisItineraryIsBeingDeleted : Bool
@@ -2025,7 +2026,7 @@ itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments, e
                 [ p [ class "text-red-700" ] [ text err ]
                 ]
 
-        newCommentHtml : Html Msg
+        newCommentHtml : Html LoadedCityMsg
         newCommentHtml =
             case newComment of
                 Just newCommentData ->
@@ -2104,7 +2105,7 @@ itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments, e
                 Nothing ->
                     text ""
 
-        editCommentHtml : Html Msg
+        editCommentHtml : Html LoadedCityMsg
         editCommentHtml =
             case editingComment of
                 Just editingCommentData ->
@@ -2504,7 +2505,7 @@ itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments, e
         )
 
 
-itineraryComment : Int -> Comment -> Bool -> Bool -> Html Msg
+itineraryComment : Int -> Comment -> Bool -> Bool -> Html LoadedCityMsg
 itineraryComment itineraryId ({ author, comment, action } as commentData) isMenuOpen showMenu =
     let
         isBeingDeleted =
@@ -2584,7 +2585,7 @@ itineraryComment itineraryId ({ author, comment, action } as commentData) isMenu
         ]
 
 
-modal : ItineraryFormData -> Bool -> Html Msg
+modal : ItineraryFormData -> Bool -> Html LoadedCityMsg
 modal ({ name, price, tag1, tag2, tag3, time } as data) isCreatingNewItinerary =
     let
         canCreate =
@@ -2725,7 +2726,7 @@ modal ({ name, price, tag1, tag2, tag3, time } as data) isCreatingNewItinerary =
         ]
 
 
-formActivities : ItineraryFormData -> Bool -> Html Msg
+formActivities : ItineraryFormData -> Bool -> Html LoadedCityMsg
 formActivities { firstActivity, restActivities } isCreatingNewItinerary =
     let
         otherActivities =
@@ -2813,7 +2814,7 @@ formActivities { firstActivity, restActivities } isCreatingNewItinerary =
         ]
 
 
-editItineraryModal : ItineraryFormData -> Bool -> Html Msg
+editItineraryModal : ItineraryFormData -> Bool -> Html LoadedCityMsg
 editItineraryModal ({ name, price, tag1, tag2, tag3, time } as data) isEditingItinerary =
     let
         canEdit =
@@ -2954,7 +2955,7 @@ editItineraryModal ({ name, price, tag1, tag2, tag3, time } as data) isEditingIt
         ]
 
 
-editFormActivities : ItineraryFormData -> Bool -> Html Msg
+editFormActivities : ItineraryFormData -> Bool -> Html LoadedCityMsg
 editFormActivities { firstActivity, restActivities } isEditingItinerary =
     let
         otherActivities =
