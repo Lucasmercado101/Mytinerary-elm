@@ -1102,43 +1102,66 @@ update msg model =
                     ( model, Cmd.none )
 
         RemoveActivity idx ->
-            let
-                restActivities =
-                    List.filter (\( i, _ ) -> i /= idx) model.newItineraryRestActivities
-            in
-            ( { model | newItineraryRestActivities = restActivities }, Cmd.none )
+            case model.cityData of
+                Loaded val ->
+                    let
+                        restActivities =
+                            List.filter (\( i, _ ) -> i /= idx) val.newItineraryRestActivities
+                    in
+                    ( { model | cityData = Loaded { val | newItineraryRestActivities = restActivities } }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
 
         AddActivity ->
-            let
-                newIdx =
-                    model.newItineraryActivitiesIdx + 1
-            in
-            ( { model
-                | newItineraryRestActivities = model.newItineraryRestActivities ++ [ ( newIdx, "" ) ]
-                , newItineraryActivitiesIdx = newIdx
-              }
-            , Cmd.none
-            )
+            case model.cityData of
+                Loaded val ->
+                    let
+                        newIdx =
+                            val.newItineraryActivitiesIdx + 1
+                    in
+                    ( { model
+                        | cityData =
+                            Loaded
+                                { val
+                                    | newItineraryRestActivities = val.newItineraryRestActivities ++ [ ( newIdx, "" ) ]
+                                    , newItineraryActivitiesIdx = newIdx
+                                }
+                      }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
 
         ChangeActivity idx newActivity ->
-            let
-                activities =
-                    model.newItineraryRestActivities
-            in
-            ( { model
-                | newItineraryRestActivities =
-                    List.map
-                        (\( id, act ) ->
-                            if idx == id then
-                                ( id, newActivity )
+            case model.cityData of
+                Loaded val ->
+                    let
+                        activities =
+                            val.newItineraryRestActivities
+                    in
+                    ( { model
+                        | cityData =
+                            Loaded
+                                { val
+                                    | newItineraryRestActivities =
+                                        List.map
+                                            (\( id, act ) ->
+                                                if idx == id then
+                                                    ( id, newActivity )
 
-                            else
-                                ( id, act )
-                        )
-                        activities
-              }
-            , Cmd.none
-            )
+                                                else
+                                                    ( id, act )
+                                            )
+                                            activities
+                                }
+                      }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
 
         -- Edit Itinerary
         OpenEditItineraryModal id ->
