@@ -1046,25 +1046,60 @@ update msg model =
                     ( model, Cmd.none )
 
         ChangeNewItineraryName newItineraryName ->
-            ( { model | newItineraryName = newItineraryName }, Cmd.none )
+            case model.cityData of
+                Loaded val ->
+                    ( { model | cityData = Loaded { val | newItineraryName = newItineraryName } }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
 
         ChangeNewItineraryTime newItineraryTime ->
-            ( { model | newItineraryTime = Maybe.withDefault 0 (String.toInt newItineraryTime) }, Cmd.none )
+            case model.cityData of
+                Loaded val ->
+                    ( { model | cityData = Loaded { val | newItineraryTime = Maybe.withDefault 0 (String.toInt newItineraryTime) } }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
 
         ChangeNewItineraryPrice newItineraryPrice ->
-            ( { model | newItineraryPrice = Maybe.withDefault 0 (String.toInt newItineraryPrice) }, Cmd.none )
+            case model.cityData of
+                Loaded val ->
+                    ( { model | cityData = Loaded { val | newItineraryPrice = Maybe.withDefault 0 (String.toInt newItineraryPrice) } }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
 
         ChangeTag1 newTag ->
-            ( { model | tag1 = newTag }, Cmd.none )
+            case model.cityData of
+                Loaded val ->
+                    ( { model | cityData = Loaded { val | tag1 = newTag } }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
 
         ChangeTag2 newTag ->
-            ( { model | tag2 = newTag }, Cmd.none )
+            case model.cityData of
+                Loaded val ->
+                    ( { model | cityData = Loaded { val | tag2 = newTag } }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
 
         ChangeTag3 newTag ->
-            ( { model | tag3 = newTag }, Cmd.none )
+            case model.cityData of
+                Loaded val ->
+                    ( { model | cityData = Loaded { val | tag3 = newTag } }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
 
         ChangeFirstActivity newFirstActivity ->
-            ( { model | newItineraryFirstActivity = newFirstActivity }, Cmd.none )
+            case model.cityData of
+                Loaded val ->
+                    ( { model | cityData = Loaded { val | newItineraryFirstActivity = newFirstActivity } }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
 
         RemoveActivity idx ->
             let
