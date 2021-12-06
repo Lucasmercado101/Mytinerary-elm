@@ -77,12 +77,12 @@ type alias Model =
             , editItineraryName : String
             , editItineraryFirstActivity : String
             , editItineraryRestActivities : List ( Int, String )
-            , editItineraryActivitiesIdx : Int
             , editItineraryTime : Int
             , editItineraryPrice : Int
             , editItineraryTag1 : String
             , editItineraryTag2 : String
             , editItineraryTag3 : String
+            , editItineraryActivitiesId : Int
             }
             Http.Error
     , userSession : Maybe UserData
@@ -140,7 +140,7 @@ clearEditItineraryModalData model =
                             , editItineraryName = ""
                             , editItineraryFirstActivity = ""
                             , editItineraryRestActivities = []
-                            , editItineraryActivitiesIdx = -1
+                            , editItineraryActivitiesId = -1
                             , editItineraryTime = 0
                             , editItineraryPrice = 0
                             , editItineraryTag1 = ""
@@ -347,12 +347,12 @@ update msg model =
                                 , editItineraryName = ""
                                 , editItineraryFirstActivity = ""
                                 , editItineraryRestActivities = []
-                                , editItineraryActivitiesIdx = 0
                                 , editItineraryTime = 0
                                 , editItineraryPrice = 0
                                 , editItineraryTag1 = ""
                                 , editItineraryTag2 = ""
                                 , editItineraryTag3 = ""
+                                , editItineraryActivitiesId = 0
                                 }
                       }
                     , Cmd.none
@@ -574,6 +574,17 @@ update msg model =
                                                                                     )
                                                                                     iData.comments
                                                                         }
+                                                                    , editingComment =
+                                                                        case itineraryData.editingComment of
+                                                                            Just commentVal ->
+                                                                                if commentVal.commentId == id then
+                                                                                    Nothing
+
+                                                                                else
+                                                                                    itineraryData.editingComment
+
+                                                                            Nothing ->
+                                                                                Nothing
                                                                 }
                                                             )
                                                             itineraries
@@ -1194,7 +1205,7 @@ update msg model =
                                                     , editItineraryPrice = data.price
                                                     , editItineraryFirstActivity = firstActivity
                                                     , editItineraryRestActivities = restActivities
-                                                    , editItineraryActivitiesIdx = List.length restActivities
+                                                    , editItineraryActivitiesId = List.length restActivities
                                                     , editItineraryTag1 = tag1
                                                     , editItineraryTag2 = tag2
                                                     , editItineraryTag3 = tag3
@@ -1239,15 +1250,15 @@ update msg model =
 
                         AddEditItineraryActivity ->
                             let
-                                newIdx =
-                                    val.editItineraryActivitiesIdx + 1
+                                newId =
+                                    val.editItineraryActivitiesId + 1
                             in
                             ( { model
                                 | cityData =
                                     Loaded
                                         { val
-                                            | editItineraryRestActivities = val.editItineraryRestActivities ++ [ ( newIdx, "" ) ]
-                                            , editItineraryActivitiesIdx = newIdx
+                                            | editItineraryRestActivities = val.editItineraryRestActivities ++ [ ( newId, "" ) ]
+                                            , editItineraryActivitiesId = newId
                                         }
                               }
                             , Cmd.none
@@ -2069,6 +2080,7 @@ view ({ cityData } as model) =
                         , tag3 = editItineraryTag3
                         , firstActivity = editItineraryFirstActivity
                         , restActivities = editItineraryRestActivities
+                        , activitiesId = -1
                         }
                         (itineraries
                             |> List.any
@@ -2830,31 +2842,31 @@ formActivities { firstActivity, restActivities } isCreatingNewItinerary =
     let
         otherActivities =
             List.indexedMap
-                (\i ( idxNumber, content ) ->
+                (\i ( idNumber, content ) ->
                     let
-                        idx =
-                            String.fromInt idxNumber
+                        idN =
+                            String.fromInt idNumber
                     in
                     div
                         [ class "flex flex-col" ]
                         [ label
                             [ class "block text-gray-700 text-sm font-bold mb-2"
-                            , for ("activity-" ++ idx)
+                            , for ("activity-" ++ idN)
                             ]
                             [ text ("Activity #" ++ String.fromInt (i + 2))
                             ]
                         , div [ class "flex rounded w-full shadow border" ]
                             [ input
                                 [ value content
-                                , onInput (ChangeActivity idxNumber)
+                                , onInput (ChangeActivity idNumber)
                                 , class "appearance-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                , id ("activity-" ++ idx)
+                                , id ("activity-" ++ idN)
                                 , type_ "text"
                                 ]
                                 []
                             , button
                                 [ type_ "button"
-                                , onClick (RemoveActivity idxNumber)
+                                , onClick (RemoveActivity idNumber)
                                 , class "bg-red-100 px-2 flex h-auto items-center ml-auto"
                                 ]
                                 [ div [ class "text-red-500" ] [ xSvg ]
