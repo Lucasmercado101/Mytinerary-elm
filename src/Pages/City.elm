@@ -2301,7 +2301,7 @@ itinerary { data, action, areCommentsExpanded, newComment, showOnlyMyComments, e
             Just status ->
                 case status of
                     Deleting ->
-                        errorHtml "Deleting itinerary..."
+                        infoHtml "Deleting itinerary..."
 
                     FailedToDelete err ->
                         errorHtml err
