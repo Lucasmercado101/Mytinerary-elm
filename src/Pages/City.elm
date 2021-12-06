@@ -1872,7 +1872,7 @@ view ({ cityData } as model) =
                     _ ->
                         p [ class "text-center text-xl mt-5" ] [ text "An unknown error ocurred, please refresh the page and try again." ]
         , case model.cityData of
-            Loaded { isNewItineraryModalOpen, isCreatingNewItinerary, newItineraryName, newItineraryTime, newItineraryPrice, tag1, tag2, tag3, newItineraryFirstActivity, newItineraryRestActivities } ->
+            Loaded { isNewItineraryModalOpen, newItineraryName, newItineraryTime, newItineraryPrice, tag1, tag2, tag3, newItineraryFirstActivity, newItineraryRestActivities } ->
                 if isNewItineraryModalOpen then
                     modal
                         { name = newItineraryName
