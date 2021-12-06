@@ -49,7 +49,14 @@ type alias Model =
         Request
             { data : City
             , itineraries : List Itinerary
-            , modal : NewItineraryModal
+            , newItineraryModal :
+                { isOpen : ModalState
+                , isCreating : Creating
+
+                -- If failed can retry with previous data
+                , retryData : Maybe ItineraryFormData
+                }
+            , itineraryMenuOpen : Maybe Int
 
             -- New itinerary
             -- , isNewItineraryModalOpen : Bool
@@ -63,7 +70,6 @@ type alias Model =
             -- , newItineraryTime : Int
             -- , newItineraryPrice : Int
             -- , isCreatingNewItinerary : Bool
-            -- , itineraryMenuOpen : Maybe Int
             -- , creatingNewItineraryError : String
             -- Edit Itinerary
             , isEditItineraryModalOpen : Bool
@@ -84,13 +90,16 @@ type alias Model =
     }
 
 
-type NewItineraryModal
-    = ModalIsClosed
-    | ModalIsOpen
-        { data : ItineraryFormData
-        , isCreating : Bool
-        }
-    | Failed ItineraryFormData
+type ModalState
+    = Closed
+    | Open ItineraryFormData
+
+
+type Creating
+    = Idle
+    | Creating
+    | Succeeded
+    | Failed String
 
 
 type alias ItineraryFormData =
@@ -105,27 +114,15 @@ type alias ItineraryFormData =
     }
 
 
-clearNewItineraryModalData : Model -> Model
-clearNewItineraryModalData model =
-    { model
-        | cityData =
-            case model.cityData of
-                Loaded val ->
-                    Loaded
-                        { val
-                            | newItineraryName = ""
-                            , newItineraryFirstActivity = ""
-                            , newItineraryRestActivities = []
-                            , newItineraryActivitiesIdx = 0
-                            , tag1 = ""
-                            , tag2 = ""
-                            , tag3 = ""
-                            , newItineraryTime = 0
-                            , newItineraryPrice = 0
-                        }
-
-                _ ->
-                    model.cityData
+emptyItineraryFormData =
+    { name = ""
+    , firstActivity = ""
+    , restActivities = []
+    , tag1 = ""
+    , tag2 = ""
+    , tag3 = ""
+    , time = 0
+    , price = 0
     }
 
 
@@ -335,7 +332,12 @@ update msg model =
                             Loaded
                                 { data = toCity cityData
                                 , itineraries = List.map toItinerary cityData.itineraries
-                                , modal = ModalIsClosed
+                                , newItineraryModal =
+                                    { isCreating = Idle
+                                    , retryData = Nothing
+                                    , isOpen = Closed
+                                    }
+                                , itineraryMenuOpen = Nothing
 
                                 -- Edit itinerary
                                 , isEditItineraryModalOpen = False
@@ -371,7 +373,11 @@ update msg model =
                                 Loaded val ->
                                     Loaded
                                         { val
-                                            | isNewItineraryModalOpen = False
+                                            | newItineraryModal =
+                                                { isOpen = Closed
+                                                , isCreating = val.newItineraryModal.isCreating
+                                                , retryData = Nothing
+                                                }
                                             , itineraries =
                                                 List.map
                                                     (\l ->
@@ -387,7 +393,6 @@ update msg model =
                                 _ ->
                                     cityReq
                       }
-                        |> clearNewItineraryModalData
                         |> clearEditItineraryModalData
                     , Cmd.none
                     )
@@ -714,7 +719,14 @@ update msg model =
                                 Just _ ->
                                     ( { model
                                         | cityData =
-                                            Loaded { val | isNewItineraryModalOpen = True }
+                                            Loaded
+                                                { val
+                                                    | newItineraryModal =
+                                                        { isOpen = Open emptyItineraryFormData
+                                                        , isCreating = Idle
+                                                        , retryData = Nothing
+                                                        }
+                                                }
                                       }
                                     , Cmd.none
                                     )
@@ -725,39 +737,52 @@ update msg model =
                         CloseModal ->
                             ( { model
                                 | cityData =
-                                    Loaded { val | isNewItineraryModalOpen = False }
+                                    Loaded
+                                        { val
+                                            | newItineraryModal =
+                                                { isOpen = Closed
+                                                , isCreating = val.newItineraryModal.isCreating
+                                                , retryData = val.newItineraryModal.retryData
+                                                }
+                                        }
                               }
-                                |> clearNewItineraryModalData
                             , Cmd.none
                             )
 
                         SubmitForm ->
                             case model.userSession of
                                 Just _ ->
-                                    ( { model
-                                        | cityData =
-                                            Loaded
-                                                { val
-                                                    | isCreatingNewItinerary = True
-                                                    , creatingNewItineraryError = ""
-                                                    , isNewItineraryModalOpen = False
+                                    case val.newItineraryModal.isOpen of
+                                        Open formData ->
+                                            ( { model
+                                                | cityData =
+                                                    Loaded
+                                                        { val
+                                                            | newItineraryModal =
+                                                                { isOpen = Closed
+                                                                , isCreating = Creating
+                                                                , retryData = Just formData
+                                                                }
+                                                        }
+                                              }
+                                            , Api.Itineraries.postItinerary cityData.id
+                                                { title = formData.name
+                                                , activities =
+                                                    formData.firstActivity
+                                                        :: (formData.restActivities
+                                                                |> List.filter (\( _, l ) -> l /= "")
+                                                                |> List.map Tuple.second
+                                                           )
+                                                , price = formData.price
+                                                , tags = [ formData.tag1, formData.tag2, formData.tag3 ]
+                                                , duration = formData.time
                                                 }
-                                      }
-                                    , Api.Itineraries.postItinerary cityData.id
-                                        { title = val.newItineraryName
-                                        , activities =
-                                            val.newItineraryFirstActivity
-                                                :: (val.newItineraryRestActivities
-                                                        |> List.filter (\( _, l ) -> l /= "")
-                                                        |> List.map Tuple.second
-                                                   )
-                                        , price = val.newItineraryPrice
-                                        , tags = [ val.tag1, val.tag2, val.tag3 ]
-                                        , duration = val.newItineraryTime
-                                        }
-                                        GotNewItinerary
-                                        |> Cmd.map GotLoadedCityMsg
-                                    )
+                                                GotNewItinerary
+                                                |> Cmd.map GotLoadedCityMsg
+                                            )
+
+                                        Closed ->
+                                            ( model, Cmd.none )
 
                                 Nothing ->
                                     ( model, Cmd.none )
@@ -793,7 +818,11 @@ update msg model =
                                                     Loaded
                                                         { val
                                                             | itineraries = toItinerary newIt :: itineraries
-                                                            , isCreatingNewItinerary = False
+                                                            , newItineraryModal =
+                                                                { isOpen = val.newItineraryModal.isOpen
+                                                                , isCreating = Succeeded
+                                                                , retryData = Nothing
+                                                                }
                                                         }
                                               }
                                             , Cmd.none
@@ -806,11 +835,11 @@ update msg model =
                                                     case err of
                                                         Http.BadStatus code ->
                                                             case code of
-                                                                400 ->
-                                                                    "Bad request"
-
                                                                 401 ->
                                                                     "Unauthorized"
+
+                                                                400 ->
+                                                                    "Bad request"
 
                                                                 404 ->
                                                                     "Not found"
@@ -820,13 +849,18 @@ update msg model =
 
                                                         _ ->
                                                             "An unknown error ocurred"
+
+                                                itineraryModalData =
+                                                    val.newItineraryModal
                                             in
                                             ( { model
                                                 | cityData =
                                                     Loaded
                                                         { val
-                                                            | isCreatingNewItinerary = False
-                                                            , creatingNewItineraryError = errorMessage
+                                                            | newItineraryModal =
+                                                                { itineraryModalData
+                                                                    | isCreating = Failed errorMessage
+                                                                }
                                                         }
                                               }
                                             , Cmd.none
@@ -913,26 +947,125 @@ update msg model =
                                     , Cmd.none
                                     )
 
-                        ChangeNewItineraryName newItineraryName ->
-                            ( { model | cityData = Loaded { val | newItineraryName = newItineraryName } }, Cmd.none )
+                        ChangeNewItineraryName newName ->
+                            let
+                                newItineraryModalData =
+                                    val.newItineraryModal
+                            in
+                            case val.newItineraryModal.isOpen of
+                                Open formData ->
+                                    ( { model | cityData = Loaded { val | newItineraryModal = { newItineraryModalData | isOpen = Open { formData | name = newName } } } }, Cmd.none )
 
-                        ChangeNewItineraryTime newItineraryTime ->
-                            ( { model | cityData = Loaded { val | newItineraryTime = Maybe.withDefault 0 (String.toInt newItineraryTime) } }, Cmd.none )
+                                Closed ->
+                                    ( model, Cmd.none )
 
-                        ChangeNewItineraryPrice newItineraryPrice ->
-                            ( { model | cityData = Loaded { val | newItineraryPrice = Maybe.withDefault 0 (String.toInt newItineraryPrice) } }, Cmd.none )
+                        ChangeNewItineraryTime newTime ->
+                            let
+                                newItineraryModalData =
+                                    val.newItineraryModal
+                            in
+                            case val.newItineraryModal.isOpen of
+                                Open formData ->
+                                    ( { model
+                                        | cityData =
+                                            Loaded
+                                                { val
+                                                    | newItineraryModal =
+                                                        { newItineraryModalData
+                                                            | isOpen =
+                                                                Open
+                                                                    { formData
+                                                                        | time =
+                                                                            newTime
+                                                                                |> String.toInt
+                                                                                |> Maybe.withDefault 0
+                                                                    }
+                                                        }
+                                                }
+                                      }
+                                    , Cmd.none
+                                    )
+
+                                Closed ->
+                                    ( model, Cmd.none )
+
+                        ChangeNewItineraryPrice newPrice ->
+                            let
+                                newItineraryModalData =
+                                    val.newItineraryModal
+                            in
+                            case val.newItineraryModal.isOpen of
+                                Open formData ->
+                                    ( { model
+                                        | cityData =
+                                            Loaded
+                                                { val
+                                                    | newItineraryModal =
+                                                        { newItineraryModalData
+                                                            | isOpen =
+                                                                Open
+                                                                    { formData
+                                                                        | price =
+                                                                            newPrice
+                                                                                |> String.toInt
+                                                                                |> Maybe.withDefault 0
+                                                                    }
+                                                        }
+                                                }
+                                      }
+                                    , Cmd.none
+                                    )
+
+                                Closed ->
+                                    ( model, Cmd.none )
 
                         ChangeTag1 newTag ->
-                            ( { model | cityData = Loaded { val | tag1 = newTag } }, Cmd.none )
+                            let
+                                newItineraryModalData =
+                                    val.newItineraryModal
+                            in
+                            case val.newItineraryModal.isOpen of
+                                Open formData ->
+                                    ( { model | cityData = Loaded { val | newItineraryModal = { newItineraryModalData | isOpen = Open { formData | tag1 = newTag } } } }, Cmd.none )
+
+                                Closed ->
+                                    ( model, Cmd.none )
 
                         ChangeTag2 newTag ->
-                            ( { model | cityData = Loaded { val | tag2 = newTag } }, Cmd.none )
+                            let
+                                newItineraryModalData =
+                                    val.newItineraryModal
+                            in
+                            case val.newItineraryModal.isOpen of
+                                Open formData ->
+                                    ( { model | cityData = Loaded { val | newItineraryModal = { newItineraryModalData | isOpen = Open { formData | tag2 = newTag } } } }, Cmd.none )
+
+                                Closed ->
+                                    ( model, Cmd.none )
 
                         ChangeTag3 newTag ->
-                            ( { model | cityData = Loaded { val | tag3 = newTag } }, Cmd.none )
+                            let
+                                newItineraryModalData =
+                                    val.newItineraryModal
+                            in
+                            case val.newItineraryModal.isOpen of
+                                Open formData ->
+                                    ( { model | cityData = Loaded { val | newItineraryModal = { newItineraryModalData | isOpen = Open { formData | tag3 = newTag } } } }, Cmd.none )
+
+                                Closed ->
+                                    ( model, Cmd.none )
 
                         ChangeFirstActivity newFirstActivity ->
-                            ( { model | cityData = Loaded { val | newItineraryFirstActivity = newFirstActivity } }, Cmd.none )
+                            let
+                                newItineraryModalData =
+                                    val.newItineraryModal
+                            in
+                            case val.newItineraryModal.isOpen of
+                                Open formData ->
+                                    ( { model | cityData = Loaded { val | newItineraryModal = { newItineraryModalData | isOpen = Open { formData | firstActivity = newFirstActivity } } } }, Cmd.none )
+
+                                Closed ->
+                                    ( model, Cmd.none )
 
                         RemoveActivity idx ->
                             let
@@ -1679,7 +1812,7 @@ view ({ cityData } as model) =
         isCreatingNewItinerary =
             case cityData of
                 Loaded data ->
-                    data.isCreatingNewItinerary
+                    data.newItineraryModal.isCreating
 
                 _ ->
                     False
@@ -1690,10 +1823,13 @@ view ({ cityData } as model) =
             Loading ->
                 div [ class "w-full h-full flex justify-center items-center" ] [ p [ class "text-4xl block md:text-6xl" ] [ text "Loading..." ] ]
 
-            Loaded { data, creatingNewItineraryError, itineraries } ->
+            Loaded { data, newItineraryModal, itineraries } ->
                 let
                     { country, name } =
                         data
+
+                    creatingNewItineraryError =
+                        newItineraryModal.error
                 in
                 div [ class "h-full flex flex-col" ]
                     [ div
