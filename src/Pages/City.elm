@@ -1,7 +1,7 @@
 module Pages.City exposing (Model, Msg, init, subscriptions, update, view)
 
 import Api.City
-import Api.Itineraries
+import Api.Itineraries exposing (putComment)
 import Browser
 import Browser.Events
 import Common exposing (Request(..))
@@ -155,6 +155,7 @@ type alias EditingComment =
     { text : String
     , isEditing : Bool
     , error : Maybe String
+    , commentId : Int
     }
 
 
@@ -193,6 +194,7 @@ type Msg
     | ChangeEditComment String Int
     | CancelEditComment Int
     | PostEditComment Int
+    | GotPutCommentResp (Result Http.Error String) Int Int
       ----------- Itinerary -----------
     | DeletedItinerary (Maybe Http.Error) Int
     | GotNewItinerary (Result Http.Error Api.Itineraries.NewItineraryResponse)
@@ -1405,6 +1407,7 @@ update msg model =
                                                                            )
                                                                 , error = Nothing
                                                                 , isEditing = False
+                                                                , commentId = commentId
                                                                 }
                                                         , newComment = Nothing
                                                     }
@@ -1491,7 +1494,150 @@ update msg model =
                     ( model, Cmd.none )
 
         PostEditComment itineraryId ->
-            Debug.todo "PostEditComment"
+            case model.cityData of
+                Loaded cityData ->
+                    let
+                        ( newComment, commentId ) =
+                            cityData.itineraries
+                                |> List.filter (\o -> o.data.id == itineraryId)
+                                |> List.head
+                                |> (\l ->
+                                        case l of
+                                            Just v ->
+                                                case v.editingComment of
+                                                    Just commentData ->
+                                                        ( commentData.text, commentData.commentId )
+
+                                                    Nothing ->
+                                                        ( "", -1 )
+
+                                            Nothing ->
+                                                ( "", -1 )
+                                   )
+                    in
+                    ( { model
+                        | cityData =
+                            Loaded
+                                { cityData
+                                    | itineraries =
+                                        List.map
+                                            (\i ->
+                                                if i.data.id == itineraryId then
+                                                    { i
+                                                        | editingComment =
+                                                            case i.editingComment of
+                                                                Just eComment ->
+                                                                    Just
+                                                                        { eComment
+                                                                            | isEditing = True
+                                                                            , error = Nothing
+                                                                        }
+
+                                                                Nothing ->
+                                                                    i.editingComment
+                                                    }
+
+                                                else
+                                                    i
+                                            )
+                                            cityData.itineraries
+                                }
+                      }
+                    , putComment newComment
+                        commentId
+                        (\l ->
+                            case l of
+                                Ok _ ->
+                                    GotPutCommentResp (Ok newComment) itineraryId commentId
+
+                                Err err ->
+                                    GotPutCommentResp (Err err) itineraryId commentId
+                        )
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        GotPutCommentResp resp itineraryId commentId ->
+            case model.cityData of
+                Loaded cityData ->
+                    ( { model
+                        | cityData =
+                            Loaded
+                                { cityData
+                                    | itineraries =
+                                        List.map
+                                            (\i ->
+                                                if i.data.id == itineraryId then
+                                                    let
+                                                        data =
+                                                            i.data
+
+                                                        comments =
+                                                            i.data.comments
+                                                    in
+                                                    case resp of
+                                                        Ok newComment ->
+                                                            { i
+                                                                | editingComment = Nothing
+                                                                , data =
+                                                                    { data
+                                                                        | comments =
+                                                                            comments
+                                                                                |> List.map
+                                                                                    (\o ->
+                                                                                        if o.id == commentId then
+                                                                                            { o | comment = newComment }
+
+                                                                                        else
+                                                                                            o
+                                                                                    )
+                                                                    }
+                                                            }
+
+                                                        Err err ->
+                                                            { i
+                                                                | editingComment =
+                                                                    case i.editingComment of
+                                                                        Just eComment ->
+                                                                            Just
+                                                                                { eComment
+                                                                                    | error =
+                                                                                        case err of
+                                                                                            Http.BadStatus code ->
+                                                                                                case code of
+                                                                                                    400 ->
+                                                                                                        Just "Bad request"
+
+                                                                                                    401 ->
+                                                                                                        Just "Unauthorized"
+
+                                                                                                    404 ->
+                                                                                                        Just "Not found"
+
+                                                                                                    _ ->
+                                                                                                        Just ("An unknown error ocurred: code " ++ String.fromInt code)
+
+                                                                                            _ ->
+                                                                                                Just "An unknown error ocurred"
+                                                                                    , isEditing = False
+                                                                                }
+
+                                                                        Nothing ->
+                                                                            i.editingComment
+                                                            }
+
+                                                else
+                                                    i
+                                            )
+                                            cityData.itineraries
+                                }
+                      }
+                    , Cmd.none
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
 
 
 
