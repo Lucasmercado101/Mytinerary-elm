@@ -415,12 +415,12 @@ update msg model =
                     in
                     case loadedCityMsg of
                         OpenItineraryMenu id ->
-                            ( { model | cityData = Loaded { cityData | itineraryMenuOpen = Just id } }
+                            ( { model | cityData = Loaded { val | itineraryMenuOpen = Just id } }
                             , Cmd.none
                             )
 
                         CloseItineraryMenu ->
-                            ( { model | cityData = Loaded { cityData | itineraryMenuOpen = Nothing } }
+                            ( { model | cityData = Loaded { val | itineraryMenuOpen = Nothing } }
                             , Cmd.none
                             )
 
@@ -451,10 +451,10 @@ update msg model =
                                 (\l ->
                                     case l of
                                         Ok _ ->
-                                            DeletedItinerary Nothing idx
+                                            GotLoadedCityMsg (DeletedItinerary Nothing idx)
 
                                         Err err ->
-                                            DeletedItinerary (Just err) idx
+                                            GotLoadedCityMsg (DeletedItinerary (Just err) idx)
                                 )
                             )
 
@@ -602,10 +602,10 @@ update msg model =
                                         (\l ->
                                             case l of
                                                 Ok _ ->
-                                                    GotDeleteCommentResp Nothing id
+                                                    GotLoadedCityMsg GotDeleteCommentResp Nothing id
 
                                                 Err v ->
-                                                    GotDeleteCommentResp (Just v) id
+                                                    GotLoadedCityMsg GotDeleteCommentResp (Just v) id
                                         )
                                     )
 
@@ -711,8 +711,8 @@ update msg model =
 
                         ToggleMyComments id ->
                             let
-                                cityData =
-                                    val.data
+                                itineraries =
+                                    cityData.itineraries
                             in
                             ( { model
                                 | cityData =
@@ -769,10 +769,6 @@ update msg model =
                         SubmitForm ->
                             case model.userSession of
                                 Just _ ->
-                                    let
-                                        cityData =
-                                            val.data
-                                    in
                                     ( { model
                                         | cityData =
                                             Loaded
@@ -795,6 +791,7 @@ update msg model =
                                         , duration = val.newItineraryTime
                                         }
                                         GotNewItinerary
+                                        |> Cmd.map GotLoadedCityMsg
                                     )
 
                                 Nothing ->
@@ -864,16 +861,11 @@ update msg model =
                                             in
                                             ( { model
                                                 | cityData =
-                                                    case model.cityData of
-                                                        Loaded val ->
-                                                            Loaded
-                                                                { val
-                                                                    | isCreatingNewItinerary = False
-                                                                    , creatingNewItineraryError = errorMessage
-                                                                }
-
-                                                        _ ->
-                                                            model.cityData
+                                                    Loaded
+                                                        { val
+                                                            | isCreatingNewItinerary = False
+                                                            , creatingNewItineraryError = errorMessage
+                                                        }
                                               }
                                             , Cmd.none
                                             )
@@ -994,256 +986,411 @@ update msg model =
                             ( { model | cityData = Loaded { val | newItineraryRestActivities = restActivities } }, Cmd.none )
 
                         AddActivity ->
-                            case model.cityData of
-                                Loaded val ->
-                                    let
-                                        newIdx =
-                                            val.newItineraryActivitiesIdx + 1
-                                    in
-                                    ( { model
-                                        | cityData =
-                                            Loaded
-                                                { val
-                                                    | newItineraryRestActivities = val.newItineraryRestActivities ++ [ ( newIdx, "" ) ]
-                                                    , newItineraryActivitiesIdx = newIdx
-                                                }
-                                      }
-                                    , Cmd.none
-                                    )
-
-                                _ ->
-                                    ( model, Cmd.none )
+                            let
+                                newIdx =
+                                    val.newItineraryActivitiesIdx + 1
+                            in
+                            ( { model
+                                | cityData =
+                                    Loaded
+                                        { val
+                                            | newItineraryRestActivities = val.newItineraryRestActivities ++ [ ( newIdx, "" ) ]
+                                            , newItineraryActivitiesIdx = newIdx
+                                        }
+                              }
+                            , Cmd.none
+                            )
 
                         ChangeActivity idx newActivity ->
-                            case model.cityData of
-                                Loaded val ->
-                                    let
-                                        activities =
-                                            val.newItineraryRestActivities
-                                    in
-                                    ( { model
-                                        | cityData =
-                                            Loaded
-                                                { val
-                                                    | newItineraryRestActivities =
-                                                        List.map
-                                                            (\( id, act ) ->
-                                                                if idx == id then
-                                                                    ( id, newActivity )
+                            let
+                                activities =
+                                    val.newItineraryRestActivities
+                            in
+                            ( { model
+                                | cityData =
+                                    Loaded
+                                        { val
+                                            | newItineraryRestActivities =
+                                                List.map
+                                                    (\( id, act ) ->
+                                                        if idx == id then
+                                                            ( id, newActivity )
 
-                                                                else
-                                                                    ( id, act )
-                                                            )
-                                                            activities
-                                                }
-                                      }
-                                    , Cmd.none
-                                    )
-
-                                _ ->
-                                    ( model, Cmd.none )
+                                                        else
+                                                            ( id, act )
+                                                    )
+                                                    activities
+                                        }
+                              }
+                            , Cmd.none
+                            )
 
                         -- Edit Itinerary
                         OpenEditItineraryModal id ->
-                            case model.cityData of
-                                Loaded val ->
+                            let
+                                itineraryData =
+                                    List.filter (\{ data } -> data.id == id) cityData.itineraries
+                                        |> List.head
+                            in
+                            case itineraryData of
+                                Just { data } ->
                                     let
-                                        cityData =
-                                            val.data
+                                        ( firstActivity, otherActivities ) =
+                                            case data.activities of
+                                                first :: other ->
+                                                    ( first, other )
 
-                                        itineraryData =
-                                            List.filter (\{ data } -> data.id == id) cityData.itineraries
-                                                |> List.head
+                                                _ ->
+                                                    ( "", [] )
+
+                                        restActivities =
+                                            List.indexedMap Tuple.pair otherActivities
+
+                                        ( tag1, tag2, tag3 ) =
+                                            case data.hashtags of
+                                                t1 :: t2 :: t3 :: _ ->
+                                                    ( t1, t2, t3 )
+
+                                                _ ->
+                                                    ( "", "", "" )
                                     in
-                                    case itineraryData of
-                                        Just { data } ->
-                                            let
-                                                ( firstActivity, otherActivities ) =
-                                                    case data.activities of
-                                                        first :: other ->
-                                                            ( first, other )
+                                    ( { model
+                                        | cityData =
+                                            Loaded
+                                                { val
+                                                    | isEditItineraryModalOpen = True
+                                                    , editItineraryId = id
+                                                    , editItineraryName = data.title
+                                                    , editItineraryTime = data.time
+                                                    , editItineraryPrice = data.price
+                                                    , editItineraryFirstActivity = firstActivity
+                                                    , editItineraryRestActivities = restActivities
+                                                    , editItineraryActivitiesIdx = List.length restActivities
+                                                    , editItineraryTag1 = tag1
+                                                    , editItineraryTag2 = tag2
+                                                    , editItineraryTag3 = tag3
+                                                }
+                                      }
+                                    , Cmd.none
+                                    )
 
-                                                        _ ->
-                                                            ( "", [] )
-
-                                                restActivities =
-                                                    List.indexedMap Tuple.pair otherActivities
-
-                                                ( tag1, tag2, tag3 ) =
-                                                    case data.hashtags of
-                                                        t1 :: t2 :: t3 :: _ ->
-                                                            ( t1, t2, t3 )
-
-                                                        _ ->
-                                                            ( "", "", "" )
-                                            in
-                                            ( { model
-                                                | cityData =
-                                                    Loaded
-                                                        { val
-                                                            | isEditItineraryModalOpen = True
-                                                            , editItineraryId = id
-                                                            , editItineraryName = data.title
-                                                            , editItineraryTime = data.time
-                                                            , editItineraryPrice = data.price
-                                                            , editItineraryFirstActivity = firstActivity
-                                                            , editItineraryRestActivities = restActivities
-                                                            , editItineraryActivitiesIdx = List.length restActivities
-                                                            , editItineraryTag1 = tag1
-                                                            , editItineraryTag2 = tag2
-                                                            , editItineraryTag3 = tag3
-                                                        }
-                                              }
-                                            , Cmd.none
-                                            )
-
-                                        Nothing ->
-                                            ( model, Cmd.none )
-
-                                _ ->
+                                Nothing ->
                                     ( model, Cmd.none )
 
                         CloseEditItineraryModal ->
-                            case model.cityData of
-                                Loaded val ->
-                                    ( { model | cityData = Loaded { val | isEditItineraryModalOpen = False } }, Cmd.none )
-
-                                _ ->
-                                    ( model, Cmd.none )
+                            ( { model | cityData = Loaded { val | isEditItineraryModalOpen = False } }, Cmd.none )
 
                         ChangeEditItineraryName newEditItineraryName ->
-                            case model.cityData of
-                                Loaded val ->
-                                    ( { model | cityData = Loaded { val | editItineraryName = newEditItineraryName } }, Cmd.none )
-
-                                _ ->
-                                    ( model, Cmd.none )
+                            ( { model | cityData = Loaded { val | editItineraryName = newEditItineraryName } }, Cmd.none )
 
                         ChangeEditItineraryTime newEditItineraryTime ->
-                            case model.cityData of
-                                Loaded val ->
-                                    ( { model | cityData = Loaded { val | editItineraryTime = Maybe.withDefault 0 (String.toInt newEditItineraryTime) } }, Cmd.none )
-
-                                _ ->
-                                    ( model, Cmd.none )
+                            ( { model | cityData = Loaded { val | editItineraryTime = Maybe.withDefault 0 (String.toInt newEditItineraryTime) } }, Cmd.none )
 
                         ChangeEditItineraryPrice newEditItineraryPrice ->
-                            case model.cityData of
-                                Loaded val ->
-                                    ( { model | cityData = Loaded { val | editItineraryPrice = Maybe.withDefault 0 (String.toInt newEditItineraryPrice) } }, Cmd.none )
-
-                                _ ->
-                                    ( model, Cmd.none )
+                            ( { model | cityData = Loaded { val | editItineraryPrice = Maybe.withDefault 0 (String.toInt newEditItineraryPrice) } }, Cmd.none )
 
                         ChangeEditTag1 newEditTag ->
-                            case model.cityData of
-                                Loaded val ->
-                                    ( { model | cityData = Loaded { val | editItineraryTag1 = newEditTag } }, Cmd.none )
-
-                                _ ->
-                                    ( model, Cmd.none )
+                            ( { model | cityData = Loaded { val | editItineraryTag1 = newEditTag } }, Cmd.none )
 
                         ChangeEditTag2 newEditTag ->
-                            case model.cityData of
-                                Loaded val ->
-                                    ( { model | cityData = Loaded { val | editItineraryTag2 = newEditTag } }, Cmd.none )
-
-                                _ ->
-                                    ( model, Cmd.none )
+                            ( { model | cityData = Loaded { val | editItineraryTag2 = newEditTag } }, Cmd.none )
 
                         ChangeEditTag3 newEditTag ->
-                            case model.cityData of
-                                Loaded val ->
-                                    ( { model | cityData = Loaded { val | editItineraryTag3 = newEditTag } }, Cmd.none )
-
-                                _ ->
-                                    ( model, Cmd.none )
+                            ( { model | cityData = Loaded { val | editItineraryTag3 = newEditTag } }, Cmd.none )
 
                         ChangeEditItineraryFirstActivity newEditFirstActivity ->
-                            case model.cityData of
-                                Loaded val ->
-                                    ( { model | cityData = Loaded { val | editItineraryFirstActivity = newEditFirstActivity } }, Cmd.none )
-
-                                _ ->
-                                    ( model, Cmd.none )
+                            ( { model | cityData = Loaded { val | editItineraryFirstActivity = newEditFirstActivity } }, Cmd.none )
 
                         RemoveEditItineraryActivity idx ->
-                            case model.cityData of
-                                Loaded val ->
-                                    let
-                                        restActivities =
-                                            List.filter (\( i, _ ) -> i /= idx) val.editItineraryRestActivities
-                                    in
-                                    ( { model | cityData = Loaded { val | editItineraryRestActivities = restActivities } }, Cmd.none )
-
-                                _ ->
-                                    ( model, Cmd.none )
+                            let
+                                restActivities =
+                                    List.filter (\( i, _ ) -> i /= idx) val.editItineraryRestActivities
+                            in
+                            ( { model | cityData = Loaded { val | editItineraryRestActivities = restActivities } }, Cmd.none )
 
                         AddEditItineraryActivity ->
-                            case model.cityData of
-                                Loaded val ->
-                                    let
-                                        newIdx =
-                                            val.editItineraryActivitiesIdx + 1
-                                    in
-                                    ( { model
-                                        | cityData =
-                                            Loaded
-                                                { val
-                                                    | editItineraryRestActivities = val.editItineraryRestActivities ++ [ ( newIdx, "" ) ]
-                                                    , editItineraryActivitiesIdx = newIdx
-                                                }
-                                      }
-                                    , Cmd.none
-                                    )
-
-                                _ ->
-                                    ( model, Cmd.none )
+                            let
+                                newIdx =
+                                    val.editItineraryActivitiesIdx + 1
+                            in
+                            ( { model
+                                | cityData =
+                                    Loaded
+                                        { val
+                                            | editItineraryRestActivities = val.editItineraryRestActivities ++ [ ( newIdx, "" ) ]
+                                            , editItineraryActivitiesIdx = newIdx
+                                        }
+                              }
+                            , Cmd.none
+                            )
 
                         ChangeEditItineraryActivity idx newActivity ->
-                            case model.cityData of
-                                Loaded val ->
+                            let
+                                activities =
+                                    val.editItineraryRestActivities
+                            in
+                            ( { model
+                                | cityData =
+                                    Loaded
+                                        { val
+                                            | editItineraryRestActivities =
+                                                List.map
+                                                    (\( id, act ) ->
+                                                        if idx == id then
+                                                            ( id, newActivity )
+
+                                                        else
+                                                            ( id, act )
+                                                    )
+                                                    activities
+                                        }
+                              }
+                            , Cmd.none
+                            )
+
+                        SubmitEditItineraryForm ->
+                            let
+                                itineraries =
+                                    val.data.itineraries
+                            in
+                            case model.userSession of
+                                Just _ ->
                                     let
-                                        activities =
-                                            val.editItineraryRestActivities
+                                        itineraryBeingEditedId =
+                                            val.editItineraryId
                                     in
                                     ( { model
                                         | cityData =
                                             Loaded
                                                 { val
-                                                    | editItineraryRestActivities =
-                                                        List.map
-                                                            (\( id, act ) ->
-                                                                if idx == id then
-                                                                    ( id, newActivity )
+                                                    | data =
+                                                        { cityData
+                                                            | itineraries =
+                                                                List.map
+                                                                    (\({ data } as itineraryData) ->
+                                                                        if data.id == itineraryBeingEditedId then
+                                                                            { itineraryData | action = Just Editing }
 
-                                                                else
-                                                                    ( id, act )
-                                                            )
-                                                            activities
+                                                                        else
+                                                                            itineraryData
+                                                                    )
+                                                                    itineraries
+                                                        }
+                                                    , isEditItineraryModalOpen = False
                                                 }
                                       }
-                                    , Cmd.none
+                                    , Api.Itineraries.patchItinerary val.editItineraryId
+                                        { title = val.editItineraryName
+                                        , activities =
+                                            val.editItineraryFirstActivity
+                                                :: (val.editItineraryRestActivities
+                                                        |> List.filter (\( _, l ) -> l /= "")
+                                                        |> List.map Tuple.second
+                                                   )
+                                        , price = val.editItineraryPrice
+                                        , hashtags = [ val.editItineraryTag1, val.editItineraryTag2, val.editItineraryTag3 ]
+                                        , time = val.editItineraryTime
+                                        }
+                                        (\l -> GotPatchItineraryResp l val.editItineraryId)
+                                        |> Cmd.map GotLoadedCityMsg
                                     )
 
-                                _ ->
+                                Nothing ->
                                     ( model, Cmd.none )
 
-                        SubmitEditItineraryForm ->
-                            case model.cityData of
-                                Loaded val ->
-                                    let
-                                        cityData =
-                                            val.data
+                        -- New Itinerary Comment
+                        StartWritingComment itineraryId ->
+                            let
+                                itineraries =
+                                    val.data.itineraries
+                            in
+                            ( { model
+                                | cityData =
+                                    Loaded
+                                        { val
+                                            | data =
+                                                { cityData
+                                                    | itineraries =
+                                                        List.map
+                                                            (\i ->
+                                                                if i.data.id == itineraryId then
+                                                                    { i
+                                                                        | newComment =
+                                                                            Just
+                                                                                { text = ""
+                                                                                , isCreating = False
+                                                                                , error = Nothing
+                                                                                }
+                                                                        , editingComment = Nothing
+                                                                    }
 
-                                        itineraries =
-                                            val.data.itineraries
-                                    in
-                                    case model.userSession of
-                                        Just _ ->
+                                                                else
+                                                                    i
+                                                            )
+                                                            itineraries
+                                                }
+                                        }
+                              }
+                            , Cmd.none
+                            )
+
+                        ChangeNewComment newComment id ->
+                            let
+                                itineraries =
+                                    val.data.itineraries
+                            in
+                            ( { model
+                                | cityData =
+                                    Loaded
+                                        { val
+                                            | data =
+                                                { cityData
+                                                    | itineraries =
+                                                        List.map
+                                                            (\i ->
+                                                                if i.data.id == id then
+                                                                    let
+                                                                        c =
+                                                                            i.newComment
+                                                                    in
+                                                                    { i
+                                                                        | newComment =
+                                                                            case c of
+                                                                                Just commentData ->
+                                                                                    Just
+                                                                                        { commentData
+                                                                                            | text = newComment
+                                                                                        }
+
+                                                                                Nothing ->
+                                                                                    c
+                                                                    }
+
+                                                                else
+                                                                    i
+                                                            )
+                                                            itineraries
+                                                }
+                                        }
+                              }
+                            , Cmd.none
+                            )
+
+                        CancelComment id ->
+                            let
+                                itineraries =
+                                    val.data.itineraries
+                            in
+                            ( { model
+                                | cityData =
+                                    Loaded
+                                        { val
+                                            | data =
+                                                { cityData
+                                                    | itineraries =
+                                                        List.map
+                                                            (\i ->
+                                                                if i.data.id == id then
+                                                                    { i
+                                                                        | newComment =
+                                                                            Nothing
+                                                                    }
+
+                                                                else
+                                                                    i
+                                                            )
+                                                            itineraries
+                                                }
+                                        }
+                              }
+                            , Cmd.none
+                            )
+
+                        PostNewComment id ->
+                            let
+                                itineraries =
+                                    val.data.itineraries
+                            in
+                            ( { model
+                                | cityData =
+                                    Loaded
+                                        { val
+                                            | data =
+                                                { cityData
+                                                    | itineraries =
+                                                        List.map
+                                                            (\i ->
+                                                                if i.data.id == id then
+                                                                    { i
+                                                                        | newComment =
+                                                                            case i.newComment of
+                                                                                Just commentData ->
+                                                                                    Just
+                                                                                        { text = commentData.text
+                                                                                        , isCreating = True
+                                                                                        , error = Nothing
+                                                                                        }
+
+                                                                                Nothing ->
+                                                                                    i.newComment
+                                                                    }
+
+                                                                else
+                                                                    i
+                                                            )
+                                                            itineraries
+                                                }
+                                        }
+                              }
+                            , case
+                                itineraries
+                                    |> List.filter (\l -> l.data.id == id)
+                                    |> List.head
+                              of
+                                Just i ->
+                                    case i.newComment of
+                                        Just newComment ->
+                                            Api.Itineraries.postComment id
+                                                newComment.text
+                                                (\l -> GotNewCommentResp l id)
+                                                |> Cmd.map GotLoadedCityMsg
+
+                                        Nothing ->
+                                            Cmd.none
+
+                                Nothing ->
+                                    Cmd.none
+                            )
+
+                        GotNewCommentResp resp itineraryId ->
+                            let
+                                itineraries =
+                                    val.data.itineraries
+                            in
+                            case model.userSession of
+                                Just userData ->
+                                    case resp of
+                                        Err err ->
                                             let
-                                                itineraryBeingEditedId =
-                                                    val.editItineraryId
+                                                errorMessage : String
+                                                errorMessage =
+                                                    case err of
+                                                        Http.BadStatus code ->
+                                                            case code of
+                                                                400 ->
+                                                                    "Bad request"
+
+                                                                401 ->
+                                                                    "Unauthorized"
+
+                                                                404 ->
+                                                                    "Not found"
+
+                                                                _ ->
+                                                                    "An unknown error ocurred: code " ++ String.fromInt code
+
+                                                        _ ->
+                                                            "An unknown error ocurred"
                                             in
                                             ( { model
                                                 | cityData =
@@ -1253,653 +1400,339 @@ update msg model =
                                                                 { cityData
                                                                     | itineraries =
                                                                         List.map
-                                                                            (\({ data } as itineraryData) ->
-                                                                                if data.id == itineraryBeingEditedId then
-                                                                                    { itineraryData | action = Just Editing }
+                                                                            (\l ->
+                                                                                if l.data.id == itineraryId then
+                                                                                    { l
+                                                                                        | newComment =
+                                                                                            case l.newComment of
+                                                                                                Just v ->
+                                                                                                    Just
+                                                                                                        { text = v.text
+                                                                                                        , error = Just errorMessage
+                                                                                                        , isCreating = False
+                                                                                                        }
+
+                                                                                                Nothing ->
+                                                                                                    l.newComment
+                                                                                    }
 
                                                                                 else
-                                                                                    itineraryData
+                                                                                    l
                                                                             )
                                                                             itineraries
                                                                 }
-                                                            , isEditItineraryModalOpen = False
                                                         }
                                               }
-                                            , Api.Itineraries.patchItinerary val.editItineraryId
-                                                { title = val.editItineraryName
-                                                , activities =
-                                                    val.editItineraryFirstActivity
-                                                        :: (val.editItineraryRestActivities
-                                                                |> List.filter (\( _, l ) -> l /= "")
-                                                                |> List.map Tuple.second
-                                                           )
-                                                , price = val.editItineraryPrice
-                                                , hashtags = [ val.editItineraryTag1, val.editItineraryTag2, val.editItineraryTag3 ]
-                                                , time = val.editItineraryTime
-                                                }
-                                                (\l -> GotPatchItineraryResp l val.editItineraryId)
+                                            , Cmd.none
                                             )
 
-                                        Nothing ->
-                                            ( model, Cmd.none )
-
-                                _ ->
-                                    ( model, Cmd.none )
-
-                        -- New Itinerary Comment
-                        StartWritingComment itineraryId ->
-                            case model.cityData of
-                                Loaded val ->
-                                    let
-                                        cityData =
-                                            val.data
-
-                                        itineraries =
-                                            val.data.itineraries
-                                    in
-                                    ( { model
-                                        | cityData =
-                                            Loaded
-                                                { val
-                                                    | data =
-                                                        { cityData
-                                                            | itineraries =
-                                                                List.map
-                                                                    (\i ->
-                                                                        if i.data.id == itineraryId then
-                                                                            { i
-                                                                                | newComment =
-                                                                                    Just
-                                                                                        { text = ""
-                                                                                        , isCreating = False
-                                                                                        , error = Nothing
-                                                                                        }
-                                                                                , editingComment = Nothing
-                                                                            }
-
-                                                                        else
-                                                                            i
-                                                                    )
-                                                                    itineraries
-                                                        }
-                                                }
-                                      }
-                                    , Cmd.none
-                                    )
-
-                                _ ->
-                                    ( model, Cmd.none )
-
-                        ChangeNewComment newComment id ->
-                            case model.cityData of
-                                Loaded val ->
-                                    let
-                                        cityData =
-                                            val.data
-
-                                        itineraries =
-                                            val.data.itineraries
-                                    in
-                                    ( { model
-                                        | cityData =
-                                            Loaded
-                                                { val
-                                                    | data =
-                                                        { cityData
-                                                            | itineraries =
-                                                                List.map
-                                                                    (\i ->
-                                                                        if i.data.id == id then
-                                                                            let
-                                                                                c =
-                                                                                    i.newComment
-                                                                            in
-                                                                            { i
-                                                                                | newComment =
-                                                                                    case c of
-                                                                                        Just commentData ->
-                                                                                            Just
-                                                                                                { commentData
-                                                                                                    | text = newComment
-                                                                                                }
-
-                                                                                        Nothing ->
-                                                                                            c
-                                                                            }
-
-                                                                        else
-                                                                            i
-                                                                    )
-                                                                    itineraries
-                                                        }
-                                                }
-                                      }
-                                    , Cmd.none
-                                    )
-
-                                _ ->
-                                    ( model, Cmd.none )
-
-                        CancelComment id ->
-                            case model.cityData of
-                                Loaded val ->
-                                    let
-                                        cityData =
-                                            val.data
-
-                                        itineraries =
-                                            val.data.itineraries
-                                    in
-                                    ( { model
-                                        | cityData =
-                                            Loaded
-                                                { val
-                                                    | data =
-                                                        { cityData
-                                                            | itineraries =
-                                                                List.map
-                                                                    (\i ->
-                                                                        if i.data.id == id then
-                                                                            { i
-                                                                                | newComment =
-                                                                                    Nothing
-                                                                            }
-
-                                                                        else
-                                                                            i
-                                                                    )
-                                                                    itineraries
-                                                        }
-                                                }
-                                      }
-                                    , Cmd.none
-                                    )
-
-                                _ ->
-                                    ( model, Cmd.none )
-
-                        PostNewComment id ->
-                            case model.cityData of
-                                Loaded val ->
-                                    let
-                                        cityData =
-                                            val.data
-
-                                        itineraries =
-                                            val.data.itineraries
-                                    in
-                                    ( { model
-                                        | cityData =
-                                            Loaded
-                                                { val
-                                                    | data =
-                                                        { cityData
-                                                            | itineraries =
-                                                                List.map
-                                                                    (\i ->
-                                                                        if i.data.id == id then
-                                                                            { i
-                                                                                | newComment =
-                                                                                    case i.newComment of
-                                                                                        Just commentData ->
-                                                                                            Just
-                                                                                                { text = commentData.text
-                                                                                                , isCreating = True
-                                                                                                , error = Nothing
-                                                                                                }
-
-                                                                                        Nothing ->
-                                                                                            i.newComment
-                                                                            }
-
-                                                                        else
-                                                                            i
-                                                                    )
-                                                                    itineraries
-                                                        }
-                                                }
-                                      }
-                                    , case
-                                        itineraries
-                                            |> List.filter (\l -> l.data.id == id)
-                                            |> List.head
-                                      of
-                                        Just i ->
-                                            case i.newComment of
-                                                Just newComment ->
-                                                    Api.Itineraries.postComment id
-                                                        newComment.text
-                                                        (\l -> GotNewCommentResp l id)
-
-                                                Nothing ->
-                                                    Cmd.none
-
-                                        Nothing ->
-                                            Cmd.none
-                                    )
-
-                                _ ->
-                                    ( model, Cmd.none )
-
-                        GotNewCommentResp resp itineraryId ->
-                            case model.cityData of
-                                Loaded val ->
-                                    let
-                                        cityData =
-                                            val.data
-
-                                        itineraries =
-                                            val.data.itineraries
-                                    in
-                                    case model.userSession of
-                                        Just userData ->
-                                            case resp of
-                                                Err err ->
-                                                    let
-                                                        errorMessage : String
-                                                        errorMessage =
-                                                            case err of
-                                                                Http.BadStatus code ->
-                                                                    case code of
-                                                                        400 ->
-                                                                            "Bad request"
-
-                                                                        401 ->
-                                                                            "Unauthorized"
-
-                                                                        404 ->
-                                                                            "Not found"
-
-                                                                        _ ->
-                                                                            "An unknown error ocurred: code " ++ String.fromInt code
-
-                                                                _ ->
-                                                                    "An unknown error ocurred"
-                                                    in
-                                                    ( { model
-                                                        | cityData =
-                                                            Loaded
-                                                                { val
-                                                                    | data =
-                                                                        { cityData
-                                                                            | itineraries =
-                                                                                List.map
-                                                                                    (\l ->
-                                                                                        if l.data.id == itineraryId then
-                                                                                            { l
-                                                                                                | newComment =
-                                                                                                    case l.newComment of
-                                                                                                        Just v ->
-                                                                                                            Just
-                                                                                                                { text = v.text
-                                                                                                                , error = Just errorMessage
-                                                                                                                , isCreating = False
-                                                                                                                }
-
-                                                                                                        Nothing ->
-                                                                                                            l.newComment
+                                        Ok comment ->
+                                            let
+                                                newComment =
+                                                    toComment comment
+                                            in
+                                            ( { model
+                                                | cityData =
+                                                    Loaded
+                                                        { val
+                                                            | data =
+                                                                { cityData
+                                                                    | itineraries =
+                                                                        List.map
+                                                                            (\l ->
+                                                                                let
+                                                                                    data =
+                                                                                        l.data
+                                                                                in
+                                                                                if l.data.id == itineraryId then
+                                                                                    { l
+                                                                                        | newComment =
+                                                                                            Nothing
+                                                                                        , data =
+                                                                                            { data
+                                                                                                | comments =
+                                                                                                    newComment
+                                                                                                        :: data.comments
                                                                                             }
+                                                                                    }
 
-                                                                                        else
-                                                                                            l
-                                                                                    )
-                                                                                    itineraries
-                                                                        }
+                                                                                else
+                                                                                    l
+                                                                            )
+                                                                            itineraries
                                                                 }
-                                                      }
-                                                    , Cmd.none
-                                                    )
+                                                        }
+                                              }
+                                            , Cmd.none
+                                            )
 
-                                                Ok comment ->
-                                                    let
-                                                        newComment =
-                                                            toComment comment
-                                                    in
-                                                    ( { model
-                                                        | cityData =
-                                                            Loaded
-                                                                { val
-                                                                    | data =
-                                                                        { cityData
-                                                                            | itineraries =
-                                                                                List.map
-                                                                                    (\l ->
-                                                                                        let
-                                                                                            data =
-                                                                                                l.data
-                                                                                        in
-                                                                                        if l.data.id == itineraryId then
-                                                                                            { l
-                                                                                                | newComment =
-                                                                                                    Nothing
-                                                                                                , data =
-                                                                                                    { data
-                                                                                                        | comments =
-                                                                                                            newComment
-                                                                                                                :: data.comments
-                                                                                                    }
-                                                                                            }
-
-                                                                                        else
-                                                                                            l
-                                                                                    )
-                                                                                    itineraries
-                                                                        }
-                                                                }
-                                                      }
-                                                    , Cmd.none
-                                                    )
-
-                                        Nothing ->
-                                            ( model, Cmd.none )
-
-                                _ ->
+                                Nothing ->
                                     ( model, Cmd.none )
 
                         EditComment itineraryId commentId ->
-                            case model.cityData of
-                                Loaded val ->
-                                    let
-                                        cityData =
-                                            val.data
+                            let
+                                itineraries =
+                                    val.data.itineraries
+                            in
+                            ( { model
+                                | cityData =
+                                    Loaded
+                                        { val
+                                            | data =
+                                                { cityData
+                                                    | itineraries =
+                                                        List.map
+                                                            (\i ->
+                                                                if i.data.id == itineraryId then
+                                                                    { i
+                                                                        | editingComment =
+                                                                            Just
+                                                                                { text =
+                                                                                    i.data.comments
+                                                                                        |> List.filter (\o -> o.id == commentId)
+                                                                                        |> List.head
+                                                                                        |> (\o ->
+                                                                                                case o of
+                                                                                                    Just value ->
+                                                                                                        value.comment
 
-                                        itineraries =
-                                            val.data.itineraries
-                                    in
-                                    ( { model
-                                        | cityData =
-                                            Loaded
-                                                { val
-                                                    | data =
-                                                        { cityData
-                                                            | itineraries =
-                                                                List.map
-                                                                    (\i ->
-                                                                        if i.data.id == itineraryId then
-                                                                            { i
-                                                                                | editingComment =
-                                                                                    Just
-                                                                                        { text =
-                                                                                            i.data.comments
-                                                                                                |> List.filter (\o -> o.id == commentId)
-                                                                                                |> List.head
-                                                                                                |> (\o ->
-                                                                                                        case o of
-                                                                                                            Just value ->
-                                                                                                                value.comment
+                                                                                                    Nothing ->
+                                                                                                        ""
+                                                                                           )
+                                                                                , error = Nothing
+                                                                                , isEditing = False
+                                                                                , commentId = commentId
+                                                                                }
+                                                                        , newComment = Nothing
+                                                                    }
 
-                                                                                                            Nothing ->
-                                                                                                                ""
-                                                                                                   )
-                                                                                        , error = Nothing
-                                                                                        , isEditing = False
-                                                                                        , commentId = commentId
-                                                                                        }
-                                                                                , newComment = Nothing
-                                                                            }
-
-                                                                        else
-                                                                            i
-                                                                    )
-                                                                    itineraries
-                                                        }
+                                                                else
+                                                                    i
+                                                            )
+                                                            itineraries
                                                 }
-                                        , commentMenuOpen = Nothing
-                                      }
-                                    , Cmd.none
-                                    )
-
-                                _ ->
-                                    ( model, Cmd.none )
+                                        }
+                                , commentMenuOpen = Nothing
+                              }
+                            , Cmd.none
+                            )
 
                         ChangeEditComment newComment itineraryId ->
-                            case model.cityData of
-                                Loaded val ->
-                                    let
-                                        cityData =
-                                            val.data
+                            let
+                                itineraries =
+                                    val.data.itineraries
+                            in
+                            ( { model
+                                | cityData =
+                                    Loaded
+                                        { val
+                                            | data =
+                                                { cityData
+                                                    | itineraries =
+                                                        List.map
+                                                            (\i ->
+                                                                if i.data.id == itineraryId then
+                                                                    { i
+                                                                        | editingComment =
+                                                                            case i.editingComment of
+                                                                                Just commentData ->
+                                                                                    Just
+                                                                                        { commentData
+                                                                                            | text = newComment
+                                                                                        }
 
-                                        itineraries =
-                                            val.data.itineraries
-                                    in
-                                    ( { model
-                                        | cityData =
-                                            Loaded
-                                                { val
-                                                    | data =
-                                                        { cityData
-                                                            | itineraries =
-                                                                List.map
-                                                                    (\i ->
-                                                                        if i.data.id == itineraryId then
-                                                                            { i
-                                                                                | editingComment =
-                                                                                    case i.editingComment of
-                                                                                        Just commentData ->
-                                                                                            Just
-                                                                                                { commentData
-                                                                                                    | text = newComment
-                                                                                                }
+                                                                                Nothing ->
+                                                                                    i.editingComment
+                                                                    }
 
-                                                                                        Nothing ->
-                                                                                            i.editingComment
-                                                                            }
-
-                                                                        else
-                                                                            i
-                                                                    )
-                                                                    itineraries
-                                                        }
+                                                                else
+                                                                    i
+                                                            )
+                                                            itineraries
                                                 }
-                                      }
-                                    , Cmd.none
-                                    )
-
-                                _ ->
-                                    ( model, Cmd.none )
+                                        }
+                              }
+                            , Cmd.none
+                            )
 
                         CancelEditComment itineraryId ->
-                            case model.cityData of
-                                Loaded val ->
-                                    let
-                                        cityData =
-                                            val.data
+                            let
+                                itineraries =
+                                    val.data.itineraries
+                            in
+                            ( { model
+                                | cityData =
+                                    Loaded
+                                        { val
+                                            | data =
+                                                { cityData
+                                                    | itineraries =
+                                                        List.map
+                                                            (\i ->
+                                                                if i.data.id == itineraryId then
+                                                                    { i
+                                                                        | editingComment =
+                                                                            Nothing
+                                                                    }
 
-                                        itineraries =
-                                            val.data.itineraries
-                                    in
-                                    ( { model
-                                        | cityData =
-                                            Loaded
-                                                { val
-                                                    | data =
-                                                        { cityData
-                                                            | itineraries =
-                                                                List.map
-                                                                    (\i ->
-                                                                        if i.data.id == itineraryId then
-                                                                            { i
-                                                                                | editingComment =
-                                                                                    Nothing
-                                                                            }
-
-                                                                        else
-                                                                            i
-                                                                    )
-                                                                    itineraries
-                                                        }
+                                                                else
+                                                                    i
+                                                            )
+                                                            itineraries
                                                 }
-                                      }
-                                    , Cmd.none
-                                    )
-
-                                _ ->
-                                    ( model, Cmd.none )
+                                        }
+                              }
+                            , Cmd.none
+                            )
 
                         PostEditComment itineraryId ->
-                            case model.cityData of
-                                Loaded val ->
-                                    let
-                                        cityData =
-                                            val.data
+                            let
+                                itineraries =
+                                    val.data.itineraries
 
-                                        itineraries =
-                                            val.data.itineraries
-
-                                        ( newComment, commentId ) =
-                                            itineraries
-                                                |> List.filter (\o -> o.data.id == itineraryId)
-                                                |> List.head
-                                                |> (\l ->
-                                                        case l of
-                                                            Just v ->
-                                                                case v.editingComment of
-                                                                    Just commentData ->
-                                                                        ( commentData.text, commentData.commentId )
-
-                                                                    Nothing ->
-                                                                        ( "", -1 )
+                                ( newComment, commentId ) =
+                                    itineraries
+                                        |> List.filter (\o -> o.data.id == itineraryId)
+                                        |> List.head
+                                        |> (\l ->
+                                                case l of
+                                                    Just v ->
+                                                        case v.editingComment of
+                                                            Just commentData ->
+                                                                ( commentData.text, commentData.commentId )
 
                                                             Nothing ->
                                                                 ( "", -1 )
-                                                   )
-                                    in
-                                    ( { model
-                                        | cityData =
-                                            Loaded
-                                                { val
-                                                    | data =
-                                                        { cityData
-                                                            | itineraries =
-                                                                List.map
-                                                                    (\i ->
-                                                                        if i.data.id == itineraryId then
+
+                                                    Nothing ->
+                                                        ( "", -1 )
+                                           )
+                            in
+                            ( { model
+                                | cityData =
+                                    Loaded
+                                        { val
+                                            | data =
+                                                { cityData
+                                                    | itineraries =
+                                                        List.map
+                                                            (\i ->
+                                                                if i.data.id == itineraryId then
+                                                                    { i
+                                                                        | editingComment =
+                                                                            case i.editingComment of
+                                                                                Just eComment ->
+                                                                                    Just
+                                                                                        { eComment
+                                                                                            | isEditing = True
+                                                                                            , error = Nothing
+                                                                                        }
+
+                                                                                Nothing ->
+                                                                                    i.editingComment
+                                                                    }
+
+                                                                else
+                                                                    i
+                                                            )
+                                                            itineraries
+                                                }
+                                        }
+                              }
+                            , putComment newComment
+                                commentId
+                                (\l ->
+                                    case l of
+                                        Ok _ ->
+                                            GotLoadedCityMsg (GotPutCommentResp (Ok newComment) itineraryId commentId)
+
+                                        Err err ->
+                                            GotLoadedCityMsg (GotPutCommentResp (Err err) itineraryId commentId)
+                                )
+                            )
+
+                        GotPutCommentResp resp itineraryId commentId ->
+                            let
+                                itineraries =
+                                    val.data.itineraries
+                            in
+                            ( { model
+                                | cityData =
+                                    Loaded
+                                        { val
+                                            | data =
+                                                { cityData
+                                                    | itineraries =
+                                                        List.map
+                                                            (\i ->
+                                                                if i.data.id == itineraryId then
+                                                                    let
+                                                                        data =
+                                                                            i.data
+
+                                                                        comments =
+                                                                            i.data.comments
+                                                                    in
+                                                                    case resp of
+                                                                        Ok newComment ->
+                                                                            { i
+                                                                                | editingComment = Nothing
+                                                                                , data =
+                                                                                    { data
+                                                                                        | comments =
+                                                                                            comments
+                                                                                                |> List.map
+                                                                                                    (\o ->
+                                                                                                        if o.id == commentId then
+                                                                                                            { o | comment = newComment }
+
+                                                                                                        else
+                                                                                                            o
+                                                                                                    )
+                                                                                    }
+                                                                            }
+
+                                                                        Err err ->
                                                                             { i
                                                                                 | editingComment =
                                                                                     case i.editingComment of
                                                                                         Just eComment ->
                                                                                             Just
                                                                                                 { eComment
-                                                                                                    | isEditing = True
-                                                                                                    , error = Nothing
+                                                                                                    | error =
+                                                                                                        case err of
+                                                                                                            Http.BadStatus code ->
+                                                                                                                case code of
+                                                                                                                    400 ->
+                                                                                                                        Just "Bad request"
+
+                                                                                                                    401 ->
+                                                                                                                        Just "Unauthorized"
+
+                                                                                                                    404 ->
+                                                                                                                        Just "Not found"
+
+                                                                                                                    _ ->
+                                                                                                                        Just ("An unknown error ocurred: code " ++ String.fromInt code)
+
+                                                                                                            _ ->
+                                                                                                                Just "An unknown error ocurred"
+                                                                                                    , isEditing = False
                                                                                                 }
 
                                                                                         Nothing ->
                                                                                             i.editingComment
                                                                             }
 
-                                                                        else
-                                                                            i
-                                                                    )
-                                                                    itineraries
-                                                        }
+                                                                else
+                                                                    i
+                                                            )
+                                                            itineraries
                                                 }
-                                      }
-                                    , putComment newComment
-                                        commentId
-                                        (\l ->
-                                            case l of
-                                                Ok _ ->
-                                                    GotPutCommentResp (Ok newComment) itineraryId commentId
-
-                                                Err err ->
-                                                    GotPutCommentResp (Err err) itineraryId commentId
-                                        )
-                                    )
-
-                                _ ->
-                                    ( model, Cmd.none )
-
-                        GotPutCommentResp resp itineraryId commentId ->
-                            case model.cityData of
-                                Loaded val ->
-                                    let
-                                        cityData =
-                                            val.data
-
-                                        itineraries =
-                                            val.data.itineraries
-                                    in
-                                    ( { model
-                                        | cityData =
-                                            Loaded
-                                                { val
-                                                    | data =
-                                                        { cityData
-                                                            | itineraries =
-                                                                List.map
-                                                                    (\i ->
-                                                                        if i.data.id == itineraryId then
-                                                                            let
-                                                                                data =
-                                                                                    i.data
-
-                                                                                comments =
-                                                                                    i.data.comments
-                                                                            in
-                                                                            case resp of
-                                                                                Ok newComment ->
-                                                                                    { i
-                                                                                        | editingComment = Nothing
-                                                                                        , data =
-                                                                                            { data
-                                                                                                | comments =
-                                                                                                    comments
-                                                                                                        |> List.map
-                                                                                                            (\o ->
-                                                                                                                if o.id == commentId then
-                                                                                                                    { o | comment = newComment }
-
-                                                                                                                else
-                                                                                                                    o
-                                                                                                            )
-                                                                                            }
-                                                                                    }
-
-                                                                                Err err ->
-                                                                                    { i
-                                                                                        | editingComment =
-                                                                                            case i.editingComment of
-                                                                                                Just eComment ->
-                                                                                                    Just
-                                                                                                        { eComment
-                                                                                                            | error =
-                                                                                                                case err of
-                                                                                                                    Http.BadStatus code ->
-                                                                                                                        case code of
-                                                                                                                            400 ->
-                                                                                                                                Just "Bad request"
-
-                                                                                                                            401 ->
-                                                                                                                                Just "Unauthorized"
-
-                                                                                                                            404 ->
-                                                                                                                                Just "Not found"
-
-                                                                                                                            _ ->
-                                                                                                                                Just ("An unknown error ocurred: code " ++ String.fromInt code)
-
-                                                                                                                    _ ->
-                                                                                                                        Just "An unknown error ocurred"
-                                                                                                            , isEditing = False
-                                                                                                        }
-
-                                                                                                Nothing ->
-                                                                                                    i.editingComment
-                                                                                    }
-
-                                                                        else
-                                                                            i
-                                                                    )
-                                                                    itineraries
-                                                        }
-                                                }
-                                      }
-                                    , Cmd.none
-                                    )
-
-                                _ ->
-                                    ( model, Cmd.none )
+                                        }
+                              }
+                            , Cmd.none
+                            )
 
                 _ ->
                     ( model, Cmd.none )
