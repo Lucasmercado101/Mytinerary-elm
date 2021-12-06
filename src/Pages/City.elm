@@ -597,28 +597,7 @@ update msg model =
                                                                         (\c ->
                                                                             if c.id == idx then
                                                                                 { c
-                                                                                    | action =
-                                                                                        Just
-                                                                                            (FailedToDelete
-                                                                                                (case err of
-                                                                                                    Http.BadStatus code ->
-                                                                                                        case code of
-                                                                                                            400 ->
-                                                                                                                "Bad request"
-
-                                                                                                            401 ->
-                                                                                                                "Unauthorized"
-
-                                                                                                            404 ->
-                                                                                                                "Not found"
-
-                                                                                                            _ ->
-                                                                                                                "An unknown error ocurred: code " ++ String.fromInt code
-
-                                                                                                    _ ->
-                                                                                                        "An unknown error ocurred"
-                                                                                                )
-                                                                                            )
+                                                                                    | action = Just (FailedToDelete (errorMessage err))
                                                                                 }
 
                                                                             else
