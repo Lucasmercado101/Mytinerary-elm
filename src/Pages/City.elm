@@ -1852,7 +1852,12 @@ view ({ cityData } as model) =
         isCreatingNewItinerary =
             case cityData of
                 Loaded data ->
-                    data.newItineraryModal.isCreating
+                    case data.newItineraryModal.isCreating of
+                        Creating ->
+                            True
+
+                        _ ->
+                            False
 
                 _ ->
                     False
@@ -1869,7 +1874,12 @@ view ({ cityData } as model) =
                         data
 
                     creatingNewItineraryError =
-                        newItineraryModal.error
+                        case newItineraryModal.isCreating of
+                            Failed err ->
+                                err
+
+                            _ ->
+                                ""
                 in
                 div [ class "h-full flex flex-col" ]
                     [ div
@@ -2030,23 +2040,16 @@ view ({ cityData } as model) =
 
                     _ ->
                         p [ class "text-center text-xl mt-5" ] [ text "An unknown error ocurred, please refresh the page and try again." ]
-        , case model.cityData of
-            Loaded { isNewItineraryModalOpen, newItineraryName, newItineraryTime, newItineraryPrice, tag1, tag2, tag3, newItineraryFirstActivity, newItineraryRestActivities } ->
-                if isNewItineraryModalOpen then
-                    modal
-                        { name = newItineraryName
-                        , time = newItineraryTime
-                        , price = newItineraryPrice
-                        , tag1 = tag1
-                        , tag2 = tag2
-                        , tag3 = tag3
-                        , firstActivity = newItineraryFirstActivity
-                        , restActivities = newItineraryRestActivities
-                        }
-                        isCreatingNewItinerary
+        , case cityData of
+            Loaded loadedCityData ->
+                case loadedCityData.newItineraryModal.isOpen of
+                    Open formData ->
+                        modal
+                            formData
+                            isCreatingNewItinerary
 
-                else
-                    text ""
+                    Closed ->
+                        text ""
 
             _ ->
                 text ""
